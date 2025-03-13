@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { sendOrderConfirmationEmail, sendPaymentProofEmail } from '@/utils/emailService';
 
 interface CarProps {
   id: string;
@@ -95,10 +97,18 @@ const FeaturedCars = () => {
   const [couponType, setCouponType] = useState<string>('');
   const [couponCode, setCouponCode] = useState<string>('');
   const [couponAlertOpen, setCouponAlertOpen] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [customerInfoMissing, setCustomerInfoMissing] = useState(false);
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
     setProofOfPayment(null);
+    setCustomerName('');
+    setCustomerEmail('');
+    setCustomerPhone('');
     setDialogOpen(true);
   };
 
@@ -108,7 +118,13 @@ const FeaturedCars = () => {
     }
   };
 
-  const handleCompletePayment = () => {
+  const handleCompletePayment = async () => {
+    // Validate customer information
+    if (!customerName || !customerEmail || !customerPhone) {
+      setCustomerInfoMissing(true);
+      return;
+    }
+
     if (paymentMethod === 'transfer' && !proofOfPayment) {
       setAlertDialogOpen(true);
       return;
@@ -119,20 +135,70 @@ const FeaturedCars = () => {
       return;
     }
     
-    finishOrder();
+    await finishOrder();
   };
 
-  const finishOrder = () => {
-    setDialogOpen(false);
-    setAlertDialogOpen(false);
+  const finishOrder = async () => {
+    if (!selectedCar) return;
     
-    toast({
-      title: "Commande confirmée",
-      description: selectedCar ? `Votre commande pour ${selectedCar.brand} ${selectedCar.model} a été enregistrée. Nous vous contacterons prochainement.` : "Votre commande a été enregistrée.",
-    });
-
-    setSelectedCar(null);
-    setProofOfPayment(null);
+    setIsSubmitting(true);
+    
+    try {
+      // Prepare order data
+      const orderData = {
+        name: customerName,
+        email: customerEmail,
+        phone: customerPhone,
+        carModel: `${selectedCar.brand} ${selectedCar.model}`,
+        price: selectedCar.price,
+        paymentMethod: paymentMethod,
+        couponCode: paymentMethod === 'coupon' ? `${couponType}: ${couponCode}` : undefined,
+        deposit: calculateDeposit(selectedCar.price)
+      };
+      
+      // Send different emails based on payment method
+      if (paymentMethod === 'transfer' && proofOfPayment) {
+        // Send payment proof email
+        await sendPaymentProofEmail(
+          {
+            name: customerName,
+            email: customerEmail,
+            reference: `Achat ${selectedCar.brand} ${selectedCar.model}`,
+            amount: calculateDeposit(selectedCar.price)
+          }, 
+          proofOfPayment
+        );
+      }
+      
+      // Send order confirmation email
+      await sendOrderConfirmationEmail(orderData, proofOfPayment || undefined);
+      
+      // Close dialogs and show success message
+      setDialogOpen(false);
+      setAlertDialogOpen(false);
+      setCustomerInfoMissing(false);
+      
+      toast({
+        title: "Commande confirmée",
+        description: `Votre commande pour ${selectedCar.brand} ${selectedCar.model} a été enregistrée. Nous vous contacterons prochainement.`,
+      });
+      
+      // Reset form
+      setSelectedCar(null);
+      setProofOfPayment(null);
+      setCustomerName('');
+      setCustomerEmail('');
+      setCustomerPhone('');
+    } catch (error) {
+      console.error("Error sending order emails:", error);
+      toast({
+        title: "Erreur",
+        description: "Un problème est survenu lors de l'envoi de votre commande. Veuillez réessayer.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const calculateDeposit = (price: number) => {
@@ -252,6 +318,49 @@ const FeaturedCars = () => {
             </DialogHeader>
 
             <div className="space-y-6 py-4">
+              {/* Customer Information Section */}
+              <div className="space-y-4 border-b pb-4">
+                <h3 className="font-medium text-base">Vos coordonnées</h3>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="customer-name">Nom et prénom <span className="text-red-500">*</span></Label>
+                  <Input 
+                    id="customer-name" 
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="John Doe"
+                    className={!customerName && customerInfoMissing ? "border-red-500" : ""}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="customer-email">Email <span className="text-red-500">*</span></Label>
+                  <Input 
+                    id="customer-email" 
+                    type="email"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                    placeholder="john@example.com"
+                    className={!customerEmail && customerInfoMissing ? "border-red-500" : ""}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="customer-phone">Téléphone <span className="text-red-500">*</span></Label>
+                  <Input 
+                    id="customer-phone" 
+                    value={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    placeholder="+33 6 12 34 56 78"
+                    className={!customerPhone && customerInfoMissing ? "border-red-500" : ""}
+                  />
+                </div>
+                
+                {customerInfoMissing && (
+                  <p className="text-sm text-red-500">Veuillez remplir tous les champs obligatoires.</p>
+                )}
+              </div>
+
               <div className="flex flex-wrap gap-2 border-b pb-4">
                 <Button
                   type="button"
@@ -451,10 +560,12 @@ const FeaturedCars = () => {
                 type="button"
                 className="bg-brand-blue hover:bg-brand-darkBlue"
                 onClick={handleCompletePayment}
-                disabled={(paymentMethod === 'transfer' && !proofOfPayment) || 
-                         (paymentMethod === 'coupon' && (!couponType || !couponCode))}
+                disabled={isSubmitting || 
+                  !customerName || !customerEmail || !customerPhone ||
+                  (paymentMethod === 'transfer' && !proofOfPayment) || 
+                  (paymentMethod === 'coupon' && (!couponType || !couponCode))}
               >
-                Confirmer la commande
+                {isSubmitting ? "Envoi en cours..." : "Confirmer la commande"}
               </Button>
             </DialogFooter>
           </DialogContent>
