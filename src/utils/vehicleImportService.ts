@@ -347,8 +347,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/e8318a68-3e1a-444c-995b-892f48be6b73.png",
 };
 
+// Nouvelle Volkswagen T-Cross
+const volkswagenTCross = {
+  id: `volkswagen-tcross-fixed`,
+  brand: "Volkswagen",
+  model: "T-Cross 1,0 TSI 110 hk Life ACC",
+  year: 2021,
+  mileage: 16117,
+  fuelType: "Essence",
+  price: 10000,
+  transmission: "Automatique",
+  exteriorColor: "Blanche",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Life ACC", "Système de navigation", "Bluetooth", "Climatisation automatique", "Jantes alliage", "Caméra de recul", "Régulateur de vitesse adaptatif", "Aide au stationnement", "Détecteur de pluie"],
+  image: "/placeholder.svg",
+};
+
 // Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo];
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -455,6 +482,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const mercedesC350eExists = vehicles.some(v => v.id === mercedesC350e.id || (v.brand === "Mercedes" && v.model === "Benz Classe C AMG 350 e"));
   const audiA6Exists = vehicles.some(v => v.id === audiA6.id || (v.brand === "Audi" && v.model === "A6 3.0 TDI V6 S Line"));
   const volkswagenPoloExists = vehicles.some(v => v.id === volkswagenPolo.id || (v.brand === "Volkswagen" && v.model === "Polo 1,0 TSI 95hk Style ACCI 95 CH"));
+  const volkswagenTCrossExists = vehicles.some(v => v.id === volkswagenTCross.id || (v.brand === "Volkswagen" && v.model === "T-Cross 1,0 TSI 110 hk Life ACC"));
   
   let changed = false;
   
@@ -515,6 +543,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!volkswagenPoloExists) {
     vehicles.push(volkswagenPolo);
+    changed = true;
+  }
+  
+  if (!volkswagenTCrossExists) {
+    vehicles.push(volkswagenTCross);
     changed = true;
   }
   
@@ -589,7 +622,7 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed' || id === 'volvo-v60-fixed' || id === 'volvo-v60-second-fixed' || id === 'mercedes-c350e-fixed' || id === 'audi-a6-fixed' || id === 'volkswagen-polo-fixed') {
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed' || id === 'volvo-v60-fixed' || id === 'volvo-v60-second-fixed' || id === 'mercedes-c350e-fixed' || id === 'audi-a6-fixed' || id === 'volkswagen-polo-fixed' || id === 'volkswagen-tcross-fixed') {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }

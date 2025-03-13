@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 
 const VehicleImport = () => {
   const [activeTab, setActiveTab] = useState("add");
@@ -33,6 +35,14 @@ const VehicleImport = () => {
           <p className="text-center text-gray-600 mb-8">
             Ajoutez ou importez facilement des véhicules
           </p>
+          
+          <Alert className="mb-6">
+            <Info className="h-4 w-4" />
+            <AlertTitle>Nouveau véhicule</AlertTitle>
+            <AlertDescription>
+              Une Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue des véhicules.
+            </AlertDescription>
+          </Alert>
           
           <Tabs defaultValue="add" className="w-full" onValueChange={(value) => setActiveTab(value)}>
             <TabsList className="grid w-full grid-cols-2 mb-8">
