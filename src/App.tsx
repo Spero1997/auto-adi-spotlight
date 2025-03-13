@@ -16,6 +16,7 @@ import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
 import Cookies from "./pages/Cookies";
 import CGV from "./pages/CGV";
 import Conditions from "./pages/Conditions";
+import OrdersBackup from "./pages/OrdersBackup";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,9 @@ const App = () => (
           <Route path="/rachat" element={<Rachat />} />
           <Route path="/a-propos" element={<APropos />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Route pour la sauvegarde des commandes */}
+          <Route path="/orders-backup" element={<OrdersBackup />} />
           
           {/* Routes légales */}
           <Route path="/mentions-legales" element={<MentionsLegales />} />
