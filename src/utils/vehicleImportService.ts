@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -77,8 +78,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/7bd0f803-8c8f-410c-bb65-da54acbab023.png",
 };
 
+// Nouvelle Mercedes Benz C 220 
+const mercedesC220 = {
+  id: `mercedes-c220-fixed`,
+  brand: "Mercedes",
+  model: "Benz C 220 BlueTEC d Luxury Line",
+  year: 2015,
+  mileage: 92300,
+  fuelType: "Diesel",
+  price: 7000,
+  transmission: "Automatique",
+  exteriorColor: "Blanc",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Système de navigation", "Intérieur cuir", "Sièges chauffants", "Climatisation automatique", "Finitions bois", "Caméra de recul", "Aide au stationnement", "Bluetooth", "Commandes au volant"],
+  image: "/lovable-uploads/65c852dc-07fc-46a2-be4e-0214d01f670f.png",
+};
+
 // Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia];
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -175,6 +203,7 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
 const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const rsq8Exists = vehicles.some(v => v.id === audiRSQ8.id || (v.brand === "Audi" && v.model === "RS Q8"));
   const octaviaExists = vehicles.some(v => v.id === skodaOctavia.id || (v.brand === "Skoda" && v.model === "Octavia 2.0"));
+  const mercedesExists = vehicles.some(v => v.id === mercedesC220.id || (v.brand === "Mercedes" && v.model === "Benz C 220 BlueTEC d Luxury Line"));
   
   let changed = false;
   
@@ -185,6 +214,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!octaviaExists) {
     vehicles.push(skodaOctavia);
+    changed = true;
+  }
+  
+  if (!mercedesExists) {
+    vehicles.push(mercedesC220);
     changed = true;
   }
   
@@ -259,7 +293,7 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (vehicles.some(v => v.id === id && ((v.brand === "Audi" && v.model === "RS Q8") || (v.brand === "Skoda" && v.model === "Octavia 2.0")))) {
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed') {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }
