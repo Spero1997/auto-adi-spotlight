@@ -18,8 +18,9 @@ const OrdersBackup = () => {
       description: isMobile 
         ? "Si vous ne voyez pas votre commande, cliquez sur le bouton Actualiser en haut de la page. Vous pouvez télécharger les pièces jointes en cliquant sur leur nom."
         : "Si vous ne voyez pas votre commande, cliquez sur le bouton Actualiser. Vous pouvez télécharger les pièces jointes en cliquant sur leur nom.",
+      duration: 6000, // Increased duration for mobile users to have time to read
     });
-  }, [isMobile]);
+  }, [isMobile, toast]);
 
   return (
     <div className="min-h-screen flex flex-col">

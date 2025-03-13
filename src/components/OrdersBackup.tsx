@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { getStoredOrders, clearStoredOrders, exportOrdersAsJSON } from '@/utils/emailService';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,7 +51,11 @@ const OrdersBackup = () => {
 
   useEffect(() => {
     loadOrders();
-  }, []);
+    
+    // Log mobile status for debugging
+    console.log("Is mobile device:", isMobile);
+    console.log("Screen width:", window.innerWidth);
+  }, [isMobile]);
 
   const handleClearAllOrders = () => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer toutes les commandes sauvegardées ? Cette action est irréversible.')) {
@@ -231,221 +234,223 @@ Pour plus d'informations, veuillez contacter le service client.`;
           </CardContent>
         </Card>
       ) : (
-        <Tabs defaultValue="list" className="w-full">
-          <TabsList className="mb-4 w-full sm:w-auto">
-            <TabsTrigger value="list" className="flex-1 sm:flex-none text-xs sm:text-sm">Liste ({orders.length})</TabsTrigger>
-            <TabsTrigger value="details" className="flex-1 sm:flex-none text-xs sm:text-sm">Détails</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="list" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              {orders.map((order, index) => {
-                const subjectMatch = order.subject?.match(/Nouvelle commande: (.+)/) || [];
-                const htmlMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
-                const carModel = subjectMatch[1] || htmlMatch[1] || 'Véhicule';
-                
-                const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
-                const price = priceMatch[1] || '';
-                
-                const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
-                const customerName = nameMatch[1] || 'Client';
-                
-                const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
-                const paymentMethod = methodMatch[1] || '';
-                
-                return (
-                  <Card key={order.id || index} className="h-full overflow-hidden">
-                    <CardHeader className="pb-2 p-3 sm:p-6">
-                      <div className="flex justify-between items-start">
-                        <Badge variant={index === 0 ? "default" : "outline"} className="mb-2 text-xs">
-                          {index === 0 ? "Récent" : `#${orders.length - index}`}
-                        </Badge>
-                        <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
-                      </div>
-                      <CardTitle className="text-lg sm:text-xl truncate">{carModel}</CardTitle>
-                      <CardDescription className="flex items-center text-xs sm:text-sm">
-                        {formatTimestamp(order.timestamp)}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="py-2 px-3 sm:px-6">
-                      <div className="space-y-2">
-                        <div className="flex items-center text-xs sm:text-sm">
-                          <User className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                          <span className="truncate">{customerName}</span>
-                        </div>
-                        {price && (
-                          <div className="flex items-center text-xs sm:text-sm">
-                            <Car className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                            <span className="font-medium">{price} €</span>
-                          </div>
-                        )}
-                        {paymentMethod && (
-                          <div className="flex items-center text-xs sm:text-sm">
-                            <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                            <span>{getPaymentMethodLabel(paymentMethod)}</span>
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                    {order.attachments && order.attachments.length > 0 && (
-                      <CardFooter className="pt-2 pb-3 sm:pb-4 px-3 sm:px-6">
-                        <div className="w-full">
-                          <p className="text-xs sm:text-sm text-gray-500 mb-2">Pièces jointes:</p>
-                          {order.attachments.map((attachment: string, i: number) => (
-                            <Button 
-                              key={i} 
-                              variant="outline" 
-                              size="sm"
-                              className="flex items-center text-xs w-full justify-start mb-1 h-8 px-2 py-1"
-                              onClick={() => handleDownloadAttachment(attachment, order.timestamp)}
-                            >
-                              <Download className="h-3 w-3 mr-1 sm:mr-2" />
-                              <span className="truncate">{attachment}</span>
-                            </Button>
-                          ))}
-                        </div>
-                      </CardFooter>
-                    )}
-                  </Card>
-                );
-              })}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="details">
-            <Card>
-              <CardContent className="p-0">
-                <ScrollArea className="h-[400px] sm:h-[600px]">
-                  {orders.map((order, index) => {
-                    const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
-                    const emailMatch = order.html?.match(/<p><strong>Email:<\/strong> (.+?)<\/p>/) || [];
-                    const phoneMatch = order.html?.match(/<p><strong>Téléphone:<\/strong> (.+?)<\/p>/) || [];
-                    
-                    const carMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
-                    const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
-                    
-                    const deliveryOptionMatch = order.html?.match(/<p><strong>Option:<\/strong> (.+?)<\/p>/) || [];
-                    const deliveryAddressMatch = order.html?.match(/<p><strong>Adresse:<\/strong> (.+?)<\/p>/) || [];
-                    
-                    const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
-                    const depositMatch = order.html?.match(/<p><strong>Acompte de 20%:<\/strong> (.+?)€<\/p>/) || [];
-                    
-                    return (
-                      <div key={order.id || index} className="p-3 sm:p-6">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
-                          <div>
-                            <h3 className="text-base sm:text-lg font-bold">{carMatch[1] || 'Commande'}</h3>
-                            <p className="text-gray-500 text-xs sm:text-sm">
-                              {formatTimestamp(order.timestamp)}
-                            </p>
-                          </div>
-                          <Badge variant={index === 0 ? "default" : "outline"} className="mt-1 sm:mt-0 w-fit text-xs">
-                            {index === 0 ? "Plus récent" : `#${orders.length - index}`}
+        <div className="block w-full">
+          <Tabs defaultValue="list" className="w-full">
+            <TabsList className="mb-4 w-full sm:w-auto">
+              <TabsTrigger value="list" className="flex-1 sm:flex-none text-xs sm:text-sm">Liste ({orders.length})</TabsTrigger>
+              <TabsTrigger value="details" className="flex-1 sm:flex-none text-xs sm:text-sm">Détails</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="list" className="space-y-4 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {orders.map((order, index) => {
+                  const subjectMatch = order.subject?.match(/Nouvelle commande: (.+)/) || [];
+                  const htmlMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
+                  const carModel = subjectMatch[1] || htmlMatch[1] || 'Véhicule';
+                  
+                  const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
+                  const price = priceMatch[1] || '';
+                  
+                  const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
+                  const customerName = nameMatch[1] || 'Client';
+                  
+                  const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
+                  const paymentMethod = methodMatch[1] || '';
+                  
+                  return (
+                    <Card key={order.id || index} className="h-full overflow-hidden">
+                      <CardHeader className="pb-2 p-3 sm:p-6">
+                        <div className="flex justify-between items-start">
+                          <Badge variant={index === 0 ? "default" : "outline"} className="mb-2 text-xs">
+                            {index === 0 ? "Récent" : `#${orders.length - index}`}
                           </Badge>
+                          <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
                         </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4">
-                          <div className="space-y-3 sm:space-y-4">
+                        <CardTitle className="text-lg sm:text-xl truncate">{carModel}</CardTitle>
+                        <CardDescription className="flex items-center text-xs sm:text-sm">
+                          {formatTimestamp(order.timestamp)}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="py-2 px-3 sm:px-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center text-xs sm:text-sm">
+                            <User className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                            <span className="truncate">{customerName}</span>
+                          </div>
+                          {price && (
+                            <div className="flex items-center text-xs sm:text-sm">
+                              <Car className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                              <span className="font-medium">{price} €</span>
+                            </div>
+                          )}
+                          {paymentMethod && (
+                            <div className="flex items-center text-xs sm:text-sm">
+                              <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                              <span>{getPaymentMethodLabel(paymentMethod)}</span>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                      {order.attachments && order.attachments.length > 0 && (
+                        <CardFooter className="pt-2 pb-3 sm:pb-4 px-3 sm:px-6">
+                          <div className="w-full">
+                            <p className="text-xs sm:text-sm text-gray-500 mb-2">Pièces jointes:</p>
+                            {order.attachments.map((attachment: string, i: number) => (
+                              <Button 
+                                key={i} 
+                                variant="outline" 
+                                size="sm"
+                                className="flex items-center text-xs w-full justify-start mb-1 h-8 px-2 py-1"
+                                onClick={() => handleDownloadAttachment(attachment, order.timestamp)}
+                              >
+                                <Download className="h-3 w-3 mr-1 sm:mr-2" />
+                                <span className="truncate">{attachment}</span>
+                              </Button>
+                            ))}
+                          </div>
+                        </CardFooter>
+                      )}
+                    </Card>
+                  );
+                })}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="details">
+              <Card>
+                <CardContent className="p-0">
+                  <ScrollArea className="h-[400px] sm:h-[600px]">
+                    {orders.map((order, index) => {
+                      const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
+                      const emailMatch = order.html?.match(/<p><strong>Email:<\/strong> (.+?)<\/p>/) || [];
+                      const phoneMatch = order.html?.match(/<p><strong>Téléphone:<\/strong> (.+?)<\/p>/) || [];
+                      
+                      const carMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
+                      const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
+                      
+                      const deliveryOptionMatch = order.html?.match(/<p><strong>Option:<\/strong> (.+?)<\/p>/) || [];
+                      const deliveryAddressMatch = order.html?.match(/<p><strong>Adresse:<\/strong> (.+?)<\/p>/) || [];
+                      
+                      const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
+                      const depositMatch = order.html?.match(/<p><strong>Acompte de 20%:<\/strong> (.+?)€<\/p>/) || [];
+                      
+                      return (
+                        <div key={order.id || index} className="p-3 sm:p-6">
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
                             <div>
-                              <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Informations client</h4>
-                              <div className="space-y-2">
-                                <div className="flex items-center">
-                                  <User className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm">{nameMatch[1] || 'Non spécifié'}</span>
+                              <h3 className="text-base sm:text-lg font-bold">{carMatch[1] || 'Commande'}</h3>
+                              <p className="text-gray-500 text-xs sm:text-sm">
+                                {formatTimestamp(order.timestamp)}
+                              </p>
+                            </div>
+                            <Badge variant={index === 0 ? "default" : "outline"} className="mt-1 sm:mt-0 w-fit text-xs">
+                              {index === 0 ? "Plus récent" : `#${orders.length - index}`}
+                            </Badge>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4">
+                            <div className="space-y-3 sm:space-y-4">
+                              <div>
+                                <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Informations client</h4>
+                                <div className="space-y-2">
+                                  <div className="flex items-center">
+                                    <User className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                    <span className="text-xs sm:text-sm">{nameMatch[1] || 'Non spécifié'}</span>
+                                  </div>
+                                  <div className="flex items-center">
+                                    <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                    <span className="text-xs sm:text-sm truncate">{emailMatch[1] || 'Non spécifié'}</span>
+                                  </div>
+                                  <div className="flex items-center">
+                                    <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                    <span className="text-xs sm:text-sm">{phoneMatch[1] || 'Non spécifié'}</span>
+                                  </div>
                                 </div>
-                                <div className="flex items-center">
-                                  <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm truncate">{emailMatch[1] || 'Non spécifié'}</span>
-                                </div>
-                                <div className="flex items-center">
-                                  <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm">{phoneMatch[1] || 'Non spécifié'}</span>
+                              </div>
+                              
+                              <div>
+                                <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Détails du véhicule</h4>
+                                <div className="space-y-2">
+                                  <div className="flex items-center">
+                                    <Car className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                    <span className="text-xs sm:text-sm">{carMatch[1] || 'Non spécifié'}</span>
+                                  </div>
+                                  {priceMatch[1] && (
+                                    <div className="flex items-center">
+                                      <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                      <span className="text-xs sm:text-sm font-medium">{priceMatch[1]} €</span>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
                             
-                            <div>
-                              <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Détails du véhicule</h4>
-                              <div className="space-y-2">
-                                <div className="flex items-center">
-                                  <Car className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm">{carMatch[1] || 'Non spécifié'}</span>
+                            <div className="space-y-3 sm:space-y-4">
+                              <div>
+                                <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Livraison</h4>
+                                <div className="space-y-2">
+                                  <div className="flex items-center">
+                                    <Truck className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                    <span className="text-xs sm:text-sm">{deliveryOptionMatch[1] || 'Non spécifié'}</span>
+                                  </div>
+                                  <div className="flex items-start">
+                                    <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500 mt-0.5" />
+                                    <span className="text-xs sm:text-sm">{deliveryAddressMatch[1] || 'Non spécifié'}</span>
+                                  </div>
                                 </div>
-                                {priceMatch[1] && (
+                              </div>
+                              
+                              <div>
+                                <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Paiement</h4>
+                                <div className="space-y-2">
                                   <div className="flex items-center">
                                     <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                    <span className="text-xs sm:text-sm font-medium">{priceMatch[1]} €</span>
+                                    <span className="text-xs sm:text-sm">{getPaymentMethodLabel(methodMatch[1] || '')}</span>
                                   </div>
-                                )}
+                                  {depositMatch[1] && (
+                                    <div className="flex items-center">
+                                      <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
+                                      <span className="text-xs sm:text-sm">Acompte: {depositMatch[1]} €</span>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
                           
-                          <div className="space-y-3 sm:space-y-4">
-                            <div>
-                              <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Livraison</h4>
+                          {order.attachments && order.attachments.length > 0 && (
+                            <div className="mt-2 mb-4">
+                              <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Pièces jointes</h4>
                               <div className="space-y-2">
-                                <div className="flex items-center">
-                                  <Truck className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm">{deliveryOptionMatch[1] || 'Non spécifié'}</span>
-                                </div>
-                                <div className="flex items-start">
-                                  <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500 mt-0.5" />
-                                  <span className="text-xs sm:text-sm">{deliveryAddressMatch[1] || 'Non spécifié'}</span>
-                                </div>
+                                {order.attachments.map((attachment: string, i: number) => (
+                                  <Button 
+                                    key={i} 
+                                    variant="outline" 
+                                    size="sm"
+                                    className="flex items-center w-full justify-start h-8 px-2 py-1"
+                                    onClick={() => handleDownloadAttachment(attachment, order.timestamp)}
+                                  >
+                                    <FileDown className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500" />
+                                    <span className="text-xs sm:text-sm truncate">{attachment}</span>
+                                    <span className="ml-auto bg-gray-100 px-2 py-0.5 rounded-full text-xs">Télécharger</span>
+                                  </Button>
+                                ))}
                               </div>
                             </div>
-                            
-                            <div>
-                              <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Paiement</h4>
-                              <div className="space-y-2">
-                                <div className="flex items-center">
-                                  <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm">{getPaymentMethodLabel(methodMatch[1] || '')}</span>
-                                </div>
-                                {depositMatch[1] && (
-                                  <div className="flex items-center">
-                                    <CreditCard className="h-3 w-3 sm:h-4 sm:w-4 mr-2 text-gray-500" />
-                                    <span className="text-xs sm:text-sm">Acompte: {depositMatch[1]} €</span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
+                          )}
+                          
+                          {index < orders.length - 1 && (
+                            <Separator className="my-4 sm:my-6" />
+                          )}
                         </div>
-                        
-                        {order.attachments && order.attachments.length > 0 && (
-                          <div className="mt-2 mb-4">
-                            <h4 className="text-xs sm:text-sm font-medium text-gray-500 mb-2">Pièces jointes</h4>
-                            <div className="space-y-2">
-                              {order.attachments.map((attachment: string, i: number) => (
-                                <Button 
-                                  key={i} 
-                                  variant="outline" 
-                                  size="sm"
-                                  className="flex items-center w-full justify-start h-8 px-2 py-1"
-                                  onClick={() => handleDownloadAttachment(attachment, order.timestamp)}
-                                >
-                                  <FileDown className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500" />
-                                  <span className="text-xs sm:text-sm truncate">{attachment}</span>
-                                  <span className="ml-auto bg-gray-100 px-2 py-0.5 rounded-full text-xs">Télécharger</span>
-                                </Button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        
-                        {index < orders.length - 1 && (
-                          <Separator className="my-4 sm:my-6" />
-                        )}
-                      </div>
-                    );
-                  })}
-                </ScrollArea>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                      );
+                    })}
+                  </ScrollArea>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       )}
     </div>
   );
