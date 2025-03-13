@@ -97,16 +97,25 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
   const [cars, setCars] = useState<ImportedVehicle[]>([]);
   
   useEffect(() => {
-    const importedVehicles = getImportedVehicles();
-    
-    if (importedVehicles && importedVehicles.length > 0) {
-      console.log("Utilisation des véhicules importés:", importedVehicles.length);
-      setCars(importedVehicles);
-    } else {
-      console.log("Aucun véhicule importé trouvé, utilisation des véhicules par défaut");
+    loadVehicles();
+  }, []);
+  
+  const loadVehicles = () => {
+    try {
+      const importedVehicles = getImportedVehicles();
+      
+      if (importedVehicles && importedVehicles.length > 0) {
+        console.log("Utilisation des véhicules importés:", importedVehicles.length);
+        setCars(importedVehicles);
+      } else {
+        console.log("Aucun véhicule importé trouvé, utilisation des véhicules par défaut");
+        setCars(defaultCars);
+      }
+    } catch (error) {
+      console.error("Erreur lors du chargement des véhicules:", error);
       setCars(defaultCars);
     }
-  }, []);
+  };
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
@@ -219,6 +228,13 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
   };
 
   const filteredCars = searchFilters ? cars.filter(car => {
+    if (!car) return false;
+    
+    if (!car.brand || !car.model || !car.price || !car.year || !car.fuelType) {
+      console.log("Véhicule incomplet ignoré:", car);
+      return false;
+    }
+    
     const matchBrand = !searchFilters.brand || car.brand.toLowerCase() === searchFilters.brand.toLowerCase();
     const matchModel = !searchFilters.model || car.model.toLowerCase().includes(searchFilters.model.toLowerCase());
     const matchPrice = !searchFilters.maxPrice || car.price <= searchFilters.maxPrice;
@@ -261,7 +277,7 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
             <Card key={car.id} className="overflow-hidden card-hover border border-gray-200">
               <div className="relative">
                 <img
-                  src={car.image}
+                  src={car.image || 'https://via.placeholder.com/400x200?text=No+Image'}
                   alt={`${car.brand} ${car.model}`}
                   className="w-full h-48 object-cover"
                   onError={(e) => {
