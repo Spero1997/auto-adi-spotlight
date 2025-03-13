@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Search, Star } from 'lucide-react';
+import { Search, Star, Car } from 'lucide-react';
 
 interface SearchFilters {
   brand?: string;
@@ -147,15 +147,15 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         </div>
       )}
 
-      {!featuredOnly && !searchFilters && (
-        <div className="mt-8 text-center">
-          <Link to="/vehicules">
-            <Button variant="outline" className="mx-auto">
-              Voir tous nos véhicules d'occasion
-            </Button>
-          </Link>
-        </div>
-      )}
+      {/* New section at the bottom for "View all vehicles" button */}
+      <div className="mt-12 text-center">
+        <Link to="/vehicules/occasion">
+          <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
+            <Car className="h-5 w-5" />
+            Tous nos véhicules d'occasion
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

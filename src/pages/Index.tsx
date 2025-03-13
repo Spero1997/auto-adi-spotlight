@@ -78,9 +78,12 @@ const Index = () => {
         <div className="mt-10" id="featured-cars">
           <FeaturedCars featuredOnly={true} />
         </div>
-        <div className="mt-10">
-          <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
-        </div>
+        {/* This section shows standard vehicles or search results */}
+        {searchParams.toString() ? (
+          <div className="mt-10">
+            <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
+          </div>
+        ) : null}
         <Benefits />
         <div id="testimonials">
           <TestimonialSection />
