@@ -17,6 +17,7 @@ import Cookies from "./pages/Cookies";
 import CGV from "./pages/CGV";
 import Conditions from "./pages/Conditions";
 import OrdersBackup from "./pages/OrdersBackup";
+import VehiculesOccasion from "./pages/VehiculesOccasion";
 
 const queryClient = new QueryClient();
 
@@ -49,7 +50,7 @@ const App = () => (
           {/* Routes pour les pages secondaires */}
           <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/vehicules/:id" element={<Index />} /> {/* À implémenter plus tard */}
-          <Route path="/vehicules/occasion" element={<Index />} /> {/* À implémenter plus tard */}
+          <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
           <Route path="/vehicules/utilitaires" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/vehicules/neufs" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/rendez-vous" element={<Index />} /> {/* À implémenter plus tard */}
