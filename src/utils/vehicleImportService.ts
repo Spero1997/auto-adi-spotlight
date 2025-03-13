@@ -748,6 +748,19 @@ export const addVehicle = (vehicle: Omit<ImportedVehicle, 'id'>) => {
 };
 
 /**
+ * Alias pour addVehicle, utilisé dans VehicleAddForm
+ */
+export const addImportedVehicle = (vehicle: Omit<ImportedVehicle, 'id'>) => {
+  try {
+    addVehicle(vehicle);
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du véhicule:", error);
+    return false;
+  }
+};
+
+/**
  * Met à jour un véhicule existant
  */
 export const updateVehicle = (vehicle: ImportedVehicle) => {
@@ -783,6 +796,13 @@ export const deleteVehicle = (vehicleId: string) => {
   }
   
   toast.success(`${vehicleToDelete.brand} ${vehicleToDelete.model} supprimé du catalogue`);
+};
+
+/**
+ * Alias pour deleteVehicle, utilisé dans VehicleManager
+ */
+export const deleteImportedVehicle = (vehicleId: string) => {
+  deleteVehicle(vehicleId);
 };
 
 /**
