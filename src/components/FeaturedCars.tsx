@@ -554,7 +554,7 @@ const FeaturedCars = () => {
                         <p><span className="font-medium">SWIFT/BIC:</span> EVIULT2VXXX</p>
                         <p><span className="font-medium">Banque:</span> Paysera LT, UAB</p>
                         <p><span className="font-medium">Adresse de la banque:</span> Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
-                        <p><span className="font-medium">Référence:</span> {selectedCar && `Achat ${selectedCar.brand} ${selectedCar.model}`}</p>
+                        <p><span className="font-medium">Référence:</span> Prestation</p>
                       </div>
                     </div>
                     
