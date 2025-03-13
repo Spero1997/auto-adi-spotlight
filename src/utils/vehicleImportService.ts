@@ -622,4 +622,23 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id.includes('mercedes') || id.includes('jeep') || 
+        id.includes('bmw') || id.includes('volvo') || id.includes('audi') || id.includes('volkswagen')) {
+      toast.error("Impossible de supprimer un véhicule par défaut");
+      return;
+    }
+    
+    const updatedVehicles = vehicles.filter(vehicle => vehicle.id !== id);
+    
+    if (updatedVehicles.length === vehicles.length) {
+      toast.error("Véhicule non trouvé");
+      return;
+    }
+    
+    saveImportedVehicles(updatedVehicles);
+    toast.success("Véhicule supprimé avec succès");
+  } catch (error) {
+    console.error("Erreur lors de la suppression du véhicule:", error);
+    toast.error("Erreur lors de la suppression du véhicule");
+  }
+};
