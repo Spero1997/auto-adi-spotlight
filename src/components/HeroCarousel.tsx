@@ -55,21 +55,22 @@ const HeroCarousel = () => {
                 className="relative w-full h-full bg-cover bg-center"
                 style={{ backgroundImage: `url(${img})` }}
               >
-                <div className="absolute inset-0 flex flex-col justify-center items-center">
-                  {/* Conteneur avec fond coloré semi-transparent */}
+                <div className="absolute inset-0 flex items-center">
+                  {/* Conteneur avec fond coloré semi-transparent, positionné sur le côté */}
                   <div className={`
                     ${index % 2 === 0 ? 'bg-brand-blue/80' : 'bg-brand-orange/80'} 
-                    max-w-4xl mx-auto p-6 rounded-lg shadow-lg backdrop-blur-sm
+                    max-w-md mx-6 p-5 rounded-lg shadow-lg backdrop-blur-sm
                     transform transition-all duration-500 ease-in-out
+                    ${index % 2 === 0 ? 'ml-auto mr-10 md:mr-20' : 'ml-10 md:ml-20'}
                   `}>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center px-4 text-white">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
                       {index === 0 && "BMW M2 - Élégance et Performance"}
                       {index === 1 && "Mercedes AMG GT - Puissance Allemande"}
                       {index === 2 && "Mercedes AMG GT - Luxe à Monaco"}
                       {index === 3 && "BMW M5 - Confort et Sportivité"}
                       {index === 4 && "Trouvez la voiture parfaite pour vous"}
                     </h2>
-                    <p className="text-xl max-w-2xl text-center px-4 mb-6 text-white">
+                    <p className="text-base md:text-lg text-white mb-4">
                       {index === 0 && "Une sportive compacte pour les amateurs de sensations"}
                       {index === 1 && "Un bijou de technologie pour les passionnés"}
                       {index === 2 && "Le prestige sur la Côte d'Azur"}
@@ -78,9 +79,9 @@ const HeroCarousel = () => {
                     </p>
                     
                     {index === 4 && (
-                      <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
+                      <div className="flex mt-4">
                         <Link to="/vehicules/occasion">
-                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-6 py-3 rounded-md font-semibold text-lg">
+                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-4 py-2 rounded-md font-semibold">
                             Véhicules d'occasion
                           </Button>
                         </Link>
