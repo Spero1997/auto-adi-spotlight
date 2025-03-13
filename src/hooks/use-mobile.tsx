@@ -1,7 +1,8 @@
 
 import * as React from "react"
 
-const MOBILE_BREAKPOINT = 768
+// Lower the mobile breakpoint slightly to better match common mobile devices
+const MOBILE_BREAKPOINT = 640 // Changed from 768 to 640 for better mobile detection
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState(false)
@@ -9,7 +10,9 @@ export function useIsMobile() {
   React.useEffect(() => {
     // Function to check if screen is in mobile mode
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+      const mobile = window.innerWidth < MOBILE_BREAKPOINT
+      setIsMobile(mobile)
+      console.log(`Mobile check: width=${window.innerWidth}, isMobile=${mobile}`)
     }
     
     // Check immediately when component mounts
