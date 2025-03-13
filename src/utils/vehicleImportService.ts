@@ -371,7 +371,7 @@ Nos services inclus :
 
 Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
   features: ["Life ACC", "Système de navigation", "Bluetooth", "Climatisation automatique", "Jantes alliage", "Caméra de recul", "Régulateur de vitesse adaptatif", "Aide au stationnement", "Détecteur de pluie"],
-  image: "/lovable-uploads/cae67e14-f1a8-443d-9c8f-095dfbb3f170.png",
+  image: "/lovable-uploads/806b392d-aa03-4648-aadc-bcbd39514bac.png",
 };
 
 // Définition des véhicules par défaut
