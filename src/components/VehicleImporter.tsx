@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -147,7 +148,7 @@ const VehicleImporter = () => {
     
     toast({
       title: "Importation réussie",
-      description: `${previewData.length} v��hicules ont été ajoutés à votre catalogue`,
+      description: `${previewData.length} véhicules ont été ajoutés à votre catalogue`,
     });
   };
 

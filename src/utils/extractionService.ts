@@ -2,246 +2,230 @@
 import { toast } from "sonner";
 import { ImportedVehicle } from "./vehicleImportService";
 
-// Clés des sites supportés pour l'extraction
 export const SUPPORTED_SITES = {
   "lacentrale.fr": {
     name: "La Centrale",
-    selectors: {
-      itemContainer: ".searchCard",
-      brand: ".titleVehiculeInfo",
-      model: ".titleVehiculeInfo",
-      price: ".fieldPrice span.price",
-      year: ".fieldYear",
-      mileage: ".fieldMileage",
-      fuelType: ".fieldFuel",
-      image: ".imgLink img",
-      transmission: ".fieldGearbox",
-    }
+    url: "https://www.lacentrale.fr/",
+    support: true
   },
   "leboncoin.fr": {
     name: "Leboncoin",
-    selectors: {
-      itemContainer: ".styles_adCard__N3Qht",
-      brand: "p.styles_adTitle",
-      price: ".price",
-      description: ".styles_AdCardDescription",
-      image: ".styles_img",
-    }
+    url: "https://www.leboncoin.fr/",
+    support: true
   },
   "autoscout24.fr": {
     name: "AutoScout24",
-    selectors: {
-      itemContainer: ".cldt-summary-full-item",
-      brand: ".cldt-summary-title",
-      price: ".cldt-price",
-      year: ".cldt-summary-vehicle-data span:nth-child(1)",
-      mileage: ".cldt-summary-vehicle-data span:nth-child(2)",
-      fuelType: ".cldt-summary-vehicle-data span:nth-child(4)",
-      image: ".cldt-summary-gallery-container img",
-    }
+    url: "https://www.autoscout24.fr/",
+    support: true
   }
 };
 
-// Fonction pour identifier le site à partir de l'URL
-export const identifySite = (url: string): string | null => {
-  for (const siteKey in SUPPORTED_SITES) {
-    if (url.includes(siteKey)) {
-      return siteKey;
-    }
-  }
-  return null;
-};
-
-// Cette fonction simule l'extraction en attendant une implémentation réelle
-const simulateExtraction = async (url: string, siteName: string): Promise<ImportedVehicle[]> => {
-  console.log(`Extraction simulée depuis ${siteName} (${url})`);
-  
-  // Simuler un délai d'extraction
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  
-  // Générer entre 4 et 8 véhicules
-  const count = 4 + Math.floor(Math.random() * 5);
-  
-  // Tableau des marques par site
-  const brandsByDomain: Record<string, string[]> = {
-    "lacentrale.fr": ["Renault", "Peugeot", "Citroën", "Dacia", "Alpine"],
-    "leboncoin.fr": ["Volkswagen", "Audi", "BMW", "Mercedes", "Opel", "Ford"],
-    "autoscout24.fr": ["BMW", "Audi", "Mercedes", "Porsche", "Volkswagen"],
-  };
-  
-  // Utiliser les marques appropriées ou des marques par défaut
-  const siteKey = Object.keys(SUPPORTED_SITES).find(key => url.includes(key)) || "";
-  const relevantBrands = brandsByDomain[siteKey] || ["Renault", "Peugeot", "Toyota", "Ford", "Opel"];
-  
-  const vehicles: ImportedVehicle[] = [];
-  
-  for (let i = 0; i < count; i++) {
-    const brand = relevantBrands[Math.floor(Math.random() * relevantBrands.length)];
-    
-    // Générer des modèles pertinents selon la marque
-    let models: string[] = [];
-    switch (brand.toLowerCase()) {
-      case "renault":
-        models = ["Clio", "Megane", "Captur", "Arkana", "Scenic"];
-        break;
-      case "peugeot":
-        models = ["208", "308", "3008", "2008", "5008"];
-        break;
-      case "citroen":
-        models = ["C3", "C4", "C5", "Berlingo", "C3 Aircross"];
-        break;
-      case "volkswagen":
-        models = ["Golf", "Polo", "Tiguan", "Passat", "T-Roc"];
-        break;
-      case "bmw":
-        models = ["Série 1", "Série 3", "Série 5", "X1", "X3"];
-        break;
-      case "audi":
-        models = ["A1", "A3", "A4", "Q3", "Q5"];
-        break;
-      case "mercedes":
-        models = ["Classe A", "Classe C", "GLC", "Classe E", "GLA"];
-        break;
-      default:
-        models = ["Modèle A", "Modèle B", "Modèle C"];
-    }
-    
-    const model = models[Math.floor(Math.random() * models.length)];
-    const year = 2018 + Math.floor(Math.random() * 6); // Entre 2018 et 2023
-    const mileage = 5000 + Math.floor(Math.random() * 100000);
-    const price = 10000 + Math.floor(Math.random() * 40000);
-    
-    // Tableau d'images réalistes
-    const imagePool = [
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&q=80",
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&q=80",
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&q=80",
-      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&q=80",
-      "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&q=80",
-      "https://images.unsplash.com/photo-1551830820-330a71b99659?ixlib=rb-4.0.3&q=80"
-    ];
-    
-    // Tableau des types de carburant
-    const fuelTypes = ["Essence", "Diesel", "Hybride", "Électrique"];
-    const fuelType = fuelTypes[Math.floor(Math.random() * fuelTypes.length)];
-    
-    // Tableau des transmissions
-    const transmissions = ["Manuelle", "Automatique"];
-    const transmission = transmissions[Math.floor(Math.random() * transmissions.length)];
-    
-    // Tableau des couleurs extérieures
-    const exteriorColors = ["Noir", "Blanc", "Gris", "Bleu", "Rouge", "Argent"];
-    const exteriorColor = exteriorColors[Math.floor(Math.random() * exteriorColors.length)];
-    
-    // Tableau des couleurs intérieures
-    const interiorColors = ["Noir", "Beige", "Gris", "Marron"];
-    const interiorColor = interiorColors[Math.floor(Math.random() * interiorColors.length)];
-    
-    // Caractéristiques de base pour tous les véhicules
-    const baseFeatures = [
-      "Climatisation", "Vitres électriques", "Fermeture centralisée", "Bluetooth",
-      "Régulateur de vitesse", "Jantes alliage", "ESP", "ABS"
-    ];
-    
-    // Caractéristiques supplémentaires pour les véhicules plus chers
-    const additionalFeatures = [
-      "Toit ouvrant", "Sièges chauffants", "GPS", "Caméra de recul",
-      "Aide au stationnement", "Système audio premium", "Système d'infodivertissement",
-      "Volant multifonction", "Détecteur d'angles morts", "Régulateur de vitesse adaptatif"
-    ];
-    
-    // Ajouter des caractéristiques supplémentaires en fonction du prix
-    let features = [...baseFeatures];
-    if (price > 20000) {
-      // Ajouter quelques caractéristiques supplémentaires pour les véhicules plus chers
-      for (let j = 0; j < 4; j++) {
-        features.push(additionalFeatures[Math.floor(Math.random() * additionalFeatures.length)]);
-      }
-    }
-    
-    // Éliminer les doublons
-    features = [...new Set(features)];
-    
-    // Type de moteur en fonction du carburant
-    let engine;
-    if (fuelType === "Essence") {
-      engine = `${(1 + Math.random()).toFixed(1)}L ${90 + Math.floor(Math.random() * 100)} ch`;
-    } else if (fuelType === "Diesel") {
-      engine = `${(1.5 + Math.random() * 0.6).toFixed(1)}L TDI ${110 + Math.floor(Math.random() * 80)} ch`;
-    } else if (fuelType === "Hybride") {
-      engine = `Hybride ${(1.8 + Math.random() * 0.4).toFixed(1)}L ${130 + Math.floor(Math.random() * 70)} ch`;
-    } else {
-      engine = `Électrique ${100 + Math.floor(Math.random() * 150)} kW`;
-    }
-    
-    // Créer un identifiant unique
-    const id = `${brand.substring(0, 3).toLowerCase()}-${model.replace(/\s+/g, "-").toLowerCase()}-${Date.now()}-${i}`;
-    
-    // Créer le véhicule avec toutes les propriétés
-    vehicles.push({
-      id,
-      brand,
-      model,
-      year,
-      mileage,
-      price,
-      fuelType,
-      image: imagePool[Math.floor(Math.random() * imagePool.length)],
-      description: `${brand} ${model} ${year} en excellent état. ${fuelType}, ${transmission.toLowerCase()}, ${mileage.toLocaleString('fr-FR')} km.`,
-      exteriorColor,
-      interiorColor,
-      transmission,
-      doors: [3, 5][Math.floor(Math.random() * 2)],
-      engine,
-      features
-    });
-  }
-  
-  return vehicles;
-};
-
-// Fonction pour vérifier si l'extraction est possible sur un site
 export const canExtractFromUrl = (url: string): boolean => {
-  return identifySite(url) !== null;
+  try {
+    const urlObj = new URL(url);
+    const domain = urlObj.hostname.replace('www.', '');
+    
+    // Vérifie si le domaine ou un sous-domaine est supporté
+    return Object.keys(SUPPORTED_SITES).some(supportedDomain => 
+      domain === supportedDomain || domain.endsWith(`.${supportedDomain}`)
+    );
+  } catch (e) {
+    return false;
+  }
 };
 
-// Fonction pour extraire des véhicules à partir d'une URL
+// Simule l'extraction de véhicules depuis une URL
 export const extractVehiclesFromUrl = async (url: string): Promise<ImportedVehicle[]> => {
+  console.log("Extracting vehicles from URL:", url);
+  
+  if (!canExtractFromUrl(url)) {
+    throw new Error("Cette URL n'est pas supportée par notre système d'extraction.");
+  }
+  
+  // Simuler un délai de traitement pour une expérience plus réaliste
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
   try {
-    const siteKey = identifySite(url);
+    // Ces véhicules sont simulés pour démonstration
+    const domain = new URL(url).hostname;
     
-    if (!siteKey) {
-      throw new Error("Site non supporté pour l'extraction");
-    }
-    
-    const siteName = SUPPORTED_SITES[siteKey as keyof typeof SUPPORTED_SITES].name;
-    
-    // Notification pour informer l'utilisateur
-    toast.info(`Extraction depuis ${siteName} en cours...`);
-    
-    try {
-      // Tentative d'extraction réelle (ici nous simulons)
-      // En production, vous remplaceriez ceci par un appel à une API de scraping
-      const vehicles = await simulateExtraction(url, siteName);
-      
-      if (vehicles.length === 0) {
-        throw new Error("Aucun véhicule trouvé sur cette page");
-      }
-      
-      return vehicles;
-    } catch (error) {
-      console.error("Erreur lors de l'extraction:", error);
-      throw new Error(`Impossible d'extraire les véhicules depuis ${siteName}`);
+    if (domain.includes("lacentrale.fr")) {
+      return generateLaCentraleVehicles();
+    } else if (domain.includes("leboncoin.fr")) {
+      return generateLeboncoinVehicles();
+    } else if (domain.includes("autoscout24.fr")) {
+      return generateAutoScoutVehicles();
+    } else {
+      return generateGenericVehicles();
     }
   } catch (error) {
-    console.error("Erreur globale d'extraction:", error);
-    throw error;
+    console.error("Erreur lors de l'extraction des véhicules:", error);
+    throw new Error("Impossible d'extraire les véhicules depuis cette URL. Veuillez vérifier que l'URL est correcte et réessayer.");
   }
 };
 
-export default {
-  canExtractFromUrl,
-  extractVehiclesFromUrl,
-  SUPPORTED_SITES,
-  identifySite
-};
+// Génère des véhicules simulés pour La Centrale
+const generateLaCentraleVehicles = (): ImportedVehicle[] => [
+  {
+    id: `lacentrale-${Date.now()}-1`,
+    brand: "Peugeot",
+    model: "308 GT",
+    year: 2019,
+    mileage: 45000,
+    fuelType: "Diesel",
+    price: 18990,
+    image: "https://images.unsplash.com/photo-1551826152-d7c64fcede73?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Bleu",
+    interiorColor: "Noir",
+    transmission: "Automatique",
+    doors: 5,
+    engine: "2.0 BlueHDi 180ch",
+    features: ["GPS", "Toit panoramique", "Caméra de recul"]
+  },
+  {
+    id: `lacentrale-${Date.now()}-2`,
+    brand: "Renault",
+    model: "Megane RS",
+    year: 2020,
+    mileage: 30000,
+    fuelType: "Essence",
+    price: 29900,
+    image: "https://images.unsplash.com/photo-1607853554439-0069ec0f29b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Jaune",
+    interiorColor: "Noir",
+    transmission: "Manuelle",
+    doors: 5,
+    engine: "1.8 TCe 300ch",
+    features: ["Jantes alliage 19\"", "Châssis Cup", "Système RS Vision"]
+  },
+  {
+    id: `lacentrale-${Date.now()}-3`,
+    brand: "Audi",
+    model: "A4 Avant",
+    year: 2021,
+    mileage: 25000,
+    fuelType: "Diesel",
+    price: 35900,
+    image: "https://images.unsplash.com/photo-1606664413542-65866df2248f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Gris",
+    interiorColor: "Noir",
+    transmission: "Automatique",
+    doors: 5,
+    engine: "2.0 TDI 190ch",
+    features: ["Audi Virtual Cockpit", "MMI Navigation plus", "Bang & Olufsen Sound System"]
+  },
+];
+
+// Génère des véhicules simulés pour Leboncoin
+const generateLeboncoinVehicles = (): ImportedVehicle[] => [
+  {
+    id: `leboncoin-${Date.now()}-1`,
+    brand: "Volkswagen",
+    model: "Golf VII",
+    year: 2018,
+    mileage: 60000,
+    fuelType: "Essence",
+    price: 16500,
+    image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Noir",
+    interiorColor: "Gris",
+    transmission: "Manuelle",
+    doors: 5,
+    engine: "1.4 TSI 125ch",
+    features: ["Climatisation", "Bluetooth", "Régulateur de vitesse"]
+  },
+  {
+    id: `leboncoin-${Date.now()}-2`,
+    brand: "Citroen",
+    model: "C3",
+    year: 2020,
+    mileage: 15000,
+    fuelType: "Essence",
+    price: 13900,
+    image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Rouge",
+    interiorColor: "Beige",
+    transmission: "Manuelle",
+    doors: 5,
+    engine: "1.2 PureTech 83ch",
+    features: ["Airbump", "Connect Nav", "Aide au stationnement"]
+  },
+];
+
+// Génère des véhicules simulés pour AutoScout24
+const generateAutoScoutVehicles = (): ImportedVehicle[] => [
+  {
+    id: `autoscout-${Date.now()}-1`,
+    brand: "BMW",
+    model: "Serie 3",
+    year: 2022,
+    mileage: 10000,
+    fuelType: "Hybride",
+    price: 45900,
+    image: "https://images.unsplash.com/photo-1556189250-72ba954cfc2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Blanc",
+    interiorColor: "Noir",
+    transmission: "Automatique",
+    doors: 4,
+    engine: "330e 292ch",
+    features: ["Navigation Professional", "Sièges chauffants", "Système Hi-Fi Harman Kardon"]
+  },
+  {
+    id: `autoscout-${Date.now()}-2`,
+    brand: "Mercedes",
+    model: "Classe C",
+    year: 2021,
+    mileage: 20000,
+    fuelType: "Essence",
+    price: 42800,
+    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Noir",
+    interiorColor: "Beige",
+    transmission: "Automatique",
+    doors: 4,
+    engine: "C200 184ch",
+    features: ["Pack AMG Line", "MBUX", "Affichage tête haute"]
+  },
+  {
+    id: `autoscout-${Date.now()}-3`,
+    brand: "Audi",
+    model: "Q5",
+    year: 2020,
+    mileage: 35000,
+    fuelType: "Diesel",
+    price: 39900,
+    image: "https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    exteriorColor: "Gris",
+    interiorColor: "Noir",
+    transmission: "Automatique",
+    doors: 5,
+    engine: "2.0 TDI 190ch",
+    features: ["S line", "Quattro", "Matrix LED"]
+  },
+];
+
+// Génère des véhicules génériques
+const generateGenericVehicles = (): ImportedVehicle[] => [
+  {
+    id: `generic-${Date.now()}-1`,
+    brand: "Toyota",
+    model: "Corolla",
+    year: 2021,
+    mileage: 25000,
+    fuelType: "Hybride",
+    price: 23500,
+    image: "https://images.unsplash.com/photo-1590674899484-13b2a3af9b4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    transmission: "Automatique"
+  },
+  {
+    id: `generic-${Date.now()}-2`,
+    brand: "Ford",
+    model: "Puma",
+    year: 2022,
+    mileage: 15000,
+    fuelType: "Essence",
+    price: 22900,
+    image: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+    transmission: "Manuelle"
+  },
+];
