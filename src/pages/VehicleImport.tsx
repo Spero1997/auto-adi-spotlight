@@ -38,9 +38,9 @@ const VehicleImport = () => {
           
           <Alert className="mb-6">
             <Info className="h-4 w-4" />
-            <AlertTitle>Nouveau véhicule</AlertTitle>
+            <AlertTitle>Mise à jour effectuée</AlertTitle>
             <AlertDescription>
-              Une Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue des véhicules.
+              La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été mise à jour avec sa nouvelle image.
             </AlertDescription>
           </Alert>
           
