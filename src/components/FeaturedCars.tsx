@@ -1,11 +1,14 @@
-import { useState } from 'react';
-import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle } from 'lucide-react';
+
+import { useState, useRef } from 'react';
+import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 interface CarProps {
   id: string;
@@ -86,14 +89,34 @@ const FeaturedCars = () => {
   const [selectedCar, setSelectedCar] = useState<CarProps | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [proofOfPayment, setProofOfPayment] = useState<File | null>(null);
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
+    setProofOfPayment(null);
     setDialogOpen(true);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProofOfPayment(e.target.files[0]);
+    }
+  };
+
   const handleCompletePayment = () => {
+    if (paymentMethod === 'transfer' && !proofOfPayment) {
+      setAlertDialogOpen(true);
+      return;
+    }
+    
+    finishOrder();
+  };
+
+  const finishOrder = () => {
     setDialogOpen(false);
+    setAlertDialogOpen(false);
     
     toast({
       title: "Commande confirmée",
@@ -101,6 +124,11 @@ const FeaturedCars = () => {
     });
 
     setSelectedCar(null);
+    setProofOfPayment(null);
+  };
+
+  const calculateDeposit = (price: number) => {
+    return price * 0.2;
   };
 
   return (
@@ -181,22 +209,29 @@ const FeaturedCars = () => {
           </Link>
         </div>
 
-        {/* Payment Dialog - Simplified version without Form components */}
+        {/* Payment Dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-md md:max-w-lg">
             <DialogHeader>
               <DialogTitle>Finaliser votre achat</DialogTitle>
               <DialogDescription>
                 {selectedCar && (
-                  <div className="flex items-center mt-4">
-                    <img 
-                      src={selectedCar.image} 
-                      alt={`${selectedCar.brand} ${selectedCar.model}`} 
-                      className="w-24 h-16 object-cover rounded mr-4"
-                    />
-                    <div>
-                      <p className="font-medium">{selectedCar.brand} {selectedCar.model}</p>
-                      <p className="text-brand-blue font-bold">{selectedCar.price.toLocaleString('fr-FR')} €</p>
+                  <div className="space-y-4 mt-4">
+                    <div className="flex items-center">
+                      <img 
+                        src={selectedCar.image} 
+                        alt={`${selectedCar.brand} ${selectedCar.model}`} 
+                        className="w-24 h-16 object-cover rounded mr-4"
+                      />
+                      <div>
+                        <p className="font-medium">{selectedCar.brand} {selectedCar.model}</p>
+                        <p className="text-gray-500">Prix total: <span className="text-brand-blue font-bold">{selectedCar.price.toLocaleString('fr-FR')} €</span></p>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-brand-blue/10 p-4 rounded-md border border-brand-blue/30">
+                      <p className="font-medium text-brand-blue">Acompte à verser (20%): <span className="font-bold">{calculateDeposit(selectedCar.price).toLocaleString('fr-FR')} €</span></p>
+                      <p className="text-sm text-gray-600 mt-1">Le reste du montant sera à régler lors de la livraison du véhicule.</p>
                     </div>
                   </div>
                 )}
@@ -274,13 +309,49 @@ const FeaturedCars = () => {
                           <p><span className="font-semibold">SWIFT/BIC:</span> EVIULT2VXXX</p>
                           <p><span className="font-semibold">Nom de banque:</span> Paysera LT, UAB</p>
                           <p><span className="font-semibold">Adresse de la banque:</span> Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
+                          <p className="mt-2 font-semibold text-brand-blue">Montant à payer: {selectedCar ? calculateDeposit(selectedCar.price).toLocaleString('fr-FR') : 0} €</p>
                         </div>
                       </div>
                     </div>
                   </div>
                   
+                  <div className="space-y-2">
+                    <Label htmlFor="proof-of-payment" className="font-medium">
+                      Preuve de paiement <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="proof-of-payment"
+                        type="file"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                        className="hidden"
+                      />
+                      <Button 
+                        type="button" 
+                        variant="outline"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex-grow"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {proofOfPayment ? 'Changer le fichier' : 'Télécharger un justificatif'}
+                      </Button>
+                      
+                      {proofOfPayment && (
+                        <div className="flex items-center text-green-600 text-sm">
+                          <Check className="h-4 w-4 mr-1" />
+                          <span className="truncate max-w-[150px]">{proofOfPayment.name}</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      Formats acceptés: JPG, PNG, PDF. Taille maximale: 5 MB
+                    </p>
+                  </div>
+                  
                   <p className="text-sm text-gray-600">
-                    Après avoir effectué le virement, veuillez cliquer sur "Confirmer la commande". 
+                    Après avoir effectué le virement, veuillez télécharger une preuve de paiement et cliquer sur "Confirmer la commande".
                     Nous vous contacterons après vérification du paiement.
                   </p>
                 </div>
@@ -306,6 +377,21 @@ const FeaturedCars = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        
+        {/* Alert Dialog for missing proof of payment */}
+        <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Preuve de paiement requise</AlertDialogTitle>
+              <AlertDialogDescription>
+                Pour valider votre commande par virement bancaire, veuillez télécharger une preuve de paiement (capture d'écran ou reçu de virement).
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Fermer</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </section>
   );
