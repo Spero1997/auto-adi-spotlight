@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -585,4 +586,188 @@ Nos services inclus :
  • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
  • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
 
-Garantie :
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["M-Sport", "xDrive", "Phares LED", "Jantes alliage M", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Régulateur de vitesse", "Capteurs de stationnement"],
+  image: "/lovable-uploads/8d7b5dff-9e58-47d0-92e3-2cb91694e58c.png",
+};
+
+// Nouvelle Range Rover Evoque
+const rangeRoverEvoque = {
+  id: `range-rover-evoque-fixed`,
+  brand: "Range Rover",
+  model: "Evoque 2.0 Prestige 241 CH",
+  year: 2014,
+  mileage: 117000,
+  fuelType: "Essence",
+  price: 10000,
+  transmission: "Automatique",
+  exteriorColor: "Grise",
+  interiorColor: "Beige",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Prestige", "Toit panoramique", "Intérieur cuir", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Jantes alliage", "Régulateur de vitesse", "Capteurs de stationnement"],
+  image: "/lovable-uploads/7044954c-4a4d-4bb0-9dd0-ed00db0b8115.png",
+};
+
+// Nouvelle BMW X3 2014
+const bmwX3_2014 = {
+  id: `bmw-x3-2014-fixed`,
+  brand: "BMW",
+  model: "X3 xDrive 20d",
+  year: 2014,
+  mileage: 126000,
+  fuelType: "Diesel",
+  price: 8700,
+  transmission: "Automatique",
+  exteriorColor: "Grise",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["xDrive", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Jantes alliage", "Régulateur de vitesse", "Capteurs de stationnement", "Sièges chauffants"],
+  image: "/lovable-uploads/99e4c269-15bf-4ced-8ed9-f4c03f6f1378.png",
+};
+
+// Génère un ID unique pour le catalogue
+export const generateCatalogId = () => {
+  const existingId = localStorage.getItem(CATALOG_ID_KEY);
+  if (existingId) return existingId;
+  
+  const newId = `catalog_${Date.now()}`;
+  localStorage.setItem(CATALOG_ID_KEY, newId);
+  return newId;
+};
+
+// Récupère les véhicules importés depuis le localStorage
+export const getImportedVehicles = (): ImportedVehicle[] => {
+  try {
+    const storedVehicles = localStorage.getItem(STORAGE_KEY);
+    let vehicles: ImportedVehicle[] = storedVehicles ? JSON.parse(storedVehicles) : [];
+    
+    // Vérifie la présence des véhicules fixes et les ajoute s'ils sont absents
+    const fixedVehicles = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5, audiQ7, audiA3Sportback, bmwX3, rangeRoverEvoque, bmwX3_2014];
+    
+    for (const fixedVehicle of fixedVehicles) {
+      const exists = vehicles.some(v => v.id === fixedVehicle.id);
+      if (!exists) {
+        vehicles.push(fixedVehicle);
+      }
+    }
+    
+    // Sauvegarde les véhicules mis à jour
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
+    
+    return vehicles;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des véhicules:", error);
+    return [];
+  }
+};
+
+// Ajoute un véhicule à la liste des véhicules importés
+export const addImportedVehicle = (vehicle: ImportedVehicle) => {
+  try {
+    const vehicles = getImportedVehicles();
+    const exists = vehicles.some(v => 
+      v.brand === vehicle.brand && 
+      v.model === vehicle.model && 
+      v.year === vehicle.year
+    );
+    
+    if (!exists) {
+      const newVehicles = [...vehicles, { ...vehicle, id: `${vehicle.brand}-${vehicle.model}-${Date.now()}` }];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newVehicles));
+      toast.success(`${vehicle.brand} ${vehicle.model} a été ajouté`);
+      return true;
+    } else {
+      toast.error("Ce véhicule existe déjà dans le catalogue");
+      return false;
+    }
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du véhicule:", error);
+    toast.error("Erreur lors de l'ajout du véhicule");
+    return false;
+  }
+};
+
+// Supprime un véhicule de la liste des véhicules importés
+export const removeImportedVehicle = (vehicleId: string) => {
+  try {
+    const vehicles = getImportedVehicles();
+    const newVehicles = vehicles.filter(v => v.id !== vehicleId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newVehicles));
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la suppression du véhicule:", error);
+    return false;
+  }
+};
+
+// Marque un véhicule comme exclu (ne sera pas affiché dans le catalogue)
+export const excludeVehicle = (vehicleId: string, excluded: boolean) => {
+  try {
+    const vehicles = getImportedVehicles();
+    const newVehicles = vehicles.map(v => {
+      if (v.id === vehicleId) {
+        return { ...v, excluded };
+      }
+      return v;
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newVehicles));
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du véhicule:", error);
+    return false;
+  }
+};
+
+// Extrait les véhicules depuis une URL
+export const extractVehiclesFromUrl = async (url: string) => {
+  try {
+    const vehicles = await extractVehiclesWithScraper(url);
+    console.log("Véhicules extraits:", vehicles);
+    
+    if (vehicles.length === 0) {
+      toast.error("Aucun véhicule n'a été trouvé sur cette URL");
+      return [];
+    }
+    
+    // Ajoute chaque véhicule extrait à la liste des véhicules importés
+    const addedVehicles = [];
+    for (const vehicle of vehicles) {
+      const success = addImportedVehicle(vehicle);
+      if (success) {
+        addedVehicles.push(vehicle);
+      }
+    }
+    
+    if (addedVehicles.length > 0) {
+      toast.success(`${addedVehicles.length} véhicule(s) importé(s) avec succès`);
+    } else {
+      toast.info("Aucun nouveau véhicule n'a été importé");
+    }
+    
+    return addedVehicles;
+  } catch (error) {
+    console.error("Erreur lors de l'extraction des véhicules:", error);
+    toast.error("Erreur lors de l'extraction des véhicules");
+    return [];
+  }
+};
