@@ -618,6 +618,31 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
 };
 
 /**
+ * Génère une URL partageable pour le catalogue actuel
+ */
+export const generateShareableUrl = () => {
+  try {
+    // Générer un ID unique si aucun n'existe déjà
+    let catalogId = localStorage.getItem(CATALOG_ID_KEY);
+    
+    if (!catalogId) {
+      catalogId = `catalog-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      localStorage.setItem(CATALOG_ID_KEY, catalogId);
+    }
+    
+    // Construire l'URL avec l'ID du catalogue
+    const baseUrl = window.location.origin + window.location.pathname;
+    const shareableUrl = new URL(baseUrl);
+    shareableUrl.searchParams.set('catalog', catalogId);
+    
+    return shareableUrl.toString();
+  } catch (error) {
+    console.error("Erreur lors de la génération de l'URL partageable:", error);
+    return window.location.href;
+  }
+};
+
+/**
  * Récupère l'identifiant du catalogue à partir de l'URL ou utilise le catalogue local
  */
 export const getCatalogIdFromUrl = () => {
@@ -661,134 +686,4 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
       }
     }
     
-    // Si aucun véhicule n'existe dans le stockage, ajouter des exemples préconfiguré
-    const defaultVehicles = [
-      audiRSQ8,
-      skodaOctavia,
-      mercedesC220,
-      jeepCompass,
-      mercedesGLA,
-      mercedesCLA,
-      bmwSerie2,
-      volvoV60,
-      volvoV60Second,
-      mercedesC350e,
-      audiA6,
-      volkswagenPolo,
-      volkswagenTCross,
-      bmwX5,
-      audiA3ETron,
-      kiaNiro,
-      bmwX1,
-      audiQ5,
-      audiQ7,
-      audiA3Sportback,
-      bmwX3,
-      mercedesGLC350e // Ajout de la nouvelle Mercedes GLC 350e à la liste des véhicules
-    ];
-    
-    saveImportedVehicles(defaultVehicles);
-    return defaultVehicles;
-  } catch (error) {
-    console.error("Erreur lors de la récupération des véhicules:", error);
-    return [];
-  }
-};
-
-export const saveImportedVehicles = (vehicles: ImportedVehicle[]) => {
-  try {
-    const catalogId = getCatalogIdFromUrl();
-    const storageKey = catalogId ? `${STORAGE_KEY}_${catalogId}` : STORAGE_KEY;
-    
-    localStorage.setItem(storageKey, JSON.stringify(vehicles));
-    
-    // Déclencher un événement pour notifier d'autres composants
-    window.dispatchEvent(new Event('storage'));
-    window.dispatchEvent(new Event('vehiclesUpdated'));
-    
-    return true;
-  } catch (error) {
-    console.error("Erreur lors de la sauvegarde des véhicules:", error);
-    return false;
-  }
-};
-
-export const deleteImportedVehicle = (id: string) => {
-  try {
-    const vehicles = getImportedVehicles();
-    const updatedVehicles = vehicles.filter(vehicle => vehicle.id !== id);
-    
-    saveImportedVehicles(updatedVehicles);
-    return true;
-  } catch (error) {
-    console.error("Erreur lors de la suppression du véhicule:", error);
-    return false;
-  }
-};
-
-export const addImportedVehicle = async (vehicle: ImportedVehicle) => {
-  try {
-    const vehicles = getImportedVehicles();
-    
-    // Vérifier si un véhicule avec le même ID existe déjà
-    if (vehicles.some(v => v.id === vehicle.id)) {
-      console.warn(`Un véhicule avec l'ID ${vehicle.id} existe déjà.`);
-      
-      // Si le véhicule existe déjà, on peut mettre à jour ses propriétés
-      const updatedVehicles = vehicles.map(v => 
-        v.id === vehicle.id ? {...v, ...vehicle} : v
-      );
-      
-      saveImportedVehicles(updatedVehicles);
-      toast.success(`Le véhicule ${vehicle.brand} ${vehicle.model} a été mis à jour.`);
-    } else {
-      // Si le véhicule n'existe pas, l'ajouter à la liste
-      saveImportedVehicles([...vehicles, vehicle]);
-      toast.success(`Le véhicule ${vehicle.brand} ${vehicle.model} a été ajouté.`);
-    }
-    
-    return true;
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du véhicule:", error);
-    toast.error(`Erreur lors de l'ajout du véhicule: ${error.message}`);
-    return false;
-  }
-};
-
-export const extractVehiclesFromUrl = async (url: string) => {
-  try {
-    toast.info("Extraction des véhicules en cours...");
-    
-    // Utiliser le service d'extraction pour récupérer les véhicules
-    const vehicles = await extractVehiclesWithScraper(url);
-    
-    if (!vehicles || vehicles.length === 0) {
-      toast.error("Aucun véhicule n'a été trouvé à cette URL.");
-      return false;
-    }
-    
-    // Ajouter chaque véhicule extrait à notre catalogue
-    let successCount = 0;
-    
-    for (const vehicle of vehicles) {
-      // Générer un ID unique basé sur les détails du véhicule et un timestamp
-      const uniqueId = `${vehicle.brand}-${vehicle.model}-${Date.now()}`;
-      const vehicleWithId = { ...vehicle, id: uniqueId };
-      
-      const success = await addImportedVehicle(vehicleWithId);
-      if (success) successCount++;
-    }
-    
-    if (successCount > 0) {
-      toast.success(`${successCount} véhicule(s) importé(s) avec succès.`);
-      return true;
-    } else {
-      toast.error("Échec de l'importation des véhicules.");
-      return false;
-    }
-  } catch (error) {
-    console.error("Erreur lors de l'extraction des véhicules:", error);
-    toast.error(`Erreur lors de l'importation: ${error.message}`);
-    return false;
-  }
-};
+    // Si aucun véhicule n'
