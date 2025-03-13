@@ -230,8 +230,15 @@ const FeaturedCars = () => {
                     </div>
                     
                     <div className="bg-brand-blue/10 p-4 rounded-md border border-brand-blue/30">
-                      <p className="font-medium text-brand-blue">Acompte à verser (20%): <span className="font-bold">{calculateDeposit(selectedCar.price).toLocaleString('fr-FR')} €</span></p>
-                      <p className="text-sm text-gray-600 mt-1">Le reste du montant sera à régler lors de la livraison du véhicule.</p>
+                      <p className="font-medium text-brand-blue">
+                        Acompte à verser (20%): 
+                        <span className="font-bold text-lg ml-1">
+                          {calculateDeposit(selectedCar.price).toLocaleString('fr-FR')} €
+                        </span>
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Le reste du montant sera à régler lors de la livraison du véhicule.
+                      </p>
                     </div>
                   </div>
                 )}
@@ -309,7 +316,10 @@ const FeaturedCars = () => {
                           <p><span className="font-semibold">SWIFT/BIC:</span> EVIULT2VXXX</p>
                           <p><span className="font-semibold">Nom de banque:</span> Paysera LT, UAB</p>
                           <p><span className="font-semibold">Adresse de la banque:</span> Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
-                          <p className="mt-2 font-semibold text-brand-blue">Montant à payer: {selectedCar ? calculateDeposit(selectedCar.price).toLocaleString('fr-FR') : 0} €</p>
+                          <p className="mt-2 font-semibold text-brand-blue">
+                            Montant à payer (acompte 20%): 
+                            {selectedCar ? calculateDeposit(selectedCar.price).toLocaleString('fr-FR') : 0} €
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -371,6 +381,7 @@ const FeaturedCars = () => {
                 type="button"
                 className="bg-brand-blue hover:bg-brand-darkBlue"
                 onClick={handleCompletePayment}
+                disabled={paymentMethod === 'transfer' && !proofOfPayment}
               >
                 Confirmer la commande
               </Button>
