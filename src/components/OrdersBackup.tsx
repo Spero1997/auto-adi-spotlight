@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { getStoredOrders, clearStoredOrders, exportOrdersAsJSON } from '@/utils/emailService';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { FileDown, Clock, Car, User, Mail, Phone, Truck, CreditCard, AlertCircle } from 'lucide-react';
+import { FileDown, Clock, Car, User, Mail, Phone, Truck, CreditCard, AlertCircle, RefreshCw } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
@@ -14,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 const OrdersBackup = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const { toast } = useToast();
 
   const loadOrders = () => {
@@ -22,10 +22,17 @@ const OrdersBackup = () => {
     // Add a small delay to ensure UI feedback is visible
     setTimeout(() => {
       try {
+        // Force localStorage refresh by calling it directly
         const storedOrders = getStoredOrders();
         console.log("Retrieved orders:", storedOrders);
         
-        setOrders(storedOrders.reverse()); // Most recent first
+        // Check if storedOrders is valid before setting state
+        if (Array.isArray(storedOrders)) {
+          setOrders(storedOrders.reverse()); // Most recent first
+        } else {
+          console.error("Invalid orders format, received:", storedOrders);
+          setOrders([]);
+        }
       } catch (error) {
         console.error("Error loading orders:", error);
         toast({
@@ -71,11 +78,15 @@ const OrdersBackup = () => {
   };
 
   const handleRefreshOrders = () => {
-    loadOrders();
-    toast({
-      title: "Actualisation en cours",
-      description: "Chargement des commandes sauvegardées...",
-    });
+    setRefreshing(true);
+    setTimeout(() => {
+      loadOrders();
+      setRefreshing(false);
+      toast({
+        title: "Actualisation terminée",
+        description: "Les commandes ont été rechargées.",
+      });
+    }, 300);
   };
 
   const formatTimestamp = (timestamp: string) => {
@@ -113,8 +124,14 @@ const OrdersBackup = () => {
           </p>
         </div>
         <div className="flex gap-3 mt-4 md:mt-0">
-          <Button variant="outline" onClick={handleRefreshOrders}>
-            Actualiser
+          <Button 
+            variant="outline" 
+            onClick={handleRefreshOrders}
+            disabled={refreshing}
+            className="relative"
+          >
+            <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            {refreshing ? 'Actualisation...' : 'Actualiser'}
           </Button>
           <Button variant="outline" onClick={handleExportOrdersAsJSON} disabled={orders.length === 0}>
             <FileDown className="mr-2 h-4 w-4" />
@@ -141,7 +158,19 @@ const OrdersBackup = () => {
               <h3 className="text-lg font-medium text-gray-800 mb-2">Aucune commande sauvegardée</h3>
               <p className="text-gray-500 max-w-md mx-auto">
                 Les commandes seront automatiquement sauvegardées ici si l'envoi d'email échoue.
+                <br />
+                <br />
+                <span className="font-medium">Si vous venez de passer une commande et ne la voyez pas ici, cliquez sur "Actualiser".</span>
               </p>
+              <Button 
+                variant="outline" 
+                onClick={handleRefreshOrders} 
+                className="mt-4"
+                disabled={refreshing}
+              >
+                <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                {refreshing ? 'Actualisation...' : 'Actualiser les commandes'}
+              </Button>
             </div>
           </CardContent>
         </Card>

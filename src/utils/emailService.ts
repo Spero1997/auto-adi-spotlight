@@ -1,4 +1,3 @@
-
 /**
  * Email Service Utility
  * 
@@ -22,6 +21,11 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
   console.log("Sending email:", data);
   
   try {
+    // IMPORTANT: Always save order to local storage first before anything else
+    // This ensures we don't lose data even if email sending fails
+    saveOrderToLocalStorage(data);
+    console.log("Order successfully saved to localStorage as backup");
+    
     // Create FormData for sending the email
     const formData = new FormData();
     
@@ -44,9 +48,6 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
         formData.append(`attachment${index}`, file);
       });
     }
-    
-    // Always save order to local storage first as a precaution
-    saveOrderToLocalStorage(data);
     
     // Setup timeout to prevent hanging requests
     const controller = new AbortController();
@@ -78,7 +79,7 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
   } catch (error) {
     console.error("Error sending email:", error);
     
-    // We already saved to local storage at the beginning as a precaution
+    // Even though we already saved at the beginning, log for clarity
     console.log("Order was already saved to localStorage as backup");
     
     // For development fallback - simulate success
@@ -99,6 +100,8 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
  */
 const saveOrderToLocalStorage = (data: EmailData) => {
   try {
+    console.log("Attempting to save order to localStorage");
+    
     // Get existing orders from localStorage
     const existingOrdersJSON = localStorage.getItem('autoAdiOrders');
     let existingOrders = [];
@@ -116,7 +119,7 @@ const saveOrderToLocalStorage = (data: EmailData) => {
       existingOrders = [];
     }
     
-    // Add timestamp to the order
+    // Add timestamp to the order and create a unique ID
     const orderWithTimestamp = {
       ...data,
       attachments: data.attachments ? data.attachments.map(file => file.name) : [],
@@ -131,6 +134,7 @@ const saveOrderToLocalStorage = (data: EmailData) => {
     localStorage.setItem('autoAdiOrders', JSON.stringify(existingOrders));
     
     console.log("Order saved to localStorage as backup:", orderWithTimestamp);
+    console.log("Total orders in localStorage:", existingOrders.length);
   } catch (error) {
     console.error("Error saving order to localStorage:", error);
   }
@@ -229,7 +233,9 @@ export const sendPaymentProofEmail = async (customerData: any, paymentProof: Fil
  */
 export const getStoredOrders = () => {
   try {
+    console.log("Attempting to retrieve orders from localStorage");
     const ordersJSON = localStorage.getItem('autoAdiOrders');
+    
     if (!ordersJSON) {
       console.log("No orders found in localStorage");
       return [];
@@ -246,6 +252,12 @@ export const getStoredOrders = () => {
       }
       
       console.log(`Successfully retrieved ${orders.length} orders from localStorage`);
+      
+      // Log the first order for debugging
+      if (orders.length > 0) {
+        console.log("Sample order:", orders[0]);
+      }
+      
       return orders;
     } catch (parseError) {
       console.error("Error parsing orders from localStorage:", parseError);
