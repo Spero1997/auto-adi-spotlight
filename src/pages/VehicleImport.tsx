@@ -130,6 +130,18 @@ const VehicleImport = () => {
         toast.success("La BMW X3 xDrive 20d M-sport a été ajoutée au catalogue");
       }
       
+      // Recherche de la Range Rover Evoque
+      const rangeRoverEvoque = vehicles.find(v => 
+        v.brand === "Range Rover" && 
+        v.model.includes("Evoque 2.0 Prestige") && 
+        v.year === 2014
+      );
+      
+      if (rangeRoverEvoque) {
+        console.log("La Range Rover Evoque 2.0 Prestige est présente dans le catalogue", rangeRoverEvoque);
+        toast.success("La Range Rover Evoque 2.0 Prestige a été ajoutée au catalogue");
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -222,6 +234,14 @@ const VehicleImport = () => {
             <AlertTitle>Nouvelle BMW X3 ajoutée</AlertTitle>
             <AlertDescription>
               La BMW X3 xDrive 20d M-sport 190 CH 2016 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-teal-50 border-teal-200">
+            <Info className="h-4 w-4 text-teal-500" />
+            <AlertTitle>Nouvelle Range Rover ajoutée</AlertTitle>
+            <AlertDescription>
+              La Range Rover Evoque 2.0 Prestige 241 CH 2014 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
