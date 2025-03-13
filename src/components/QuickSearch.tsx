@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -73,6 +74,14 @@ const QuickSearch = () => {
   };
 
   const handleSearch = () => {
+    // Check if at least one filter is selected
+    if (!selectedBrand && !selectedModel && !selectedBudget && !selectedFuel) {
+      toast.warning('Veuillez sélectionner au moins un critère de recherche', {
+        duration: 3000,
+      });
+      return;
+    }
+    
     const searchParams = new URLSearchParams();
     if (selectedBrand) searchParams.append('marque', selectedBrand);
     if (selectedModel) searchParams.append('modele', selectedModel);
@@ -84,14 +93,16 @@ const QuickSearch = () => {
       duration: 3000,
     });
     
-    navigate(`/vehicules/occasion?${searchParams.toString()}`);
-    
-    console.log('Search params:', {
+    // For now, redirect to Index page with search params until we create a proper search results page
+    console.log('Search initiated with params:', {
       brand: selectedBrand,
       model: selectedModel,
       budget: selectedBudget,
       fuel: selectedFuel
     });
+    
+    // Navigate to the search page with parameters
+    navigate(`/vehicules?${searchParams.toString()}`);
   };
 
   return (
@@ -131,7 +142,7 @@ const QuickSearch = () => {
               </SelectContent>
             </Select>
 
-            <Select value={selectedModel} onValueChange={handleModelChange}>
+            <Select value={selectedModel} onValueChange={handleModelChange} disabled={!selectedBrand}>
               <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder="Modèle" />
               </SelectTrigger>
