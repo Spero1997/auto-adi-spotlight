@@ -563,8 +563,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/2a03c911-dfae-4186-b265-5b9977a7b1cb.png",
 };
 
-// Définition des véhicules par défaut - ajout de la nouvelle Audi A3 Sportback
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5, audiQ7, audiA3Sportback];
+// Nouvelle BMW X3 xDrive 20d M-sport
+const bmwX3 = {
+  id: `bmw-x3-fixed`,
+  brand: "BMW",
+  model: "X3 xDrive 20d M-sport 190 CH",
+  year: 2016,
+  mileage: 127000,
+  fuelType: "Diesel",
+  price: 8000,
+  transmission: "Automatique",
+  exteriorColor: "Noir",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["M-sport", "xDrive", "Phares LED", "Jantes alliage M", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Sièges chauffants", "Régulateur de vitesse"],
+  image: "/lovable-uploads/f818dbe6-3594-41ff-ad06-7ba58fae522c.png",
+};
+
+// Définition des véhicules par défaut - ajout de la nouvelle BMW X3
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5, audiQ7, audiA3Sportback, bmwX3];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -679,6 +706,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const audiQ5Exists = vehicles.some(v => v.id === audiQ5.id || (v.brand === "Audi" && v.model === "Q5 Quattro S-Tronic"));
   const audiQ7Exists = vehicles.some(v => v.id === audiQ7.id || (v.brand === "Audi" && v.model === "Q7 245HK-2XS-Line"));
   const audiA3SportbackExists = vehicles.some(v => v.id === audiA3Sportback.id || (v.brand === "Audi" && v.model === "A3 Sportback 35 1,5 TFSI"));
+  const bmwX3Exists = vehicles.some(v => v.id === bmwX3.id || (v.brand === "BMW" && v.model === "X3 xDrive 20d M-sport 190 CH"));
   
   let changed = false;
   
@@ -779,6 +807,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!audiA3SportbackExists) {
     vehicles.push(audiA3Sportback);
+    changed = true;
+  }
+  
+  if (!bmwX3Exists) {
+    vehicles.push(bmwX3);
     changed = true;
   }
   

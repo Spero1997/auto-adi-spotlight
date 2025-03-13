@@ -118,6 +118,18 @@ const VehicleImport = () => {
         toast.success("L'Audi A3 Sportback 35 1,5 TFSI a été ajoutée au catalogue");
       }
       
+      // Recherche de la BMW X3
+      const bmwX3 = vehicles.find(v => 
+        v.brand === "BMW" && 
+        v.model.includes("X3 xDrive 20d M-sport") && 
+        v.year === 2016
+      );
+      
+      if (bmwX3) {
+        console.log("La BMW X3 xDrive 20d M-sport est présente dans le catalogue", bmwX3);
+        toast.success("La BMW X3 xDrive 20d M-sport a été ajoutée au catalogue");
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -197,11 +209,19 @@ const VehicleImport = () => {
             </AlertDescription>
           </Alert>
           
-          <Alert className="mb-6 bg-pink-50 border-pink-200">
+          <Alert className="mb-4 bg-pink-50 border-pink-200">
             <Info className="h-4 w-4 text-pink-500" />
             <AlertTitle>Nouvelle Audi A3 Sportback ajoutée</AlertTitle>
             <AlertDescription>
               L'Audi A3 Sportback 35 1,5 TFSI 2019 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-gray-50 border-gray-200">
+            <Info className="h-4 w-4 text-gray-500" />
+            <AlertTitle>Nouvelle BMW X3 ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X3 xDrive 20d M-sport 190 CH 2016 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
