@@ -284,7 +284,7 @@ const mercedesC350e = {
  • Offre spéciale : -10 % pour paiement comptant à la commande
 
 Nos services inclus :
- �� Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
  • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
  • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
 
@@ -482,8 +482,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/543454e5-3db4-4509-875a-d27b0336305f.png",
 };
 
-// Définition des véhicules par défaut - ajout de la nouvelle BMW X1
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1];
+// Nouvelle Audi Q5 Quattro S-Tronic
+const audiQ5 = {
+  id: `audi-q5-fixed`,
+  brand: "Audi",
+  model: "Q5 Quattro S-Tronic",
+  year: 2014,
+  mileage: 135000,
+  fuelType: "Diesel",
+  price: 5000,
+  transmission: "Automatique",
+  exteriorColor: "Bleu",
+  interiorColor: "Beige",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Quattro", "S-Tronic", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Sièges chauffants", "Jantes alliage", "Régulateur de vitesse", "Capteurs de stationnement"],
+  image: "/lovable-uploads/ee5703fa-4d1c-4b0d-8ee7-63360be7c312.png",
+};
+
+// Définition des véhicules par défaut - ajout de la nouvelle Audi Q5
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -595,6 +622,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const audiA3ETronExists = vehicles.some(v => v.id === audiA3ETron.id || (v.brand === "Audi" && v.model === "A3 E-Tron 1.4 S Tronic"));
   const kiaNiroExists = vehicles.some(v => v.id === kiaNiro.id || (v.brand === "Kia" && v.model === "Niro Hybride 149 CH"));
   const bmwX1Exists = vehicles.some(v => v.id === bmwX1.id || (v.brand === "BMW" && v.model === "X1 xDrive 25e"));
+  const audiQ5Exists = vehicles.some(v => v.id === audiQ5.id || (v.brand === "Audi" && v.model === "Q5 Quattro S-Tronic"));
   
   let changed = false;
   
@@ -680,6 +708,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!bmwX1Exists) {
     vehicles.push(bmwX1);
+    changed = true;
+  }
+  
+  if (!audiQ5Exists) {
+    vehicles.push(audiQ5);
     changed = true;
   }
   

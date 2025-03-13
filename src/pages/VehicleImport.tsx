@@ -82,6 +82,18 @@ const VehicleImport = () => {
         toast.success("La BMW X1 xDrive 25e a été ajoutée au catalogue");
       }
       
+      // Recherche de l'Audi Q5
+      const audiQ5 = vehicles.find(v => 
+        v.brand === "Audi" && 
+        v.model.includes("Q5 Quattro") && 
+        v.year === 2014
+      );
+      
+      if (audiQ5) {
+        console.log("L'Audi Q5 Quattro S-Tronic est présente dans le catalogue", audiQ5);
+        toast.success("L'Audi Q5 Quattro S-Tronic a été ajoutée au catalogue");
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -137,11 +149,19 @@ const VehicleImport = () => {
             </AlertDescription>
           </Alert>
           
-          <Alert className="mb-6 bg-amber-50 border-amber-200">
+          <Alert className="mb-4 bg-amber-50 border-amber-200">
             <Info className="h-4 w-4 text-amber-500" />
             <AlertTitle>Nouvelle BMW X1 ajoutée</AlertTitle>
             <AlertDescription>
               La BMW X1 xDrive 25e 2021 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-indigo-50 border-indigo-200">
+            <Info className="h-4 w-4 text-indigo-500" />
+            <AlertTitle>Nouvelle Audi Q5 ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi Q5 Quattro S-Tronic 2014 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
