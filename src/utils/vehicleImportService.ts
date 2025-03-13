@@ -212,8 +212,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/25665832-6bfa-4f10-b6a9-1f6ad5052b3a.png",
 };
 
+// Nouvelle Volvo V60
+const volvoV60 = {
+  id: `volvo-v60-fixed`,
+  brand: "Volvo",
+  model: "V60 T8 Twin Engine",
+  year: 2020,
+  mileage: 119000,
+  fuelType: "Essence",
+  price: 14500,
+  transmission: "Automatique",
+  exteriorColor: "Grise",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Hybride rechargeable", "Système de navigation", "Écran tactile", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Sièges chauffants", "Jantes alliage", "Régulateur de vitesse adaptatif", "Système audio premium"],
+  image: "/lovable-uploads/0be763d1-940e-4e04-b837-ee5fcf47e4ee.png",
+};
+
 // Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2];
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -315,6 +342,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const mercedesGLAExists = vehicles.some(v => v.id === mercedesGLA.id || (v.brand === "Mercedes" && v.model === "Benz GLA"));
   const mercedesCLAExists = vehicles.some(v => v.id === mercedesCLA.id || (v.brand === "Mercedes" && v.model === "Benz CLA AMG 250 E"));
   const bmwSerie2Exists = vehicles.some(v => v.id === bmwSerie2.id || (v.brand === "BMW" && v.model === "Série 2 225xe iPerfomance"));
+  const volvoV60Exists = vehicles.some(v => v.id === volvoV60.id || (v.brand === "Volvo" && v.model === "V60 T8 Twin Engine"));
   
   let changed = false;
   
@@ -350,6 +378,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!bmwSerie2Exists) {
     vehicles.push(bmwSerie2);
+    changed = true;
+  }
+  
+  if (!volvoV60Exists) {
+    vehicles.push(volvoV60);
     changed = true;
   }
   
@@ -424,7 +457,7 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed') {
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed' || id === 'volvo-v60-fixed') {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }
