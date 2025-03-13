@@ -275,16 +275,22 @@ const Financement = () => {
                 </div>
               </div>
 
-              <div className="lg:flex flex-col gap-6">
+              <div className="flex flex-col gap-6">
                 <img 
-                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
+                  src="/calculateur-financement.jpg" 
                   alt="Simulation de financement" 
                   className="rounded-lg shadow-lg object-cover h-[300px] w-full"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1559526324-593bc073d938?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80";
+                  }}
                 />
                 <img 
-                  src="https://images.unsplash.com/photo-1565514920664-800a21b5d566?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
+                  src="/contrat-financement.jpg" 
                   alt="Calculateur de financement" 
-                  className="rounded-lg shadow-lg object-cover h-[180px] w-full hidden lg:block"
+                  className="rounded-lg shadow-lg object-cover h-[180px] w-full"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1589666564459-93cdd3ab856a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80";
+                  }}
                 />
               </div>
             </div>
