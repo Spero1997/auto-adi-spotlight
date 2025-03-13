@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getImportedVehicles } from '@/utils/vehicleImportService';
+import { getImportedVehicles, resetCatalog } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -18,6 +18,10 @@ const Index = () => {
   const [searchParams] = useSearchParams();
   
   useEffect(() => {
+    // Reset the catalog when the user visits the homepage
+    resetCatalog();
+    toast.success("Le catalogue a été réinitialisé");
+    
     // Force un rechargement des véhicules au chargement de la page d'accueil
     try {
       const vehicles = getImportedVehicles();
