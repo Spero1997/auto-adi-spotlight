@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -138,17 +139,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
               </CardContent>
             </Card>
           ))}
-        </div>
-      )}
-
-      {featuredOnly && (
-        <div className="mt-12 text-center">
-          <Link to="/vehicules/occasion">
-            <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
-              <Car className="h-5 w-5" />
-              Tous nos véhicules d'occasion
-            </Button>
-          </Link>
         </div>
       )}
     </div>
