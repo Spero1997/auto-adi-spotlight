@@ -75,7 +75,7 @@ const App = () => (
               
               {/* Routes pour les pages secondaires */}
               <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
-              <Route path="/vehicules/:id" element={<VehicleDetails />} /> {/* Implémenté: Vue détaillée d'un véhicule */}
+              <Route path="/vehicules/:id" element={<VehicleDetails />} />
               <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
               <Route path="/vehicules/utilitaires" element={<Index />} /> {/* À implémenter plus tard */}
               <Route path="/vehicules/neufs" element={<Index />} /> {/* À implémenter plus tard */}

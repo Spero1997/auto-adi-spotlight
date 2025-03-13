@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift, Truck, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -88,6 +88,7 @@ const FeaturedCars = ({ searchFilters, hideViewAllButton = false }: FeaturedCars
   const [customerInfoMissing, setCustomerInfoMissing] = useState(false);
   const [paymentProofMissing, setPaymentProofMissing] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryCity, setDeliveryCity] = useState('');
@@ -149,6 +150,21 @@ const FeaturedCars = ({ searchFilters, hideViewAllButton = false }: FeaturedCars
       setProofOfPayment(e.target.files[0]);
       setPaymentProofMissing(false);
     }
+  };
+
+  const handleNavigateToDetails = (carId: string) => {
+    if (!carId) {
+      console.error("Car ID is undefined");
+      toast({
+        title: "Erreur",
+        description: "Impossible d'accéder aux détails de ce véhicule",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    console.log("Navigating to vehicle details:", carId);
+    navigate(`/vehicules/${carId}`);
   };
 
   const handleCompletePayment = async () => {
@@ -335,11 +351,13 @@ const FeaturedCars = ({ searchFilters, hideViewAllButton = false }: FeaturedCars
                   </div>
                   
                   <div className="flex space-x-2">
-                    <Link to={`/vehicules/${car.id}`} className="flex-1">
-                      <Button variant="default" className="w-full bg-brand-blue hover:bg-brand-darkBlue">
-                        Détails
-                      </Button>
-                    </Link>
+                    <Button 
+                      variant="default" 
+                      className="flex-1 bg-brand-blue hover:bg-brand-darkBlue"
+                      onClick={() => handleNavigateToDetails(car.id)}
+                    >
+                      Détails
+                    </Button>
                     <Button 
                       variant="outline" 
                       className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
@@ -731,4 +749,5 @@ const FeaturedCars = ({ searchFilters, hideViewAllButton = false }: FeaturedCars
 };
 
 export default FeaturedCars;
+
 
