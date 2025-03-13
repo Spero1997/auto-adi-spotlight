@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Share2, Copy, Check, Link as LinkIcon, Download } from "lucide-react";
+import { Share2, Copy, Check, Link as LinkIcon, Download, QrCode } from "lucide-react";
 import { toast } from "sonner";
 import { generateShareableUrl, getCatalogIdFromUrl } from "@/utils/vehicleImportService";
 import { QRCodeSVG } from "qrcode.react";
@@ -96,10 +96,16 @@ const CatalogShare = () => {
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="link" className="w-full mt-4">
+        <Tabs defaultValue="qrcode" className="w-full mt-4">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="link">Lien</TabsTrigger>
-            <TabsTrigger value="qrcode">QR Code</TabsTrigger>
+            <TabsTrigger value="link" className="flex items-center gap-1">
+              <LinkIcon className="h-4 w-4" />
+              Lien
+            </TabsTrigger>
+            <TabsTrigger value="qrcode" className="flex items-center gap-1">
+              <QrCode className="h-4 w-4" />
+              QR Code
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="link" className="mt-4">
@@ -133,19 +139,22 @@ const CatalogShare = () => {
           
           <TabsContent value="qrcode" className="mt-4">
             <div className="flex flex-col items-center justify-center p-4 border rounded-lg bg-white">
-              <QRCodeSVG 
-                id="share-qrcode"
-                value={shareableUrl} 
-                size={200}
-                includeMargin={true}
-                level="H"
-              />
-              <p className="text-sm text-center mt-3 text-gray-500">
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <QRCodeSVG 
+                  id="share-qrcode"
+                  value={shareableUrl} 
+                  size={220}
+                  includeMargin={true}
+                  level="H"
+                  className="border-4 border-white"
+                />
+              </div>
+              <p className="text-sm text-center mt-4 text-gray-500">
                 Scannez ce QR code avec votre téléphone pour accéder au catalogue
               </p>
               <Button 
                 onClick={downloadQRCode} 
-                variant="outline" 
+                variant="default" 
                 className="mt-4"
                 size="sm"
               >
@@ -159,7 +168,7 @@ const CatalogShare = () => {
         <DialogFooter className="sm:justify-start mt-4">
           <Button
             type="button"
-            variant="default"
+            variant="secondary"
             onClick={() => setOpen(false)}
           >
             Fermer
