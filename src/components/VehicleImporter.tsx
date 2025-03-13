@@ -1,16 +1,17 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertCircle, Upload, Check, UploadCloud, X, AlertTriangle, ExternalLink } from 'lucide-react';
+import { AlertCircle, Upload, Check, UploadCloud, X, ExternalLink, Info } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { ImportedVehicle, extractVehiclesFromUrl, addImportedVehicles } from '@/utils/vehicleImportService';
+import { SUPPORTED_SITES, canExtractFromUrl } from '@/utils/extractionService';
 
 const VehicleImporter = () => {
   const { toast } = useToast();
@@ -19,12 +20,43 @@ const VehicleImporter = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [previewData, setPreviewData] = useState<ImportedVehicle[]>([]);
   const [showPreview, setShowPreview] = useState(true);
+  const [isUrlValid, setIsUrlValid] = useState<boolean | null>(null);
+
+  const checkUrl = (inputUrl: string) => {
+    if (!inputUrl) {
+      setIsUrlValid(null);
+      return;
+    }
+    
+    try {
+      new URL(inputUrl);
+      const isSupported = canExtractFromUrl(inputUrl);
+      setIsUrlValid(isSupported);
+    } catch (e) {
+      setIsUrlValid(false);
+    }
+  };
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setUrl(value);
+    checkUrl(value);
+  };
 
   const handleUrlImport = async () => {
     if (!url) {
       toast({
         title: "URL requise",
         description: "Veuillez entrer une URL valide",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!isUrlValid) {
+      toast({
+        title: "Site non supporté",
+        description: "Ce site n'est pas compatible avec notre système d'extraction.",
         variant: "destructive"
       });
       return;
@@ -43,7 +75,7 @@ const VehicleImporter = () => {
       console.error("Erreur lors de l'extraction:", error);
       toast({
         title: "Erreur d'extraction",
-        description: "Impossible d'extraire les véhicules depuis cette URL",
+        description: error instanceof Error ? error.message : "Impossible d'extraire les véhicules depuis cette URL",
         variant: "destructive"
       });
     } finally {
@@ -65,7 +97,6 @@ const VehicleImporter = () => {
       const data = JSON.parse(jsonInput);
       const vehicles = Array.isArray(data) ? data : [data];
       
-      // Valider que les données contiennent les champs requis
       const validVehicles = vehicles.filter(vehicle => 
         vehicle && 
         typeof vehicle === 'object' && 
@@ -78,7 +109,6 @@ const VehicleImporter = () => {
         throw new Error("Aucun véhicule valide trouvé dans les données JSON");
       }
       
-      // Ajouter des ID si manquants
       const processedVehicles = validVehicles.map((vehicle, index) => ({
         id: vehicle.id || `imported-${Date.now()}-${index}`,
         ...vehicle
@@ -117,7 +147,7 @@ const VehicleImporter = () => {
     
     toast({
       title: "Importation réussie",
-      description: `${previewData.length} véhicules ont été ajoutés à votre catalogue`,
+      description: `${previewData.length} v��hicules ont été ajoutés à votre catalogue`,
     });
   };
 
@@ -128,6 +158,26 @@ const VehicleImporter = () => {
           ? { ...vehicle, excluded: !vehicle.excluded }
           : vehicle
       )
+    );
+  };
+
+  const renderSupportedSites = () => {
+    return (
+      <div className="mt-4">
+        <h3 className="text-sm font-medium mb-2">Sites supportés :</h3>
+        <div className="flex flex-wrap gap-2">
+          {Object.entries(SUPPORTED_SITES).map(([domain, site]) => (
+            <Badge 
+              key={domain} 
+              variant="outline" 
+              className="cursor-pointer" 
+              onClick={() => setUrl(`https://${domain}`)}
+            >
+              {site.name}
+            </Badge>
+          ))}
+        </div>
+      </div>
     );
   };
 
@@ -161,15 +211,29 @@ const VehicleImporter = () => {
             </CardHeader>
             <CardContent>
               <div className="flex gap-2">
-                <Input 
-                  value={url} 
-                  onChange={(e) => setUrl(e.target.value)} 
-                  placeholder="https://example.com/vehicules" 
-                  className="flex-1"
-                />
+                <div className="flex-1 relative">
+                  <Input 
+                    value={url} 
+                    onChange={handleUrlChange} 
+                    placeholder="https://www.lacentrale.fr/listing" 
+                    className={`${
+                      isUrlValid === false ? 'border-red-500' : 
+                      isUrlValid === true ? 'border-green-500' : ''
+                    }`}
+                  />
+                  {isUrlValid !== null && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      {isUrlValid ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <X className="h-4 w-4 text-red-500" />
+                      )}
+                    </div>
+                  )}
+                </div>
                 <Button 
                   onClick={handleUrlImport} 
-                  disabled={isLoading || !url}
+                  disabled={isLoading || !url || !isUrlValid}
                 >
                   {isLoading ? (
                     <>Extraction...</>
@@ -182,14 +246,18 @@ const VehicleImporter = () => {
                 </Button>
               </div>
               
-              <div className="mt-4 text-sm text-muted-foreground">
-                <p>Pour tester l'importation, essayez ces sites (simulation):</p>
-                <ul className="list-disc pl-5 mt-1 space-y-1">
-                  <li><span className="font-medium cursor-pointer text-blue-600" onClick={() => setUrl('https://luxury-cars-dealer.com/inventory')}>luxury-cars-dealer.com/inventory</span></li>
-                  <li><span className="font-medium cursor-pointer text-blue-600" onClick={() => setUrl('https://budget-autos.com/occasion')}>budget-autos.com/occasion</span></li>
-                  <li><span className="font-medium cursor-pointer text-blue-600" onClick={() => setUrl('https://bmw-dealer.com/used')}>bmw-dealer.com/used</span></li>
-                </ul>
-              </div>
+              {renderSupportedSites()}
+              
+              {isUrlValid === false && url && (
+                <Alert variant="destructive" className="mt-4">
+                  <Info className="h-4 w-4" />
+                  <AlertTitle>Site non supporté</AlertTitle>
+                  <AlertDescription>
+                    Ce site n'est pas encore compatible avec notre système d'extraction.
+                    Veuillez essayer l'un des sites supportés listés ci-dessus.
+                  </AlertDescription>
+                </Alert>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
