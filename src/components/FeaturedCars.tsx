@@ -1,6 +1,6 @@
 
 import { useState, useRef } from 'react';
-import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift } from 'lucide-react';
+import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift, Truck, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sendOrderConfirmationEmail, sendPaymentProofEmail } from '@/utils/emailService';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Textarea } from '@/components/ui/textarea';
 
 interface CarProps {
   id: string;
@@ -105,6 +106,13 @@ const FeaturedCars = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customerInfoMissing, setCustomerInfoMissing] = useState(false);
   const isMobile = useIsMobile();
+  
+  // New delivery information states
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryCity, setDeliveryCity] = useState('');
+  const [deliveryPostalCode, setDeliveryPostalCode] = useState('');
+  const [deliveryNotes, setDeliveryNotes] = useState('');
+  const [deliveryOption, setDeliveryOption] = useState<'pickup' | 'delivery'>('pickup');
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
@@ -112,6 +120,11 @@ const FeaturedCars = () => {
     setCustomerName('');
     setCustomerEmail('');
     setCustomerPhone('');
+    setDeliveryAddress('');
+    setDeliveryCity('');
+    setDeliveryPostalCode('');
+    setDeliveryNotes('');
+    setDeliveryOption('pickup');
     setDialogOpen(true);
   };
 
@@ -154,7 +167,10 @@ const FeaturedCars = () => {
         price: selectedCar.price,
         paymentMethod: paymentMethod,
         couponCode: paymentMethod === 'coupon' ? `${couponType}: ${couponCode}` : undefined,
-        deposit: calculateDeposit(selectedCar.price)
+        deposit: calculateDeposit(selectedCar.price),
+        deliveryOption: deliveryOption,
+        deliveryAddress: deliveryOption === 'delivery' ? `${deliveryAddress}, ${deliveryPostalCode} ${deliveryCity}` : 'Enlèvement au showroom',
+        deliveryNotes: deliveryNotes
       };
       
       if (paymentMethod === 'transfer' && proofOfPayment) {
@@ -185,6 +201,10 @@ const FeaturedCars = () => {
       setCustomerName('');
       setCustomerEmail('');
       setCustomerPhone('');
+      setDeliveryAddress('');
+      setDeliveryCity('');
+      setDeliveryPostalCode('');
+      setDeliveryNotes('');
     } catch (error) {
       console.error("Error sending order emails:", error);
       toast({
@@ -279,8 +299,8 @@ const FeaturedCars = () => {
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-hidden">
-            <DialogHeader className="mb-4">
+          <DialogContent className="sm:max-w-[650px] max-h-[90vh] overflow-hidden">
+            <DialogHeader className="mb-2">
               <DialogTitle>Finaliser votre achat</DialogTitle>
               <DialogDescription>
                 {selectedCar && (
@@ -313,8 +333,8 @@ const FeaturedCars = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <ScrollArea className="max-h-[450px] pr-4 -mr-4">
-              <div className="space-y-5 py-4">
+            <ScrollArea className="max-h-[55vh] pr-4 -mr-4">
+              <div className="space-y-5 py-2">
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base">Vos coordonnées</h3>
                   
@@ -354,6 +374,109 @@ const FeaturedCars = () => {
                   
                   {customerInfoMissing && (
                     <p className="text-sm text-red-500">Veuillez remplir tous les champs obligatoires.</p>
+                  )}
+                </div>
+
+                {/* Nouvelle section de livraison */}
+                <div className="space-y-3 border-b pb-4">
+                  <h3 className="font-medium text-base flex items-center">
+                    <Truck className="h-4 w-4 mr-2 text-brand-blue" />
+                    Informations de livraison
+                  </h3>
+                  
+                  <div className="space-y-2">
+                    <Label className="mb-2">Option de livraison</Label>
+                    <div className={`flex flex-wrap gap-2 ${isMobile ? 'flex-col' : ''}`}>
+                      <Button
+                        type="button"
+                        variant={deliveryOption === 'pickup' ? 'default' : 'outline'}
+                        onClick={() => setDeliveryOption('pickup')}
+                        className={`${isMobile ? 'w-full' : 'flex-1'}`}
+                      >
+                        <MapPin className="mr-2 h-4 w-4" />
+                        Enlèvement au showroom
+                      </Button>
+                      <Button
+                        type="button" 
+                        variant={deliveryOption === 'delivery' ? 'default' : 'outline'}
+                        onClick={() => setDeliveryOption('delivery')}
+                        className={isMobile ? 'w-full' : 'flex-1'}
+                      >
+                        <Truck className="mr-2 h-4 w-4" />
+                        Livraison à domicile
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {deliveryOption === 'pickup' && (
+                    <div className="bg-muted/50 p-3 rounded-md space-y-1">
+                      <div className="flex items-start">
+                        <MapPin className="h-4 w-4 mr-2 text-brand-blue mt-0.5" />
+                        <div>
+                          <p className="font-medium">Auto Deals Import</p>
+                          <p className="text-sm text-gray-600">123 Avenue des Véhicules, 75001 Paris</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <Clock className="h-4 w-4 mr-2 text-brand-blue mt-0.5" />
+                        <div>
+                          <p className="text-sm text-gray-600">Lundi - Vendredi: 9h - 19h</p>
+                          <p className="text-sm text-gray-600">Samedi: 10h - 18h</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {deliveryOption === 'delivery' && (
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="delivery-address">Adresse</Label>
+                        <Input 
+                          id="delivery-address" 
+                          value={deliveryAddress}
+                          onChange={(e) => setDeliveryAddress(e.target.value)}
+                          placeholder="123 Rue de Paris"
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                          <Label htmlFor="delivery-postal-code">Code postal</Label>
+                          <Input 
+                            id="delivery-postal-code" 
+                            value={deliveryPostalCode}
+                            onChange={(e) => setDeliveryPostalCode(e.target.value)}
+                            placeholder="75001"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="delivery-city">Ville</Label>
+                          <Input 
+                            id="delivery-city" 
+                            value={deliveryCity}
+                            onChange={(e) => setDeliveryCity(e.target.value)}
+                            placeholder="Paris"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="delivery-notes">Instructions de livraison (optionnel)</Label>
+                        <Textarea 
+                          id="delivery-notes" 
+                          value={deliveryNotes}
+                          onChange={(e) => setDeliveryNotes(e.target.value)}
+                          placeholder="Code d'entrée, étage, informations complémentaires..."
+                        />
+                      </div>
+                      
+                      <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+                        <p className="text-sm text-amber-800 flex items-start">
+                          <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
+                          La livraison à domicile entraîne des frais supplémentaires qui varient selon la distance. Nous vous contacterons pour confirmer ces frais après validation de votre commande.
+                        </p>
+                      </div>
+                    </div>
                   )}
                 </div>
 
@@ -504,7 +627,7 @@ const FeaturedCars = () => {
               </div>
             </ScrollArea>
 
-            <DialogFooter className="mt-6">
+            <DialogFooter className="mt-4">
               <Button 
                 onClick={handleCompletePayment}
                 className="w-full sm:w-auto" 

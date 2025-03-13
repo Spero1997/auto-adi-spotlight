@@ -103,6 +103,11 @@ export const sendOrderConfirmationEmail = async (orderData: any, paymentProof?: 
     <h3>Détails du véhicule:</h3>
     <p><strong>Modèle:</strong> ${orderData.carModel}</p>
     <p><strong>Prix:</strong> ${orderData.price}€</p>
+    <h3>Livraison:</h3>
+    <p><strong>Option:</strong> ${orderData.deliveryOption === 'pickup' ? 'Enlèvement au showroom' : 'Livraison à domicile'}</p>
+    <p><strong>Adresse:</strong> ${orderData.deliveryAddress}</p>
+    ${orderData.deliveryNotes ? `<p><strong>Instructions:</strong> ${orderData.deliveryNotes}</p>` : ''}
+    <h3>Paiement:</h3>
     <p><strong>Méthode de paiement:</strong> ${orderData.paymentMethod}</p>
     ${orderData.couponCode ? `<p><strong>Code coupon:</strong> ${orderData.couponCode}</p>` : ''}
     <p><strong>Acompte de 20%:</strong> ${orderData.deposit}€</p>
