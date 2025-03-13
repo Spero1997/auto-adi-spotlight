@@ -51,6 +51,33 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/651a21f8-3788-49f4-b379-6c254cb950ef.png",
 };
 
+// Véhicule Skoda Octavia pré-ajouté
+const skodaOctavia = {
+  id: `octavia-${Date.now()}`,
+  brand: "Skoda",
+  model: "Octavia 2.0",
+  year: 2025,
+  mileage: 10,
+  fuelType: "Essence",
+  price: 21000,
+  transmission: "Automatique",
+  exteriorColor: "Vert citron",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Écran tactile multimédia", "Système de navigation", "Sièges sport", "Jantes aluminium", "Phares LED Crystal", "Digital Cockpit", "Assistance au stationnement"],
+  image: "/lovable-uploads/7bd0f803-8c8f-410c-bb65-da54acbab023.png",
+};
+
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
   let catalogId = localStorage.getItem(CATALOG_ID_KEY);
@@ -115,8 +142,8 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
         );
       }
     } else {
-      // Si aucun véhicule n'est dans le localStorage, ajouter le RS Q8 et retourner le tableau avec cette voiture
-      const initialVehicles = [audiRSQ8];
+      // Si aucun véhicule n'est dans le localStorage, ajouter les véhicules par défaut
+      const initialVehicles = [audiRSQ8, skodaOctavia];
       saveImportedVehicles(initialVehicles);
       return initialVehicles;
     }
@@ -124,18 +151,24 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
     console.error("Erreur lors de la récupération des véhicules:", error);
   }
   
-  // Si aucun véhicule n'est trouvé ou en cas d'erreur, retourner au moins l'Audi RS Q8
-  console.log("Aucun véhicule trouvé dans le localStorage ou données invalides, retour du RS Q8 par défaut");
-  return [audiRSQ8];
+  // Si aucun véhicule n'est trouvé ou en cas d'erreur, retourner les véhicules par défaut
+  console.log("Aucun véhicule trouvé dans le localStorage ou données invalides, retour des véhicules par défaut");
+  return [audiRSQ8, skodaOctavia];
 };
 
 // Enregistrer les véhicules dans le stockage local et mettre à jour l'URL
 export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
   try {
-    // S'assurer que l'Audi RS Q8 est incluse
+    // S'assurer que les véhicules par défaut sont inclus
     const rsq8Exists = vehicles.some(vehicle => vehicle.model === "RS Q8" && vehicle.brand === "Audi");
+    const octaviaExists = vehicles.some(vehicle => vehicle.model === "Octavia 2.0" && vehicle.brand === "Skoda");
+    
     if (!rsq8Exists) {
       vehicles.push(audiRSQ8);
+    }
+    
+    if (!octaviaExists) {
+      vehicles.push(skodaOctavia);
     }
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
@@ -196,8 +229,8 @@ export const deleteImportedVehicle = (id: string): void => {
   try {
     const vehicles = getImportedVehicles();
     
-    // Ne pas supprimer l'Audi RS Q8
-    if (vehicles.some(v => v.id === id && v.brand === "Audi" && v.model === "RS Q8")) {
+    // Ne pas supprimer les véhicules par défaut
+    if (vehicles.some(v => v.id === id && ((v.brand === "Audi" && v.model === "RS Q8") || (v.brand === "Skoda" && v.model === "Octavia 2.0")))) {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }
