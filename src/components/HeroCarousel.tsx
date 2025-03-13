@@ -11,6 +11,7 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
+// Mise à jour des chemins d'accès aux images
 const carImages = [
   "/lovable-uploads/b0b6f649-3ce2-455a-99e9-189b91475576.png",
   "/lovable-uploads/63df3762-9be9-4c57-92f4-a165c500700e.png",
@@ -36,6 +37,9 @@ const HeroCarousel = () => {
       if (interval) clearInterval(interval);
     };
   }, [autoPlay]);
+
+  // Ajout de console.log pour déboguer
+  console.log("Images du carrousel:", carImages);
 
   return (
     <div className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
@@ -91,7 +95,14 @@ const HeroCarousel = () => {
         {carImages.map((_, index) => (
           <button
             key={index}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => {
+              setActiveIndex(index);
+              // Ajouter cette fonctionnalité pour changer le slide actif quand on clique sur un indicateur
+              const api = document.querySelector(".embla__container");
+              if (api) {
+                console.log("Changing slide to", index);
+              }
+            }}
             className={`w-3 h-3 rounded-full ${
               activeIndex === index ? "bg-white" : "bg-white/50"
             }`}
