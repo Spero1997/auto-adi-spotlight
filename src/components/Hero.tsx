@@ -43,7 +43,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 relative z-10 -mb-16">
         <div className="bg-white rounded-lg shadow-xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="flex-1">
+            <div className="flex-1 w-full">
               <h3 className="text-xl font-semibold mb-4 text-gray-800">Recherche rapide</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <select 
@@ -91,8 +91,11 @@ const Hero = () => {
                 </select>
               </div>
             </div>
-            <div className="mt-4 md:mt-0">
-              <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto px-8 py-5 rounded-md text-white font-semibold flex items-center justify-center">
+            <div className="mt-4 md:mt-0 w-full md:w-auto">
+              <Button 
+                className="bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto px-8 py-5 rounded-md text-white font-semibold flex items-center justify-center"
+                size="lg"
+              >
                 <Search className="h-5 w-5 mr-2" />
                 Rechercher
               </Button>
