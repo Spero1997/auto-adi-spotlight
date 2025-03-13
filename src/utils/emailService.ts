@@ -50,7 +50,8 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
       method: 'POST',
       body: formData,
       headers: {
-        'User-ID': 'Efc5FFVd9Kkq7f49T' // Public ID, so it's fine to include in the code
+        'User-ID': 'Efc5FFVd9Kkq7f49T', // Public ID, so it's fine to include in the code
+        'X-Public-Key': 'Iq2L6gxEKd7FU_BpN' // Adding the required Public Key
       }
     });
     
@@ -59,9 +60,16 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
     }
     
     console.log("Email sent successfully!");
+    
+    // Save order to local storage as backup
+    saveOrderToLocalStorage(data);
+    
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
+    
+    // Save to local storage as a backup mechanism
+    saveOrderToLocalStorage(data);
     
     // For development fallback - simulate success
     console.log("Falling back to simulated email sending");
@@ -73,6 +81,35 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
     });
     
     return true; // Return true to not break the application flow
+  }
+};
+
+/**
+ * Saves order data to localStorage as a backup mechanism
+ */
+const saveOrderToLocalStorage = (data: EmailData) => {
+  try {
+    // Get existing orders from localStorage
+    const existingOrdersJSON = localStorage.getItem('autoAdiOrders');
+    const existingOrders = existingOrdersJSON ? JSON.parse(existingOrdersJSON) : [];
+    
+    // Add timestamp to the order
+    const orderWithTimestamp = {
+      ...data,
+      attachments: data.attachments ? data.attachments.map(file => file.name) : [],
+      timestamp: new Date().toISOString(),
+      id: `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    };
+    
+    // Add new order to the list
+    existingOrders.push(orderWithTimestamp);
+    
+    // Save updated list back to localStorage
+    localStorage.setItem('autoAdiOrders', JSON.stringify(existingOrders));
+    
+    console.log("Order saved to localStorage as backup:", orderWithTimestamp);
+  } catch (error) {
+    console.error("Error saving order to localStorage:", error);
   }
 };
 
@@ -162,4 +199,17 @@ export const sendPaymentProofEmail = async (customerData: any, paymentProof: Fil
     attachments: [paymentProof],
     replyTo: customerData.email
   });
+};
+
+/**
+ * Gets all orders stored in localStorage
+ */
+export const getStoredOrders = () => {
+  try {
+    const ordersJSON = localStorage.getItem('autoAdiOrders');
+    return ordersJSON ? JSON.parse(ordersJSON) : [];
+  } catch (error) {
+    console.error("Error retrieving orders from localStorage:", error);
+    return [];
+  }
 };
