@@ -148,7 +148,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-gray-200 mt-12 py-8 text-center">
           <p className="text-gray-600 text-sm">
-            © {new Date().getFullYear()} Auto Adi. N° d'identification: 827 514 860. Tous droits réservés.
+            © 2002 Auto Adi. N° d'identification: 827 514 860. Tous droits réservés.
           </p>
         </div>
       </div>
