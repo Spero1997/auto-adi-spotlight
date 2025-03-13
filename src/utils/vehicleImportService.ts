@@ -17,6 +17,7 @@ export interface ImportedVehicle {
   doors?: number;
   engine?: string;
   features?: string[];
+  excluded?: boolean;
 }
 
 const STORAGE_KEY = 'imported_vehicles';
