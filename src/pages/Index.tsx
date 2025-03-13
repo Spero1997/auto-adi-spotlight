@@ -9,16 +9,15 @@ import CallToAction from '@/components/CallToAction';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const Index = () => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   
   useEffect(() => {
     // Check if there are search parameters in the URL
-    const searchParams = new URLSearchParams(location.search);
-    
     if (searchParams.toString()) {
       console.log('Found search parameters:', {
         marque: searchParams.get('marque'),
@@ -35,8 +34,16 @@ const Index = () => {
         }, 500);
       }
     }
-  }, [location.search]);
+  }, [searchParams]);
   
+  // Extract search params to pass to FeaturedCars
+  const searchFilters = {
+    brand: searchParams.get('marque') || '',
+    model: searchParams.get('modele') || '',
+    maxPrice: searchParams.get('budget') ? parseInt(searchParams.get('budget') || '0') : undefined,
+    fuelType: searchParams.get('energie') || ''
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -47,7 +54,7 @@ const Index = () => {
         </div>
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
-          <FeaturedCars />
+          <FeaturedCars searchFilters={searchFilters} />
         </div>
         <Benefits />
         <Brands />

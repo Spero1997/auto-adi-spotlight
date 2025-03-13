@@ -24,6 +24,17 @@ interface CarProps {
   image: string;
 }
 
+interface SearchFilters {
+  brand: string;
+  model: string;
+  maxPrice?: number;
+  fuelType: string;
+}
+
+interface FeaturedCarsProps {
+  searchFilters?: SearchFilters;
+}
+
 const cars = [
   {
     id: '2',
@@ -87,7 +98,7 @@ const cars = [
   }
 ];
 
-const FeaturedCars = () => {
+const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
   const { toast } = useToast();
   const [selectedCar, setSelectedCar] = useState<CarProps | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer' | 'coupon' | 'gift'>('transfer');
@@ -222,18 +233,46 @@ const FeaturedCars = () => {
     return price * 0.2;
   };
 
+  const filteredCars = searchFilters ? cars.filter(car => {
+    const matchBrand = !searchFilters.brand || car.brand.toLowerCase() === searchFilters.brand.toLowerCase();
+    const matchModel = !searchFilters.model || car.model.toLowerCase().includes(searchFilters.model.toLowerCase());
+    const matchPrice = !searchFilters.maxPrice || car.price <= searchFilters.maxPrice;
+    const matchFuel = !searchFilters.fuelType || car.fuelType.toLowerCase() === searchFilters.fuelType.toLowerCase();
+    
+    return matchBrand && matchModel && matchPrice && matchFuel;
+  }) : cars;
+
   return (
     <section className="section-padding">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos véhicules d'occasion à la une</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Découvrez notre sélection de véhicules d'occasion vérifiés et garantis pour répondre à tous vos besoins.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            {searchFilters && (searchFilters.brand || searchFilters.model || searchFilters.maxPrice || searchFilters.fuelType) 
+              ? 'Résultats de votre recherche'
+              : 'Nos véhicules d\'occasion à la une'
+            }
+          </h2>
+          {filteredCars.length === 0 ? (
+            <div className="text-center my-12">
+              <p className="text-gray-600 mb-4">
+                Aucun véhicule ne correspond à vos critères de recherche.
+              </p>
+              <p className="text-gray-500">
+                Essayez de modifier vos critères pour voir plus de résultats.
+              </p>
+            </div>
+          ) : (
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              {searchFilters && (searchFilters.brand || searchFilters.model || searchFilters.maxPrice || searchFilters.fuelType)
+                ? `${filteredCars.length} véhicule${filteredCars.length > 1 ? 's' : ''} trouvé${filteredCars.length > 1 ? 's' : ''}`
+                : 'Découvrez notre sélection de véhicules d\'occasion vérifiés et garantis pour répondre à tous vos besoins.'
+              }
+            </p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {cars.map((car) => (
+          {filteredCars.map((car) => (
             <Card key={car.id} className="overflow-hidden card-hover border border-gray-200">
               <div className="relative">
                 <img
@@ -664,3 +703,4 @@ const FeaturedCars = () => {
 };
 
 export default FeaturedCars;
+
