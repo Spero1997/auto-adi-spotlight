@@ -40,7 +40,7 @@ const VehicleImport = () => {
             <Info className="h-4 w-4" />
             <AlertTitle>Mise à jour effectuée</AlertTitle>
             <AlertDescription>
-              La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été mise à jour avec sa nouvelle image.
+              La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue avec sa nouvelle image.
             </AlertDescription>
           </Alert>
           

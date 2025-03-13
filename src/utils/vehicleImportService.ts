@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -371,7 +372,7 @@ Nos services inclus :
 
 Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
   features: ["Life ACC", "Système de navigation", "Bluetooth", "Climatisation automatique", "Jantes alliage", "Caméra de recul", "Régulateur de vitesse adaptatif", "Aide au stationnement", "Détecteur de pluie"],
-  image: "/lovable-uploads/806b392d-aa03-4648-aadc-bcbd39514bac.png",
+  image: "/lovable-uploads/68c5b5a8-be3a-4375-a4cd-36a636de7b50.png",
 };
 
 // Définition des véhicules par défaut
