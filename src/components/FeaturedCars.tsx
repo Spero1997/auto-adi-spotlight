@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift, Truck, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sendOrderConfirmationEmail, sendPaymentProofEmail } from '@/utils/emailService';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Textarea } from "@/components/ui/textarea";
 
@@ -104,6 +104,7 @@ const FeaturedCars = () => {
   const [customerPhone, setCustomerPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customerInfoMissing, setCustomerInfoMissing] = useState(false);
+  const [paymentProofMissing, setPaymentProofMissing] = useState(false);
   const isMobile = useIsMobile();
   
   // New delivery information states
@@ -124,12 +125,14 @@ const FeaturedCars = () => {
     setDeliveryPostalCode('');
     setDeliveryNotes('');
     setDeliveryOption('pickup');
+    setPaymentProofMissing(false);
     setDialogOpen(true);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setProofOfPayment(e.target.files[0]);
+      setPaymentProofMissing(false);
     }
   };
 
@@ -140,7 +143,7 @@ const FeaturedCars = () => {
     }
 
     if (paymentMethod === 'transfer' && !proofOfPayment) {
-      setAlertDialogOpen(true);
+      setPaymentProofMissing(true);
       return;
     }
     
@@ -189,6 +192,7 @@ const FeaturedCars = () => {
       setDialogOpen(false);
       setAlertDialogOpen(false);
       setCustomerInfoMissing(false);
+      setPaymentProofMissing(false);
       
       toast({
         title: "Commande confirmée",
@@ -298,8 +302,8 @@ const FeaturedCars = () => {
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-[700px] w-[95%] max-h-[90vh] overflow-hidden p-0">
-            <div className="p-6 pb-0">
+          <DialogContent className="sm:max-w-[700px] w-[95%] max-h-[90vh] overflow-auto p-0">
+            <div className="p-6 pb-0 sticky top-0 bg-white z-10 border-b">
               <DialogHeader className="mb-2">
                 <DialogTitle>Finaliser votre achat</DialogTitle>
                 <DialogDescription>
@@ -334,8 +338,8 @@ const FeaturedCars = () => {
               </DialogHeader>
             </div>
 
-            <div className="px-6 overflow-y-auto max-h-[60vh] flex-grow">
-              <div className="space-y-5 py-2">
+            <div className="px-6 py-4 overflow-auto" style={{ maxHeight: 'calc(90vh - 250px)' }}>
+              <div className="space-y-5">
                 {/* Informations client */}
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base">Vos coordonnées</h3>
@@ -562,13 +566,12 @@ const FeaturedCars = () => {
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
                         <Label htmlFor="payment-proof" className="font-medium">
-                          Preuve de paiement
+                          Preuve de paiement <span className="text-red-500">*</span>
                         </Label>
-                        <span className="text-xs text-muted-foreground">(Optionnel)</span>
                       </div>
                       <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-gray-300 rounded-md p-4 cursor-pointer hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-2"
+                        className={`border-2 border-dashed ${paymentProofMissing ? 'border-red-500 bg-red-50' : 'border-gray-300'} rounded-md p-4 cursor-pointer hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-2`}
                       >
                         {proofOfPayment ? (
                           <div className="flex items-center gap-2 text-brand-blue">
@@ -577,18 +580,21 @@ const FeaturedCars = () => {
                           </div>
                         ) : (
                           <>
-                            <Upload className="h-6 w-6 text-gray-400" />
+                            <Upload className={`h-6 w-6 ${paymentProofMissing ? 'text-red-400' : 'text-gray-400'}`} />
                             <div className="text-center">
-                              <p className="text-sm font-medium text-gray-700">
+                              <p className={`text-sm font-medium ${paymentProofMissing ? 'text-red-600' : 'text-gray-700'}`}>
                                 Cliquez pour ajouter une preuve de paiement
                               </p>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className={`text-xs ${paymentProofMissing ? 'text-red-500' : 'text-gray-500'} mt-1`}>
                                 PNG, JPG ou PDF jusqu'à 5 MB
                               </p>
                             </div>
                           </>
                         )}
                       </div>
+                      {paymentProofMissing && (
+                        <p className="text-sm text-red-500 mt-1">La preuve de paiement est obligatoire pour finaliser votre commande.</p>
+                      )}
                       <input
                         type="file"
                         ref={fileInputRef}
@@ -631,7 +637,7 @@ const FeaturedCars = () => {
               </div>
             </div>
 
-            <DialogFooter className="p-6 pt-4 border-t mt-2">
+            <DialogFooter className="p-6 pt-4 border-t mt-2 sticky bottom-0 bg-white">
               <Button 
                 onClick={handleCompletePayment}
                 className="w-full sm:w-auto" 
