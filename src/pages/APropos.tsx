@@ -43,7 +43,7 @@ const APropos = () => {
               <div>
                 <h2 className="text-3xl font-bold mb-6">Notre histoire</h2>
                 <p className="text-lg text-gray-600 mb-6">
-                  Fondée en 2002 par les frères Adam et Daniel Ivanic à Florence en Italie, Auto Adi est née d'une passion partagée pour l'automobile et d'une vision commune : offrir des véhicules de qualité à des prix justes, accompagnés d'un service irréprochable.
+                  Fondée en 2002 à Florence en Italie, Auto Adi est née d'une passion pour l'automobile et d'une vision claire : offrir des véhicules de qualité à des prix justes, accompagnés d'un service irréprochable.
                 </p>
                 <p className="text-lg text-gray-600 mb-6">
                   Ce qui a commencé comme un petit garage familial à Florence s'est progressivement développé pour devenir une entreprise reconnue avec une présence en Roumanie, tout en conservant les valeurs familiales qui ont fait notre succès.
@@ -153,7 +153,7 @@ const APropos = () => {
                         <CardContent className="p-6">
                           <h3 className="text-xl font-bold mb-2">Création d'Auto Adi</h3>
                           <p className="text-gray-600">
-                            Ouverture du premier garage à Florence, Italie, par les frères Ivanic, spécialisé dans la vente de véhicules d'occasion.
+                            Ouverture du premier garage à Florence, Italie, spécialisé dans la vente de véhicules d'occasion.
                           </p>
                         </CardContent>
                       </Card>
