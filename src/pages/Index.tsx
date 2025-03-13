@@ -18,19 +18,16 @@ const Index = () => {
   const [searchParams] = useSearchParams();
   
   useEffect(() => {
-    // Reset the catalog when the user visits the homepage
-    resetCatalog();
-    toast.success("Le catalogue a été réinitialisé");
+    // Réinitialiser les deux catalogues
+    resetCatalog('all');
+    toast.success("Les catalogues ont été réinitialisés");
     
-    // Force un rechargement des véhicules au chargement de la page d'accueil
+    // Vérifier les catalogues après réinitialisation
     try {
-      const vehicles = getImportedVehicles();
-      console.log(`Page d'accueil: ${vehicles.length} véhicules chargés depuis le localStorage`);
+      const standardVehicles = getImportedVehicles('standard');
+      const featuredVehicles = getImportedVehicles('featured');
       
-      // Vérifier les véhicules vedettes
-      const featuredVehicles = vehicles.filter(v => v.featured === true);
-      console.log(`${featuredVehicles.length} véhicules en vedette trouvés`);
-      
+      console.log(`Page d'accueil: ${standardVehicles.length} véhicules standard et ${featuredVehicles.length} véhicules vedette chargés`);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
     }
@@ -56,7 +53,8 @@ const Index = () => {
     // Check for the catalog parameter and pre-load if necessary
     const catalogId = searchParams.get('catalog');
     if (catalogId) {
-      console.log(`Catalog found in URL: ${catalogId}, will pre-load vehicles`);
+      const catalogType = searchParams.get('type') || 'standard';
+      console.log(`Catalog found in URL: ${catalogId}, type: ${catalogType}, will pre-load vehicles`);
     }
   }, [searchParams]);
   
@@ -78,7 +76,10 @@ const Index = () => {
         </div>
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
-          <FeaturedCars searchFilters={searchFilters} featuredOnly={!searchParams.toString()} />
+          <FeaturedCars featuredOnly={true} />
+        </div>
+        <div className="mt-10">
+          <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
         </div>
         <Benefits />
         <div id="testimonials">

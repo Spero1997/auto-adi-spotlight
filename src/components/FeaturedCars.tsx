@@ -25,23 +25,40 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     loadVehicles();
     
     // Écouter les événements de mise à jour des véhicules
-    window.addEventListener('vehiclesUpdated', loadVehicles);
+    const handleVehiclesUpdated = (event: Event) => {
+      // Vérifier si l'événement contient des détails sur le type de catalogue
+      const customEvent = event as CustomEvent;
+      const catalogType = customEvent.detail?.catalogType;
+      
+      // Si c'est un événement pour le catalogue standard ou pour tous les catalogues,
+      // ou si aucun type n'est spécifié, recharger les véhicules
+      if (!catalogType || catalogType === 'standard' || catalogType === 'all' || 
+          (featuredOnly && catalogType === 'featured')) {
+        loadVehicles();
+      }
+    };
+    
+    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
+    window.addEventListener('catalogChanged', handleVehiclesUpdated);
     
     return () => {
-      window.removeEventListener('vehiclesUpdated', loadVehicles);
+      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
+      window.removeEventListener('catalogChanged', handleVehiclesUpdated);
     };
-  }, []);
+  }, [featuredOnly]);
 
   const loadVehicles = () => {
     setLoading(true);
     setError(null);
     try {
-      const importedVehicles = getImportedVehicles();
-      console.log("FeaturedCars: Véhicules chargés:", importedVehicles.length);
+      // Charger les véhicules du catalogue approprié
+      const catalogType = featuredOnly ? 'featured' : 'standard';
+      const importedVehicles = getImportedVehicles(catalogType);
+      console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
       setVehicles(importedVehicles);
     } catch (e) {
-      setError("Failed to load vehicles.");
-      console.error("Error loading vehicles:", e);
+      setError("Échec du chargement des véhicules.");
+      console.error("Erreur lors du chargement des véhicules:", e);
     } finally {
       setLoading(false);
     }
@@ -49,11 +66,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const filteredVehicles = () => {
     let filtered = [...vehicles];
-
-    // Filtre par véhicules en vedette si demandé
-    if (featuredOnly) {
-      filtered = filtered.filter(v => v.featured === true);
-    }
 
     if (searchFilters) {
       if (searchFilters.brand) {
@@ -92,7 +104,11 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         <div className="text-center my-12">
           <Search className="mx-auto h-10 w-10 text-gray-400 mb-4" />
           <p className="text-gray-500 text-lg mb-2">Aucun véhicule trouvé.</p>
-          <p className="text-gray-400">Veuillez modifier vos critères de recherche ou revenir plus tard.</p>
+          <p className="text-gray-400">
+            {featuredOnly 
+              ? "Aucun véhicule n'a encore été ajouté au catalogue vedette." 
+              : "Aucun véhicule ne correspond à vos critères de recherche."}
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,7 +124,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                     (e.target as HTMLImageElement).src = 'https://via.placeholder.com/640x480?text=No+Image';
                   }}
                 />
-                {vehicle.featured && (
+                {(vehicle.featured || vehicle.catalogType === 'featured') && (
                   <div className="absolute top-2 right-2 bg-amber-500 text-white p-1 rounded-full">
                     <Star className="h-5 w-5 fill-white" />
                   </div>
