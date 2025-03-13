@@ -475,7 +475,7 @@ const FeaturedCars = () => {
                       <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
                         <p className="text-sm text-amber-800 flex items-start">
                           <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
-                          La livraison à domicile entraîne des frais supplémentaires qui varient selon la distance. Nous vous contacterons pour confirmer ces frais après validation de votre commande.
+                          Les frais de livraison à domicile sont inclus dans l'acompte de 20%. Aucun supplément ne sera demandé pour la livraison.
                         </p>
                       </div>
                     </div>
