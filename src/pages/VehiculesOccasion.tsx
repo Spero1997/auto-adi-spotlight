@@ -6,15 +6,29 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
-import { Car, ShieldCheck, Fuel, Calendar, RefreshCw, Filter, X } from 'lucide-react';
+import { Car, ShieldCheck, Fuel, Calendar, RefreshCw, Filter, X, MoreHorizontal } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { useContext } from 'react';
-import { LanguageContext } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+
+// Add PaginationEllipsis component
+const PaginationEllipsis = ({
+  className,
+  ...props
+}: React.ComponentProps<"span">) => (
+  <span
+    aria-hidden
+    className={`flex h-9 w-9 items-center justify-center ${className || ''}`}
+    {...props}
+  >
+    <MoreHorizontal className="h-4 w-4" />
+    <span className="sr-only">More pages</span>
+  </span>
+);
 
 // Types
 interface CarProps {
@@ -263,7 +277,7 @@ const allCars = [
 ];
 
 const VehiculesOccasion = () => {
-  const { language } = useContext(LanguageContext);
+  const { language } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get('page') || '1');
   const brandFilter = searchParams.get('brand') || '';

@@ -12,7 +12,7 @@ type LanguageContextType = {
 };
 
 // Create the context with default values
-const LanguageContext = createContext<LanguageContextType>({
+export const LanguageContext = createContext<LanguageContextType>({
   language: 'FR',
   setLanguage: () => {},
   translate: () => '',
