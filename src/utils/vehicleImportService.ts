@@ -64,7 +64,9 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
       if (localCatalogId !== urlCatalogId) {
         console.log(`Catalogue changé: ${localCatalogId} -> ${urlCatalogId}`);
         // Cet événement permettra aux autres composants de savoir qu'ils doivent rafraîchir leurs données
-        window.dispatchEvent(new Event('catalogChanged'));
+        window.dispatchEvent(new CustomEvent('catalogChanged', {
+          detail: { catalogId: urlCatalogId }
+        }));
       }
     }
     
@@ -103,7 +105,9 @@ export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
     saveCatalogIdToUrl(catalogId);
     
     // Déclencher un événement pour informer les autres composants que les données ont changé
-    window.dispatchEvent(new Event('vehiclesUpdated'));
+    window.dispatchEvent(new CustomEvent('vehiclesUpdated', {
+      detail: { vehicles }
+    }));
     
     console.log(`${vehicles.length} véhicules enregistrés dans le localStorage avec catalogId: ${catalogId}`);
   } catch (error) {

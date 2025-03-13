@@ -13,21 +13,19 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Car, ArrowRight, Filter, RefreshCw } from 'lucide-react';
+import { Car, ArrowRight, Filter, RefreshCw, Share2 } from 'lucide-react';
 import { getCatalogIdFromUrl, getImportedVehicles } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
+import CatalogShare from '@/components/CatalogShare';
 
-// Liste des marques de voitures pour le filtre
 const carBrands = [
   "Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Honda", "Hyundai", 
   "Kia", "Mercedes", "Nissan", "Opel", "Peugeot", "Renault", "Seat", 
   "Skoda", "Toyota", "Volkswagen", "Volvo"
 ];
 
-// Liste des types de carburant
 const fuelTypes = ["Essence", "Diesel", "Hybride", "Électrique", "GPL"];
 
-// Prix minimum et maximum pour le filtre
 const MIN_PRICE = 5000;
 const MAX_PRICE = 50000;
 
@@ -41,8 +39,8 @@ const VehiculesOccasion = () => {
   const [filtersApplied, setFiltersApplied] = useState(false);
   const location = useLocation();
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
+  const [isCatalogLoaded, setIsCatalogLoaded] = useState(false);
   
-  // Features filters
   const [filterAirbags, setFilterAirbags] = useState(false);
   const [filterAbs, setFilterAbs] = useState(false);
   const [filterAC, setFilterAC] = useState(false);
@@ -74,11 +72,11 @@ const VehiculesOccasion = () => {
       if (catalogId) {
         setIsLoadingCatalog(true);
         try {
-          // Get the vehicles - the vehicleImportService will handle using the URL catalog
           const vehicles = getImportedVehicles();
           
           if (vehicles.length > 0) {
             toast.success(`Catalogue de ${vehicles.length} véhicule(s) chargé avec succès`);
+            setIsCatalogLoaded(true);
           } else {
             toast.error("Aucun véhicule trouvé dans ce catalogue");
           }
@@ -92,7 +90,24 @@ const VehiculesOccasion = () => {
     };
     
     checkCatalogFromUrl();
-  }, [location.search]); // Re-run when the URL search params change
+    
+    const handleCatalogChange = () => {
+      console.log("Événement de changement de catalogue détecté");
+      window.location.reload();
+    };
+    
+    window.addEventListener('catalogChanged', handleCatalogChange);
+    window.addEventListener('vehiclesUpdated', () => {
+      setIsCatalogLoaded(true);
+    });
+    
+    return () => {
+      window.removeEventListener('catalogChanged', handleCatalogChange);
+      window.removeEventListener('vehiclesUpdated', () => {});
+    };
+  }, [location.search]);
+  
+  const catalogId = getCatalogIdFromUrl();
   
   return (
     <>
@@ -117,6 +132,17 @@ const VehiculesOccasion = () => {
                 <div className="flex items-center justify-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-blue-500 border-r-transparent"></div>
                   <p className="text-blue-600">Chargement du catalogue partagé...</p>
+                </div>
+              </div>
+            )}
+            
+            {catalogId && isCatalogLoaded && (
+              <div className="mt-4 flex justify-center">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 max-w-md">
+                  <div className="flex items-center gap-2 text-green-700">
+                    <span className="font-medium">Catalogue partagé actif</span>
+                    <CatalogShare />
+                  </div>
                 </div>
               </div>
             )}
@@ -167,7 +193,6 @@ const VehiculesOccasion = () => {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {/* Filtres sur la gauche - visible uniquement sur desktop */}
                     <Card className={`md:block ${showFilters ? 'block' : 'hidden'}`}>
                       <CardContent className="p-6">
                         <div className="flex justify-between items-center mb-6">
@@ -347,7 +372,6 @@ const VehiculesOccasion = () => {
                       </CardContent>
                     </Card>
                     
-                    {/* Liste des véhicules */}
                     <div className="md:col-span-3">
                       <FeaturedCars 
                         searchFilters={{
