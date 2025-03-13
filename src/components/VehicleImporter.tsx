@@ -22,11 +22,19 @@ const VehicleImporter = () => {
       
       const importedVehicles = await extractVehiclesFromUrl(url);
       
+      // Vérifier les images importées
+      importedVehicles.forEach((vehicle, index) => {
+        console.log(`Véhicule ${index + 1} importé:`, vehicle.brand, vehicle.model);
+        console.log(`Image URL:`, vehicle.image || 'Pas d\'image');
+      });
+      
       console.log(`${importedVehicles.length} véhicules importés avec succès`);
-      console.log("Premier véhicule importé:", importedVehicles[0]);
       
       toast.success(`${importedVehicles.length} véhicules importés avec succès`);
       setUrl('');
+      
+      // Forcer la mise à jour de l'affichage
+      window.dispatchEvent(new Event('vehiclesUpdated'));
     } catch (error) {
       console.error("Erreur lors de l'importation:", error);
       toast.error("Erreur lors de l'importation des véhicules");

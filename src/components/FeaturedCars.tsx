@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,13 @@ const FeaturedCars = ({ searchFilters }: { searchFilters?: SearchFilters }) => {
 
   useEffect(() => {
     loadVehicles();
+    
+    // Écouter les événements de mise à jour des véhicules
+    window.addEventListener('vehiclesUpdated', loadVehicles);
+    
+    return () => {
+      window.removeEventListener('vehiclesUpdated', loadVehicles);
+    };
   }, []);
 
   const loadVehicles = () => {
@@ -26,6 +34,13 @@ const FeaturedCars = ({ searchFilters }: { searchFilters?: SearchFilters }) => {
     setError(null);
     try {
       const importedVehicles = getImportedVehicles();
+      console.log("FeaturedCars: Véhicules chargés:", importedVehicles.length);
+      
+      // Vérifier les URLs des images
+      importedVehicles.forEach((vehicle, index) => {
+        console.log(`Véhicule ${index + 1}: ${vehicle.brand} ${vehicle.model}, Image: ${vehicle.image || 'Aucune image'}`);
+      });
+      
       setVehicles(importedVehicles);
     } catch (e) {
       setError("Failed to load vehicles.");
@@ -79,12 +94,13 @@ const FeaturedCars = ({ searchFilters }: { searchFilters?: SearchFilters }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {featured.map((vehicle) => (
           <Card key={vehicle.id} className="bg-white shadow-md rounded-lg overflow-hidden">
-            <div className="aspect-w-4 aspect-h-3">
+            <div className="aspect-w-16 aspect-h-9 relative h-48">
               <img
                 src={vehicle.image || 'https://via.placeholder.com/640x480?text=No+Image'}
                 alt={`${vehicle.brand} ${vehicle.model}`}
                 className="object-cover w-full h-full"
                 onError={(e) => {
+                  console.error("Erreur de chargement de l'image:", vehicle.image);
                   (e.target as HTMLImageElement).src = 'https://via.placeholder.com/640x480?text=No+Image';
                 }}
               />
