@@ -59,8 +59,9 @@ const VehicleDetails = () => {
     try {
       const vehicles = getImportedVehicles();
       console.log("Véhicules chargés:", vehicles.length);
+      console.log("Recherche du véhicule avec ID:", id);
       
-      // Essayer de trouver le véhicule par son ID exact
+      // Essayer de trouver le véhicule par son ID exact ou partie de l'ID
       let foundVehicle = vehicles.find(v => v.id === id);
       
       // Si aucun véhicule n'est trouvé, essayer de faire correspondre avec une partie de l'URL
@@ -68,8 +69,11 @@ const VehicleDetails = () => {
         foundVehicle = vehicles.find(v => 
           id.includes(v.id) || 
           v.id.includes(id) || 
-          id.includes(v.brand.toLowerCase()) || 
-          id.includes(v.model.toLowerCase())
+          id.toLowerCase().includes(v.brand.toLowerCase()) || 
+          id.toLowerCase().includes(v.model.toLowerCase()) ||
+          `${v.brand.toLowerCase()}-${v.model.toLowerCase()}`.includes(id.toLowerCase()) ||
+          // Ajout d'une recherche avec le mot "fixed" qui peut être ajouté à la fin
+          id.toLowerCase().includes(`${v.brand.toLowerCase()}-${v.model.toLowerCase()}-fixed`)
         );
       }
       
@@ -91,7 +95,15 @@ const VehicleDetails = () => {
   }, [id]);
   
   const handleBuyClick = () => {
+    console.log("Bouton Acheter cliqué");
     setShowPaymentForm(true);
+    // Afficher un toast de confirmation
+    toast.success("Vous pouvez maintenant finaliser votre achat");
+    shadowToast({
+      title: "Commande initiée",
+      description: "Veuillez remplir le formulaire pour finaliser votre achat",
+    });
+    
     // Scroll to the payment form
     setTimeout(() => {
       document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' });
