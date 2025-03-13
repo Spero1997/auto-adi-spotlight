@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -686,4 +687,152 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
       }
     }
     
-    // Si aucun véhicule n'
+    // Si aucun véhicule n'est trouvé, retourner une liste de véhicules par défaut
+    return [
+      audiRSQ8,
+      mercedesGLC350e,
+      skodaOctavia,
+      mercedesC220,
+      jeepCompass,
+      mercedesGLA,
+      mercedesCLA,
+      bmwSerie2,
+      volvoV60,
+      volvoV60Second,
+      mercedesC350e,
+      audiA6,
+      volkswagenPolo,
+      volkswagenTCross,
+      bmwX5,
+      audiA3ETron,
+      kiaNiro,
+      bmwX1,
+      audiQ5,
+      audiQ7,
+      audiA3Sportback,
+      bmwX3
+    ];
+  } catch (error) {
+    console.error("Erreur lors de la récupération des véhicules:", error);
+    return [];
+  }
+};
+
+/**
+ * Sauvegarde les véhicules importés dans le stockage local
+ */
+export const saveImportedVehicles = (vehicles: ImportedVehicle[]) => {
+  try {
+    const catalogId = getCatalogIdFromUrl();
+    const storageKey = catalogId ? `${STORAGE_KEY}_${catalogId}` : STORAGE_KEY;
+    
+    localStorage.setItem(storageKey, JSON.stringify(vehicles));
+    console.log(`Véhicules sauvegardés dans ${storageKey}`);
+  } catch (error) {
+    console.error("Erreur lors de la sauvegarde des véhicules:", error);
+  }
+};
+
+/**
+ * Ajoute un nouveau véhicule au catalogue
+ */
+export const addVehicle = (vehicle: Omit<ImportedVehicle, 'id'>) => {
+  const id = `${vehicle.brand}-${vehicle.model}-${Date.now()}`.toLowerCase().replace(/\s+/g, '-');
+  const newVehicle: ImportedVehicle = { ...vehicle, id };
+  
+  const existingVehicles = getImportedVehicles();
+  saveImportedVehicles([...existingVehicles, newVehicle]);
+  
+  toast.success(`${vehicle.brand} ${vehicle.model} ajouté au catalogue`);
+  return newVehicle;
+};
+
+/**
+ * Met à jour un véhicule existant
+ */
+export const updateVehicle = (vehicle: ImportedVehicle) => {
+  const existingVehicles = getImportedVehicles();
+  const updatedVehicles = existingVehicles.map(v => v.id === vehicle.id ? vehicle : v);
+  
+  saveImportedVehicles(updatedVehicles);
+  toast.success(`${vehicle.brand} ${vehicle.model} mis à jour`);
+};
+
+/**
+ * Supprime un véhicule du catalogue
+ */
+export const deleteVehicle = (vehicleId: string) => {
+  const existingVehicles = getImportedVehicles();
+  const vehicleToDelete = existingVehicles.find(v => v.id === vehicleId);
+  
+  if (!vehicleToDelete) {
+    toast.error("Véhicule non trouvé");
+    return;
+  }
+
+  // Pour les véhicules fixes, on les marque comme exclus au lieu de les supprimer
+  if (vehicleId.includes('-fixed')) {
+    const updatedVehicles = existingVehicles.map(v => 
+      v.id === vehicleId ? { ...v, excluded: true } : v
+    );
+    saveImportedVehicles(updatedVehicles);
+  } else {
+    // Pour les autres véhicules, on les supprime complètement
+    const filteredVehicles = existingVehicles.filter(v => v.id !== vehicleId);
+    saveImportedVehicles(filteredVehicles);
+  }
+  
+  toast.success(`${vehicleToDelete.brand} ${vehicleToDelete.model} supprimé du catalogue`);
+};
+
+/**
+ * Réinitialise complètement le catalogue de véhicules
+ */
+export const resetVehicleCatalog = () => {
+  const catalogId = getCatalogIdFromUrl();
+  const storageKey = catalogId ? `${STORAGE_KEY}_${catalogId}` : STORAGE_KEY;
+  
+  localStorage.removeItem(storageKey);
+  toast.success("Catalogue réinitialisé avec succès");
+};
+
+/**
+ * Récupère un véhicule spécifique par son ID
+ */
+export const getVehicleById = (vehicleId: string): ImportedVehicle | undefined => {
+  const vehicles = getImportedVehicles();
+  return vehicles.find(vehicle => vehicle.id === vehicleId);
+};
+
+/**
+ * Extrait et importe des véhicules depuis une URL
+ */
+export const extractVehiclesFromUrl = async (url: string) => {
+  try {
+    toast.info("Extraction des véhicules en cours...", { duration: 2000 });
+    
+    const vehicles = await extractVehiclesWithScraper(url);
+    
+    if (!vehicles || vehicles.length === 0) {
+      toast.error("Aucun véhicule trouvé à cette URL");
+      return;
+    }
+    
+    // Ajouter un ID unique à chaque véhicule
+    const vehiclesWithIds = vehicles.map((vehicle) => ({
+      ...vehicle,
+      id: `${vehicle.brand}-${vehicle.model}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`.toLowerCase().replace(/\s+/g, '-')
+    }));
+    
+    // Ajouter les nouveaux véhicules à la liste existante
+    const existingVehicles = getImportedVehicles();
+    saveImportedVehicles([...existingVehicles, ...vehiclesWithIds]);
+    
+    toast.success(`${vehiclesWithIds.length} véhicule(s) importé(s) avec succès`);
+    return vehiclesWithIds;
+  } catch (error) {
+    console.error("Erreur lors de l'extraction des véhicules:", error);
+    toast.error("Erreur lors de l'extraction des véhicules");
+    throw error;
+  }
+};
