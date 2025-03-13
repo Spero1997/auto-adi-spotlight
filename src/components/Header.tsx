@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Search, Car, Phone, MapPin, ShoppingCart, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -60,46 +60,6 @@ const Header = () => {
   return (
     <header className="w-full bg-white shadow-md">
       <div className="container px-4 mx-auto">
-        {/* Top bar with contact */}
-        <div className="hidden md:flex justify-end items-center py-2 text-sm border-b">
-          <a href="tel:+33123456789" className="flex items-center mr-4 text-gray-600 hover:text-brand-blue">
-            <Phone className="h-4 w-4 mr-1" /> 01 23 45 67 89
-          </a>
-          <Button 
-            variant="ghost" 
-            className="flex items-center text-gray-600 hover:text-brand-blue h-auto p-0 mr-4"
-            onClick={() => handleNavigation('/contact#locations')}
-          >
-            <MapPin className="h-4 w-4 mr-1" /> Nos concessions
-          </Button>
-
-          {/* Language Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                className="flex items-center text-gray-600 hover:text-brand-blue h-auto p-0"
-              >
-                <Globe className="h-4 w-4 mr-1" /> {currentLanguage}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
-                🇫🇷 Français
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
-                🇬🇧 English
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => handleLanguageChange('DE')}>
-                🇩🇪 Deutsch
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
-                🇪🇸 Español
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        
         {/* Main navigation */}
         <nav className="flex justify-between items-center py-4">
           <button 
@@ -389,26 +349,6 @@ const Header = () => {
               )}
             </div>
           </div>
-
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <div className="flex flex-col space-y-3">
-              <a
-                href="tel:+33123456789"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              >
-                <Phone className="mr-3 h-5 w-5 text-brand-blue" />
-                01 23 45 67 89
-              </a>
-              <Button
-                variant="ghost"
-                onClick={() => handleNavigation('/contact#locations')}
-                className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              >
-                <MapPin className="mr-3 h-5 w-5 text-brand-blue" />
-                Nos concessions
-              </Button>
-            </div>
-          </div>
         </nav>
       </div>
     </header>
@@ -416,4 +356,3 @@ const Header = () => {
 };
 
 export default Header;
-
