@@ -4,7 +4,8 @@ import {
   CarouselContent, 
   CarouselItem, 
   CarouselNext, 
-  CarouselPrevious 
+  CarouselPrevious,
+  type CarouselApi
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
@@ -22,20 +23,40 @@ const carImages = [
 const HeroCarousel = () => {
   const [autoPlay, setAutoPlay] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!carouselApi) {
+      return;
+    }
+
+    // Mettre à jour l'index actif lorsque le carousel change
+    const onSelect = () => {
+      setActiveIndex(carouselApi.selectedScrollSnap());
+    };
+    
+    carouselApi.on("select", onSelect);
+
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi]);
 
   useEffect(() => {
     let interval: number | undefined;
     
-    if (autoPlay) {
+    if (autoPlay && carouselApi) {
       interval = window.setInterval(() => {
-        setActiveIndex((current) => (current + 1) % carImages.length);
+        if (carouselApi) {
+          carouselApi.scrollNext();
+        }
       }, 5000);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [autoPlay]);
+  }, [autoPlay, carouselApi]);
 
   // Ajout de console.log pour déboguer
   console.log("Images du carrousel:", carImages);
@@ -47,6 +68,7 @@ const HeroCarousel = () => {
         opts={{ loop: true, align: "start" }} 
         onMouseEnter={() => setAutoPlay(false)}
         onMouseLeave={() => setAutoPlay(true)}
+        setApi={setCarouselApi}
       >
         <CarouselContent className="h-full">
           {carImages.map((img, index) => (
@@ -97,21 +119,19 @@ const HeroCarousel = () => {
         <CarouselNext className="absolute right-4 z-10 bg-white/80 hover:bg-white" />
       </Carousel>
 
-      {/* Indicateurs de pagination */}
+      {/* Indicateurs de pagination améliorés */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {carImages.map((_, index) => (
           <button
             key={index}
             onClick={() => {
               setActiveIndex(index);
-              // Ajouter cette fonctionnalité pour changer le slide actif quand on clique sur un indicateur
-              const api = document.querySelector(".embla__container");
-              if (api) {
-                console.log("Changing slide to", index);
+              if (carouselApi) {
+                carouselApi.scrollTo(index);
               }
             }}
-            className={`w-3 h-3 rounded-full ${
-              activeIndex === index ? "bg-white" : "bg-white/50"
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              activeIndex === index ? "bg-white scale-125" : "bg-white/50"
             }`}
             aria-label={`Voir l'image ${index + 1}`}
           />
