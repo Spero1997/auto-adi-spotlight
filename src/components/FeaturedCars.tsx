@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift, Truck, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -107,7 +106,6 @@ const FeaturedCars = () => {
   const [paymentProofMissing, setPaymentProofMissing] = useState(false);
   const isMobile = useIsMobile();
   
-  // New delivery information states
   const [deliveryAddress, setDeliveryAddress] = useState('');
   const [deliveryCity, setDeliveryCity] = useState('');
   const [deliveryPostalCode, setDeliveryPostalCode] = useState('');
@@ -340,7 +338,6 @@ const FeaturedCars = () => {
 
             <div className="px-6 py-4 overflow-auto" style={{ maxHeight: 'calc(90vh - 250px)' }}>
               <div className="space-y-5">
-                {/* Informations client */}
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base">Vos coordonnées</h3>
                   
@@ -383,7 +380,6 @@ const FeaturedCars = () => {
                   )}
                 </div>
 
-                {/* Informations de livraison */}
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base flex items-center">
                     <Truck className="h-4 w-4 mr-2 text-brand-blue" />
@@ -419,8 +415,8 @@ const FeaturedCars = () => {
                       <div className="flex items-start">
                         <MapPin className="h-4 w-4 mr-2 text-brand-blue mt-0.5" />
                         <div>
-                          <p className="font-medium">Auto Deals Import</p>
-                          <p className="text-sm text-gray-600">123 Avenue des Véhicules, 75001 Paris</p>
+                          <p className="font-medium">Auto Adi</p>
+                          <p className="text-sm text-gray-600">Borgo Ognissanti, 142r 50123 Firenze FI Italie</p>
                         </div>
                       </div>
                       <div className="flex items-start">
@@ -486,7 +482,6 @@ const FeaturedCars = () => {
                   )}
                 </div>
 
-                {/* Méthodes de paiement */}
                 <div className={`flex flex-wrap gap-2 border-b pb-4 ${isMobile ? 'flex-col' : ''}`}>
                   <Button
                     type="button"
@@ -518,7 +513,6 @@ const FeaturedCars = () => {
                   </Button>
                 </div>
 
-                {/* Sections conditionnelles selon méthode de paiement */}
                 {paymentMethod === 'card' && (
                   <div className="space-y-4 opacity-50">
                     <div>
