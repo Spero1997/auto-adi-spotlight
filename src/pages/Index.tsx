@@ -27,7 +27,7 @@ const Index = () => {
       const tCross = vehicles.find(v => 
         v.brand === "Volkswagen" && 
         v.model.includes("T-Cross") && 
-        v.year === 2021
+        v.year === 2020  // Corrigé: année modifiée de 2021 à 2020
       );
       
       if (tCross) {
