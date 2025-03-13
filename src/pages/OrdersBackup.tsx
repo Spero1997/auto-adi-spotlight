@@ -12,7 +12,7 @@ const OrdersBackup = () => {
     // Display a toast to inform the user to click Actualiser if they don't see their order
     toast({
       title: "Conseil",
-      description: "Si vous ne voyez pas votre commande, cliquez sur le bouton Actualiser.",
+      description: "Si vous ne voyez pas votre commande, cliquez sur le bouton Actualiser. Vous pouvez télécharger les pièces jointes en cliquant sur leur nom.",
     });
   }, []);
 

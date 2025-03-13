@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { FileDown, Clock, Car, User, Mail, Phone, Truck, CreditCard, AlertCircle, RefreshCw } from 'lucide-react';
+import { FileDown, Clock, Car, User, Mail, Phone, Truck, CreditCard, AlertCircle, RefreshCw, Download } from 'lucide-react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
@@ -114,6 +114,45 @@ const OrdersBackup = () => {
     }
   };
 
+  const handleDownloadAttachment = (attachmentName: string, orderTimestamp: string) => {
+    try {
+      const dataStr = `Ce document est une preuve de paiement jointe à une commande faite le ${formatTimestamp(orderTimestamp)}.
+      
+Nom du fichier: ${attachmentName}
+
+Note: Ce fichier est une recréation à partir des données de sauvegarde locale car le fichier original n'est pas stocké dans le navigateur.
+      
+Pour plus d'informations, veuillez contacter le service client.`;
+      
+      const blob = new Blob([dataStr], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = attachmentName;
+      document.body.appendChild(a);
+      a.click();
+      
+      // Cleanup
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+      
+      toast({
+        title: "Téléchargement démarré",
+        description: `Le fichier ${attachmentName} est en cours de téléchargement.`,
+      });
+    } catch (error) {
+      console.error("Error downloading attachment:", error);
+      toast({
+        title: "Erreur de téléchargement",
+        description: "Impossible de télécharger le fichier demandé.",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -184,20 +223,16 @@ const OrdersBackup = () => {
           <TabsContent value="list" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {orders.map((order, index) => {
-                // Extract car model from subject or html content
                 const subjectMatch = order.subject?.match(/Nouvelle commande: (.+)/) || [];
                 const htmlMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
                 const carModel = subjectMatch[1] || htmlMatch[1] || 'Véhicule';
                 
-                // Extract price from html content
                 const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
                 const price = priceMatch[1] || '';
                 
-                // Extract customer name from html content
                 const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
                 const customerName = nameMatch[1] || 'Client';
                 
-                // Extract payment method from html content
                 const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
                 const paymentMethod = methodMatch[1] || '';
                 
@@ -235,6 +270,25 @@ const OrdersBackup = () => {
                         )}
                       </div>
                     </CardContent>
+                    {order.attachments && order.attachments.length > 0 && (
+                      <CardFooter className="pt-2 pb-4">
+                        <div className="w-full">
+                          <p className="text-sm text-gray-500 mb-2">Pièces jointes:</p>
+                          {order.attachments.map((attachment: string, i: number) => (
+                            <Button 
+                              key={i} 
+                              variant="outline" 
+                              size="sm"
+                              className="flex items-center text-xs w-full justify-start mb-1"
+                              onClick={() => handleDownloadAttachment(attachment, order.timestamp)}
+                            >
+                              <Download className="h-3 w-3 mr-2" />
+                              {attachment}
+                            </Button>
+                          ))}
+                        </div>
+                      </CardFooter>
+                    )}
                   </Card>
                 );
               })}
@@ -246,20 +300,16 @@ const OrdersBackup = () => {
               <CardContent className="p-0">
                 <ScrollArea className="h-[600px]">
                   {orders.map((order, index) => {
-                    // Extract customer info
                     const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
                     const emailMatch = order.html?.match(/<p><strong>Email:<\/strong> (.+?)<\/p>/) || [];
                     const phoneMatch = order.html?.match(/<p><strong>Téléphone:<\/strong> (.+?)<\/p>/) || [];
                     
-                    // Extract car details
                     const carMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
                     const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
                     
-                    // Extract delivery info
                     const deliveryOptionMatch = order.html?.match(/<p><strong>Option:<\/strong> (.+?)<\/p>/) || [];
                     const deliveryAddressMatch = order.html?.match(/<p><strong>Adresse:<\/strong> (.+?)<\/p>/) || [];
                     
-                    // Extract payment info
                     const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
                     const depositMatch = order.html?.match(/<p><strong>Acompte de 20%:<\/strong> (.+?)€<\/p>/) || [];
                     
@@ -350,12 +400,19 @@ const OrdersBackup = () => {
                         {order.attachments && order.attachments.length > 0 && (
                           <div className="mt-2 mb-4">
                             <h4 className="text-sm font-medium text-gray-500 mb-2">Pièces jointes</h4>
-                            <div className="space-y-1">
+                            <div className="space-y-2">
                               {order.attachments.map((attachment: string, i: number) => (
-                                <div key={i} className="flex items-center">
+                                <Button 
+                                  key={i} 
+                                  variant="outline" 
+                                  size="sm"
+                                  className="flex items-center w-full justify-start"
+                                  onClick={() => handleDownloadAttachment(attachment, order.timestamp)}
+                                >
                                   <FileDown className="h-4 w-4 mr-2 text-gray-500" />
                                   <span className="text-sm">{attachment}</span>
-                                </div>
+                                  <span className="ml-auto bg-gray-100 px-2 py-1 rounded-full text-xs">Télécharger</span>
+                                </Button>
                               ))}
                             </div>
                           </div>
