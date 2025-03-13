@@ -1,6 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { Language } from '@/components/Header';
 
 const testimonials = [
   {
@@ -134,6 +135,15 @@ const testimonials = [
 const TestimonialSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<'left' | 'right' | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('FR');
+
+  // Load language preference from localStorage
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
+      setCurrentLanguage(savedLanguage as Language);
+    }
+  }, []);
 
   const nextTestimonial = () => {
     setDirection('right');
@@ -145,13 +155,53 @@ const TestimonialSection = () => {
     setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  // Translations for the testimonial section
+  const translations: Record<string, Record<Language, string>> = {
+    'title': {
+      'FR': 'Ce que disent nos clients',
+      'EN': 'What our customers say',
+      'ES': 'Lo que dicen nuestros clientes',
+      'IT': 'Cosa dicono i nostri clienti',
+      'PT': 'O que nossos clientes dizem',
+      'RO': 'Ce spun clienții noștri'
+    },
+    'subtitle': {
+      'FR': 'Découvrez les témoignages de nos clients satisfaits qui ont trouvé leur bonheur chez Auto Adi.',
+      'EN': 'Discover testimonials from our satisfied customers who found their happiness at Auto Adi.',
+      'ES': 'Descubra testimonios de nuestros clientes satisfechos que encontraron su felicidad en Auto Adi.',
+      'IT': 'Scopri le testimonianze dei nostri clienti soddisfatti che hanno trovato la loro felicità presso Auto Adi.',
+      'PT': 'Descubra depoimentos de nossos clientes satisfeitos que encontraram sua felicidade na Auto Adi.',
+      'RO': 'Descoperiți mărturiile clienților noștri mulțumiți care și-au găsit fericirea la Auto Adi.'
+    },
+    'prevButton': {
+      'FR': 'Témoignage précédent',
+      'EN': 'Previous testimonial',
+      'ES': 'Testimonio anterior',
+      'IT': 'Testimonianza precedente',
+      'PT': 'Depoimento anterior',
+      'RO': 'Mărturia anterioară'
+    },
+    'nextButton': {
+      'FR': 'Témoignage suivant',
+      'EN': 'Next testimonial',
+      'ES': 'Siguiente testimonio',
+      'IT': 'Prossima testimonianza',
+      'PT': 'Próximo depoimento',
+      'RO': 'Următoarea mărturie'
+    }
+  };
+
+  const getTranslation = (key: string) => {
+    return translations[key]?.[currentLanguage] || translations[key]?.['FR'] || key;
+  };
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ce que disent nos clients</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{getTranslation('title')}</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Découvrez les témoignages de nos clients satisfaits qui ont trouvé leur bonheur chez Auto Adi.
+            {getTranslation('subtitle')}
           </p>
         </div>
 
@@ -160,7 +210,7 @@ const TestimonialSection = () => {
           <button 
             onClick={prevTestimonial} 
             className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 hover:bg-gray-100"
-            aria-label="Témoignage précédent"
+            aria-label={getTranslation('prevButton')}
           >
             <ChevronLeft className="h-6 w-6 text-gray-600" />
           </button>
@@ -168,7 +218,7 @@ const TestimonialSection = () => {
           <button 
             onClick={nextTestimonial} 
             className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 hover:bg-gray-100"
-            aria-label="Témoignage suivant"
+            aria-label={getTranslation('nextButton')}
           >
             <ChevronRight className="h-6 w-6 text-gray-600" />
           </button>
@@ -232,7 +282,7 @@ const TestimonialSection = () => {
                 className={`w-3 h-3 rounded-full mb-2 ${
                   index === activeIndex ? 'bg-brand-blue' : 'bg-gray-300'
                 }`}
-                aria-label={`Témoignage ${index + 1}`}
+                aria-label={`${getTranslation('nextButton')} ${index + 1}`}
               />
             ))}
           </div>

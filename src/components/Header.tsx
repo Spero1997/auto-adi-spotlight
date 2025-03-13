@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -12,13 +12,32 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 
+export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
+
+// Create a context to manage language state throughout the app
+export const getTranslation = (
+  key: string, 
+  language: Language,
+  translations: Record<string, Record<Language, string>>
+) => {
+  return translations[key]?.[language] || translations[key]?.['FR'] || key;
+};
+
 const Header = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState(0);
-  const [currentLanguage, setCurrentLanguage] = useState('FR');
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('FR');
+
+  // Load language preference from localStorage on component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
+      setCurrentLanguage(savedLanguage as Language);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -42,19 +61,136 @@ const Header = () => {
     navigate(path);
   };
 
-  const handleLanguageChange = (lang: string) => {
+  const languageNames: Record<Language, string> = {
+    'FR': 'Français',
+    'EN': 'English',
+    'ES': 'Español',
+    'IT': 'Italiano',
+    'PT': 'Português',
+    'RO': 'Română'
+  };
+
+  const languageFlags: Record<Language, string> = {
+    'FR': '🇫🇷',
+    'EN': '🇬🇧',
+    'ES': '🇪🇸',
+    'IT': '🇮🇹',
+    'PT': '🇵🇹',
+    'RO': '🇷🇴'
+  };
+
+  const handleLanguageChange = (lang: Language) => {
     setCurrentLanguage(lang);
+    localStorage.setItem('preferredLanguage', lang);
+    
+    const messages: Record<Language, string> = {
+      'FR': 'Le site est maintenant en Français',
+      'EN': 'The site is now in English',
+      'ES': 'El sitio ahora está en Español',
+      'IT': 'Il sito è ora in Italiano',
+      'PT': 'O site agora está em Português',
+      'RO': 'Site-ul este acum în Română'
+    };
+    
     toast({
-      title: "Langue modifiée",
-      description: `Le site est maintenant en ${lang === 'FR' ? 'Français' : lang === 'EN' ? 'Anglais' : lang === 'DE' ? 'Allemand' : 'Espagnol'}`,
+      title: languageNames[lang],
+      description: messages[lang],
     });
   };
 
   const handleCartClick = () => {
+    const cartMessages: Record<Language, string> = {
+      'FR': 'Votre panier est actuellement vide.',
+      'EN': 'Your cart is currently empty.',
+      'ES': 'Tu carrito está actualmente vacío.',
+      'IT': 'Il tuo carrello è attualmente vuoto.',
+      'PT': 'O seu carrinho está atualmente vazio.',
+      'RO': 'Coșul tău este momentan gol.'
+    };
+    
     toast({
-      title: "Panier",
-      description: "Votre panier est actuellement vide.",
+      title: cartMessages[currentLanguage].includes('cart') ? 'Cart' : 
+             cartMessages[currentLanguage].includes('carrito') ? 'Carrito' :
+             cartMessages[currentLanguage].includes('carrello') ? 'Carrello' :
+             cartMessages[currentLanguage].includes('coșul') ? 'Coș' : 'Panier',
+      description: cartMessages[currentLanguage],
     });
+  };
+
+  // Translations for menu items
+  const menuTranslations: Record<string, Record<Language, string>> = {
+    'vehicles': {
+      'FR': 'Véhicules',
+      'EN': 'Vehicles',
+      'ES': 'Vehículos',
+      'IT': 'Veicoli',
+      'PT': 'Veículos',
+      'RO': 'Vehicule'
+    },
+    'usedVehicles': {
+      'FR': 'Véhicules d\'occasion',
+      'EN': 'Used vehicles',
+      'ES': 'Vehículos usados',
+      'IT': 'Veicoli usati',
+      'PT': 'Veículos usados',
+      'RO': 'Vehicule uzate'
+    },
+    'commercialVehicles': {
+      'FR': 'Véhicules utilitaires',
+      'EN': 'Commercial vehicles',
+      'ES': 'Vehículos comerciales',
+      'IT': 'Veicoli commerciali',
+      'PT': 'Veículos comerciais',
+      'RO': 'Vehicule comerciale'
+    },
+    'services': {
+      'FR': 'Services',
+      'EN': 'Services',
+      'ES': 'Servicios',
+      'IT': 'Servizi',
+      'PT': 'Serviços',
+      'RO': 'Servicii'
+    },
+    'financing': {
+      'FR': 'Financement',
+      'EN': 'Financing',
+      'ES': 'Financiamiento',
+      'IT': 'Finanziamento',
+      'PT': 'Financiamento',
+      'RO': 'Finanțare'
+    },
+    'buyback': {
+      'FR': 'Rachat de votre véhicule',
+      'EN': 'Vehicle trade-in',
+      'ES': 'Recompra de su vehículo',
+      'IT': 'Riacquisto del tuo veicolo',
+      'PT': 'Recompra do seu veículo',
+      'RO': 'Răscumpărarea vehiculului'
+    },
+    'about': {
+      'FR': 'À propos',
+      'EN': 'About',
+      'ES': 'Acerca de',
+      'IT': 'Chi siamo',
+      'PT': 'Sobre nós',
+      'RO': 'Despre noi'
+    },
+    'language': {
+      'FR': 'Langue',
+      'EN': 'Language',
+      'ES': 'Idioma',
+      'IT': 'Lingua',
+      'PT': 'Idioma',
+      'RO': 'Limbă'
+    },
+    'cart': {
+      'FR': 'Panier',
+      'EN': 'Cart',
+      'ES': 'Carrito',
+      'IT': 'Carrello',
+      'PT': 'Carrinho',
+      'RO': 'Coș'
+    }
   };
 
   return (
@@ -81,15 +217,15 @@ const Header = () => {
                   variant="ghost"
                   className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
                 >
-                  Véhicules <ChevronDown className="ml-1 h-4 w-4" />
+                  {getTranslation('vehicles', currentLanguage, menuTranslations)} <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/occasion')}>
-                  Véhicules d'occasion
+                  {getTranslation('usedVehicles', currentLanguage, menuTranslations)}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/utilitaires')}>
-                  Véhicules utilitaires
+                  {getTranslation('commercialVehicles', currentLanguage, menuTranslations)}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -99,7 +235,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/services')}
             >
-              Services
+              {getTranslation('services', currentLanguage, menuTranslations)}
             </Button>
 
             <Button 
@@ -107,7 +243,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/financement')}
             >
-              Financement
+              {getTranslation('financing', currentLanguage, menuTranslations)}
             </Button>
 
             <Button 
@@ -115,7 +251,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/rachat')}
             >
-              Rachat de votre véhicule
+              {getTranslation('buyback', currentLanguage, menuTranslations)}
             </Button>
 
             <Button 
@@ -123,7 +259,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/a-propos')}
             >
-              À propos
+              {getTranslation('about', currentLanguage, menuTranslations)}
             </Button>
           </div>
 
@@ -137,7 +273,7 @@ const Header = () => {
                   size="sm"
                   className="flex items-center border-gray-300"
                 >
-                  <Globe className="h-4 w-4 mr-1" /> {currentLanguage}
+                  <Globe className="h-4 w-4 mr-1" /> {languageFlags[currentLanguage]} {currentLanguage}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -147,11 +283,17 @@ const Header = () => {
                 <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
                   🇬🇧 English
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('DE')}>
-                  🇩🇪 Deutsch
-                </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
                   🇪🇸 Español
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
+                  🇮🇹 Italiano
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
+                  🇵🇹 Português
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
+                  🇷🇴 Română
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -164,7 +306,7 @@ const Header = () => {
               onClick={handleCartClick}
             >
               <ShoppingCart className="h-4 w-4 mr-1" /> 
-              Panier
+              {getTranslation('cart', currentLanguage, menuTranslations)}
               {cartItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItems}
@@ -244,7 +386,7 @@ const Header = () => {
               >
                 <span className="flex items-center">
                   <Car className="mr-3 h-5 w-5 text-brand-blue" />
-                  Véhicules
+                  {getTranslation('vehicles', currentLanguage, menuTranslations)}
                 </span>
                 <ChevronDown className="h-5 w-5" />
               </Button>
@@ -255,14 +397,14 @@ const Header = () => {
                     onClick={() => handleNavigation('/vehicules/occasion')}
                     className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    Véhicules d'occasion
+                    {getTranslation('usedVehicles', currentLanguage, menuTranslations)}
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => handleNavigation('/vehicules/utilitaires')}
                     className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    Véhicules utilitaires
+                    {getTranslation('commercialVehicles', currentLanguage, menuTranslations)}
                   </Button>
                 </div>
               )}
@@ -273,7 +415,7 @@ const Header = () => {
               onClick={() => handleNavigation('/services')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              Services
+              {getTranslation('services', currentLanguage, menuTranslations)}
             </Button>
 
             <Button
@@ -281,7 +423,7 @@ const Header = () => {
               onClick={() => handleNavigation('/financement')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              Financement
+              {getTranslation('financing', currentLanguage, menuTranslations)}
             </Button>
 
             <Button
@@ -289,7 +431,7 @@ const Header = () => {
               onClick={() => handleNavigation('/rachat')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              Rachat de votre véhicule
+              {getTranslation('buyback', currentLanguage, menuTranslations)}
             </Button>
 
             <Button
@@ -297,7 +439,7 @@ const Header = () => {
               onClick={() => handleNavigation('/a-propos')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              À propos
+              {getTranslation('about', currentLanguage, menuTranslations)}
             </Button>
 
             {/* Langue (Mobile) */}
@@ -311,7 +453,7 @@ const Header = () => {
               >
                 <span className="flex items-center">
                   <Globe className="mr-3 h-5 w-5 text-brand-blue" />
-                  Langue ({currentLanguage})
+                  {getTranslation('language', currentLanguage, menuTranslations)} ({languageFlags[currentLanguage]})
                 </span>
                 <ChevronDown className="h-5 w-5" />
               </Button>
@@ -333,17 +475,31 @@ const Header = () => {
                   </Button>
                   <Button
                     variant="ghost"
-                    onClick={() => handleLanguageChange('DE')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    🇩🇪 Deutsch
-                  </Button>
-                  <Button
-                    variant="ghost"
                     onClick={() => handleLanguageChange('ES')}
                     className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇪🇸 Español
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleLanguageChange('IT')}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  >
+                    🇮🇹 Italiano
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleLanguageChange('PT')}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  >
+                    🇵🇹 Português
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleLanguageChange('RO')}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                  >
+                    🇷🇴 Română
                   </Button>
                 </div>
               )}
@@ -356,3 +512,4 @@ const Header = () => {
 };
 
 export default Header;
+
