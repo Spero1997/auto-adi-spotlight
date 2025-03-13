@@ -10,8 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const QuickSearch = () => {
+  const isMobile = useIsMobile();
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [selectedBudget, setSelectedBudget] = useState<string>('');
@@ -97,13 +99,13 @@ const QuickSearch = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 -mt-10 mb-16">
+    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} -mt-10 mb-16`}>
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1 w-full">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800">Recherche rapide</h3>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>Recherche rapide</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Select onValueChange={handleBrandChange} value={selectedBrand}>
-              <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder="Marque" />
               </SelectTrigger>
               <SelectContent>
@@ -134,7 +136,7 @@ const QuickSearch = () => {
             </Select>
 
             <Select value={selectedModel} onValueChange={handleModelChange}>
-              <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder="Modèle" />
               </SelectTrigger>
               <SelectContent>
@@ -153,7 +155,7 @@ const QuickSearch = () => {
             </Select>
 
             <Select value={selectedBudget} onValueChange={handleBudgetChange}>
-              <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder="Budget max" />
               </SelectTrigger>
               <SelectContent>
@@ -168,7 +170,7 @@ const QuickSearch = () => {
             </Select>
 
             <Select value={selectedFuel} onValueChange={handleFuelChange}>
-              <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
+              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder="Énergie" />
               </SelectTrigger>
               <SelectContent>
@@ -182,11 +184,11 @@ const QuickSearch = () => {
         </div>
         <div className="mt-4 md:mt-0 w-full md:w-auto">
           <Button 
-            className="bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto px-8 py-5 rounded-md text-white font-semibold flex items-center justify-center"
-            size="lg"
+            className={`bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto ${isMobile ? 'px-6 py-4 text-sm' : 'px-8 py-5'} rounded-md text-white font-semibold flex items-center justify-center`}
+            size={isMobile ? "default" : "lg"}
             onClick={handleSearch}
           >
-            <Search className="h-5 w-5 mr-2" />
+            <Search className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} mr-2`} />
             Rechercher
           </Button>
         </div>
