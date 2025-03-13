@@ -16,10 +16,10 @@ const Index = () => {
       <Header />
       <main>
         <HeroCarousel />
-        <QuickSearch />
-        <div>
-          <ConditionsHighlight />
+        <div className="container mx-auto px-4 relative z-10">
+          <QuickSearch />
         </div>
+        <ConditionsHighlight />
         <div className="mt-10">
           <FeaturedCars />
         </div>
