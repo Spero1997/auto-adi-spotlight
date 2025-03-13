@@ -22,6 +22,18 @@ const VehicleImport = () => {
       const vehicles = getImportedVehicles();
       console.log(`VehicleImport: ${vehicles.length} véhicules trouvés dans localStorage`);
       
+      // Recherche de la BMW X5
+      const bmwX5 = vehicles.find(v => 
+        v.brand === "BMW" && 
+        v.model.includes("X5") && 
+        v.year === 2016
+      );
+      
+      if (bmwX5) {
+        console.log("La BMW X5 xDrive est présente dans le catalogue", bmwX5);
+        toast.success("La BMW X5 xDrive a été ajoutée au catalogue");
+      }
+
       // Recherche de la Volkswagen T-Cross
       const tCross = vehicles.find(v => 
         v.brand === "Volkswagen" && 
@@ -60,11 +72,19 @@ const VehicleImport = () => {
             Ajoutez ou importez facilement des véhicules
           </p>
           
-          <Alert className="mb-6">
+          <Alert className="mb-4">
             <Info className="h-4 w-4" />
             <AlertTitle>Mise à jour effectuée</AlertTitle>
             <AlertDescription>
               La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue avec sa nouvelle image.
+            </AlertDescription>
+          </Alert>
+
+          <Alert className="mb-6 bg-blue-50 border-blue-200">
+            <Info className="h-4 w-4 text-blue-500" />
+            <AlertTitle>Nouvelle BMW ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X5 xDrive 2016 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
