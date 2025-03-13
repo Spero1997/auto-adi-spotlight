@@ -8,7 +8,7 @@ import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 
 const VehicleImport = () => {
-  const [activeTab, setActiveTab] = useState("import");
+  const [activeTab, setActiveTab] = useState("add");
   
   return (
     <>

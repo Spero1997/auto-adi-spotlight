@@ -1,10 +1,10 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { Car, Info, Check, X } from 'lucide-react';
+import { Car, Info, Check, X, Upload, Image as ImageIcon, Link } from 'lucide-react';
 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ImportedVehicle, addImportedVehicles } from '@/utils/vehicleImportService';
 import { useNavigate } from 'react-router-dom';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Schéma de validation du formulaire
 const formSchema = z.object({
@@ -28,7 +29,7 @@ const formSchema = z.object({
   interiorColor: z.string().optional(),
   doors: z.coerce.number().int().min(0).optional(),
   description: z.string().optional(),
-  image: z.string().url({ message: "L'URL de l'image n'est pas valide" }).optional().or(z.literal('')),
+  image: z.string().optional(),
   engine: z.string().optional(),
 });
 
@@ -37,6 +38,10 @@ type FormValues = z.infer<typeof formSchema>;
 const VehicleAddForm = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadMethod, setUploadMethod] = useState<'file' | 'url'>('file');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Initialisation du formulaire
   const form = useForm<FormValues>({
@@ -58,9 +63,61 @@ const VehicleAddForm = () => {
     },
   });
 
+  // Gestion du changement de fichier image
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Fichier trop volumineux", {
+          description: "La taille maximum est de 5Mo"
+        });
+        return;
+      }
+      
+      if (!file.type.startsWith('image/')) {
+        toast.error("Format non supporté", {
+          description: "Veuillez sélectionner une image (JPG, PNG, etc.)"
+        });
+        return;
+      }
+      
+      setSelectedImage(file);
+      
+      // Créer une URL pour la prévisualisation
+      const objectUrl = URL.createObjectURL(file);
+      setPreviewUrl(objectUrl);
+      
+      // Mettre à jour le champ du formulaire
+      form.setValue('image', objectUrl);
+      
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  };
+
+  // Gérer le clic sur le bouton d'upload
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
+      let imageUrl = data.image || '';
+      
+      // Si une image a été téléchargée via le sélecteur de fichier
+      if (selectedImage) {
+        try {
+          // Convertir l'image en base64 pour le stockage local
+          const base64Image = await convertFileToBase64(selectedImage);
+          imageUrl = base64Image;
+        } catch (error) {
+          console.error("Erreur lors de la conversion de l'image:", error);
+          toast.error("Erreur avec l'image", {
+            description: "Impossible de traiter l'image sélectionnée"
+          });
+        }
+      }
+      
       // Créer un objet véhicule au format attendu
       const newVehicle: ImportedVehicle = {
         id: `manual-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -75,7 +132,7 @@ const VehicleAddForm = () => {
         interiorColor: data.interiorColor || undefined,
         doors: data.doors,
         description: data.description || undefined,
-        image: data.image || 'https://via.placeholder.com/400x200?text=No+Image',
+        image: imageUrl || 'https://via.placeholder.com/400x200?text=No+Image',
         engine: data.engine || undefined,
         features: [],
       };
@@ -85,6 +142,8 @@ const VehicleAddForm = () => {
       
       // Réinitialiser le formulaire
       form.reset();
+      setSelectedImage(null);
+      setPreviewUrl('');
       
       toast.success("Véhicule ajouté avec succès", {
         description: `${data.brand} ${data.model} a été ajouté à votre inventaire.`
@@ -103,6 +162,16 @@ const VehicleAddForm = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Convertir un fichier en base64
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
   };
 
   const getFuelTypeOptions = () => [
@@ -235,6 +304,94 @@ const VehicleAddForm = () => {
                     </FormItem>
                   )}
                 />
+                
+                {/* Section image avec deux méthodes (fichier ou URL) */}
+                <div className="space-y-3">
+                  <FormLabel>Image du véhicule</FormLabel>
+                  
+                  <Tabs defaultValue="file" className="w-full" onValueChange={(value) => setUploadMethod(value as 'file' | 'url')}>
+                    <TabsList className="grid w-full grid-cols-2 mb-2">
+                      <TabsTrigger value="file" className="flex items-center">
+                        <Upload className="mr-2 h-4 w-4" />
+                        Télécharger
+                      </TabsTrigger>
+                      <TabsTrigger value="url" className="flex items-center">
+                        <Link className="mr-2 h-4 w-4" />
+                        URL
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="file" className="mt-0 space-y-3">
+                      {/* Prévisualisation de l'image */}
+                      {previewUrl && (
+                        <div className="relative w-full border rounded-md overflow-hidden mb-2">
+                          <img 
+                            src={previewUrl} 
+                            alt="Prévisualisation" 
+                            className="w-full h-40 object-contain bg-gray-50" 
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            className="absolute top-2 right-2"
+                            onClick={() => {
+                              setSelectedImage(null);
+                              setPreviewUrl('');
+                              form.setValue('image', '');
+                            }}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+                      
+                      {/* Input file caché */}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        ref={fileInputRef}
+                        className="hidden"
+                      />
+                      
+                      {/* Bouton de téléchargement */}
+                      {!previewUrl && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleUploadClick}
+                          className="w-full h-40 flex flex-col items-center justify-center border-dashed border-2 bg-gray-50"
+                        >
+                          <ImageIcon className="h-10 w-10 text-gray-400 mb-2" />
+                          <span className="text-gray-600">Cliquez pour sélectionner une image</span>
+                          <span className="text-xs text-gray-500 mt-1">JPG, PNG, etc. (max 5Mo)</span>
+                        </Button>
+                      )}
+                    </TabsContent>
+                    
+                    <TabsContent value="url" className="mt-0">
+                      <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input 
+                                placeholder="https://example.com/image.jpg" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Lien direct vers l'image du véhicule
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </TabsContent>
+                  </Tabs>
+                </div>
               </div>
               
               {/* Détails techniques */}
@@ -331,26 +488,6 @@ const VehicleAddForm = () => {
                 
                 <FormField
                   control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>URL de l'image</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="https://example.com/image.jpg" 
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Lien direct vers l'image du véhicule
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
@@ -373,7 +510,11 @@ const VehicleAddForm = () => {
               <Button 
                 type="button" 
                 variant="outline" 
-                onClick={() => form.reset()}
+                onClick={() => {
+                  form.reset();
+                  setSelectedImage(null);
+                  setPreviewUrl('');
+                }}
                 disabled={isSubmitting}
               >
                 <X className="mr-2 h-4 w-4" />
