@@ -536,8 +536,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/84f33a30-1107-44ab-a3d5-2dcd01623f88.png",
 };
 
-// Définition des véhicules par défaut - ajout de la nouvelle Audi Q7
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5, audiQ7];
+// Nouvelle Audi A3 Sportback
+const audiA3Sportback = {
+  id: `audi-a3-sportback-fixed`,
+  brand: "Audi",
+  model: "A3 Sportback 35 1,5 TFSI",
+  year: 2019,
+  mileage: 78000,
+  fuelType: "Essence",
+  price: 9000,
+  transmission: "Automatique",
+  exteriorColor: "Noir",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Sportback", "Phares LED", "Jantes alliage", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Régulateur de vitesse", "Capteurs de stationnement", "Sièges chauffants"],
+  image: "/lovable-uploads/2a03c911-dfae-4186-b265-5b9977a7b1cb.png",
+};
+
+// Définition des véhicules par défaut - ajout de la nouvelle Audi A3 Sportback
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5, audiQ7, audiA3Sportback];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -651,6 +678,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const bmwX1Exists = vehicles.some(v => v.id === bmwX1.id || (v.brand === "BMW" && v.model === "X1 xDrive 25e"));
   const audiQ5Exists = vehicles.some(v => v.id === audiQ5.id || (v.brand === "Audi" && v.model === "Q5 Quattro S-Tronic"));
   const audiQ7Exists = vehicles.some(v => v.id === audiQ7.id || (v.brand === "Audi" && v.model === "Q7 245HK-2XS-Line"));
+  const audiA3SportbackExists = vehicles.some(v => v.id === audiA3Sportback.id || (v.brand === "Audi" && v.model === "A3 Sportback 35 1,5 TFSI"));
   
   let changed = false;
   
@@ -746,6 +774,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!audiQ7Exists) {
     vehicles.push(audiQ7);
+    changed = true;
+  }
+  
+  if (!audiA3SportbackExists) {
+    vehicles.push(audiA3Sportback);
     changed = true;
   }
   
