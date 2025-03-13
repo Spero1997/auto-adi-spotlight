@@ -8,9 +8,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check } from 'lucide-react';
+import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check, CreditCard, Truck, FilePenLine } from 'lucide-react';
 import { toast } from 'sonner';
 import { useToast } from '@/hooks/use-toast';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useForm } from 'react-hook-form';
+import { sendOrderConfirmationEmail } from '@/utils/emailService';
+
+interface OrderFormData {
+  name: string;
+  email: string;
+  phone: string;
+  deliveryOption: 'pickup' | 'delivery';
+  deliveryAddress: string;
+  deliveryNotes?: string;
+  paymentMethod: 'bank' | 'cash' | 'card';
+  couponCode?: string;
+}
 
 const VehicleDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +34,20 @@ const VehicleDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const { toast: shadowToast } = useToast();
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  
+  const form = useForm<OrderFormData>({
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      deliveryOption: 'pickup',
+      deliveryAddress: '',
+      deliveryNotes: '',
+      paymentMethod: 'bank',
+      couponCode: '',
+    },
+  });
   
   useEffect(() => {
     if (!id) {
@@ -30,7 +60,18 @@ const VehicleDetails = () => {
       const vehicles = getImportedVehicles();
       console.log("Véhicules chargés:", vehicles.length);
       
-      const foundVehicle = vehicles.find(v => v.id === id);
+      // Essayer de trouver le véhicule par son ID exact
+      let foundVehicle = vehicles.find(v => v.id === id);
+      
+      // Si aucun véhicule n'est trouvé, essayer de faire correspondre avec une partie de l'URL
+      if (!foundVehicle) {
+        foundVehicle = vehicles.find(v => 
+          id.includes(v.id) || 
+          v.id.includes(id) || 
+          id.includes(v.brand.toLowerCase()) || 
+          id.includes(v.model.toLowerCase())
+        );
+      }
       
       if (foundVehicle) {
         console.log("Véhicule trouvé:", foundVehicle);
@@ -48,6 +89,50 @@ const VehicleDetails = () => {
       setIsLoading(false);
     }
   }, [id]);
+  
+  const handleBuyClick = () => {
+    setShowPaymentForm(true);
+    // Scroll to the payment form
+    setTimeout(() => {
+      document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+  
+  const onSubmitOrder = async (data: OrderFormData) => {
+    if (!vehicle) return;
+    
+    try {
+      // Ajouter les informations du véhicule au formulaire de commande
+      const orderData = {
+        ...data,
+        carModel: `${vehicle.brand} ${vehicle.model}`,
+        price: vehicle.price,
+        deposit: Math.round(vehicle.price * 0.2), // 20% d'acompte
+      };
+      
+      const result = await sendOrderConfirmationEmail(orderData);
+      
+      if (result) {
+        toast.success("Votre commande a été enregistrée avec succès");
+        shadowToast({
+          title: "Commande envoyée",
+          description: "Nous avons bien reçu votre demande d'achat",
+        });
+        setShowPaymentForm(false);
+        form.reset();
+      } else {
+        throw new Error("Échec de l'envoi de la commande");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la soumission de la commande:", error);
+      toast.error("Une erreur s'est produite lors de l'envoi de votre commande");
+      shadowToast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Impossible d'envoyer votre commande pour le moment. Veuillez réessayer plus tard.",
+      });
+    }
+  };
   
   if (isLoading) {
     return (
@@ -188,14 +273,7 @@ const VehicleDetails = () => {
                       <Button 
                         variant="default" 
                         className="w-full md:w-auto flex-1 bg-brand-blue hover:bg-brand-darkBlue"
-                        onClick={() => {
-                          // Utiliser les deux systèmes de toast pour s'assurer qu'au moins l'un fonctionne
-                          toast.success("Votre demande d'achat a été envoyée");
-                          shadowToast({
-                            title: "Commande envoyée",
-                            description: "Votre demande d'achat a été envoyée avec succès",
-                          });
-                        }}
+                        onClick={handleBuyClick}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         Acheter ce véhicule
@@ -224,6 +302,204 @@ const VehicleDetails = () => {
                   </div>
                 </div>
               </div>
+              
+              {showPaymentForm && (
+                <div id="payment-form" className="bg-white rounded-lg shadow-md p-6 mb-8">
+                  <h2 className="text-2xl font-bold mb-6 text-center">Finaliser votre achat</h2>
+                  <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium">Véhicule:</span>
+                      <span>{vehicle.brand} {vehicle.model}</span>
+                    </div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium">Prix total:</span>
+                      <span className="font-bold">{vehicle.price.toLocaleString('fr-FR')} €</span>
+                    </div>
+                    <div className="flex justify-between items-center text-brand-blue">
+                      <span className="font-medium">Acompte (20%):</span>
+                      <span className="font-bold">{Math.round(vehicle.price * 0.2).toLocaleString('fr-FR')} €</span>
+                    </div>
+                  </div>
+                  
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmitOrder)} className="space-y-6">
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold flex items-center"><FilePenLine className="mr-2 h-5 w-5" /> Vos coordonnées</h3>
+                          
+                          <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Nom complet</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="John Doe" required {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                  <Input type="email" placeholder="votre@email.com" required {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Téléphone</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="+33 6 12 34 56 78" required {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold flex items-center"><Truck className="mr-2 h-5 w-5" /> Livraison</h3>
+                          
+                          <FormField
+                            control={form.control}
+                            name="deliveryOption"
+                            render={({ field }) => (
+                              <FormItem className="space-y-3">
+                                <FormLabel>Option de livraison</FormLabel>
+                                <FormControl>
+                                  <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-col space-y-1"
+                                  >
+                                    <div className="flex items-center space-x-2">
+                                      <RadioGroupItem value="pickup" id="pickup" />
+                                      <label htmlFor="pickup" className="cursor-pointer">Enlèvement au showroom</label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                      <RadioGroupItem value="delivery" id="delivery" />
+                                      <label htmlFor="delivery" className="cursor-pointer">Livraison à domicile</label>
+                                    </div>
+                                  </RadioGroup>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="deliveryAddress"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Adresse de livraison</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Votre adresse complète" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          <FormField
+                            control={form.control}
+                            name="deliveryNotes"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Instructions spéciales (optionnel)</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Code portail, instructions..." {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="border-t border-gray-200 pt-6">
+                        <h3 className="text-lg font-semibold mb-4 flex items-center"><CreditCard className="mr-2 h-5 w-5" /> Méthode de paiement</h3>
+                        
+                        <FormField
+                          control={form.control}
+                          name="paymentMethod"
+                          render={({ field }) => (
+                            <FormItem className="space-y-3">
+                              <FormControl>
+                                <RadioGroup
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                  className="flex flex-col space-y-1"
+                                >
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="bank" id="bank" />
+                                    <label htmlFor="bank" className="cursor-pointer">Virement bancaire</label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="cash" id="cash" />
+                                    <label htmlFor="cash" className="cursor-pointer">Paiement en espèces</label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="card" id="card" />
+                                    <label htmlFor="card" className="cursor-pointer">Carte bancaire</label>
+                                  </div>
+                                </RadioGroup>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <div className="mt-4">
+                          <FormField
+                            control={form.control}
+                            name="couponCode"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Code promo (optionnel)</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Si vous avez un code promo" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col md:flex-row gap-4 pt-6">
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          className="w-full md:w-auto"
+                          onClick={() => setShowPaymentForm(false)}
+                        >
+                          Annuler
+                        </Button>
+                        <Button 
+                          type="submit" 
+                          className="w-full md:w-auto md:ml-auto bg-brand-blue hover:bg-brand-darkBlue"
+                        >
+                          Confirmer la commande
+                        </Button>
+                      </div>
+                    </form>
+                  </Form>
+                </div>
+              )}
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
