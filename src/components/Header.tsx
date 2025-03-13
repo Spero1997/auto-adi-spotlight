@@ -1,10 +1,11 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, Phone, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
@@ -20,6 +21,16 @@ const Header = () => {
     }
   };
 
+  const handleNavigation = (path: string) => {
+    // Fermer le menu mobile si ouvert
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+    
+    // Naviguer vers la page
+    navigate(path);
+  };
+
   return (
     <header className="w-full bg-white shadow-md">
       <div className="container px-4 mx-auto">
@@ -28,9 +39,12 @@ const Header = () => {
           <a href="tel:+33123456789" className="flex items-center mr-4 text-gray-600 hover:text-brand-blue">
             <Phone className="h-4 w-4 mr-1" /> 01 23 45 67 89
           </a>
-          <a href="#locations" className="flex items-center text-gray-600 hover:text-brand-blue">
+          <button 
+            onClick={() => handleNavigation('/contact#locations')}
+            className="flex items-center text-gray-600 hover:text-brand-blue"
+          >
             <MapPin className="h-4 w-4 mr-1" /> Nos concessions
-          </a>
+          </button>
         </div>
         
         {/* Main navigation */}
@@ -49,32 +63,61 @@ const Header = () => {
               <button
                 className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium flex items-center"
                 onClick={() => toggleDropdown('vehicles')}
+                aria-expanded={activeDropdown === 'vehicles'}
+                aria-haspopup="true"
               >
                 Véhicules <ChevronDown className="ml-1 h-4 w-4" />
               </button>
-              <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+              <div 
+                className={cn(
+                  "absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5",
+                  activeDropdown === 'vehicles' ? "block" : "hidden group-hover:block"
+                )}
+              >
                 <div className="py-1">
-                  <Link to="/vehicules/occasion" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Véhicules d'occasion</Link>
-                  <Link to="/vehicules/utilitaires" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Véhicules utilitaires</Link>
+                  <button 
+                    onClick={() => handleNavigation('/vehicules/occasion')} 
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Véhicules d'occasion
+                  </button>
+                  <button 
+                    onClick={() => handleNavigation('/vehicules/utilitaires')} 
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Véhicules utilitaires
+                  </button>
                 </div>
               </div>
             </div>
 
-            <Link to="/services" className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium">
+            <button 
+              onClick={() => handleNavigation('/services')} 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+            >
               Services
-            </Link>
+            </button>
 
-            <Link to="/financement" className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium">
+            <button 
+              onClick={() => handleNavigation('/financement')} 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+            >
               Financement
-            </Link>
+            </button>
 
-            <Link to="/rachat" className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium">
+            <button 
+              onClick={() => handleNavigation('/rachat')} 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+            >
               Rachat de votre véhicule
-            </Link>
+            </button>
 
-            <Link to="/a-propos" className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium">
+            <button 
+              onClick={() => handleNavigation('/a-propos')} 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+            >
               À propos
-            </Link>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -82,6 +125,7 @@ const Header = () => {
             <button
               onClick={toggleMenu}
               className="p-2 rounded-md text-gray-800 hover:text-brand-blue focus:outline-none"
+              aria-expanded={isMenuOpen}
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -101,13 +145,13 @@ const Header = () => {
         )}
       >
         <div className="flex justify-between items-center p-4 border-b">
-          <Link to="/" className="flex items-center">
+          <button onClick={() => handleNavigation('/')} className="flex items-center">
             <img 
               src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
               alt="Auto Adi" 
               className="h-10"
             />
-          </Link>
+          </button>
           <button
             onClick={toggleMenu}
             className="p-2 rounded-md text-gray-800 hover:text-brand-blue focus:outline-none"
@@ -122,6 +166,8 @@ const Header = () => {
               <button
                 className="w-full flex justify-between items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                 onClick={() => toggleDropdown('vehicles-mobile')}
+                aria-expanded={activeDropdown === 'vehicles-mobile'}
+                aria-haspopup="true"
               >
                 <span className="flex items-center">
                   <Car className="mr-3 h-5 w-5 text-brand-blue" />
@@ -131,55 +177,49 @@ const Header = () => {
               </button>
               {activeDropdown === 'vehicles-mobile' && (
                 <div className="pl-10 mt-1 space-y-1">
-                  <Link
-                    to="/vehicules/occasion"
-                    className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                    onClick={toggleMenu}
+                  <button
+                    onClick={() => handleNavigation('/vehicules/occasion')}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     Véhicules d'occasion
-                  </Link>
-                  <Link
-                    to="/vehicules/utilitaires"
-                    className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                    onClick={toggleMenu}
+                  </button>
+                  <button
+                    onClick={() => handleNavigation('/vehicules/utilitaires')}
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     Véhicules utilitaires
-                  </Link>
+                  </button>
                 </div>
               )}
             </div>
 
-            <Link
-              to="/services"
-              className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              onClick={toggleMenu}
+            <button
+              onClick={() => handleNavigation('/services')}
+              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
               Services
-            </Link>
+            </button>
 
-            <Link
-              to="/financement"
-              className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              onClick={toggleMenu}
+            <button
+              onClick={() => handleNavigation('/financement')}
+              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
               Financement
-            </Link>
+            </button>
 
-            <Link
-              to="/rachat"
-              className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              onClick={toggleMenu}
+            <button
+              onClick={() => handleNavigation('/rachat')}
+              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
               Rachat de votre véhicule
-            </Link>
+            </button>
 
-            <Link
-              to="/a-propos"
-              className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-              onClick={toggleMenu}
+            <button
+              onClick={() => handleNavigation('/a-propos')}
+              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
               À propos
-            </Link>
+            </button>
           </div>
 
           <div className="mt-6 pt-6 border-t border-gray-200">
@@ -191,14 +231,13 @@ const Header = () => {
                 <Phone className="mr-3 h-5 w-5 text-brand-blue" />
                 01 23 45 67 89
               </a>
-              <a
-                href="#locations"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                onClick={toggleMenu}
+              <button
+                onClick={() => handleNavigation('/contact#locations')}
+                className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
               >
                 <MapPin className="mr-3 h-5 w-5 text-brand-blue" />
                 Nos concessions
-              </a>
+              </button>
             </div>
           </div>
         </nav>
