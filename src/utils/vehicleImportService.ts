@@ -509,8 +509,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/ee5703fa-4d1c-4b0d-8ee7-63360be7c312.png",
 };
 
-// Définition des véhicules par défaut - ajout de la nouvelle Audi Q5
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5];
+// Nouvelle Audi Q7 245HK-2XS-Line
+const audiQ7 = {
+  id: `audi-q7-fixed`,
+  brand: "Audi",
+  model: "Q7 245HK-2XS-Line",
+  year: 2012,
+  mileage: 262000,
+  fuelType: "Diesel",
+  price: 5000,
+  transmission: "Automatique",
+  exteriorColor: "Noir mate",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["2XS-Line", "Phares LED", "Jantes sport", "Intérieur cuir", "Système de navigation", "Bluetooth", "Climatisation automatique", "Caméra de recul", "Sièges chauffants", "Suspensions pneumatiques"],
+  image: "/lovable-uploads/84f33a30-1107-44ab-a3d5-2dcd01623f88.png",
+};
+
+// Définition des véhicules par défaut - ajout de la nouvelle Audi Q7
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1, audiQ5, audiQ7];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -623,6 +650,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const kiaNiroExists = vehicles.some(v => v.id === kiaNiro.id || (v.brand === "Kia" && v.model === "Niro Hybride 149 CH"));
   const bmwX1Exists = vehicles.some(v => v.id === bmwX1.id || (v.brand === "BMW" && v.model === "X1 xDrive 25e"));
   const audiQ5Exists = vehicles.some(v => v.id === audiQ5.id || (v.brand === "Audi" && v.model === "Q5 Quattro S-Tronic"));
+  const audiQ7Exists = vehicles.some(v => v.id === audiQ7.id || (v.brand === "Audi" && v.model === "Q7 245HK-2XS-Line"));
   
   let changed = false;
   
@@ -713,6 +741,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!audiQ5Exists) {
     vehicles.push(audiQ5);
+    changed = true;
+  }
+  
+  if (!audiQ7Exists) {
+    vehicles.push(audiQ7);
     changed = true;
   }
   

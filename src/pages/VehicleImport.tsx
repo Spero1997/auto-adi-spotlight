@@ -94,6 +94,18 @@ const VehicleImport = () => {
         toast.success("L'Audi Q5 Quattro S-Tronic a été ajoutée au catalogue");
       }
       
+      // Recherche de l'Audi Q7
+      const audiQ7 = vehicles.find(v => 
+        v.brand === "Audi" && 
+        v.model.includes("Q7 245HK") && 
+        v.year === 2012
+      );
+      
+      if (audiQ7) {
+        console.log("L'Audi Q7 245HK-2XS-Line est présente dans le catalogue", audiQ7);
+        toast.success("L'Audi Q7 245HK-2XS-Line a été ajoutée au catalogue");
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -157,11 +169,19 @@ const VehicleImport = () => {
             </AlertDescription>
           </Alert>
           
-          <Alert className="mb-6 bg-indigo-50 border-indigo-200">
+          <Alert className="mb-4 bg-indigo-50 border-indigo-200">
             <Info className="h-4 w-4 text-indigo-500" />
             <AlertTitle>Nouvelle Audi Q5 ajoutée</AlertTitle>
             <AlertDescription>
               L'Audi Q5 Quattro S-Tronic 2014 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-purple-50 border-purple-200">
+            <Info className="h-4 w-4 text-purple-500" />
+            <AlertTitle>Nouvelle Audi Q7 ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi Q7 245HK-2XS-Line 2012 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
