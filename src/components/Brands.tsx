@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const brandsData = [
   {
     name: "Peugeot",
-    logo: "https://upload.wikimedia.org/wikipedia/fr/thumb/a/a8/Peugeot_2021.svg/1200px-Peugeot_2021.svg.png",
+    logo: "https://logodownload.org/wp-content/uploads/2019/09/peugeot-logo-1.png",
     link: "/marques/peugeot"
   },
   {
