@@ -14,6 +14,8 @@ import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Car, ArrowRight, Filter, RefreshCw } from 'lucide-react';
+import { getCatalogIdFromUrl, getImportedVehicles } from '@/utils/vehicleImportService';
+import { toast } from 'sonner';
 
 // Liste des marques de voitures pour le filtre
 const carBrands = [
@@ -38,6 +40,7 @@ const VehiculesOccasion = () => {
   const [sort, setSort] = useState('price-asc');
   const [filtersApplied, setFiltersApplied] = useState(false);
   const location = useLocation();
+  const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
   
   // Features filters
   const [filterAirbags, setFilterAirbags] = useState(false);
@@ -65,6 +68,32 @@ const VehiculesOccasion = () => {
     setFiltersApplied(false);
   };
 
+  useEffect(() => {
+    const checkCatalogFromUrl = async () => {
+      const catalogId = getCatalogIdFromUrl();
+      if (catalogId) {
+        setIsLoadingCatalog(true);
+        try {
+          // Get the vehicles - the vehicleImportService will handle using the URL catalog
+          const vehicles = getImportedVehicles();
+          
+          if (vehicles.length > 0) {
+            toast.success(`Catalogue de ${vehicles.length} véhicule(s) chargé avec succès`);
+          } else {
+            toast.error("Aucun véhicule trouvé dans ce catalogue");
+          }
+        } catch (error) {
+          console.error('Erreur lors du chargement du catalogue:', error);
+          toast.error("Erreur lors du chargement du catalogue");
+        } finally {
+          setIsLoadingCatalog(false);
+        }
+      }
+    };
+    
+    checkCatalogFromUrl();
+  }, [location.search]); // Re-run when the URL search params change
+  
   return (
     <>
       <Helmet>
@@ -82,6 +111,15 @@ const VehiculesOccasion = () => {
               Découvrez notre sélection de véhicules d'occasion contrôlés et garantis.
               Toutes nos voitures sont inspectées pour vous assurer qualité et fiabilité.
             </p>
+            
+            {isLoadingCatalog && (
+              <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-blue-500 border-r-transparent"></div>
+                  <p className="text-blue-600">Chargement du catalogue partagé...</p>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="mb-10">

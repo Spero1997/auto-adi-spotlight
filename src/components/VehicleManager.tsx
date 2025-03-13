@@ -10,7 +10,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
+import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { toast } from 'sonner';
 
 const VehicleManager = () => {
   const { toast } = useToast();
@@ -22,15 +23,17 @@ const VehicleManager = () => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Charger les véhicules lors du montage du composant
   useEffect(() => {
     loadVehicles();
     
-    // Pour s'assurer que les données sont actualisées lorsque localStorage change
     window.addEventListener('storage', loadVehicles);
+    window.addEventListener('vehiclesUpdated', loadVehicles);
+    window.addEventListener('catalogChanged', loadVehicles);
     
     return () => {
       window.removeEventListener('storage', loadVehicles);
+      window.removeEventListener('vehiclesUpdated', loadVehicles);
+      window.removeEventListener('catalogChanged', loadVehicles);
     };
   }, []);
 
@@ -38,9 +41,20 @@ const VehicleManager = () => {
     try {
       setIsLoading(true);
       console.log("Chargement des véhicules...");
+      const catalogId = getCatalogIdFromUrl();
+      console.log(`Catalogue actuel: ${catalogId || 'local'}`);
+      
       const importedVehicles = getImportedVehicles();
       console.log(`${importedVehicles.length} véhicules chargés`);
       setVehicles(importedVehicles);
+      
+      if (importedVehicles.length === 0) {
+        toast({
+          title: "Catalogue vide",
+          description: "Aucun véhicule trouvé dans ce catalogue.",
+          variant: "default"
+        });
+      }
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
       toast({
@@ -104,16 +118,13 @@ const VehicleManager = () => {
 
   const handleSortChange = (value: string) => {
     if (value === sortBy) {
-      // Si on clique sur le même critère, on change la direction
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
-      // Sinon, on change le critère et on reset la direction
       setSortBy(value);
       setSortDirection('asc');
     }
   };
 
-  // Fonction pour filtrer et trier les véhicules
   const filteredAndSortedVehicles = vehicles
     .filter(vehicle => {
       if (!searchTerm) return true;
@@ -282,7 +293,6 @@ const VehicleManager = () => {
         )}
       </div>
       
-      {/* Dialogue d'édition */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto">
           <DialogHeader>

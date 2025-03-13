@@ -1,16 +1,23 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Share2, Copy, Check, Link as LinkIcon } from "lucide-react";
 import { toast } from "sonner";
-import { generateShareableUrl } from "@/utils/vehicleImportService";
+import { generateShareableUrl, getCatalogIdFromUrl } from "@/utils/vehicleImportService";
 
 const CatalogShare = () => {
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(false);
   const [shareableUrl, setShareableUrl] = useState("");
+  const [isSharedCatalog, setIsSharedCatalog] = useState(false);
+
+  // Vérifie si on est actuellement sur un catalogue partagé
+  useEffect(() => {
+    const catalogId = getCatalogIdFromUrl();
+    setIsSharedCatalog(!!catalogId);
+  }, []);
 
   const handleOpenShare = () => {
     setShareableUrl(generateShareableUrl());
@@ -37,13 +44,17 @@ const CatalogShare = () => {
         className="flex items-center gap-2"
       >
         <Share2 className="h-4 w-4" />
-        Partager le catalogue
+        {isSharedCatalog ? "Partager ce catalogue" : "Partager le catalogue"}
       </Button>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Partager votre catalogue</DialogTitle>
           <DialogDescription>
             Partagez ce lien pour que d'autres personnes puissent voir votre catalogue de véhicules sur leurs appareils.
+            <br /><br />
+            <span className="text-amber-600 font-medium">
+              Note: Assurez-vous de copier ce lien et de l'envoyer à vos collaborateurs pour qu'ils puissent accéder au même catalogue.
+            </span>
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2 mt-4">

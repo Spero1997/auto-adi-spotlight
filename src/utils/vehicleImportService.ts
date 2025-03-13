@@ -52,19 +52,26 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
   try {
     // Vérifier d'abord si un ID de catalogue est dans l'URL
     const urlCatalogId = getCatalogIdFromUrl();
+    let localCatalogId = localStorage.getItem(CATALOG_ID_KEY);
+    
+    // Si on a un ID de catalogue dans l'URL, on le synchronise avec le local
     if (urlCatalogId) {
-      // Si l'ID de catalogue dans l'URL est différent de celui en local, on adopte celui de l'URL
-      const localCatalogId = localStorage.getItem(CATALOG_ID_KEY);
+      // Adopter le catalog ID de l'URL dans le localStorage pour la synchronisation
+      localStorage.setItem(CATALOG_ID_KEY, urlCatalogId);
+      console.log(`Catalogue synchronisé depuis l'URL: ${urlCatalogId}`);
+      
+      // Si l'ID de catalogue a changé, déclenchons un événement pour avertir les autres composants
       if (localCatalogId !== urlCatalogId) {
-        localStorage.setItem(CATALOG_ID_KEY, urlCatalogId);
-        console.log(`Nouveau catalogue adopté depuis l'URL: ${urlCatalogId}`);
+        console.log(`Catalogue changé: ${localCatalogId} -> ${urlCatalogId}`);
+        // Cet événement permettra aux autres composants de savoir qu'ils doivent rafraîchir leurs données
+        window.dispatchEvent(new Event('catalogChanged'));
       }
     }
     
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsedData = JSON.parse(stored);
-      console.log(`Véhicules récupérés du localStorage:`, parsedData);
+      console.log(`Véhicules récupérés du localStorage (${urlCatalogId ? 'via URL catalog' : 'local'})`, parsedData);
       
       // Vérifier que les données sont un tableau
       if (Array.isArray(parsedData)) {
@@ -94,6 +101,9 @@ export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
     // S'assurer que l'ID de catalogue est dans l'URL
     const catalogId = getCatalogId();
     saveCatalogIdToUrl(catalogId);
+    
+    // Déclencher un événement pour informer les autres composants que les données ont changé
+    window.dispatchEvent(new Event('vehiclesUpdated'));
     
     console.log(`${vehicles.length} véhicules enregistrés dans le localStorage avec catalogId: ${catalogId}`);
   } catch (error) {
