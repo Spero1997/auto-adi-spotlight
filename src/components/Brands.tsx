@@ -1,5 +1,5 @@
 
-import { ArrowRight, CircleAlert } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -111,23 +111,10 @@ const Brands = () => {
             <Link
               key={brand.name}
               to={brand.link}
-              className="bg-white rounded-lg border border-gray-200 p-6 flex flex-col justify-center items-center h-32 card-hover"
+              className="bg-white rounded-lg border border-gray-200 p-6 flex flex-col justify-center items-center h-32 card-hover transition-all hover:shadow-md hover:border-brand-blue"
             >
-              {/* If image status is undefined (still loading) or true (loaded successfully), show the image */}
-              {(brandImages[brand.name] === undefined || brandImages[brand.name]) ? (
-                <img
-                  src={brand.logo}
-                  alt={brand.name}
-                  className="max-h-16 max-w-full mb-2"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    setBrandImages(prev => ({...prev, [brand.name]: false}));
-                  }}
-                />
-              ) : null}
-              
-              {/* Always show the brand name for better accessibility */}
-              <span className="font-medium text-center">{brand.name}</span>
+              {/* Simplified approach - just show the brand name with consistent styling */}
+              <span className="font-medium text-center text-lg">{brand.name}</span>
             </Link>
           ))}
         </div>
