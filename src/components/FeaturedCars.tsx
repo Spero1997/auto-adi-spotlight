@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Car, ShieldCheck, Tag, Fuel, Calendar } from 'lucide-react';
+import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
