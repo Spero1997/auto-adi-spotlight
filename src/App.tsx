@@ -19,6 +19,7 @@ import CGV from "./pages/CGV";
 import Conditions from "./pages/Conditions";
 import OrdersBackup from "./pages/OrdersBackup";
 import VehiculesOccasion from "./pages/VehiculesOccasion";
+import VehicleManagement from "./pages/VehicleManagement";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,9 @@ const App = () => (
             <Route path="/cookies" element={<Cookies />} />
             <Route path="/cgv" element={<CGV />} />
             <Route path="/conditions" element={<Conditions />} />
+            
+            {/* Routes pour la gestion des véhicules */}
+            <Route path="/admin/vehicules" element={<VehicleManagement />} />
             
             {/* Routes pour les pages secondaires */}
             <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}

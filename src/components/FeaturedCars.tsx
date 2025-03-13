@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift, Truck, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sendOrderConfirmationEmail, sendPaymentProofEmail } from '@/utils/emailService';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Textarea } from "@/components/ui/textarea";
+import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 
 interface CarProps {
   id: string;
@@ -35,7 +36,7 @@ interface FeaturedCarsProps {
   searchFilters?: SearchFilters;
 }
 
-const cars = [
+const defaultCars = [
   {
     id: '2',
     brand: 'Renault',
@@ -65,36 +66,6 @@ const cars = [
     fuelType: 'Hybride',
     price: 27500,
     image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-  },
-  {
-    id: '7',
-    brand: 'Peugeot',
-    model: '208',
-    year: 2022,
-    mileage: 12000,
-    fuelType: 'Diesel',
-    price: 18900,
-    image: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-  },
-  {
-    id: '8',
-    brand: 'BMW',
-    model: 'Série 1',
-    year: 2021,
-    mileage: 24000,
-    fuelType: 'Essence',
-    price: 32500,
-    image: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
-  },
-  {
-    id: '9',
-    brand: 'Volkswagen',
-    model: 'Golf',
-    year: 2021,
-    mileage: 19000,
-    fuelType: 'Diesel',
-    price: 25800,
-    image: 'https://images.unsplash.com/photo-1551830820-330a71b99659?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80'
   }
 ];
 
@@ -122,6 +93,20 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
   const [deliveryPostalCode, setDeliveryPostalCode] = useState('');
   const [deliveryNotes, setDeliveryNotes] = useState('');
   const [deliveryOption, setDeliveryOption] = useState<'pickup' | 'delivery'>('pickup');
+  
+  const [cars, setCars] = useState<ImportedVehicle[]>([]);
+  
+  useEffect(() => {
+    const importedVehicles = getImportedVehicles();
+    
+    if (importedVehicles && importedVehicles.length > 0) {
+      console.log("Utilisation des véhicules importés:", importedVehicles.length);
+      setCars(importedVehicles);
+    } else {
+      console.log("Aucun véhicule importé trouvé, utilisation des véhicules par défaut");
+      setCars(defaultCars);
+    }
+  }, []);
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
@@ -279,6 +264,9 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
                   src={car.image}
                   alt={`${car.brand} ${car.model}`}
                   className="w-full h-48 object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=No+Image';
+                  }}
                 />
                 <div className="absolute top-2 right-2 bg-brand-orange text-white text-sm font-semibold px-3 py-1 rounded-full">
                   Occasion
@@ -513,7 +501,7 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
                       
                       <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
                         <p className="text-sm text-amber-800 flex items-start">
-                          <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0 mt-0.5" />
+                          <AlertCircle className="h-3 w-3 mr-1" />
                           Les frais de livraison à domicile sont inclus dans l'acompte de 20%. Aucun supplément ne sera demandé pour la livraison.
                         </p>
                       </div>
@@ -703,4 +691,3 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
 };
 
 export default FeaturedCars;
-
