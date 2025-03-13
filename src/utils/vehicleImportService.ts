@@ -293,8 +293,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/cd88c053-fbf9-490b-862a-20760071cc69.png",
 };
 
+// Nouvelle Audi A6 3.0 TDI V6 S Line
+const audiA6 = {
+  id: `audi-a6-fixed`,
+  brand: "Audi",
+  model: "A6 3.0 TDI V6 S Line",
+  year: 2016,
+  mileage: 99800,
+  fuelType: "Diesel",
+  price: 10000,
+  transmission: "Automatique",
+  exteriorColor: "Noir",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["S Line", "Intérieur cuir", "Système de navigation", "Bluetooth", "Caméra de recul", "Sièges chauffants", "Jantes alliage", "Climatisation automatique", "Régulateur de vitesse", "Aide au stationnement"],
+  image: "/lovable-uploads/46b47302-22df-4ef8-a230-63621a783e09.png",
+};
+
 // Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e];
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -399,6 +426,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const volvoV60Exists = vehicles.some(v => v.id === volvoV60.id || (v.brand === "Volvo" && v.model === "V60 T8 Twin Engine" && v.mileage === 119000));
   const volvoV60SecondExists = vehicles.some(v => v.id === volvoV60Second.id || (v.brand === "Volvo" && v.model === "V60 T8 Twin Engine" && v.mileage === 132000));
   const mercedesC350eExists = vehicles.some(v => v.id === mercedesC350e.id || (v.brand === "Mercedes" && v.model === "Benz Classe C AMG 350 e"));
+  const audiA6Exists = vehicles.some(v => v.id === audiA6.id || (v.brand === "Audi" && v.model === "A6 3.0 TDI V6 S Line"));
   
   let changed = false;
   
@@ -449,6 +477,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!mercedesC350eExists) {
     vehicles.push(mercedesC350e);
+    changed = true;
+  }
+  
+  if (!audiA6Exists) {
+    vehicles.push(audiA6);
     changed = true;
   }
   
@@ -523,7 +556,7 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed' || id === 'volvo-v60-fixed' || id === 'volvo-v60-second-fixed' || id === 'mercedes-c350e-fixed') {
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed' || id === 'volvo-v60-fixed' || id === 'volvo-v60-second-fixed' || id === 'mercedes-c350e-fixed' || id === 'audi-a6-fixed') {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }
