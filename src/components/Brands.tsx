@@ -32,6 +32,36 @@ const brandsData = [
     name: "Mercedes",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/1200px-Mercedes-Logo.svg.png",
     link: "/marques/mercedes"
+  },
+  {
+    name: "Volkswagen",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png",
+    link: "/marques/volkswagen"
+  },
+  {
+    name: "Toyota",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/1024px-Toyota_carlogo.svg.png",
+    link: "/marques/toyota"
+  },
+  {
+    name: "Honda",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/2560px-Honda.svg.png",
+    link: "/marques/honda"
+  },
+  {
+    name: "Ford",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Ford_Motor_Company_Logo.svg/2560px-Ford_Motor_Company_Logo.svg.png",
+    link: "/marques/ford"
+  },
+  {
+    name: "Hyundai",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/2560px-Hyundai_Motor_Company_logo.svg.png",
+    link: "/marques/hyundai"
+  },
+  {
+    name: "Nissan",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Nissan_logo.png/800px-Nissan_logo.png",
+    link: "/marques/nissan"
   }
 ];
 
