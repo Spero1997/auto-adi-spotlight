@@ -185,8 +185,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/45e8b867-e03c-4870-9001-f18a3fcac619.png",
 };
 
+// Nouvelle BMW Série 2
+const bmwSerie2 = {
+  id: `bmw-serie2-fixed`,
+  brand: "BMW",
+  model: "Série 2 225xe iPerfomance",
+  year: 2020,
+  mileage: 119000,
+  fuelType: "Essence",
+  price: 14500,
+  transmission: "Automatique",
+  exteriorColor: "Noir",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Hybride rechargeable", "Système de navigation", "Écran tactile", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Sièges chauffants", "Jantes alliage", "Régulateur de vitesse", "Capteurs de stationnement"],
+  image: "/lovable-uploads/25665832-6bfa-4f10-b6a9-1f6ad5052b3a.png",
+};
+
 // Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA];
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -287,6 +314,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const jeepExists = vehicles.some(v => v.id === jeepCompass.id || (v.brand === "Jeep" && v.model === "Compass 1,3 T4 PHEV 4Xe"));
   const mercedesGLAExists = vehicles.some(v => v.id === mercedesGLA.id || (v.brand === "Mercedes" && v.model === "Benz GLA"));
   const mercedesCLAExists = vehicles.some(v => v.id === mercedesCLA.id || (v.brand === "Mercedes" && v.model === "Benz CLA AMG 250 E"));
+  const bmwSerie2Exists = vehicles.some(v => v.id === bmwSerie2.id || (v.brand === "BMW" && v.model === "Série 2 225xe iPerfomance"));
   
   let changed = false;
   
@@ -317,6 +345,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!mercedesCLAExists) {
     vehicles.push(mercedesCLA);
+    changed = true;
+  }
+  
+  if (!bmwSerie2Exists) {
+    vehicles.push(bmwSerie2);
     changed = true;
   }
   
@@ -391,7 +424,7 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed') {
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed') {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }

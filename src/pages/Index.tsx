@@ -33,6 +33,12 @@ const Index = () => {
         }, 500);
       }
     }
+    
+    // Check for the catalog parameter and pre-load if necessary
+    const catalogId = searchParams.get('catalog');
+    if (catalogId) {
+      console.log(`Catalog found in URL: ${catalogId}, will pre-load vehicles`);
+    }
   }, [searchParams]);
   
   // Extract search params to pass to FeaturedCars
