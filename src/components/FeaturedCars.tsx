@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { sendOrderConfirmationEmail, sendPaymentProofEmail } from '@/utils/emailService';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface CarProps {
   id: string;
@@ -102,6 +103,7 @@ const FeaturedCars = () => {
   const [customerPhone, setCustomerPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customerInfoMissing, setCustomerInfoMissing] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
@@ -119,7 +121,6 @@ const FeaturedCars = () => {
   };
 
   const handleCompletePayment = async () => {
-    // Validate customer information
     if (!customerName || !customerEmail || !customerPhone) {
       setCustomerInfoMissing(true);
       return;
@@ -144,7 +145,6 @@ const FeaturedCars = () => {
     setIsSubmitting(true);
     
     try {
-      // Prepare order data
       const orderData = {
         name: customerName,
         email: customerEmail,
@@ -156,9 +156,7 @@ const FeaturedCars = () => {
         deposit: calculateDeposit(selectedCar.price)
       };
       
-      // Send different emails based on payment method
       if (paymentMethod === 'transfer' && proofOfPayment) {
-        // Send payment proof email
         await sendPaymentProofEmail(
           {
             name: customerName,
@@ -170,10 +168,8 @@ const FeaturedCars = () => {
         );
       }
       
-      // Send order confirmation email
       await sendOrderConfirmationEmail(orderData, proofOfPayment || undefined);
       
-      // Close dialogs and show success message
       setDialogOpen(false);
       setAlertDialogOpen(false);
       setCustomerInfoMissing(false);
@@ -183,7 +179,6 @@ const FeaturedCars = () => {
         description: `Votre commande pour ${selectedCar.brand} ${selectedCar.model} a été enregistrée. Nous vous contacterons prochainement.`,
       });
       
-      // Reset form
       setSelectedCar(null);
       setProofOfPayment(null);
       setCustomerName('');
@@ -283,8 +278,8 @@ const FeaturedCars = () => {
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-md md:max-w-lg">
-            <DialogHeader>
+          <DialogContent className={`sm:max-w-md md:max-w-lg ${isMobile ? 'p-4' : 'p-6'} max-h-[90vh] overflow-hidden`}>
+            <DialogHeader className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
               <DialogTitle>Finaliser votre achat</DialogTitle>
               <DialogDescription>
                 {selectedCar && (
@@ -293,7 +288,7 @@ const FeaturedCars = () => {
                       <img 
                         src={selectedCar.image} 
                         alt={`${selectedCar.brand} ${selectedCar.model}`} 
-                        className="w-24 h-16 object-cover rounded mr-4"
+                        className="w-20 h-14 object-cover rounded mr-3"
                       />
                       <div>
                         <p className="font-medium">{selectedCar.brand} {selectedCar.model}</p>
@@ -301,7 +296,7 @@ const FeaturedCars = () => {
                       </div>
                     </div>
                     
-                    <div className="bg-brand-blue/10 p-4 rounded-md border border-brand-blue/30">
+                    <div className="bg-brand-blue/10 p-3 rounded-md border border-brand-blue/30">
                       <p className="font-medium text-brand-blue">
                         Acompte à verser (20%): 
                         <span className="font-bold text-lg ml-1">
@@ -317,290 +312,84 @@ const FeaturedCars = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-6 py-4">
-              {/* Customer Information Section */}
-              <div className="space-y-4 border-b pb-4">
-                <h3 className="font-medium text-base">Vos coordonnées</h3>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="customer-name">Nom et prénom <span className="text-red-500">*</span></Label>
-                  <Input 
-                    id="customer-name" 
-                    value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
-                    placeholder="John Doe"
-                    className={!customerName && customerInfoMissing ? "border-red-500" : ""}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="customer-email">Email <span className="text-red-500">*</span></Label>
-                  <Input 
-                    id="customer-email" 
-                    type="email"
-                    value={customerEmail}
-                    onChange={(e) => setCustomerEmail(e.target.value)}
-                    placeholder="john@example.com"
-                    className={!customerEmail && customerInfoMissing ? "border-red-500" : ""}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="customer-phone">Téléphone <span className="text-red-500">*</span></Label>
-                  <Input 
-                    id="customer-phone" 
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    placeholder="+33 6 12 34 56 78"
-                    className={!customerPhone && customerInfoMissing ? "border-red-500" : ""}
-                  />
-                </div>
-                
-                {customerInfoMissing && (
-                  <p className="text-sm text-red-500">Veuillez remplir tous les champs obligatoires.</p>
-                )}
-              </div>
-
-              <div className="flex flex-wrap gap-2 border-b pb-4">
-                <Button
-                  type="button"
-                  variant={paymentMethod === 'card' ? 'default' : 'outline'}
-                  onClick={() => setPaymentMethod('card')}
-                  className="flex-1 opacity-50"
-                  disabled
-                >
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Carte bancaire
-                </Button>
-                <Button
-                  type="button" 
-                  variant={paymentMethod === 'transfer' ? 'default' : 'outline'}
-                  onClick={() => setPaymentMethod('transfer')}
-                  className="flex-1"
-                >
-                  <Building className="mr-2 h-4 w-4" />
-                  Virement bancaire
-                </Button>
-                <Button
-                  type="button" 
-                  variant={paymentMethod === 'coupon' ? 'default' : 'outline'}
-                  onClick={() => setPaymentMethod('coupon')}
-                  className="flex-1"
-                >
-                  <Gift className="mr-2 h-4 w-4" />
-                  Coupon
-                </Button>
-              </div>
-
-              {paymentMethod === 'card' && (
-                <div className="space-y-4 opacity-50">
-                  <div>
-                    <label className="text-sm font-medium leading-none mb-2 block">
-                      Numéro de carte
-                    </label>
-                    <Input placeholder="1234 5678 9012 3456" />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium leading-none mb-2 block">
-                        Date d'expiration
-                      </label>
-                      <Input placeholder="MM/AA" />
-                    </div>
-                    
-                    <div>
-                      <label className="text-sm font-medium leading-none mb-2 block">
-                        CVC
-                      </label>
-                      <Input placeholder="123" />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className="text-sm font-medium leading-none mb-2 block">
-                      Nom sur la carte
-                    </label>
-                    <Input placeholder="John Doe" />
-                  </div>
-                </div>
-              )}
-
-              {paymentMethod === 'transfer' && (
-                <div className="space-y-4">
-                  <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
-                    <div className="flex items-start">
-                      <AlertCircle className="text-brand-blue h-5 w-5 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-sm text-gray-800 mb-2">
-                          Veuillez effectuer un virement bancaire sur le compte suivant:
-                        </p>
-                        <div className="text-sm">
-                          <p><span className="font-semibold">Bénéficiaire:</span> Lucia Dzujkova</p>
-                          <p><span className="font-semibold">IBAN:</span> LT453500010018283529</p>
-                          <p><span className="font-semibold">SWIFT/BIC:</span> EVIULT2VXXX</p>
-                          <p><span className="font-semibold">Nom de banque:</span> Paysera LT, UAB</p>
-                          <p><span className="font-semibold">Adresse de la banque:</span> Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
-                          <p className="mt-2 font-semibold text-brand-blue">
-                            Montant à payer (acompte 20%): 
-                            {selectedCar ? calculateDeposit(selectedCar.price).toLocaleString('fr-FR') : 0} €
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            <ScrollArea className="max-h-[60vh] pr-4 -mr-4">
+              <div className={`space-y-5 ${isMobile ? 'py-2' : 'py-4'}`}>
+                <div className="space-y-3 border-b pb-4">
+                  <h3 className="font-medium text-base">Vos coordonnées</h3>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="proof-of-payment" className="font-medium">
-                      Preuve de paiement <span className="text-red-500">*</span>
-                    </Label>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        id="proof-of-payment"
-                        type="file"
-                        accept=".jpg,.jpeg,.png,.pdf"
-                        onChange={handleFileChange}
-                        ref={fileInputRef}
-                        className="hidden"
-                      />
-                      <Button 
-                        type="button" 
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="flex-grow"
-                      >
-                        <Upload className="h-4 w-4 mr-2" />
-                        {proofOfPayment ? 'Changer le fichier' : 'Télécharger un justificatif'}
-                      </Button>
-                      
-                      {proofOfPayment && (
-                        <div className="flex items-center text-green-600 text-sm">
-                          <Check className="h-4 w-4 mr-1" />
-                          <span className="truncate max-w-[150px]">{proofOfPayment.name}</span>
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-500">
-                      Formats acceptés: JPG, PNG, PDF. Taille maximale: 5 MB
-                    </p>
-                  </div>
-                  
-                  <p className="text-sm text-gray-600">
-                    Après avoir effectué le virement, veuillez télécharger une preuve de paiement et cliquer sur "Confirmer la commande".
-                    Nous vous contacterons après vérification du paiement.
-                  </p>
-                </div>
-              )}
-
-              {paymentMethod === 'coupon' && (
-                <div className="space-y-4">
-                  <div className="bg-amber-50 p-4 rounded-md border border-amber-200">
-                    <div className="flex items-start">
-                      <Gift className="text-amber-600 h-5 w-5 mr-2 mt-0.5" />
-                      <div>
-                        <p className="text-sm text-gray-800 mb-2">
-                          Payez avec votre coupon de recharge prépayé:
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          Sélectionnez votre type de coupon et entrez le code de recharge pour payer le montant de l'acompte.
-                        </p>
-                        <p className="mt-2 font-semibold text-brand-blue">
-                          Montant à payer (acompte 20%): 
-                          {selectedCar ? calculateDeposit(selectedCar.price).toLocaleString('fr-FR') : 0} €
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="coupon-type" className="font-medium">
-                      Type de coupon <span className="text-red-500">*</span>
-                    </Label>
-                    <Select value={couponType} onValueChange={setCouponType}>
-                      <SelectTrigger id="coupon-type" className="w-full">
-                        <SelectValue placeholder="Sélectionnez le type de coupon" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pcs">PCS</SelectItem>
-                        <SelectItem value="transcash">Transcash</SelectItem>
-                        <SelectItem value="amazon">Carte cadeau Amazon</SelectItem>
-                        <SelectItem value="neosurf">Neosurf</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="coupon-code" className="font-medium">
-                      Code du coupon <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="coupon-code"
-                      placeholder="Entrez le code de votre coupon"
-                      value={couponCode}
-                      onChange={(e) => setCouponCode(e.target.value)}
+                    <Label htmlFor="customer-name">Nom et prénom <span className="text-red-500">*</span></Label>
+                    <Input 
+                      id="customer-name" 
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                      placeholder="John Doe"
+                      className={!customerName && customerInfoMissing ? "border-red-500" : ""}
                     />
-                    <p className="text-sm text-gray-500">
-                      Le code du coupon se trouve au dos de votre carte ou dans votre email de confirmation.
-                    </p>
                   </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="customer-email">Email <span className="text-red-500">*</span></Label>
+                    <Input 
+                      id="customer-email" 
+                      type="email"
+                      value={customerEmail}
+                      onChange={(e) => setCustomerEmail(e.target.value)}
+                      placeholder="john@example.com"
+                      className={!customerEmail && customerInfoMissing ? "border-red-500" : ""}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="customer-phone">Téléphone <span className="text-red-500">*</span></Label>
+                    <Input 
+                      id="customer-phone" 
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                      placeholder="+33 6 12 34 56 78"
+                      className={!customerPhone && customerInfoMissing ? "border-red-500" : ""}
+                    />
+                  </div>
+                  
+                  {customerInfoMissing && (
+                    <p className="text-sm text-red-500">Veuillez remplir tous les champs obligatoires.</p>
+                  )}
                 </div>
-              )}
-            </div>
 
-            <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setDialogOpen(false)}
-              >
-                Annuler
-              </Button>
-              
-              <Button 
-                type="button"
-                className="bg-brand-blue hover:bg-brand-darkBlue"
-                onClick={handleCompletePayment}
-                disabled={isSubmitting || 
-                  !customerName || !customerEmail || !customerPhone ||
-                  (paymentMethod === 'transfer' && !proofOfPayment) || 
-                  (paymentMethod === 'coupon' && (!couponType || !couponCode))}
-              >
-                {isSubmitting ? "Envoi en cours..." : "Confirmer la commande"}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-        
-        <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Preuve de paiement requise</AlertDialogTitle>
-              <AlertDialogDescription>
-                Pour valider votre commande par virement bancaire, veuillez télécharger une preuve de paiement (capture d'écran ou reçu de virement).
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Fermer</AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+                <div className={`flex flex-wrap gap-2 border-b pb-4 ${isMobile ? 'flex-col' : ''}`}>
+                  <Button
+                    type="button"
+                    variant={paymentMethod === 'card' ? 'default' : 'outline'}
+                    onClick={() => setPaymentMethod('card')}
+                    className={`${isMobile ? 'w-full' : 'flex-1'} opacity-50`}
+                    disabled
+                  >
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Carte bancaire
+                  </Button>
+                  <Button
+                    type="button" 
+                    variant={paymentMethod === 'transfer' ? 'default' : 'outline'}
+                    onClick={() => setPaymentMethod('transfer')}
+                    className={isMobile ? 'w-full' : 'flex-1'}
+                  >
+                    <Building className="mr-2 h-4 w-4" />
+                    Virement bancaire
+                  </Button>
+                  <Button
+                    type="button" 
+                    variant={paymentMethod === 'coupon' ? 'default' : 'outline'}
+                    onClick={() => setPaymentMethod('coupon')}
+                    className={isMobile ? 'w-full' : 'flex-1'}
+                  >
+                    <Gift className="mr-2 h-4 w-4" />
+                    Coupon
+                  </Button>
+                </div>
 
-        <AlertDialog open={couponAlertOpen} onOpenChange={setCouponAlertOpen}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Informations du coupon manquantes</AlertDialogTitle>
-              <AlertDialogDescription>
-                Pour valider votre commande par coupon, veuillez sélectionner un type de coupon et saisir le code du coupon.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Fermer</AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>
-    </section>
-  );
-};
+                {paymentMethod === 'card' && (
+                  <div className="space-y-4 opacity-50">
+                    <div>
+                      <label className="text-sm font-medium leading-none mb-2 block">
+                        Num
 
-export default FeaturedCars;
