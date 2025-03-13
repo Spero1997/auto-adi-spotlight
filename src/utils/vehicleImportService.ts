@@ -22,10 +22,45 @@ export interface ImportedVehicle {
 }
 
 const STORAGE_KEY = 'imported_vehicles';
+const CATALOG_ID_KEY = 'catalog_id';
 
-// Récupérer les véhicules importés du stockage local avec validation
+// Générer un ID de catalogue unique s'il n'existe pas
+const getCatalogId = (): string => {
+  let catalogId = localStorage.getItem(CATALOG_ID_KEY);
+  if (!catalogId) {
+    catalogId = `cat-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    localStorage.setItem(CATALOG_ID_KEY, catalogId);
+  }
+  return catalogId;
+};
+
+// Récupérer l'ID de catalogue depuis l'URL s'il existe
+export const getCatalogIdFromUrl = (): string | null => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('catalog');
+};
+
+// Sauvegarder l'ID de catalogue dans l'URL
+const saveCatalogIdToUrl = (catalogId: string) => {
+  const url = new URL(window.location.href);
+  url.searchParams.set('catalog', catalogId);
+  window.history.replaceState({}, '', url.toString());
+};
+
+// Récupérer les véhicules importés du stockage local ou de l'URL avec validation
 export const getImportedVehicles = (): ImportedVehicle[] => {
   try {
+    // Vérifier d'abord si un ID de catalogue est dans l'URL
+    const urlCatalogId = getCatalogIdFromUrl();
+    if (urlCatalogId) {
+      // Si l'ID de catalogue dans l'URL est différent de celui en local, on adopte celui de l'URL
+      const localCatalogId = localStorage.getItem(CATALOG_ID_KEY);
+      if (localCatalogId !== urlCatalogId) {
+        localStorage.setItem(CATALOG_ID_KEY, urlCatalogId);
+        console.log(`Nouveau catalogue adopté depuis l'URL: ${urlCatalogId}`);
+      }
+    }
+    
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsedData = JSON.parse(stored);
@@ -51,15 +86,28 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
   return [];
 };
 
-// Enregistrer les véhicules dans le stockage local
+// Enregistrer les véhicules dans le stockage local et mettre à jour l'URL
 export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
-    console.log(`${vehicles.length} véhicules enregistrés dans le localStorage`);
+    
+    // S'assurer que l'ID de catalogue est dans l'URL
+    const catalogId = getCatalogId();
+    saveCatalogIdToUrl(catalogId);
+    
+    console.log(`${vehicles.length} véhicules enregistrés dans le localStorage avec catalogId: ${catalogId}`);
   } catch (error) {
     console.error("Erreur lors de l'enregistrement des véhicules:", error);
     toast.error("Erreur lors de l'enregistrement des véhicules");
   }
+};
+
+// Générer une URL de partage pour le catalogue actuel
+export const generateShareableUrl = (): string => {
+  const catalogId = getCatalogId();
+  const baseUrl = window.location.origin;
+  // Créer une URL vers la page des véhicules d'occasion avec l'ID du catalogue
+  return `${baseUrl}/vehicules/occasion?catalog=${catalogId}`;
 };
 
 // Ajouter de nouveaux véhicules aux véhicules existants

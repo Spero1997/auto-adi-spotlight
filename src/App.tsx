@@ -21,6 +21,22 @@ import OrdersBackup from "./pages/OrdersBackup";
 import VehiculesOccasion from "./pages/VehiculesOccasion";
 import VehicleManagement from "./pages/VehicleManagement";
 import VehicleImport from "./pages/VehicleImport";
+import { useEffect } from "react";
+import { getCatalogIdFromUrl } from "./utils/vehicleImportService";
+
+// Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
+const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
+  useEffect(() => {
+    // Cette fonction est appelée une seule fois lorsque l'application démarre
+    // Elle vérifie si un ID de catalogue est présent dans l'URL
+    const catalogId = getCatalogIdFromUrl();
+    if (catalogId) {
+      console.log(`Catalogue trouvé dans l'URL: ${catalogId}`);
+    }
+  }, []);
+
+  return <>{children}</>;
+};
 
 const queryClient = new QueryClient();
 
@@ -31,43 +47,45 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            
-            {/* Routes implémentées */}
-            <Route path="/services" element={<Services />} />
-            <Route path="/financement" element={<Financement />} />
-            <Route path="/rachat" element={<Rachat />} />
-            <Route path="/a-propos" element={<APropos />} />
-            <Route path="/contact" element={<Contact />} />
-            
-            {/* Route pour la sauvegarde des commandes */}
-            <Route path="/orders-backup" element={<OrdersBackup />} />
-            
-            {/* Routes légales */}
-            <Route path="/mentions-legales" element={<MentionsLegales />} />
-            <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-            <Route path="/cookies" element={<Cookies />} />
-            <Route path="/cgv" element={<CGV />} />
-            <Route path="/conditions" element={<Conditions />} />
-            
-            {/* Routes pour la gestion des véhicules */}
-            <Route path="/admin/vehicules" element={<VehicleManagement />} />
-            <Route path="/vehicules/import" element={<VehicleImport />} />
-            
-            {/* Routes pour les pages secondaires */}
-            <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
-            <Route path="/vehicules/:id" element={<Index />} /> {/* À implémenter plus tard */}
-            <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
-            <Route path="/vehicules/utilitaires" element={<Index />} /> {/* À implémenter plus tard */}
-            <Route path="/vehicules/neufs" element={<Index />} /> {/* À implémenter plus tard */}
-            <Route path="/rendez-vous" element={<Index />} /> {/* À implémenter plus tard */}
-            <Route path="/marques" element={<Index />} /> {/* À implémenter plus tard */}
-            <Route path="/marques/:marque" element={<Index />} /> {/* À implémenter plus tard */}
-            
-            {/* Route pour capture d'erreur */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <CatalogChecker>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              
+              {/* Routes implémentées */}
+              <Route path="/services" element={<Services />} />
+              <Route path="/financement" element={<Financement />} />
+              <Route path="/rachat" element={<Rachat />} />
+              <Route path="/a-propos" element={<APropos />} />
+              <Route path="/contact" element={<Contact />} />
+              
+              {/* Route pour la sauvegarde des commandes */}
+              <Route path="/orders-backup" element={<OrdersBackup />} />
+              
+              {/* Routes légales */}
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+              <Route path="/cookies" element={<Cookies />} />
+              <Route path="/cgv" element={<CGV />} />
+              <Route path="/conditions" element={<Conditions />} />
+              
+              {/* Routes pour la gestion des véhicules */}
+              <Route path="/admin/vehicules" element={<VehicleManagement />} />
+              <Route path="/vehicules/import" element={<VehicleImport />} />
+              
+              {/* Routes pour les pages secondaires */}
+              <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/vehicules/:id" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
+              <Route path="/vehicules/utilitaires" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/vehicules/neufs" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/rendez-vous" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/marques" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/marques/:marque" element={<Index />} /> {/* À implémenter plus tard */}
+              
+              {/* Route pour capture d'erreur */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </CatalogChecker>
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>
