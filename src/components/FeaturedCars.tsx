@@ -1,3 +1,4 @@
+
 import { useState, useRef } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -387,9 +388,152 @@ const FeaturedCars = () => {
                   </Button>
                 </div>
 
+                {/* Ajout du reste du formulaire avec les balises fermées */}
                 {paymentMethod === 'card' && (
                   <div className="space-y-4 opacity-50">
                     <div>
                       <label className="text-sm font-medium leading-none mb-2 block">
-                        Num
+                        Numéro de carte
+                      </label>
+                      <Input disabled placeholder="1234 5678 9012 3456" />
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium leading-none mb-2 block">
+                          Date d'expiration
+                        </label>
+                        <Input disabled placeholder="MM/AA" />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium leading-none mb-2 block">
+                          CVC
+                        </label>
+                        <Input disabled placeholder="123" />
+                      </div>
+                    </div>
+                    
+                    <p className="text-xs text-amber-600 flex items-center">
+                      <AlertCircle className="h-3 w-3 mr-1" />
+                      Le paiement par carte sera disponible prochainement
+                    </p>
+                  </div>
+                )}
 
+                {paymentMethod === 'transfer' && (
+                  <div className="space-y-4">
+                    <div className="bg-muted/50 p-4 rounded-md">
+                      <h4 className="font-medium mb-2">Coordonnées bancaires</h4>
+                      <div className="space-y-1 text-sm">
+                        <p><span className="font-medium">IBAN:</span> FR76 1234 5678 9012 3456 7890 123</p>
+                        <p><span className="font-medium">BIC:</span> BNPAFRPPXXX</p>
+                        <p><span className="font-medium">Banque:</span> Crédit Automobile</p>
+                        <p><span className="font-medium">Titulaire:</span> SARL Auto Deals Import</p>
+                        <p><span className="font-medium">Référence:</span> {selectedCar && `Achat ${selectedCar.brand} ${selectedCar.model}`}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Label htmlFor="payment-proof" className="font-medium">
+                          Preuve de paiement
+                        </Label>
+                        <span className="text-xs text-muted-foreground">(Optionnel)</span>
+                      </div>
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className="border-2 border-dashed border-gray-300 rounded-md p-4 cursor-pointer hover:bg-gray-50 transition-colors flex flex-col items-center justify-center gap-2"
+                      >
+                        {proofOfPayment ? (
+                          <div className="flex items-center gap-2 text-brand-blue">
+                            <Check className="h-5 w-5" />
+                            <span className="font-medium">{proofOfPayment.name}</span>
+                          </div>
+                        ) : (
+                          <>
+                            <Upload className="h-6 w-6 text-gray-400" />
+                            <div className="text-center">
+                              <p className="text-sm font-medium text-gray-700">
+                                Cliquez pour ajouter une preuve de paiement
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                PNG, JPG ou PDF jusqu'à 5 MB
+                              </p>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        id="payment-proof"
+                        accept="image/png,image/jpeg,application/pdf"
+                        className="hidden"
+                        onChange={handleFileChange}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {paymentMethod === 'coupon' && (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="coupon-type">Type de coupon</Label>
+                      <Select value={couponType} onValueChange={setCouponType}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez un type de coupon" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="employee">Coupon Employé</SelectItem>
+                          <SelectItem value="partner">Coupon Partenaire</SelectItem>
+                          <SelectItem value="promo">Code Promotionnel</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="coupon-code">Code</Label>
+                      <Input 
+                        id="coupon-code" 
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                        placeholder="Entrez votre code coupon"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+
+            <DialogFooter className={`${isMobile ? 'mt-4' : 'mt-6'}`}>
+              <Button 
+                onClick={handleCompletePayment}
+                className="w-full sm:w-auto" 
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Traitement en cours...' : `Finaliser la commande`}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirmation de virement</AlertDialogTitle>
+              <AlertDialogDescription>
+                Vous avez choisi le paiement par virement bancaire sans joindre de preuve de paiement. Souhaitez-vous quand même finaliser la commande ?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={finishOrder}>Confirmer</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedCars;
