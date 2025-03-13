@@ -1,5 +1,4 @@
 
-import Hero from '@/components/Hero';
 import HeroCarousel from '@/components/HeroCarousel';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
@@ -16,8 +15,9 @@ const Index = () => {
       <Header />
       <main>
         <HeroCarousel />
-        <Hero />
-        <ConditionsHighlight />
+        <div className="mt-32">
+          <ConditionsHighlight />
+        </div>
         <div className="mt-10">
           <FeaturedCars />
         </div>
