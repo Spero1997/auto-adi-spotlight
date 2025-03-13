@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -24,9 +23,9 @@ export interface ImportedVehicle {
 const STORAGE_KEY = 'imported_vehicles';
 const CATALOG_ID_KEY = 'catalog_id';
 
-// Véhicule Audi RS Q8 pré-ajouté
+// Véhicule Audi RS Q8 pré-ajouté avec ID fixe pour éviter la duplication
 const audiRSQ8 = {
-  id: `rsq8-${Date.now()}`,
+  id: `rsq8-fixed`,
   brand: "Audi",
   model: "RS Q8",
   year: 2023,
@@ -51,9 +50,9 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/651a21f8-3788-49f4-b379-6c254cb950ef.png",
 };
 
-// Véhicule Skoda Octavia pré-ajouté
+// Véhicule Skoda Octavia pré-ajouté avec ID fixe pour éviter la duplication
 const skodaOctavia = {
-  id: `octavia-${Date.now()}`,
+  id: `octavia-fixed`,
   brand: "Skoda",
   model: "Octavia 2.0",
   year: 2025,
@@ -77,6 +76,9 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   features: ["Écran tactile multimédia", "Système de navigation", "Sièges sport", "Jantes aluminium", "Phares LED Crystal", "Digital Cockpit", "Assistance au stationnement"],
   image: "/lovable-uploads/7bd0f803-8c8f-410c-bb65-da54acbab023.png",
 };
+
+// Définition des véhicules par défaut
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -130,9 +132,9 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
       console.log(`Véhicules récupérés du localStorage (${urlCatalogId ? 'via URL catalog' : 'local'})`, parsedData);
       
       // Vérifier que les données sont un tableau
-      if (Array.isArray(parsedData)) {
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
         // Filtrer les véhicules pour ne garder que ceux qui ont les propriétés requises
-        return parsedData.filter(vehicle => 
+        const validVehicles = parsedData.filter(vehicle => 
           vehicle && 
           typeof vehicle === 'object' &&
           vehicle.id && 
@@ -140,36 +142,63 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
           vehicle.model &&
           vehicle.price
         );
+        
+        // Si des véhicules valides sont trouvés, les retourner avec les véhicules par défaut garantis
+        if (validVehicles.length > 0) {
+          // Vérifier si les véhicules par défaut sont présents
+          ensureDefaultVehicles(validVehicles);
+          return validVehicles;
+        }
       }
+      
+      // Si on arrive ici, soit le tableau est vide, soit il n'y a pas de véhicules valides
+      console.log("Aucun véhicule valide trouvé, utilisation des véhicules par défaut");
+      localStorage.removeItem(STORAGE_KEY); // Supprimer les données invalides
+      saveImportedVehicles(DEFAULT_VEHICLES);
+      return DEFAULT_VEHICLES;
     } else {
       // Si aucun véhicule n'est dans le localStorage, ajouter les véhicules par défaut
-      const initialVehicles = [audiRSQ8, skodaOctavia];
-      saveImportedVehicles(initialVehicles);
-      return initialVehicles;
+      console.log("Aucune donnée dans le localStorage, initialisation avec les véhicules par défaut");
+      saveImportedVehicles(DEFAULT_VEHICLES);
+      return DEFAULT_VEHICLES;
     }
   } catch (error) {
     console.error("Erreur lors de la récupération des véhicules:", error);
+    // En cas d'erreur, réinitialiser avec les véhicules par défaut
+    localStorage.removeItem(STORAGE_KEY);
+    saveImportedVehicles(DEFAULT_VEHICLES);
+    return DEFAULT_VEHICLES;
+  }
+};
+
+// Fonction pour s'assurer que les véhicules par défaut sont présents
+const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
+  const rsq8Exists = vehicles.some(v => v.id === audiRSQ8.id || (v.brand === "Audi" && v.model === "RS Q8"));
+  const octaviaExists = vehicles.some(v => v.id === skodaOctavia.id || (v.brand === "Skoda" && v.model === "Octavia 2.0"));
+  
+  let changed = false;
+  
+  if (!rsq8Exists) {
+    vehicles.push(audiRSQ8);
+    changed = true;
   }
   
-  // Si aucun véhicule n'est trouvé ou en cas d'erreur, retourner les véhicules par défaut
-  console.log("Aucun véhicule trouvé dans le localStorage ou données invalides, retour des véhicules par défaut");
-  return [audiRSQ8, skodaOctavia];
+  if (!octaviaExists) {
+    vehicles.push(skodaOctavia);
+    changed = true;
+  }
+  
+  // Si des changements ont été faits, mettre à jour le localStorage
+  if (changed) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
+  }
 };
 
 // Enregistrer les véhicules dans le stockage local et mettre à jour l'URL
 export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
   try {
     // S'assurer que les véhicules par défaut sont inclus
-    const rsq8Exists = vehicles.some(vehicle => vehicle.model === "RS Q8" && vehicle.brand === "Audi");
-    const octaviaExists = vehicles.some(vehicle => vehicle.model === "Octavia 2.0" && vehicle.brand === "Skoda");
-    
-    if (!rsq8Exists) {
-      vehicles.push(audiRSQ8);
-    }
-    
-    if (!octaviaExists) {
-      vehicles.push(skodaOctavia);
-    }
+    ensureDefaultVehicles(vehicles);
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
     
