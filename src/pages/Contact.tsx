@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 import Header from '@/components/Header';
@@ -85,7 +84,16 @@ const Contact = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Téléphone</h3>
                 <p className="text-gray-600 mb-4">Nous sommes disponibles du lundi au samedi</p>
-                <a href="tel:+33123456789" className="text-blue-600 font-medium">01 23 45 67 89</a>
+                <a href="tel:+393761753341" className="text-blue-600 font-medium">+39 376 175 3341</a>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
+                <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                  <MessageCircle className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">WhatsApp</h3>
+                <p className="text-gray-600 mb-4">Contactez-nous par WhatsApp</p>
+                <a href="https://wa.me/393761753341" className="text-blue-600 font-medium">+39 376 175 3341</a>
               </div>
               
               <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
@@ -94,19 +102,7 @@ const Contact = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Email</h3>
                 <p className="text-gray-600 mb-4">Réponse garantie sous 24h</p>
-                <a href="mailto:contact@auto-adi.fr" className="text-blue-600 font-medium">contact@auto-adi.fr</a>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center">
-                <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                  <MapPin className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Adresse</h3>
-                <p className="text-gray-600 mb-4">Venez nous rencontrer</p>
-                <address className="text-blue-600 font-medium not-italic">
-                  123 Avenue des Automobiles<br />
-                  75000 Paris, France
-                </address>
+                <a href="mailto:serviceautoadi@gmail.com" className="text-blue-600 font-medium">serviceautoadi@gmail.com</a>
               </div>
             </div>
           </div>
@@ -224,37 +220,18 @@ const Contact = () => {
         {/* Map section */}
         <section className="py-12 bg-gray-50" id="locations">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Nos concessions</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">Notre concession</h2>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="max-w-4xl mx-auto">
               <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">Paris</h3>
+                <h3 className="text-xl font-semibold mb-4">Florence</h3>
                 <p className="text-gray-600 mb-4">
-                  123 Avenue des Automobiles<br />
-                  75000 Paris, France
+                  Borgo Ognissanti, 142r<br />
+                  50123 Firenze FI, Italie
                 </p>
                 <div className="aspect-video w-full bg-gray-200 rounded-lg overflow-hidden">
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937586!2d2.292292615509614!3d48.85836507928679!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e66e2964e34e2d%3A0x8ddca9ee380ef7e0!2sTour%20Eiffel!5e0!3m2!1sfr!2sfr!4v1647882750798!5m2!1sfr!2sfr" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
-                </div>
-              </div>
-              
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-4">Lyon</h3>
-                <p className="text-gray-600 mb-4">
-                  456 Rue des Voitures<br />
-                  69000 Lyon, France
-                </p>
-                <div className="aspect-video w-full bg-gray-200 rounded-lg overflow-hidden">
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2783.0831722233427!2d4.828978615275766!3d45.76424577910576!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4ea516ae88797%3A0x9efbb71d73134a76!2sPlace%20Bellecour!5e0!3m2!1sfr!2sfr!4v1647882818384!5m2!1sfr!2sfr" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2881.1039860848725!2d11.239661476654394!3d43.773378671011735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132a56a93a46a891%3A0x97f9691097c0a10!2sBorgo%20Ognissanti%2C%20142r%2C%2050123%20Firenze%20FI%2C%20Italy!5e0!3m2!1sen!2sgh!4v1710341636696!5m2!1sen!2sgh" 
                     width="100%" 
                     height="100%" 
                     style={{ border: 0 }} 

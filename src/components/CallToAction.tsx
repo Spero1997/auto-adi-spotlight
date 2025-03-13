@@ -1,5 +1,5 @@
 
-import { Phone, Mail, Calendar } from 'lucide-react';
+import { Phone, Mail, Calendar, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -19,11 +19,15 @@ const CallToAction = () => {
             <div className="space-y-4 mb-8">
               <div className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 text-brand-orange" />
-                <span className="text-lg">01 23 45 67 89</span>
+                <span className="text-lg">+39 376 175 3341</span>
+              </div>
+              <div className="flex items-center">
+                <MessageCircle className="h-5 w-5 mr-3 text-brand-orange" />
+                <span className="text-lg">WhatsApp: +39 376 175 3341</span>
               </div>
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 text-brand-orange" />
-                <span className="text-lg">contact@auto-adi.fr</span>
+                <span className="text-lg">serviceautoadi@gmail.com</span>
               </div>
               <div className="flex items-center">
                 <Calendar className="h-5 w-5 mr-3 text-brand-orange" />
