@@ -45,15 +45,26 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
       });
     }
     
+    // Setup timeout to prevent hanging requests
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+    
     // Send email using EmailJS service
     const response = await fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
       method: 'POST',
       body: formData,
       headers: {
         'User-ID': 'Efc5FFVd9Kkq7f49T', // Public ID, so it's fine to include in the code
-        'X-Public-Key': 'Iq2L6gxEKd7FU_BpN' // Adding the required Public Key
-      }
+        'Origin': window.location.origin,
+        'Access-Control-Allow-Origin': '*',
+        'Service-ID': 'service_7h1z65s', // Adding required service ID
+        'Template-ID': 'template_kdbpzro', // Adding required template ID
+        'X-Public-Key': 'Iq2L6gxEKd7FU_BpN' // Public Key is required
+      },
+      signal: controller.signal
     });
+    
+    clearTimeout(timeoutId);
     
     if (!response.ok) {
       throw new Error(`Email sending failed: ${response.statusText}`);

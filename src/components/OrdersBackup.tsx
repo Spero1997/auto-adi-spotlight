@@ -1,268 +1,314 @@
 
 import React, { useState, useEffect } from 'react';
 import { getStoredOrders } from '@/utils/emailService';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Calendar, Clock, Car, User, Phone, Mail, MapPin, CreditCard, AlertCircle, FileText, Trash2, RefreshCw } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { FileDown, Clock, Car, User, Mail, Phone, Truck, CreditCard, AlertCircle } from 'lucide-react';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 
-interface Order {
-  to: string;
-  subject: string;
-  text: string;
-  html?: string;
-  attachments?: string[];
-  replyTo?: string;
-  timestamp: string;
-  id: string;
-}
-
-export const OrdersBackup = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-
-  const loadOrders = () => {
-    const storedOrders = getStoredOrders();
-    setOrders(storedOrders);
-  };
+const OrdersBackup = () => {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    loadOrders();
+    // Load orders from localStorage
+    const storedOrders = getStoredOrders();
+    setOrders(storedOrders.reverse()); // Most recent first
+    setLoading(false);
   }, []);
 
-  const handleViewDetails = (order: Order) => {
-    setSelectedOrder(order);
-    setDetailsOpen(true);
-  };
-
-  const handleDeleteOrder = (orderId: string) => {
-    try {
-      // Get current orders
-      const currentOrders = getStoredOrders();
-      // Filter out the order to delete
-      const updatedOrders = currentOrders.filter((order: Order) => order.id !== orderId);
-      // Save back to localStorage
-      localStorage.setItem('autoAdiOrders', JSON.stringify(updatedOrders));
-      // Update state
-      setOrders(updatedOrders);
-      
-      if (selectedOrder?.id === orderId) {
-        setDetailsOpen(false);
-      }
-    } catch (error) {
-      console.error("Error deleting order:", error);
+  const clearAllOrders = () => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer toutes les commandes sauvegardées ? Cette action est irréversible.')) {
+      localStorage.removeItem('autoAdiOrders');
+      setOrders([]);
+      toast({
+        title: "Commandes supprimées",
+        description: "Toutes les commandes ont été supprimées du stockage local.",
+      });
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const exportOrdersAsJSON = () => {
+    const dataStr = JSON.stringify(orders, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `auto-adi-orders-${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
   };
 
-  const getOrderType = (subject: string) => {
-    if (subject.startsWith('Nouvelle commande:')) return 'order';
-    if (subject.startsWith('Preuve de paiement:')) return 'payment';
-    if (subject.startsWith('Nouveau contact:')) return 'contact';
-    return 'other';
+  const formatTimestamp = (timestamp: string) => {
+    try {
+      const date = new Date(timestamp);
+      return new Intl.DateTimeFormat('fr-FR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(date);
+    } catch (error) {
+      return 'Date invalide';
+    }
   };
 
-  const clearAllOrders = () => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer toutes les commandes sauvegardées ?')) {
-      localStorage.removeItem('autoAdiOrders');
-      setOrders([]);
-      setDetailsOpen(false);
+  const getPaymentMethodLabel = (method: string) => {
+    switch(method) {
+      case 'card': return 'Carte bancaire';
+      case 'transfer': return 'Virement bancaire';
+      case 'coupon': return 'Coupon';
+      case 'gift': return 'Carte cadeau';
+      default: return method;
     }
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-6">
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Sauvegarde des commandes</h1>
-          <p className="text-gray-500 mt-1">
-            Les commandes sont sauvegardées localement en cas d'échec d'envoi d'email
+          <h1 className="text-3xl font-bold mb-2">Sauvegarde des commandes</h1>
+          <p className="text-gray-600 mb-4">
+            Ces commandes sont stockées localement dans votre navigateur comme backup en cas d'échec d'envoi d'email.
           </p>
         </div>
-        <div className="flex space-x-2">
-          <Button variant="outline" onClick={loadOrders} className="flex items-center">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Actualiser
+        <div className="flex gap-3 mt-4 md:mt-0">
+          <Button variant="outline" onClick={exportOrdersAsJSON} disabled={orders.length === 0}>
+            <FileDown className="mr-2 h-4 w-4" />
+            Exporter JSON
           </Button>
-          <Button variant="destructive" onClick={clearAllOrders} className="flex items-center" disabled={orders.length === 0}>
-            <Trash2 className="h-4 w-4 mr-2" />
-            Tout effacer
+          <Button variant="destructive" onClick={clearAllOrders} disabled={orders.length === 0}>
+            Tout supprimer
           </Button>
         </div>
       </div>
 
-      {orders.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-10">
-            <AlertCircle className="h-10 w-10 text-gray-400 mb-4" />
-            <p className="text-gray-500 text-center">Aucune commande sauvegardée</p>
-            <p className="text-gray-400 text-sm text-center mt-1">
-              Les commandes seront sauvegardées ici si l'envoi d'email échoue
-            </p>
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="w-full max-w-md mx-auto mb-4">
+            <Progress value={70} className="h-2" />
+          </div>
+          <p className="text-gray-500">Chargement des commandes sauvegardées...</p>
+        </div>
+      ) : orders.length === 0 ? (
+        <Card className="bg-gray-50 border-dashed">
+          <CardContent className="py-12 text-center">
+            <div className="flex flex-col items-center">
+              <AlertCircle className="h-12 w-12 text-gray-400 mb-4" />
+              <h3 className="text-lg font-medium text-gray-800 mb-2">Aucune commande sauvegardée</h3>
+              <p className="text-gray-500 max-w-md mx-auto">
+                Les commandes seront automatiquement sauvegardées ici si l'envoi d'email échoue.
+              </p>
+            </div>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
-          {orders.map((order) => {
-            const orderType = getOrderType(order.subject);
-            
-            return (
-              <Card key={order.id} className="overflow-hidden">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-lg">{order.subject}</CardTitle>
-                      <CardDescription className="flex items-center mt-1">
-                        <Clock className="h-3.5 w-3.5 mr-1 text-gray-500" />
-                        {formatDate(order.timestamp)}
+        <Tabs defaultValue="list" className="w-full">
+          <TabsList className="mb-4">
+            <TabsTrigger value="list">Liste ({orders.length})</TabsTrigger>
+            <TabsTrigger value="details">Détails</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="list" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {orders.map((order, index) => {
+                // Extract car model from subject or html content
+                const subjectMatch = order.subject?.match(/Nouvelle commande: (.+)/) || [];
+                const htmlMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
+                const carModel = subjectMatch[1] || htmlMatch[1] || 'Véhicule';
+                
+                // Extract price from html content
+                const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
+                const price = priceMatch[1] || '';
+                
+                // Extract customer name from html content
+                const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
+                const customerName = nameMatch[1] || 'Client';
+                
+                // Extract payment method from html content
+                const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
+                const paymentMethod = methodMatch[1] || '';
+                
+                return (
+                  <Card key={order.id || index} className="h-full">
+                    <CardHeader className="pb-2">
+                      <div className="flex justify-between items-start">
+                        <Badge variant={index === 0 ? "default" : "outline"} className="mb-2">
+                          {index === 0 ? "Récent" : `#${orders.length - index}`}
+                        </Badge>
+                        <Clock className="h-4 w-4 text-gray-400" />
+                      </div>
+                      <CardTitle className="text-xl truncate">{carModel}</CardTitle>
+                      <CardDescription className="flex items-center">
+                        {formatTimestamp(order.timestamp)}
                       </CardDescription>
-                    </div>
-                    <Badge className={`
-                      ${orderType === 'order' ? 'bg-green-100 text-green-800' : ''}
-                      ${orderType === 'payment' ? 'bg-blue-100 text-blue-800' : ''}
-                      ${orderType === 'contact' ? 'bg-purple-100 text-purple-800' : ''}
-                      ${orderType === 'other' ? 'bg-gray-100 text-gray-800' : ''}
-                    `}>
-                      {orderType === 'order' && 'Commande'}
-                      {orderType === 'payment' && 'Paiement'}
-                      {orderType === 'contact' && 'Contact'}
-                      {orderType === 'other' && 'Autre'}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="pb-2">
-                  <p className="text-sm text-gray-600 line-clamp-2">{order.text}</p>
-                  
-                  {order.attachments && order.attachments.length > 0 && (
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
-                      <FileText className="h-3.5 w-3.5 mr-1" />
-                      {order.attachments.length} pièce(s) jointe(s)
-                    </div>
-                  )}
-                </CardContent>
-                
-                <CardFooter className="flex justify-between pt-2">
-                  <Button variant="outline" size="sm" onClick={() => handleViewDetails(order)}>
-                    Voir les détails
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => handleDeleteOrder(order.id)}>
-                    <Trash2 className="h-4 w-4 text-gray-400 hover:text-red-500" />
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
-        </div>
-      )}
-
-      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-hidden">
-          {selectedOrder && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-xl">{selectedOrder.subject}</DialogTitle>
-                <DialogDescription className="flex items-center">
-                  <Calendar className="h-4 w-4 mr-1" />
-                  {formatDate(selectedOrder.timestamp)}
-                </DialogDescription>
-              </DialogHeader>
-              
-              <Tabs defaultValue="details" className="overflow-hidden">
-                <TabsList>
-                  <TabsTrigger value="details">Détails</TabsTrigger>
-                  <TabsTrigger value="html">HTML</TabsTrigger>
-                  <TabsTrigger value="text">Texte</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="details" className="overflow-hidden">
-                  <ScrollArea className="h-[50vh]">
-                    <div className="p-4 space-y-4">
+                    </CardHeader>
+                    <CardContent className="py-2">
                       <div className="space-y-2">
-                        <h3 className="font-semibold text-sm text-gray-500">Contact</h3>
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="flex items-center">
-                            <Mail className="h-4 w-4 mr-2 text-gray-400" />
-                            <span className="text-sm">{selectedOrder.replyTo || 'Non spécifié'}</span>
+                        <div className="flex items-center text-sm">
+                          <User className="h-4 w-4 mr-2 text-gray-500" />
+                          <span className="truncate">{customerName}</span>
+                        </div>
+                        {price && (
+                          <div className="flex items-center text-sm">
+                            <Car className="h-4 w-4 mr-2 text-gray-500" />
+                            <span className="font-medium">{price} €</span>
+                          </div>
+                        )}
+                        {paymentMethod && (
+                          <div className="flex items-center text-sm">
+                            <CreditCard className="h-4 w-4 mr-2 text-gray-500" />
+                            <span>{getPaymentMethodLabel(paymentMethod)}</span>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="details">
+            <Card>
+              <CardContent className="p-0">
+                <ScrollArea className="h-[600px]">
+                  {orders.map((order, index) => {
+                    // Extract customer info
+                    const nameMatch = order.html?.match(/<p><strong>Client:<\/strong> (.+?)<\/p>/) || [];
+                    const emailMatch = order.html?.match(/<p><strong>Email:<\/strong> (.+?)<\/p>/) || [];
+                    const phoneMatch = order.html?.match(/<p><strong>Téléphone:<\/strong> (.+?)<\/p>/) || [];
+                    
+                    // Extract car details
+                    const carMatch = order.html?.match(/<p><strong>Modèle:<\/strong> (.+?)<\/p>/) || [];
+                    const priceMatch = order.html?.match(/<p><strong>Prix:<\/strong> (\d+)€<\/p>/) || [];
+                    
+                    // Extract delivery info
+                    const deliveryOptionMatch = order.html?.match(/<p><strong>Option:<\/strong> (.+?)<\/p>/) || [];
+                    const deliveryAddressMatch = order.html?.match(/<p><strong>Adresse:<\/strong> (.+?)<\/p>/) || [];
+                    
+                    // Extract payment info
+                    const methodMatch = order.html?.match(/<p><strong>Méthode de paiement:<\/strong> (.+?)<\/p>/) || [];
+                    const depositMatch = order.html?.match(/<p><strong>Acompte de 20%:<\/strong> (.+?)€<\/p>/) || [];
+                    
+                    return (
+                      <div key={order.id || index} className="p-6">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-lg font-bold">{carMatch[1] || 'Commande'}</h3>
+                            <p className="text-gray-500 text-sm">
+                              {formatTimestamp(order.timestamp)}
+                            </p>
+                          </div>
+                          <Badge variant={index === 0 ? "default" : "outline"}>
+                            {index === 0 ? "Plus récent" : `#${orders.length - index}`}
+                          </Badge>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-500 mb-2">Informations client</h4>
+                              <div className="space-y-2">
+                                <div className="flex items-center">
+                                  <User className="h-4 w-4 mr-2 text-gray-500" />
+                                  <span>{nameMatch[1] || 'Non spécifié'}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <Mail className="h-4 w-4 mr-2 text-gray-500" />
+                                  <span>{emailMatch[1] || 'Non spécifié'}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <Phone className="h-4 w-4 mr-2 text-gray-500" />
+                                  <span>{phoneMatch[1] || 'Non spécifié'}</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-500 mb-2">Détails du véhicule</h4>
+                              <div className="space-y-2">
+                                <div className="flex items-center">
+                                  <Car className="h-4 w-4 mr-2 text-gray-500" />
+                                  <span>{carMatch[1] || 'Non spécifié'}</span>
+                                </div>
+                                {priceMatch[1] && (
+                                  <div className="flex items-center">
+                                    <CreditCard className="h-4 w-4 mr-2 text-gray-500" />
+                                    <span className="font-medium">{priceMatch[1]} €</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-500 mb-2">Livraison</h4>
+                              <div className="space-y-2">
+                                <div className="flex items-center">
+                                  <Truck className="h-4 w-4 mr-2 text-gray-500" />
+                                  <span>{deliveryOptionMatch[1] || 'Non spécifié'}</span>
+                                </div>
+                                <div className="flex items-start">
+                                  <Mail className="h-4 w-4 mr-2 text-gray-500 mt-0.5" />
+                                  <span className="text-sm">{deliveryAddressMatch[1] || 'Non spécifié'}</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-500 mb-2">Paiement</h4>
+                              <div className="space-y-2">
+                                <div className="flex items-center">
+                                  <CreditCard className="h-4 w-4 mr-2 text-gray-500" />
+                                  <span>{getPaymentMethodLabel(methodMatch[1] || '')}</span>
+                                </div>
+                                {depositMatch[1] && (
+                                  <div className="flex items-center">
+                                    <CreditCard className="h-4 w-4 mr-2 text-gray-500" />
+                                    <span>Acompte: {depositMatch[1]} €</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      
-                      <Separator />
-                      
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-sm text-gray-500">Informations</h3>
-                        <p className="text-sm whitespace-pre-line">{selectedOrder.text}</p>
-                      </div>
-                      
-                      {selectedOrder.attachments && selectedOrder.attachments.length > 0 && (
-                        <>
-                          <Separator />
-                          <div className="space-y-2">
-                            <h3 className="font-semibold text-sm text-gray-500">Pièces jointes</h3>
+                        
+                        {order.attachments && order.attachments.length > 0 && (
+                          <div className="mt-2 mb-4">
+                            <h4 className="text-sm font-medium text-gray-500 mb-2">Pièces jointes</h4>
                             <div className="space-y-1">
-                              {selectedOrder.attachments.map((attachment, idx) => (
-                                <div key={idx} className="flex items-center p-2 bg-gray-50 rounded-md">
-                                  <FileText className="h-4 w-4 mr-2 text-gray-500" />
+                              {order.attachments.map((attachment: string, i: number) => (
+                                <div key={i} className="flex items-center">
+                                  <FileDown className="h-4 w-4 mr-2 text-gray-500" />
                                   <span className="text-sm">{attachment}</span>
                                 </div>
                               ))}
                             </div>
                           </div>
-                        </>
-                      )}
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-                
-                <TabsContent value="html">
-                  <ScrollArea className="h-[50vh]">
-                    <div className="p-4">
-                      <div className="p-4 bg-gray-50 rounded-md">
-                        <div dangerouslySetInnerHTML={{ __html: selectedOrder.html || 'Pas de contenu HTML' }} />
+                        )}
+                        
+                        {index < orders.length - 1 && (
+                          <Separator className="my-6" />
+                        )}
                       </div>
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-                
-                <TabsContent value="text">
-                  <ScrollArea className="h-[50vh]">
-                    <div className="p-4">
-                      <div className="p-4 bg-gray-50 rounded-md">
-                        <pre className="text-sm whitespace-pre-wrap">{selectedOrder.text}</pre>
-                      </div>
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-              </Tabs>
-              
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setDetailsOpen(false)}>
-                  Fermer
-                </Button>
-                <Button variant="destructive" onClick={() => handleDeleteOrder(selectedOrder.id)}>
-                  Supprimer
-                </Button>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+                    );
+                  })}
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 };
