@@ -725,6 +725,22 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
 };
 
 /**
+ * Sauvegarde les véhicules dans le stockage local
+ */
+export const saveImportedVehicles = (vehicles: ImportedVehicle[]): boolean => {
+  try {
+    const catalogId = getCatalogIdFromUrl();
+    const storageKey = catalogId ? `${STORAGE_KEY}_${catalogId}` : STORAGE_KEY;
+    
+    localStorage.setItem(storageKey, JSON.stringify(vehicles));
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la sauvegarde des véhicules:", error);
+    return false;
+  }
+};
+
+/**
  * Ajoute un nouveau véhicule importé au stockage local
  */
 export const addImportedVehicle = (vehicle: ImportedVehicle): boolean => {
@@ -774,6 +790,19 @@ export const deleteImportedVehicle = (vehicleId: string): boolean => {
     console.error("Erreur lors de la suppression du véhicule:", error);
     toast.error("Erreur lors de la suppression du véhicule");
     return false;
+  }
+};
+
+/**
+ * Extraction des véhicules depuis une URL
+ */
+export const extractVehiclesFromUrl = async (url: string): Promise<ImportedVehicle[]> => {
+  try {
+    return await extractVehiclesWithScraper(url);
+  } catch (error) {
+    console.error("Erreur lors de l'extraction des véhicules:", error);
+    toast.error("Impossible d'extraire les véhicules depuis cette URL");
+    return [];
   }
 };
 
