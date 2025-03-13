@@ -55,31 +55,38 @@ const HeroCarousel = () => {
                 className="relative w-full h-full bg-cover bg-center"
                 style={{ backgroundImage: `url(${img})` }}
               >
-                <div className="absolute inset-0 bg-black/30 flex flex-col justify-center items-center text-white">
-                  <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center px-4">
-                    {index === 0 && "BMW M2 - Élégance et Performance"}
-                    {index === 1 && "Mercedes AMG GT - Puissance Allemande"}
-                    {index === 2 && "Mercedes AMG GT - Luxe à Monaco"}
-                    {index === 3 && "BMW M5 - Confort et Sportivité"}
-                    {index === 4 && "Trouvez la voiture parfaite pour vous"}
-                  </h2>
-                  <p className="text-xl max-w-2xl text-center px-4 mb-6">
-                    {index === 0 && "Une sportive compacte pour les amateurs de sensations"}
-                    {index === 1 && "Un bijou de technologie pour les passionnés"}
-                    {index === 2 && "Le prestige sur la Côte d'Azur"}
-                    {index === 3 && "La berline sportive par excellence"}
-                    {index === 4 && "Des milliers de véhicules d'occasion vérifiés et garantis"}
-                  </p>
-                  
-                  {index === 4 && (
-                    <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                      <Link to="/vehicules/occasion">
-                        <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg">
-                          Véhicules d'occasion
-                        </Button>
-                      </Link>
-                    </div>
-                  )}
+                <div className="absolute inset-0 flex flex-col justify-center items-center">
+                  {/* Conteneur avec fond coloré semi-transparent */}
+                  <div className={`
+                    ${index % 2 === 0 ? 'bg-brand-blue/80' : 'bg-brand-orange/80'} 
+                    max-w-4xl mx-auto p-6 rounded-lg shadow-lg backdrop-blur-sm
+                    transform transition-all duration-500 ease-in-out
+                  `}>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center px-4 text-white">
+                      {index === 0 && "BMW M2 - Élégance et Performance"}
+                      {index === 1 && "Mercedes AMG GT - Puissance Allemande"}
+                      {index === 2 && "Mercedes AMG GT - Luxe à Monaco"}
+                      {index === 3 && "BMW M5 - Confort et Sportivité"}
+                      {index === 4 && "Trouvez la voiture parfaite pour vous"}
+                    </h2>
+                    <p className="text-xl max-w-2xl text-center px-4 mb-6 text-white">
+                      {index === 0 && "Une sportive compacte pour les amateurs de sensations"}
+                      {index === 1 && "Un bijou de technologie pour les passionnés"}
+                      {index === 2 && "Le prestige sur la Côte d'Azur"}
+                      {index === 3 && "La berline sportive par excellence"}
+                      {index === 4 && "Des milliers de véhicules d'occasion vérifiés et garantis"}
+                    </p>
+                    
+                    {index === 4 && (
+                      <div className="flex flex-col sm:flex-row gap-4 mt-8 justify-center">
+                        <Link to="/vehicules/occasion">
+                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-6 py-3 rounded-md font-semibold text-lg">
+                            Véhicules d'occasion
+                          </Button>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </CarouselItem>
