@@ -4,7 +4,6 @@ import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
-import Brands from '@/components/Brands';
 import CallToAction from '@/components/CallToAction';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -57,7 +56,6 @@ const Index = () => {
           <FeaturedCars searchFilters={searchFilters} />
         </div>
         <Benefits />
-        <Brands />
         <div id="testimonials">
           <TestimonialSection />
         </div>
