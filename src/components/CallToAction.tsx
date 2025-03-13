@@ -1,5 +1,5 @@
 
-import { Phone, Mail, Calendar, MessageCircle } from 'lucide-react';
+import { Phone, Mail, Calendar, MessageCircle, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const CallToAction = () => {
               Besoin d'aide pour votre projet automobile ?
             </h2>
             <p className="text-lg mb-8 text-blue-100">
-              Nos conseillers sont à votre disposition pour vous aider à trouver le véhicule de vos rêves. N'hésitez pas à nous contacter pour toute question.
+              Nos conseillers sont à votre disposition pour vous aider à trouver le véhicule de vos rêves. Achetez en ligne ou contactez-nous pour toute question.
             </p>
             
             <div className="space-y-4 mb-8">
@@ -41,9 +41,10 @@ const CallToAction = () => {
                   Nous contacter
                 </Button>
               </Link>
-              <Link to="/rendez-vous">
-                <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors px-6 py-3 text-lg text-white font-semibold">
-                  Prendre rendez-vous
+              <Link to="/vehicules/occasion">
+                <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors px-6 py-3 text-lg text-white font-semibold inline-flex items-center">
+                  <ShoppingCart className="h-5 w-5 mr-2" />
+                  Acheter en ligne
                 </Button>
               </Link>
             </div>

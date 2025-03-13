@@ -1,9 +1,10 @@
 
 import { useState } from 'react';
-import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight } from 'lucide-react';
+import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 interface CarProps {
   id: string;
@@ -80,6 +81,15 @@ const cars = [
 ];
 
 const FeaturedCars = () => {
+  const { toast } = useToast();
+
+  const handleAddToCart = (car: CarProps) => {
+    toast({
+      title: "Ajouté au panier",
+      description: `${car.brand} ${car.model} ajouté à votre panier.`,
+    });
+  };
+
   return (
     <section className="section-padding">
       <div className="container mx-auto px-4">
@@ -135,8 +145,13 @@ const FeaturedCars = () => {
                       Détails
                     </Button>
                   </Link>
-                  <Button variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                    Réserver
+                  <Button 
+                    variant="outline" 
+                    className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+                    onClick={() => handleAddToCart(car)}
+                  >
+                    <ShoppingCart className="h-4 w-4 mr-1" />
+                    Acheter
                   </Button>
                 </div>
               </CardContent>
