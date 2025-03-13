@@ -54,7 +54,6 @@ const Header = () => {
               </button>
               <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
                 <div className="py-1">
-                  <Link to="/vehicules/neufs" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Véhicules neufs</Link>
                   <Link to="/vehicules/occasion" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Véhicules d'occasion</Link>
                   <Link to="/vehicules/utilitaires" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Véhicules utilitaires</Link>
                 </div>
@@ -132,13 +131,6 @@ const Header = () => {
               </button>
               {activeDropdown === 'vehicles-mobile' && (
                 <div className="pl-10 mt-1 space-y-1">
-                  <Link
-                    to="/vehicules/neufs"
-                    className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                    onClick={toggleMenu}
-                  >
-                    Véhicules neufs
-                  </Link>
                   <Link
                     to="/vehicules/occasion"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"

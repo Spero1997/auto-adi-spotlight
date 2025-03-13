@@ -20,16 +20,11 @@ const Hero = () => {
             Trouvez la voiture parfaite pour vous
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-100">
-            Des milliers de véhicules neufs et d'occasion vérifiés et garantis
+            Des milliers de véhicules d'occasion vérifiés et garantis
           </p>
           
-          {/* Call to action buttons */}
+          {/* Call to action button */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <Link to="/vehicules/neufs">
-              <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg">
-                Véhicules neufs
-              </Button>
-            </Link>
             <Link to="/vehicules/occasion">
               <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg">
                 Véhicules d'occasion

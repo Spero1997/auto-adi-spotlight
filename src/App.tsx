@@ -20,7 +20,6 @@ const App = () => (
           {/* Routes pour les pages secondaires */}
           <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/vehicules/:id" element={<Index />} /> {/* À implémenter plus tard */}
-          <Route path="/vehicules/neufs" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/vehicules/occasion" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/vehicules/utilitaires" element={<Index />} /> {/* À implémenter plus tard */}
           <Route path="/services" element={<Index />} /> {/* À implémenter plus tard */}
