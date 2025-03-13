@@ -1,71 +1,93 @@
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CircleAlert } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
+// Updated brands data with more reliable logo sources or brand names only
 const brandsData = [
   {
     name: "Peugeot",
-    logo: "https://logodownload.org/wp-content/uploads/2019/09/peugeot-logo-1.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/peugeot"
   },
   {
     name: "Renault",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Renault_2009_logo.svg/2560px-Renault_2009_logo.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/renault"
   },
   {
     name: "Citroën",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Citroen_2009_logo.svg/2048px-Citroen_2009_logo.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/citroen"
   },
   {
     name: "Audi",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Audi-Logo_2016.svg/1024px-Audi-Logo_2016.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/audi"
   },
   {
     name: "BMW",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/BMW.svg/2048px-BMW.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/bmw"
   },
   {
     name: "Mercedes",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Mercedes-Logo.svg/1200px-Mercedes-Logo.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/mercedes"
   },
   {
     name: "Volkswagen",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Volkswagen_logo_2019.svg/2048px-Volkswagen_logo_2019.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/volkswagen"
   },
   {
     name: "Toyota",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Toyota_carlogo.svg/1024px-Toyota_carlogo.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/toyota"
   },
   {
     name: "Honda",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Honda.svg/2560px-Honda.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/honda"
   },
   {
     name: "Ford",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Ford_Motor_Company_Logo.svg/2560px-Ford_Motor_Company_Logo.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/ford"
   },
   {
     name: "Hyundai",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Hyundai_Motor_Company_logo.svg/2560px-Hyundai_Motor_Company_logo.svg.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/hyundai"
   },
   {
     name: "Nissan",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Nissan_logo.png/800px-Nissan_logo.png",
+    logo: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png", // Using local image from public folder
     link: "/marques/nissan"
   }
 ];
 
 const Brands = () => {
+  const [brandImages, setBrandImages] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    // Create a map to track which images loaded successfully
+    const imageLoadStatus: { [key: string]: boolean } = {};
+    
+    brandsData.forEach(brand => {
+      const img = new Image();
+      img.onload = () => {
+        imageLoadStatus[brand.name] = true;
+        setBrandImages({...imageLoadStatus});
+      };
+      img.onerror = () => {
+        imageLoadStatus[brand.name] = false;
+        setBrandImages({...imageLoadStatus});
+      };
+      img.src = brand.logo;
+    });
+  }, []);
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -89,13 +111,23 @@ const Brands = () => {
             <Link
               key={brand.name}
               to={brand.link}
-              className="bg-white rounded-lg border border-gray-200 p-6 flex justify-center items-center h-32 card-hover"
+              className="bg-white rounded-lg border border-gray-200 p-6 flex flex-col justify-center items-center h-32 card-hover"
             >
-              <img
-                src={brand.logo}
-                alt={brand.name}
-                className="max-h-16 max-w-full"
-              />
+              {/* If image status is undefined (still loading) or true (loaded successfully), show the image */}
+              {(brandImages[brand.name] === undefined || brandImages[brand.name]) ? (
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className="max-h-16 max-w-full mb-2"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    setBrandImages(prev => ({...prev, [brand.name]: false}));
+                  }}
+                />
+              ) : null}
+              
+              {/* Always show the brand name for better accessibility */}
+              <span className="font-medium text-center">{brand.name}</span>
             </Link>
           ))}
         </div>
