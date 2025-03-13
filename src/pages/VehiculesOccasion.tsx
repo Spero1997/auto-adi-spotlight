@@ -380,7 +380,6 @@ const VehiculesOccasion = () => {
                           maxPrice: filtersApplied ? priceRange[1] : undefined,
                           fuelType: filtersApplied ? selectedFuelType === 'all' ? '' : selectedFuelType : '',
                         }}
-                        hideViewAllButton={location.pathname === '/vehicules/occasion'}
                       />
                     </div>
                   </div>

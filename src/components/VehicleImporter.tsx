@@ -22,10 +22,15 @@ const VehicleImporter = () => {
       
       const importedVehicles = await extractVehiclesFromUrl(url);
       
-      // Vérifier les images importées
+      // Vérifier les images importées et garantir que les URLs sont valides
       importedVehicles.forEach((vehicle, index) => {
         console.log(`Véhicule ${index + 1} importé:`, vehicle.brand, vehicle.model);
         console.log(`Image URL:`, vehicle.image || 'Pas d\'image');
+        
+        // S'assurer que l'URL de l'image est absolue si elle existe
+        if (vehicle.image && !vehicle.image.startsWith('http') && !vehicle.image.startsWith('/')) {
+          vehicle.image = '/' + vehicle.image;
+        }
       });
       
       console.log(`${importedVehicles.length} véhicules importés avec succès`);

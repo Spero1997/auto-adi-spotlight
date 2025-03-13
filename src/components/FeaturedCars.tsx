@@ -96,7 +96,7 @@ const FeaturedCars = ({ searchFilters }: { searchFilters?: SearchFilters }) => {
           <Card key={vehicle.id} className="bg-white shadow-md rounded-lg overflow-hidden">
             <div className="aspect-w-16 aspect-h-9 relative h-48">
               <img
-                src={vehicle.image || 'https://via.placeholder.com/640x480?text=No+Image'}
+                src={vehicle.image ? vehicle.image : 'https://via.placeholder.com/640x480?text=No+Image'}
                 alt={`${vehicle.brand} ${vehicle.model}`}
                 className="object-cover w-full h-full"
                 onError={(e) => {
