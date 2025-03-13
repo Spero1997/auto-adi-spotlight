@@ -1,4 +1,3 @@
-
 import { useState, useRef } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift, Truck, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { sendOrderConfirmationEmail, sendPaymentProofEmail } from '@/utils/emailService';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from "@/components/ui/textarea";
 
 interface CarProps {
   id: string;
@@ -299,42 +298,45 @@ const FeaturedCars = () => {
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-[650px] max-h-[90vh] overflow-hidden">
-            <DialogHeader className="mb-2">
-              <DialogTitle>Finaliser votre achat</DialogTitle>
-              <DialogDescription>
-                {selectedCar && (
-                  <div className="space-y-4 mt-4">
-                    <div className="flex items-center">
-                      <img 
-                        src={selectedCar.image} 
-                        alt={`${selectedCar.brand} ${selectedCar.model}`} 
-                        className="w-20 h-14 object-cover rounded mr-3"
-                      />
-                      <div>
-                        <p className="font-medium">{selectedCar.brand} {selectedCar.model}</p>
-                        <p className="text-gray-500">Prix total: <span className="text-brand-blue font-bold">{selectedCar.price.toLocaleString('fr-FR')} €</span></p>
+          <DialogContent className="sm:max-w-[700px] w-[95%] max-h-[90vh] overflow-hidden p-0">
+            <div className="p-6 pb-0">
+              <DialogHeader className="mb-2">
+                <DialogTitle>Finaliser votre achat</DialogTitle>
+                <DialogDescription>
+                  {selectedCar && (
+                    <div className="space-y-4 mt-4">
+                      <div className="flex items-center">
+                        <img 
+                          src={selectedCar.image} 
+                          alt={`${selectedCar.brand} ${selectedCar.model}`} 
+                          className="w-20 h-14 object-cover rounded mr-3"
+                        />
+                        <div>
+                          <p className="font-medium">{selectedCar.brand} {selectedCar.model}</p>
+                          <p className="text-gray-500">Prix total: <span className="text-brand-blue font-bold">{selectedCar.price.toLocaleString('fr-FR')} €</span></p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-brand-blue/10 p-3 rounded-md border border-brand-blue/30">
+                        <p className="font-medium text-brand-blue">
+                          Acompte à verser (20%): 
+                          <span className="font-bold text-lg ml-1">
+                            {calculateDeposit(selectedCar.price).toLocaleString('fr-FR')} €
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Le reste du montant sera à régler lors de la livraison du véhicule.
+                        </p>
                       </div>
                     </div>
-                    
-                    <div className="bg-brand-blue/10 p-3 rounded-md border border-brand-blue/30">
-                      <p className="font-medium text-brand-blue">
-                        Acompte à verser (20%): 
-                        <span className="font-bold text-lg ml-1">
-                          {calculateDeposit(selectedCar.price).toLocaleString('fr-FR')} €
-                        </span>
-                      </p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        Le reste du montant sera à régler lors de la livraison du véhicule.
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </DialogDescription>
-            </DialogHeader>
+                  )}
+                </DialogDescription>
+              </DialogHeader>
+            </div>
 
-            <ScrollArea className="max-h-[55vh] pr-4 -mr-4">
+            <div className="px-6 overflow-y-auto max-h-[60vh] flex-grow">
               <div className="space-y-5 py-2">
+                {/* Informations client */}
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base">Vos coordonnées</h3>
                   
@@ -377,7 +379,7 @@ const FeaturedCars = () => {
                   )}
                 </div>
 
-                {/* Nouvelle section de livraison */}
+                {/* Informations de livraison */}
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base flex items-center">
                     <Truck className="h-4 w-4 mr-2 text-brand-blue" />
@@ -480,6 +482,7 @@ const FeaturedCars = () => {
                   )}
                 </div>
 
+                {/* Méthodes de paiement */}
                 <div className={`flex flex-wrap gap-2 border-b pb-4 ${isMobile ? 'flex-col' : ''}`}>
                   <Button
                     type="button"
@@ -511,6 +514,7 @@ const FeaturedCars = () => {
                   </Button>
                 </div>
 
+                {/* Sections conditionnelles selon méthode de paiement */}
                 {paymentMethod === 'card' && (
                   <div className="space-y-4 opacity-50">
                     <div>
@@ -625,9 +629,9 @@ const FeaturedCars = () => {
                   </div>
                 )}
               </div>
-            </ScrollArea>
+            </div>
 
-            <DialogFooter className="mt-4">
+            <DialogFooter className="p-6 pt-4 border-t mt-2">
               <Button 
                 onClick={handleCompletePayment}
                 className="w-full sm:w-auto" 
