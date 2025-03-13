@@ -8,10 +8,12 @@ import CallToAction from '@/components/CallToAction';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getImportedVehicles, resetCatalog } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Car } from 'lucide-react';
 
 const Index = () => {
   const location = useLocation();
@@ -78,6 +80,17 @@ const Index = () => {
         <div className="mt-10" id="featured-cars">
           <FeaturedCars featuredOnly={true} />
         </div>
+        
+        {/* Bouton Tous nos véhicules d'occasion */}
+        <div className="container mx-auto px-4 py-8 text-center">
+          <Link to="/vehicules/occasion">
+            <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
+              <Car className="h-5 w-5" />
+              Tous nos véhicules d'occasion
+            </Button>
+          </Link>
+        </div>
+        
         {/* This section shows standard vehicles or search results */}
         {searchParams.toString() ? (
           <div className="mt-10">
