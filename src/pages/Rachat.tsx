@@ -3,7 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Car, Clipboard, ArrowRight, Banknote, FileCheck, CalendarClock, Clock, Check, Heart } from 'lucide-react';
+import { Car, Clipboard, ArrowRight, Banknote, FileCheck, CalendarClock, Clock, Check, Heart, Phone, Mail } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const Rachat = () => {

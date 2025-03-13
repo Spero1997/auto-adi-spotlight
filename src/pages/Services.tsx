@@ -3,7 +3,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Wrench, Car, Calendar, Shield, Tool, Gauge, Fuel, ScrollText } from 'lucide-react';
+import { Wrench, Car, Calendar, Shield, Gauge, Fuel, ScrollText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Services = () => {
