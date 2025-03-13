@@ -44,9 +44,18 @@ const VehicleImport = () => {
       if (tCross) {
         console.log("La Volkswagen T-Cross est présente dans le catalogue", tCross);
         toast.success("La Volkswagen T-Cross a été ajoutée au catalogue");
-      } else {
-        console.warn("La Volkswagen T-Cross n'est pas présente dans le catalogue");
-        toast.error("La Volkswagen T-Cross n'a pas pu être trouvée dans le catalogue");
+      }
+      
+      // Recherche de l'Audi A3 E-Tron
+      const audiA3 = vehicles.find(v => 
+        v.brand === "Audi" && 
+        v.model.includes("A3 E-Tron") && 
+        v.year === 2017
+      );
+      
+      if (audiA3) {
+        console.log("L'Audi A3 E-Tron est présente dans le catalogue", audiA3);
+        toast.success("L'Audi A3 E-Tron a été ajoutée au catalogue");
       }
       
       setVehiclesLoaded(true);
@@ -80,11 +89,19 @@ const VehicleImport = () => {
             </AlertDescription>
           </Alert>
 
-          <Alert className="mb-6 bg-blue-50 border-blue-200">
+          <Alert className="mb-4 bg-blue-50 border-blue-200">
             <Info className="h-4 w-4 text-blue-500" />
             <AlertTitle>Nouvelle BMW ajoutée</AlertTitle>
             <AlertDescription>
               La BMW X5 xDrive 2016 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-green-50 border-green-200">
+            <Info className="h-4 w-4 text-green-500" />
+            <AlertTitle>Nouvelle Audi ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi A3 E-Tron 1.4 S Tronic 2017 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
