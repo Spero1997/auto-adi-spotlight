@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 interface CarProps {
   id: string;
@@ -183,7 +181,7 @@ const FeaturedCars = () => {
           </Link>
         </div>
 
-        {/* Payment Dialog - Using a standard Dialog component instead of a DialogTrigger */}
+        {/* Payment Dialog - Simplified version without Form components */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-md md:max-w-lg">
             <DialogHeader>
@@ -229,35 +227,35 @@ const FeaturedCars = () => {
 
               {paymentMethod === 'card' && (
                 <div className="space-y-4">
-                  <FormItem>
-                    <FormLabel>Numéro de carte</FormLabel>
-                    <FormControl>
-                      <Input placeholder="1234 5678 9012 3456" />
-                    </FormControl>
-                  </FormItem>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormItem>
-                      <FormLabel>Date d'expiration</FormLabel>
-                      <FormControl>
-                        <Input placeholder="MM/AA" />
-                      </FormControl>
-                    </FormItem>
-                    
-                    <FormItem>
-                      <FormLabel>CVC</FormLabel>
-                      <FormControl>
-                        <Input placeholder="123" />
-                      </FormControl>
-                    </FormItem>
+                  <div>
+                    <label className="text-sm font-medium leading-none mb-2 block">
+                      Numéro de carte
+                    </label>
+                    <Input placeholder="1234 5678 9012 3456" />
                   </div>
                   
-                  <FormItem>
-                    <FormLabel>Nom sur la carte</FormLabel>
-                    <FormControl>
-                      <Input placeholder="John Doe" />
-                    </FormControl>
-                  </FormItem>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium leading-none mb-2 block">
+                        Date d'expiration
+                      </label>
+                      <Input placeholder="MM/AA" />
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm font-medium leading-none mb-2 block">
+                        CVC
+                      </label>
+                      <Input placeholder="123" />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium leading-none mb-2 block">
+                      Nom sur la carte
+                    </label>
+                    <Input placeholder="John Doe" />
+                  </div>
                 </div>
               )}
 
