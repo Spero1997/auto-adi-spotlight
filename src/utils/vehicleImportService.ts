@@ -24,6 +24,33 @@ export interface ImportedVehicle {
 const STORAGE_KEY = 'imported_vehicles';
 const CATALOG_ID_KEY = 'catalog_id';
 
+// Véhicule Audi RS Q8 pré-ajouté
+const audiRSQ8 = {
+  id: `rsq8-${Date.now()}`,
+  brand: "Audi",
+  model: "RS Q8",
+  year: 2023,
+  mileage: 5000,
+  fuelType: "Essence",
+  price: 21000,
+  transmission: "Automatique",
+  exteriorColor: "Noire",
+  interiorColor: "Or et noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Toit ouvrant panoramique", "Système de navigation", "Sièges chauffants", "Caméra 360°", "Jantes sport noires"],
+  image: "/lovable-uploads/651a21f8-3788-49f4-b379-6c254cb950ef.png",
+};
+
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
   let catalogId = localStorage.getItem(CATALOG_ID_KEY);
@@ -87,17 +114,30 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
           vehicle.price
         );
       }
+    } else {
+      // Si aucun véhicule n'est dans le localStorage, ajouter le RS Q8 et retourner le tableau avec cette voiture
+      const initialVehicles = [audiRSQ8];
+      saveImportedVehicles(initialVehicles);
+      return initialVehicles;
     }
   } catch (error) {
     console.error("Erreur lors de la récupération des véhicules:", error);
   }
-  console.log("Aucun véhicule trouvé dans le localStorage ou données invalides");
-  return [];
+  
+  // Si aucun véhicule n'est trouvé ou en cas d'erreur, retourner au moins l'Audi RS Q8
+  console.log("Aucun véhicule trouvé dans le localStorage ou données invalides, retour du RS Q8 par défaut");
+  return [audiRSQ8];
 };
 
 // Enregistrer les véhicules dans le stockage local et mettre à jour l'URL
 export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
   try {
+    // S'assurer que l'Audi RS Q8 est incluse
+    const rsq8Exists = vehicles.some(vehicle => vehicle.model === "RS Q8" && vehicle.brand === "Audi");
+    if (!rsq8Exists) {
+      vehicles.push(audiRSQ8);
+    }
+    
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
     
     // S'assurer que l'ID de catalogue est dans l'URL
@@ -155,6 +195,13 @@ export const addImportedVehicles = (newVehicles: ImportedVehicle[]): void => {
 export const deleteImportedVehicle = (id: string): void => {
   try {
     const vehicles = getImportedVehicles();
+    
+    // Ne pas supprimer l'Audi RS Q8
+    if (vehicles.some(v => v.id === id && v.brand === "Audi" && v.model === "RS Q8")) {
+      toast.error("Ce véhicule ne peut pas être supprimé");
+      return;
+    }
+    
     const updatedVehicles = vehicles.filter(v => v.id !== id);
     
     saveImportedVehicles(updatedVehicles);
