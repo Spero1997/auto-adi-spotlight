@@ -17,7 +17,16 @@ const VehicleImporter = () => {
     
     setIsImporting(true);
     try {
-      toast.info("Le catalogue a été supprimé, impossible d'importer des véhicules");
+      const importedVehicles = await extractVehiclesFromUrl(url);
+      
+      if (importedVehicles.length > 0) {
+        toast.success(`${importedVehicles.length} véhicule(s) importé(s) avec succès`);
+        // Déclencher un événement pour mettre à jour l'affichage des véhicules
+        window.dispatchEvent(new Event('vehiclesUpdated'));
+      } else {
+        toast.warning("Aucun véhicule n'a pu être importé depuis cette URL");
+      }
+      
       setUrl('');
     } catch (error) {
       console.error("Erreur lors de l'importation:", error);
@@ -33,18 +42,14 @@ const VehicleImporter = () => {
       <p className="text-gray-600">
         Entrez l'URL d'une page listant des véhicules pour importer automatiquement les informations.
       </p>
-      <div className="p-4 bg-amber-50 border border-amber-200 rounded-md">
-        <p className="text-amber-700">Le catalogue a été supprimé. L'importation de véhicules n'est plus disponible.</p>
-      </div>
       <Input
         type="url"
         placeholder="URL de la page de véhicules"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        disabled={true}
       />
-      <Button onClick={handleImport} disabled={true}>
-        Importer
+      <Button onClick={handleImport} disabled={isImporting}>
+        {isImporting ? "Importation en cours..." : "Importer"}
       </Button>
     </div>
   );

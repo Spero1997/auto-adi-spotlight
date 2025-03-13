@@ -23,18 +23,10 @@ const Index = () => {
       const vehicles = getImportedVehicles();
       console.log(`Page d'accueil: ${vehicles.length} véhicules chargés depuis le localStorage`);
       
-      // Vérifier si la Volkswagen T-Cross est présente
-      const tCross = vehicles.find(v => 
-        v.brand === "Volkswagen" && 
-        v.model.includes("T-Cross") && 
-        v.year === 2020  // Corrigé: année modifiée de 2021 à 2020
-      );
+      // Vérifier les véhicules vedettes
+      const featuredVehicles = vehicles.filter(v => v.featured === true);
+      console.log(`${featuredVehicles.length} véhicules en vedette trouvés`);
       
-      if (tCross) {
-        console.log("La Volkswagen T-Cross est présente dans le catalogue", tCross);
-      } else {
-        console.warn("La Volkswagen T-Cross n'est pas présente dans le catalogue");
-      }
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
     }
@@ -82,7 +74,7 @@ const Index = () => {
         </div>
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
-          <FeaturedCars searchFilters={searchFilters} />
+          <FeaturedCars searchFilters={searchFilters} featuredOnly={!searchParams.toString()} />
         </div>
         <Benefits />
         <div id="testimonials">
