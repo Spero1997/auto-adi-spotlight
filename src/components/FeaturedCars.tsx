@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,14 +23,10 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   useEffect(() => {
     loadVehicles();
     
-    // Écouter les événements de mise à jour des véhicules
     const handleVehiclesUpdated = (event: Event) => {
-      // Vérifier si l'événement contient des détails sur le type de catalogue
       const customEvent = event as CustomEvent;
       const catalogType = customEvent.detail?.catalogType;
       
-      // Si c'est un événement pour le catalogue standard ou pour tous les catalogues,
-      // ou si aucun type n'est spécifié, recharger les véhicules
       if (!catalogType || catalogType === 'standard' || catalogType === 'all' || 
           (featuredOnly && catalogType === 'featured')) {
         loadVehicles();
@@ -51,7 +46,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     setLoading(true);
     setError(null);
     try {
-      // Charger les véhicules du catalogue approprié
       const catalogType = featuredOnly ? 'featured' : 'standard';
       const importedVehicles = getImportedVehicles(catalogType);
       console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
@@ -147,15 +141,16 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         </div>
       )}
 
-      {/* New section at the bottom for "View all vehicles" button */}
-      <div className="mt-12 text-center">
-        <Link to="/vehicules/occasion">
-          <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
-            <Car className="h-5 w-5" />
-            Tous nos véhicules d'occasion
-          </Button>
-        </Link>
-      </div>
+      {featuredOnly && (
+        <div className="mt-12 text-center">
+          <Link to="/vehicules/occasion">
+            <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
+              <Car className="h-5 w-5" />
+              Tous nos véhicules d'occasion
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
