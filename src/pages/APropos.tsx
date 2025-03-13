@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -46,10 +45,10 @@ const APropos = () => {
                   Fondée en 2002 par les frères Adam et Daniel Ivanic, Auto Adi est née d'une passion partagée pour l'automobile et d'une vision commune : offrir des véhicules de qualité à des prix justes, accompagnés d'un service irréprochable.
                 </p>
                 <p className="text-lg text-gray-600 mb-6">
-                  Ce qui a commencé comme un petit garage familial à Lyon s'est progressivement développé pour devenir un réseau de concessions respecté dans toute la France, tout en conservant les valeurs familiales qui ont fait notre succès.
+                  Ce qui a commencé comme un petit garage familial à Lyon s'est progressivement développé pour devenir une entreprise reconnue avec une présence en Roumanie et en Italie, tout en conservant les valeurs familiales qui ont fait notre succès.
                 </p>
                 <p className="text-lg text-gray-600">
-                  Aujourd'hui, Auto Adi emploie plus de 120 collaborateurs passionnés et commercialise plus de 3 000 véhicules par an, tout en continuant à placer la satisfaction client au cœur de notre démarche.
+                  Aujourd'hui, Auto Adi emploie plus de 120 collaborateurs passionnés et commercialise plus de 3 000 véhicules par an, tout en préparant son expansion en Espagne, au Portugal et en France.
                 </p>
               </div>
               
@@ -198,98 +197,6 @@ const APropos = () => {
           </div>
         </section>
 
-        {/* Locations Section */}
-        <section className="py-16 bg-gray-50" id="locations">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Nos concessions</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Retrouvez-nous dans nos différentes concessions à travers la France.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <img 
-                      src="https://images.unsplash.com/photo-1565609538-b2c9c516e9b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
-                      alt="Auto Adi Lyon" 
-                      className="rounded-lg h-48 w-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">Auto Adi Lyon</h3>
-                  <div className="flex items-start mb-4">
-                    <MapPin className="h-5 w-5 text-brand-blue mr-2 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-600">123 Avenue Jean Jaurès, 69007 Lyon</p>
-                  </div>
-                  <div className="mb-4">
-                    <p className="text-gray-600"><span className="font-semibold">Téléphone:</span> 04 78 12 34 56</p>
-                    <p className="text-gray-600"><span className="font-semibold">Horaires:</span> Lun-Sam 9h-19h</p>
-                  </div>
-                  <Link to="/contact">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Contacter cette concession
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <img 
-                      src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
-                      alt="Auto Adi Paris" 
-                      className="rounded-lg h-48 w-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">Auto Adi Paris</h3>
-                  <div className="flex items-start mb-4">
-                    <MapPin className="h-5 w-5 text-brand-blue mr-2 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-600">45 Boulevard Malesherbes, 75008 Paris</p>
-                  </div>
-                  <div className="mb-4">
-                    <p className="text-gray-600"><span className="font-semibold">Téléphone:</span> 01 45 67 89 10</p>
-                    <p className="text-gray-600"><span className="font-semibold">Horaires:</span> Lun-Sam 9h-19h</p>
-                  </div>
-                  <Link to="/contact">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Contacter cette concession
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <img 
-                      src="https://images.unsplash.com/photo-1493616710305-d1bbaf6b2e8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2148&q=80" 
-                      alt="Auto Adi Marseille" 
-                      className="rounded-lg h-48 w-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">Auto Adi Marseille</h3>
-                  <div className="flex items-start mb-4">
-                    <MapPin className="h-5 w-5 text-brand-blue mr-2 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-600">78 Boulevard Michelet, 13008 Marseille</p>
-                  </div>
-                  <div className="mb-4">
-                    <p className="text-gray-600"><span className="font-semibold">Téléphone:</span> 04 91 23 45 67</p>
-                    <p className="text-gray-600"><span className="font-semibold">Horaires:</span> Lun-Sam 9h-19h</p>
-                  </div>
-                  <Link to="/contact">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Contacter cette concession
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Milestones Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -331,14 +238,14 @@ const APropos = () => {
                       <div className="bg-brand-blue rounded-full w-10 h-10 flex items-center justify-center mx-auto md:ml-auto md:mr-0">
                         <Calendar className="h-5 w-5 text-white" />
                       </div>
-                      <span className="block mt-2 font-bold">2008</span>
+                      <span className="block mt-2 font-bold">2010</span>
                     </div>
                     <div className="md:pt-2">
                       <Card className="bg-white shadow-md">
                         <CardContent className="p-6">
-                          <h3 className="text-xl font-bold mb-2">Expansion à Paris</h3>
+                          <h3 className="text-xl font-bold mb-2">Expansion en Roumanie</h3>
                           <p className="text-gray-600">
-                            Ouverture de la première concession parisienne et développement de l'offre de services après-vente.
+                            Ouverture de notre première concession internationale à Bucarest et développement sur le marché roumain.
                           </p>
                         </CardContent>
                       </Card>
@@ -350,7 +257,7 @@ const APropos = () => {
                       <div className="bg-brand-blue rounded-full w-10 h-10 flex items-center justify-center mx-auto md:ml-auto md:mr-0">
                         <Calendar className="h-5 w-5 text-white" />
                       </div>
-                      <span className="block mt-2 font-bold">2012</span>
+                      <span className="block mt-2 font-bold">2016</span>
                     </div>
                     <div className="md:pt-2">
                       <Card className="bg-white shadow-md">
@@ -369,14 +276,14 @@ const APropos = () => {
                       <div className="bg-brand-blue rounded-full w-10 h-10 flex items-center justify-center mx-auto md:ml-auto md:mr-0">
                         <Calendar className="h-5 w-5 text-white" />
                       </div>
-                      <span className="block mt-2 font-bold">2018</span>
+                      <span className="block mt-2 font-bold">2020</span>
                     </div>
                     <div className="md:pt-2">
                       <Card className="bg-white shadow-md">
                         <CardContent className="p-6">
-                          <h3 className="text-xl font-bold mb-2">Ouverture à Marseille</h3>
+                          <h3 className="text-xl font-bold mb-2">Implantation en Italie</h3>
                           <p className="text-gray-600">
-                            Inauguration de la concession de Marseille et lancement du service de livraison à domicile.
+                            Ouverture de notre concession à Florence et développement de notre présence sur le marché italien.
                           </p>
                         </CardContent>
                       </Card>
@@ -393,9 +300,9 @@ const APropos = () => {
                     <div className="md:pt-2">
                       <Card className="bg-white shadow-md">
                         <CardContent className="p-6">
-                          <h3 className="text-xl font-bold mb-2">Digitalisation de l'expérience client</h3>
+                          <h3 className="text-xl font-bold mb-2">Digitalisation et projets d'expansion</h3>
                           <p className="text-gray-600">
-                            Lancement de notre plateforme en ligne permettant l'achat de véhicules entièrement à distance.
+                            Lancement de notre plateforme en ligne et préparation pour l'expansion en Espagne, au Portugal et en France.
                           </p>
                         </CardContent>
                       </Card>
