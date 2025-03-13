@@ -46,6 +46,11 @@ const VehicleManager = () => {
       
       const importedVehicles = getImportedVehicles();
       console.log(`${importedVehicles.length} véhicules chargés`);
+      
+      importedVehicles.forEach((vehicle, index) => {
+        console.log(`Véhicule ${index + 1}: ${vehicle.brand} ${vehicle.model}, Image: ${vehicle.image || 'Aucune image'}`);
+      });
+      
       setVehicles(importedVehicles);
       
       if (importedVehicles.length === 0) {
@@ -241,9 +246,15 @@ const VehicleManager = () => {
                       alt={`${vehicle.brand} ${vehicle.model}`}
                       className="w-full h-full object-cover"
                       onError={(e) => {
+                        console.error("Erreur de chargement de l'image:", vehicle.image);
                         (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=No+Image';
                       }}
                     />
+                    {vehicle.image && (
+                      <div className="absolute bottom-1 left-1 right-1 text-white text-xs bg-black/50 px-1 py-0.5 truncate">
+                        {vehicle.image}
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     <div className="absolute bottom-3 left-3 right-3 text-white">
                       <h3 className="font-bold text-lg">{vehicle.brand} {vehicle.model}</h3>

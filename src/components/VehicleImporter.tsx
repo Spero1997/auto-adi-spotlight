@@ -10,9 +10,23 @@ const VehicleImporter = () => {
   const [isImporting, setIsImporting] = useState(false);
 
   const handleImport = async () => {
+    if (!url.trim()) {
+      toast.error("Veuillez entrer une URL valide");
+      return;
+    }
+    
     setIsImporting(true);
     try {
-      await extractVehiclesFromUrl(url);
+      // Ajouter un log pour déboguer
+      console.log("Début de l'importation depuis:", url);
+      
+      const importedVehicles = await extractVehiclesFromUrl(url);
+      
+      console.log(`${importedVehicles.length} véhicules importés avec succès`);
+      console.log("Premier véhicule importé:", importedVehicles[0]);
+      
+      toast.success(`${importedVehicles.length} véhicules importés avec succès`);
+      setUrl('');
     } catch (error) {
       console.error("Erreur lors de l'importation:", error);
       toast.error("Erreur lors de l'importation des véhicules");

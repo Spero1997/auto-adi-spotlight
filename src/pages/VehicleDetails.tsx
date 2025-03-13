@@ -26,11 +26,16 @@ const VehicleDetails = () => {
     
     try {
       const vehicles = getImportedVehicles();
+      console.log("Véhicules chargés:", vehicles.length);
+      
       const foundVehicle = vehicles.find(v => v.id === id);
       
       if (foundVehicle) {
+        console.log("Véhicule trouvé:", foundVehicle);
+        console.log("URL de l'image:", foundVehicle.image);
         setVehicle(foundVehicle);
       } else {
+        console.error("Véhicule non trouvé avec l'ID:", id);
         setNotFound(true);
         toast.error("Véhicule non trouvé");
       }
@@ -113,14 +118,26 @@ const VehicleDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                   <div className="space-y-4">
                     <div className="relative overflow-hidden rounded-lg h-[300px] md:h-[400px] bg-gray-100">
-                      <img 
-                        src={vehicle.image || 'https://via.placeholder.com/800x600?text=No+Image'} 
-                        alt={`${vehicle.brand} ${vehicle.model}`}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x600?text=No+Image';
-                        }}
-                      />
+                      {vehicle.image ? (
+                        <>
+                          <img 
+                            src={vehicle.image} 
+                            alt={`${vehicle.brand} ${vehicle.model}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              console.error("Erreur de chargement de l'image:", vehicle.image);
+                              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x600?text=No+Image';
+                            }}
+                          />
+                          <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                            {vehicle.image}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                          <p className="text-gray-500">Aucune image disponible</p>
+                        </div>
+                      )}
                       <div className="absolute top-3 right-3 bg-brand-orange text-white text-sm font-semibold px-3 py-1 rounded-full">
                         Occasion
                       </div>
