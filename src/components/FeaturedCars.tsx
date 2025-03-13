@@ -279,8 +279,8 @@ const FeaturedCars = () => {
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className={`sm:max-w-md md:max-w-lg ${isMobile ? 'p-4' : 'p-6'} max-h-[90vh] overflow-hidden`}>
-            <DialogHeader className={`${isMobile ? 'mb-2' : 'mb-4'}`}>
+          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-hidden">
+            <DialogHeader className="mb-4">
               <DialogTitle>Finaliser votre achat</DialogTitle>
               <DialogDescription>
                 {selectedCar && (
@@ -313,8 +313,8 @@ const FeaturedCars = () => {
               </DialogDescription>
             </DialogHeader>
 
-            <ScrollArea className="max-h-[60vh] pr-4 -mr-4">
-              <div className={`space-y-5 ${isMobile ? 'py-2' : 'py-4'}`}>
+            <ScrollArea className="max-h-[450px] pr-4 -mr-4">
+              <div className="space-y-5 py-4">
                 <div className="space-y-3 border-b pb-4">
                   <h3 className="font-medium text-base">Vos coordonnées</h3>
                   
@@ -388,7 +388,6 @@ const FeaturedCars = () => {
                   </Button>
                 </div>
 
-                {/* Ajout du reste du formulaire avec les balises fermées */}
                 {paymentMethod === 'card' && (
                   <div className="space-y-4 opacity-50">
                     <div>
@@ -505,7 +504,7 @@ const FeaturedCars = () => {
               </div>
             </ScrollArea>
 
-            <DialogFooter className={`${isMobile ? 'mt-4' : 'mt-6'}`}>
+            <DialogFooter className="mt-6">
               <Button 
                 onClick={handleCompletePayment}
                 className="w-full sm:w-auto" 
