@@ -1,10 +1,13 @@
 
 import { useState } from 'react';
-import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart } from 'lucide-react';
+import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 interface CarProps {
   id: string;
@@ -82,12 +85,24 @@ const cars = [
 
 const FeaturedCars = () => {
   const { toast } = useToast();
+  const [selectedCar, setSelectedCar] = useState<CarProps | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleAddToCart = (car: CarProps) => {
+  const handleOpenCheckout = (car: CarProps) => {
+    setSelectedCar(car);
+    setDialogOpen(true);
+  };
+
+  const handleCompletePayment = () => {
+    setDialogOpen(false);
+    
     toast({
-      title: "Ajouté au panier",
-      description: `${car.brand} ${car.model} ajouté à votre panier.`,
+      title: "Commande confirmée",
+      description: selectedCar ? `Votre commande pour ${selectedCar.brand} ${selectedCar.model} a été enregistrée. Nous vous contacterons prochainement.` : "Votre commande a été enregistrée.",
     });
+
+    setSelectedCar(null);
   };
 
   return (
@@ -148,7 +163,7 @@ const FeaturedCars = () => {
                   <Button 
                     variant="outline" 
                     className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
-                    onClick={() => handleAddToCart(car)}
+                    onClick={() => handleOpenCheckout(car)}
                   >
                     <ShoppingCart className="h-4 w-4 mr-1" />
                     Acheter
@@ -167,6 +182,132 @@ const FeaturedCars = () => {
             </Button>
           </Link>
         </div>
+
+        {/* Payment Dialog */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="sm:max-w-md md:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Finaliser votre achat</DialogTitle>
+              <DialogDescription>
+                {selectedCar && (
+                  <div className="flex items-center mt-4">
+                    <img 
+                      src={selectedCar.image} 
+                      alt={`${selectedCar.brand} ${selectedCar.model}`} 
+                      className="w-24 h-16 object-cover rounded mr-4"
+                    />
+                    <div>
+                      <p className="font-medium">{selectedCar.brand} {selectedCar.model}</p>
+                      <p className="text-brand-blue font-bold">{selectedCar.price.toLocaleString('fr-FR')} €</p>
+                    </div>
+                  </div>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-6 py-4">
+              <div className="flex space-x-2 border-b pb-4">
+                <Button
+                  type="button"
+                  variant={paymentMethod === 'card' ? 'default' : 'outline'}
+                  onClick={() => setPaymentMethod('card')}
+                  className="flex-1"
+                >
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Carte bancaire
+                </Button>
+                <Button
+                  type="button" 
+                  variant={paymentMethod === 'transfer' ? 'default' : 'outline'}
+                  onClick={() => setPaymentMethod('transfer')}
+                  className="flex-1"
+                >
+                  <Building className="mr-2 h-4 w-4" />
+                  Virement bancaire
+                </Button>
+              </div>
+
+              {paymentMethod === 'card' && (
+                <div className="space-y-4">
+                  <FormItem>
+                    <FormLabel>Numéro de carte</FormLabel>
+                    <FormControl>
+                      <Input placeholder="1234 5678 9012 3456" />
+                    </FormControl>
+                  </FormItem>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormItem>
+                      <FormLabel>Date d'expiration</FormLabel>
+                      <FormControl>
+                        <Input placeholder="MM/AA" />
+                      </FormControl>
+                    </FormItem>
+                    
+                    <FormItem>
+                      <FormLabel>CVC</FormLabel>
+                      <FormControl>
+                        <Input placeholder="123" />
+                      </FormControl>
+                    </FormItem>
+                  </div>
+                  
+                  <FormItem>
+                    <FormLabel>Nom sur la carte</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" />
+                    </FormControl>
+                  </FormItem>
+                </div>
+              )}
+
+              {paymentMethod === 'transfer' && (
+                <div className="space-y-4">
+                  <div className="bg-blue-50 p-4 rounded-md border border-blue-200">
+                    <div className="flex items-start">
+                      <AlertCircle className="text-brand-blue h-5 w-5 mr-2 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-gray-800 mb-2">
+                          Veuillez effectuer un virement bancaire sur le compte suivant:
+                        </p>
+                        <div className="text-sm">
+                          <p><span className="font-semibold">Bénéficiaire:</span> Lucia Dzujkova</p>
+                          <p><span className="font-semibold">IBAN:</span> LT453500010018283529</p>
+                          <p><span className="font-semibold">SWIFT/BIC:</span> EVIULT2VXXX</p>
+                          <p><span className="font-semibold">Nom de banque:</span> Paysera LT, UAB</p>
+                          <p><span className="font-semibold">Adresse de la banque:</span> Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-gray-600">
+                    Après avoir effectué le virement, veuillez cliquer sur "Confirmer la commande". 
+                    Nous vous contacterons après vérification du paiement.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => setDialogOpen(false)}
+              >
+                Annuler
+              </Button>
+              
+              <Button 
+                type="button"
+                className="bg-brand-blue hover:bg-brand-darkBlue"
+                onClick={handleCompletePayment}
+              >
+                Confirmer la commande
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );
