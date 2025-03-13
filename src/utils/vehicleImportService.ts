@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -655,6 +654,19 @@ export const generateCatalogId = () => {
   return newId;
 };
 
+// Récupère l'ID du catalogue depuis l'URL
+export const getCatalogIdFromUrl = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('catalog');
+};
+
+// Génère une URL partageable avec l'ID du catalogue
+export const generateShareableUrl = () => {
+  const catalogId = generateCatalogId();
+  const baseUrl = window.location.origin;
+  return `${baseUrl}?catalog=${catalogId}`;
+};
+
 // Récupère les véhicules importés depuis le localStorage
 export const getImportedVehicles = (): ImportedVehicle[] => {
   try {
@@ -707,12 +719,40 @@ export const addImportedVehicle = (vehicle: ImportedVehicle) => {
   }
 };
 
+// Sauvegarde les véhicules importés dans le localStorage
+export const saveImportedVehicles = (vehicles: ImportedVehicle[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
+    // Dispatch un événement pour signaler que les véhicules ont été mis à jour
+    window.dispatchEvent(new Event('vehiclesUpdated'));
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la sauvegarde des véhicules:", error);
+    return false;
+  }
+};
+
 // Supprime un véhicule de la liste des véhicules importés
 export const removeImportedVehicle = (vehicleId: string) => {
   try {
     const vehicles = getImportedVehicles();
     const newVehicles = vehicles.filter(v => v.id !== vehicleId);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newVehicles));
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la suppression du véhicule:", error);
+    return false;
+  }
+};
+
+// Supprime un véhicule par son ID
+export const deleteImportedVehicle = (vehicleId: string) => {
+  try {
+    const vehicles = getImportedVehicles();
+    const newVehicles = vehicles.filter(v => v.id !== vehicleId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newVehicles));
+    // Dispatch un événement pour signaler que les véhicules ont été mis à jour
+    window.dispatchEvent(new Event('vehiclesUpdated'));
     return true;
   } catch (error) {
     console.error("Erreur lors de la suppression du véhicule:", error);
