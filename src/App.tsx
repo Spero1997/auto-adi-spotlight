@@ -20,6 +20,7 @@ import Conditions from "./pages/Conditions";
 import OrdersBackup from "./pages/OrdersBackup";
 import VehiculesOccasion from "./pages/VehiculesOccasion";
 import VehicleManagement from "./pages/VehicleManagement";
+import VehicleImport from "./pages/VehicleImport";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
             
             {/* Routes pour la gestion des véhicules */}
             <Route path="/admin/vehicules" element={<VehicleManagement />} />
+            <Route path="/vehicules/import" element={<VehicleImport />} />
             
             {/* Routes pour les pages secondaires */}
             <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
