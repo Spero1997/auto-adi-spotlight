@@ -24,16 +24,6 @@ const MentionsLegales = () => {
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Hébergement</h2>
-        <p>
-          Le site web est hébergé par :<br />
-          <strong>Société :</strong> Netlify, Inc.<br />
-          <strong>Adresse :</strong> 44 Montgomery Street, Suite 300, San Francisco, California 94104<br />
-          <strong>Téléphone :</strong> +1 (415) 691-1573
-        </p>
-      </section>
-
-      <section className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Propriété intellectuelle</h2>
         <p>
           L'ensemble du contenu du site web (textes, images, vidéos, logos, etc.) est protégé par le droit d'auteur et reste la propriété exclusive d'Auto Adi. Toute reproduction, distribution ou utilisation sans autorisation préalable constitue une violation de la propriété intellectuelle.
