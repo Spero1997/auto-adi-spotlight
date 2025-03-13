@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -42,10 +43,10 @@ const APropos = () => {
               <div>
                 <h2 className="text-3xl font-bold mb-6">Notre histoire</h2>
                 <p className="text-lg text-gray-600 mb-6">
-                  Fondée en 2002 par les frères Adam et Daniel Ivanic, Auto Adi est née d'une passion partagée pour l'automobile et d'une vision commune : offrir des véhicules de qualité à des prix justes, accompagnés d'un service irréprochable.
+                  Fondée en 2002 par les frères Adam et Daniel Ivanic à Florence en Italie, Auto Adi est née d'une passion partagée pour l'automobile et d'une vision commune : offrir des véhicules de qualité à des prix justes, accompagnés d'un service irréprochable.
                 </p>
                 <p className="text-lg text-gray-600 mb-6">
-                  Ce qui a commencé comme un petit garage familial à Lyon s'est progressivement développé pour devenir une entreprise reconnue avec une présence en Roumanie et en Italie, tout en conservant les valeurs familiales qui ont fait notre succès.
+                  Ce qui a commencé comme un petit garage familial à Florence s'est progressivement développé pour devenir une entreprise reconnue avec une présence en Roumanie, tout en conservant les valeurs familiales qui ont fait notre succès.
                 </p>
                 <p className="text-lg text-gray-600">
                   Aujourd'hui, Auto Adi emploie plus de 120 collaborateurs passionnés et commercialise plus de 3 000 véhicules par an, tout en préparant son expansion en Espagne, au Portugal et en France.
@@ -123,80 +124,6 @@ const APropos = () => {
           </div>
         </section>
 
-        {/* Team Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Notre équipe de direction</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Rencontrez les personnes qui contribuent à faire d'Auto Adi une entreprise d'exception.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="mb-4 relative">
-                  <img 
-                    src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" 
-                    alt="Adam Ivanic" 
-                    className="rounded-lg shadow-md w-full h-64 object-cover object-center"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-1">Adam Ivanic</h3>
-                <p className="text-brand-blue font-medium mb-3">Co-fondateur & PDG</p>
-                <p className="text-gray-600">
-                  Passionné d'automobile depuis son plus jeune âge, Adam dirige l'entreprise avec vision et ambition.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mb-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" 
-                    alt="Daniel Ivanic" 
-                    className="rounded-lg shadow-md w-full h-64 object-cover object-center"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-1">Daniel Ivanic</h3>
-                <p className="text-brand-blue font-medium mb-3">Co-fondateur & Directeur Technique</p>
-                <p className="text-gray-600">
-                  Expert en mécanique automobile, Daniel supervise la qualité technique de tous nos véhicules.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mb-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" 
-                    alt="Sophie Lambert" 
-                    className="rounded-lg shadow-md w-full h-64 object-cover object-center"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-1">Sophie Lambert</h3>
-                <p className="text-brand-blue font-medium mb-3">Directrice Commerciale</p>
-                <p className="text-gray-600">
-                  Avec 15 ans d'expérience dans le secteur automobile, Sophie dirige notre réseau commercial avec excellence.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="mb-4">
-                  <img 
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" 
-                    alt="Marc Dubois" 
-                    className="rounded-lg shadow-md w-full h-64 object-cover object-center"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-1">Marc Dubois</h3>
-                <p className="text-brand-blue font-medium mb-3">Directeur Financier</p>
-                <p className="text-gray-600">
-                  Ancien banquier spécialisé dans le financement automobile, Marc gère les aspects financiers de l'entreprise.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Milestones Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -226,7 +153,7 @@ const APropos = () => {
                         <CardContent className="p-6">
                           <h3 className="text-xl font-bold mb-2">Création d'Auto Adi</h3>
                           <p className="text-gray-600">
-                            Ouverture du premier garage à Lyon par les frères Ivanic, spécialisé dans la vente de véhicules d'occasion.
+                            Ouverture du premier garage à Florence, Italie, par les frères Ivanic, spécialisé dans la vente de véhicules d'occasion.
                           </p>
                         </CardContent>
                       </Card>
@@ -265,25 +192,6 @@ const APropos = () => {
                           <h3 className="text-xl font-bold mb-2">Lancement du paiement échelonné</h3>
                           <p className="text-gray-600">
                             Introduction de notre solution de financement sans frais qui a révolutionné l'achat automobile.
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col md:flex-row items-start gap-6 relative z-10">
-                    <div className="text-center md:text-right md:w-[100px] flex-shrink-0">
-                      <div className="bg-brand-blue rounded-full w-10 h-10 flex items-center justify-center mx-auto md:ml-auto md:mr-0">
-                        <Calendar className="h-5 w-5 text-white" />
-                      </div>
-                      <span className="block mt-2 font-bold">2020</span>
-                    </div>
-                    <div className="md:pt-2">
-                      <Card className="bg-white shadow-md">
-                        <CardContent className="p-6">
-                          <h3 className="text-xl font-bold mb-2">Implantation en Italie</h3>
-                          <p className="text-gray-600">
-                            Ouverture de notre concession à Florence et développement de notre présence sur le marché italien.
                           </p>
                         </CardContent>
                       </Card>
