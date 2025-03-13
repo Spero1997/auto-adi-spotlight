@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -105,8 +104,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/65c852dc-07fc-46a2-be4e-0214d01f670f.png",
 };
 
+// Nouvelle Jeep Compass
+const jeepCompass = {
+  id: `jeep-compass-fixed`,
+  brand: "Jeep",
+  model: "Compass 1,3 T4 PHEV 4Xe",
+  year: 2021,
+  mileage: 66800,
+  fuelType: "Essence",
+  price: 12000,
+  transmission: "Automatique",
+  exteriorColor: "Bleu",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Système de navigation", "Écran tactile", "Bluetooth", "Climatisation automatique", "Intérieur cuir", "Jantes alliage", "Caméra de recul", "Technologie hybride rechargeable", "4 roues motrices"],
+  image: "/lovable-uploads/94fe2476-71ba-4d26-9226-a959f05a815a.png",
+};
+
 // Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220];
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -204,6 +230,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const rsq8Exists = vehicles.some(v => v.id === audiRSQ8.id || (v.brand === "Audi" && v.model === "RS Q8"));
   const octaviaExists = vehicles.some(v => v.id === skodaOctavia.id || (v.brand === "Skoda" && v.model === "Octavia 2.0"));
   const mercedesExists = vehicles.some(v => v.id === mercedesC220.id || (v.brand === "Mercedes" && v.model === "Benz C 220 BlueTEC d Luxury Line"));
+  const jeepExists = vehicles.some(v => v.id === jeepCompass.id || (v.brand === "Jeep" && v.model === "Compass 1,3 T4 PHEV 4Xe"));
   
   let changed = false;
   
@@ -219,6 +246,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!mercedesExists) {
     vehicles.push(mercedesC220);
+    changed = true;
+  }
+  
+  if (!jeepExists) {
+    vehicles.push(jeepCompass);
     changed = true;
   }
   
@@ -293,7 +325,7 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed') {
+    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed') {
       toast.error("Ce véhicule ne peut pas être supprimé");
       return;
     }
