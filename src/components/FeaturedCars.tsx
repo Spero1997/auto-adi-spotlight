@@ -549,10 +549,11 @@ const FeaturedCars = () => {
                     <div className="bg-muted/50 p-4 rounded-md">
                       <h4 className="font-medium mb-2">Coordonnées bancaires</h4>
                       <div className="space-y-1 text-sm">
-                        <p><span className="font-medium">IBAN:</span> FR76 1234 5678 9012 3456 7890 123</p>
-                        <p><span className="font-medium">BIC:</span> BNPAFRPPXXX</p>
-                        <p><span className="font-medium">Banque:</span> Crédit Automobile</p>
-                        <p><span className="font-medium">Titulaire:</span> SARL Auto Deals Import</p>
+                        <p><span className="font-medium">Bénéficiaire:</span> Lucia Dzujkova</p>
+                        <p><span className="font-medium">IBAN:</span> LT453500010018283529</p>
+                        <p><span className="font-medium">SWIFT/BIC:</span> EVIULT2VXXX</p>
+                        <p><span className="font-medium">Banque:</span> Paysera LT, UAB</p>
+                        <p><span className="font-medium">Adresse de la banque:</span> Pilaitės pr. 16, Vilnius, LT-04352, Lituanie</p>
                         <p><span className="font-medium">Référence:</span> {selectedCar && `Achat ${selectedCar.brand} ${selectedCar.model}`}</p>
                       </div>
                     </div>
