@@ -154,7 +154,7 @@ const QuickSearch = () => {
                     </SelectItem>
                   ))
                 ) : (
-                  <SelectItem value="select-brand-first" disabled>
+                  <SelectItem value="brand-required" disabled>
                     Sélectionnez une marque d'abord
                   </SelectItem>
                 )}

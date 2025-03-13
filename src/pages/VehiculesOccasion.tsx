@@ -32,9 +32,9 @@ const MAX_PRICE = 50000;
 
 const VehiculesOccasion = () => {
   const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
-  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [modelSearch, setModelSearch] = useState('');
-  const [selectedFuelType, setSelectedFuelType] = useState('');
+  const [selectedFuelType, setSelectedFuelType] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
   const [sort, setSort] = useState('price-asc');
   const [filtersApplied, setFiltersApplied] = useState(false);
@@ -156,7 +156,7 @@ const VehiculesOccasion = () => {
                                 <SelectValue placeholder="Toutes les marques" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="">Toutes les marques</SelectItem>
+                                <SelectItem value="all">Toutes les marques</SelectItem>
                                 {carBrands.map(brand => (
                                   <SelectItem key={brand} value={brand.toLowerCase()}>
                                     {brand}
@@ -185,7 +185,7 @@ const VehiculesOccasion = () => {
                                 <SelectValue placeholder="Tous les carburants" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="">Tous les carburants</SelectItem>
+                                <SelectItem value="all">Tous les carburants</SelectItem>
                                 {fuelTypes.map(fuel => (
                                   <SelectItem key={fuel} value={fuel.toLowerCase()}>
                                     {fuel}
@@ -313,10 +313,10 @@ const VehiculesOccasion = () => {
                     <div className="md:col-span-3">
                       <FeaturedCars 
                         searchFilters={{
-                          brand: filtersApplied ? selectedBrand : '',
+                          brand: filtersApplied ? selectedBrand === 'all' ? '' : selectedBrand : '',
                           model: filtersApplied ? modelSearch : '',
                           maxPrice: filtersApplied ? priceRange[1] : undefined,
-                          fuelType: filtersApplied ? selectedFuelType : '',
+                          fuelType: filtersApplied ? selectedFuelType === 'all' ? '' : selectedFuelType : '',
                         }}
                       />
                     </div>
