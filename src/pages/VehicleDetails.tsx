@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
@@ -129,9 +128,6 @@ const VehicleDetails = () => {
                               (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x600?text=No+Image';
                             }}
                           />
-                          <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
-                            {vehicle.image}
-                          </div>
                         </>
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gray-200">
@@ -190,7 +186,7 @@ const VehicleDetails = () => {
                         variant="default" 
                         className="w-full md:w-auto flex-1 bg-brand-blue hover:bg-brand-darkBlue"
                         onClick={() => {
-                          toast.info("Veuillez consulter la page des véhicules pour acheter ce véhicule");
+                          toast.success("Votre demande d'achat a été envoyée");
                         }}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
