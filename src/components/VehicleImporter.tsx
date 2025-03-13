@@ -1,8 +1,9 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { extractVehiclesFromUrl, addImportedVehicle } from "@/utils/vehicleImportService";
+import { extractVehiclesFromUrl } from "@/utils/vehicleImportService";
 
 const VehicleImporter = () => {
   const [url, setUrl] = useState('');
