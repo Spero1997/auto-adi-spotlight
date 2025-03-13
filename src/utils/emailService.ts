@@ -45,6 +45,9 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
       });
     }
     
+    // Always save order to local storage first as a precaution
+    saveOrderToLocalStorage(data);
+    
     // Setup timeout to prevent hanging requests
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
@@ -71,16 +74,12 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
     }
     
     console.log("Email sent successfully!");
-    
-    // Save order to local storage as backup
-    saveOrderToLocalStorage(data);
-    
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
     
-    // Save to local storage as a backup mechanism
-    saveOrderToLocalStorage(data);
+    // We already saved to local storage at the beginning as a precaution
+    console.log("Order was already saved to localStorage as backup");
     
     // For development fallback - simulate success
     console.log("Falling back to simulated email sending");
@@ -102,7 +101,20 @@ const saveOrderToLocalStorage = (data: EmailData) => {
   try {
     // Get existing orders from localStorage
     const existingOrdersJSON = localStorage.getItem('autoAdiOrders');
-    const existingOrders = existingOrdersJSON ? JSON.parse(existingOrdersJSON) : [];
+    let existingOrders = [];
+    
+    // Parse existing orders or initialize an empty array if none exist
+    try {
+      existingOrders = existingOrdersJSON ? JSON.parse(existingOrdersJSON) : [];
+      // Make sure existingOrders is an array
+      if (!Array.isArray(existingOrders)) {
+        console.error("Invalid orders format in localStorage, resetting to empty array");
+        existingOrders = [];
+      }
+    } catch (parseError) {
+      console.error("Error parsing orders from localStorage:", parseError);
+      existingOrders = [];
+    }
     
     // Add timestamp to the order
     const orderWithTimestamp = {
@@ -218,9 +230,66 @@ export const sendPaymentProofEmail = async (customerData: any, paymentProof: Fil
 export const getStoredOrders = () => {
   try {
     const ordersJSON = localStorage.getItem('autoAdiOrders');
-    return ordersJSON ? JSON.parse(ordersJSON) : [];
+    if (!ordersJSON) {
+      console.log("No orders found in localStorage");
+      return [];
+    }
+    
+    let orders;
+    try {
+      orders = JSON.parse(ordersJSON);
+      
+      // Validate that orders is an array
+      if (!Array.isArray(orders)) {
+        console.error("Invalid orders format in localStorage, returning empty array");
+        return [];
+      }
+      
+      console.log(`Successfully retrieved ${orders.length} orders from localStorage`);
+      return orders;
+    } catch (parseError) {
+      console.error("Error parsing orders from localStorage:", parseError);
+      return [];
+    }
   } catch (error) {
     console.error("Error retrieving orders from localStorage:", error);
     return [];
+  }
+};
+
+/**
+ * Deletes all orders from localStorage
+ */
+export const clearStoredOrders = () => {
+  try {
+    localStorage.removeItem('autoAdiOrders');
+    console.log("All orders have been cleared from localStorage");
+    return true;
+  } catch (error) {
+    console.error("Error clearing orders from localStorage:", error);
+    return false;
+  }
+};
+
+/**
+ * Exports orders as a JSON file
+ */
+export const exportOrdersAsJSON = (orders: any[]) => {
+  try {
+    const dataStr = JSON.stringify(orders, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    
+    const exportFileDefaultName = `auto-adi-orders-${new Date().toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+    
+    console.log(`Exported ${orders.length} orders as JSON`);
+    return true;
+  } catch (error) {
+    console.error("Error exporting orders as JSON:", error);
+    return false;
   }
 };

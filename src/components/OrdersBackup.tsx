@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { getStoredOrders } from '@/utils/emailService';
+import { getStoredOrders, clearStoredOrders, exportOrdersAsJSON } from '@/utils/emailService';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -16,16 +16,37 @@ const OrdersBackup = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
+  const loadOrders = () => {
+    setLoading(true);
+    
+    // Add a small delay to ensure UI feedback is visible
+    setTimeout(() => {
+      try {
+        const storedOrders = getStoredOrders();
+        console.log("Retrieved orders:", storedOrders);
+        
+        setOrders(storedOrders.reverse()); // Most recent first
+      } catch (error) {
+        console.error("Error loading orders:", error);
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger les commandes sauvegardées.",
+          variant: "destructive"
+        });
+        setOrders([]);
+      } finally {
+        setLoading(false);
+      }
+    }, 500);
+  };
+
   useEffect(() => {
-    // Load orders from localStorage
-    const storedOrders = getStoredOrders();
-    setOrders(storedOrders.reverse()); // Most recent first
-    setLoading(false);
+    loadOrders();
   }, []);
 
-  const clearAllOrders = () => {
+  const handleClearAllOrders = () => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer toutes les commandes sauvegardées ? Cette action est irréversible.')) {
-      localStorage.removeItem('autoAdiOrders');
+      clearStoredOrders();
       setOrders([]);
       toast({
         title: "Commandes supprimées",
@@ -34,16 +55,27 @@ const OrdersBackup = () => {
     }
   };
 
-  const exportOrdersAsJSON = () => {
-    const dataStr = JSON.stringify(orders, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `auto-adi-orders-${new Date().toISOString().split('T')[0]}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
+  const handleExportOrdersAsJSON = () => {
+    if (exportOrdersAsJSON(orders)) {
+      toast({
+        title: "Export réussi",
+        description: "Les commandes ont été exportées au format JSON.",
+      });
+    } else {
+      toast({
+        title: "Échec de l'export",
+        description: "Une erreur est survenue lors de l'export des commandes.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleRefreshOrders = () => {
+    loadOrders();
+    toast({
+      title: "Actualisation en cours",
+      description: "Chargement des commandes sauvegardées...",
+    });
   };
 
   const formatTimestamp = (timestamp: string) => {
@@ -81,11 +113,14 @@ const OrdersBackup = () => {
           </p>
         </div>
         <div className="flex gap-3 mt-4 md:mt-0">
-          <Button variant="outline" onClick={exportOrdersAsJSON} disabled={orders.length === 0}>
+          <Button variant="outline" onClick={handleRefreshOrders}>
+            Actualiser
+          </Button>
+          <Button variant="outline" onClick={handleExportOrdersAsJSON} disabled={orders.length === 0}>
             <FileDown className="mr-2 h-4 w-4" />
             Exporter JSON
           </Button>
-          <Button variant="destructive" onClick={clearAllOrders} disabled={orders.length === 0}>
+          <Button variant="destructive" onClick={handleClearAllOrders} disabled={orders.length === 0}>
             Tout supprimer
           </Button>
         </div>
