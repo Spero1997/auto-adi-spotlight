@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <div className="relative bg-gray-900 overflow-hidden">
+    <div className="relative bg-gray-900 overflow-hidden py-12">
       {/* Background image */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-60"
@@ -14,12 +14,12 @@ const Hero = () => {
         }}
       />
       
-      <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative z-10">
+      <div className="container mx-auto px-4 py-8 md:py-12 relative z-10">
         <div className="max-w-3xl text-white">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Trouvez la voiture parfaite pour vous
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-100">
+          <p className="text-lg md:text-xl mb-6 text-gray-100">
             Des milliers de véhicules d'occasion vérifiés et garantis
           </p>
           
@@ -35,7 +35,7 @@ const Hero = () => {
       </div>
 
       {/* Quick search section - moved up by adjusting the margin */}
-      <div className="container mx-auto px-4 relative z-10 -mt-10 md:-mt-16 lg:-mt-20">
+      <div className="container mx-auto px-4 relative z-10 -mt-8">
         <div className="bg-white rounded-lg shadow-xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 w-full">

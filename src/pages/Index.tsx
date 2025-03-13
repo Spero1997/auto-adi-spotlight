@@ -1,5 +1,6 @@
 
 import Hero from '@/components/Hero';
+import HeroCarousel from '@/components/HeroCarousel';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
@@ -14,6 +15,7 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
+        <HeroCarousel />
         <Hero />
         <ConditionsHighlight />
         <div className="mt-10">
