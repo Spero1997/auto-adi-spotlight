@@ -1,8 +1,9 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react';
+import { Mail, MapPin, Phone, MessageCircle, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 import Header from '@/components/Header';
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const formSchema = z.object({
   nom: z.string().min(2, { message: 'Le nom doit contenir au moins 2 caractères' }),
@@ -28,10 +30,13 @@ const formSchema = z.object({
   telephone: z.string().min(10, { message: 'Numéro de téléphone invalide' }),
   sujet: z.string().min(3, { message: 'Le sujet doit contenir au moins 3 caractères' }),
   message: z.string().min(10, { message: 'Le message doit contenir au moins 10 caractères' }),
+  attachment: z.instanceof(FileList).optional(),
 });
 
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,17 +51,62 @@ const Contact = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
     console.log(values);
     
-    // Simuler l'envoi du formulaire
-    toast({
-      title: "Message envoyé",
-      description: "Nous vous répondrons dans les plus brefs délais.",
-      duration: 5000,
+    // Prepare email data
+    const emailData = new FormData();
+    
+    // Add all form fields
+    Object.entries(values).forEach(([key, value]) => {
+      if (key !== 'attachment') {
+        emailData.append(key, value as string);
+      }
     });
     
-    // Réinitialiser le formulaire
-    form.reset();
+    // Add attachments if any
+    const attachmentFiles = values.attachment;
+    if (attachmentFiles && attachmentFiles.length > 0) {
+      for (let i = 0; i < attachmentFiles.length; i++) {
+        emailData.append('attachment', attachmentFiles[i]);
+      }
+    }
+    
+    // Create an email content for the form submission
+    const emailSubject = `Nouveau message de contact: ${values.sujet}`;
+    const emailContent = `
+      Nom: ${values.nom}
+      Prénom: ${values.prenom}
+      Email: ${values.email}
+      Téléphone: ${values.telephone}
+      Sujet: ${values.sujet}
+      Message: ${values.message}
+    `;
+    
+    emailData.append('to', 'serviceautoadi@gmail.com');
+    emailData.append('subject', emailSubject);
+    emailData.append('text', emailContent);
+    
+    // In a real application, you would now send this data to a backend service
+    // that handles sending emails with attachments.
+    // For demonstration purposes, we'll simulate an API call:
+    
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      
+      toast({
+        title: "Message envoyé",
+        description: "Nous vous répondrons dans les plus brefs délais.",
+        duration: 5000,
+      });
+      
+      // Reset the form
+      form.reset();
+      
+      // Reset success message after a delay
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    }, 1500);
   }
 
   return (
@@ -113,6 +163,15 @@ const Contact = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
               <h2 className="text-3xl font-bold mb-6 text-center">Envoyez-nous un message</h2>
+              
+              {submitSuccess && (
+                <Alert className="mb-6 bg-green-50 border-green-200">
+                  <AlertTitle className="text-green-800">Message envoyé avec succès!</AlertTitle>
+                  <AlertDescription className="text-green-700">
+                    Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
+                  </AlertDescription>
+                </Alert>
+              )}
               
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -208,8 +267,37 @@ const Contact = () => {
                     )}
                   />
                   
-                  <Button type="submit" className="w-full md:w-auto">
-                    Envoyer le message
+                  <FormField
+                    control={form.control}
+                    name="attachment"
+                    render={({ field: { onChange, value, ...fieldProps } }) => (
+                      <FormItem>
+                        <FormLabel>Pièces jointes (facultatif)</FormLabel>
+                        <FormControl>
+                          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer">
+                            <Input
+                              id="file-upload"
+                              type="file"
+                              className="hidden"
+                              multiple
+                              onChange={(e) => onChange(e.target.files)}
+                              {...fieldProps}
+                            />
+                            <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center justify-center">
+                              <Upload className="h-10 w-10 text-gray-400 mb-2" />
+                              <span className="text-sm text-gray-600 mb-1">Glissez-déposez vos fichiers ici ou</span>
+                              <span className="text-sm font-medium text-blue-600">parcourir les fichiers</span>
+                              <span className="text-xs text-gray-500 mt-2">PDF, JPEG, PNG (Max 10 Mo)</span>
+                            </label>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+                    {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
                   </Button>
                 </form>
               </Form>
