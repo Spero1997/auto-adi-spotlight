@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,8 +10,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 
 const QuickSearch = () => {
+  const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [selectedModel, setSelectedModel] = useState<string>('');
@@ -20,7 +21,6 @@ const QuickSearch = () => {
   const [selectedFuel, setSelectedFuel] = useState<string>('');
   const [availableModels, setAvailableModels] = useState<string[]>([]);
   
-  // Mapping of brands to their models
   const brandModels: Record<string, string[]> = {
     audi: ['A1', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'Q3', 'Q5', 'Q7', 'Q8', 'TT', 'R8'],
     bmw: ['Série 1', 'Série 2', 'Série 3', 'Série 4', 'Série 5', 'Série 6', 'Série 7', 'X1', 'X3', 'X5', 'X6', 'Z4', 'M2', 'M3', 'M4', 'M5'],
@@ -47,7 +47,6 @@ const QuickSearch = () => {
     volvo: ['S60', 'S90', 'V60', 'V90', 'XC40', 'XC60', 'XC90'],
   };
 
-  // Update available models when brand changes
   useEffect(() => {
     if (selectedBrand && brandModels[selectedBrand]) {
       setAvailableModels(brandModels[selectedBrand]);
@@ -74,21 +73,18 @@ const QuickSearch = () => {
   };
 
   const handleSearch = () => {
-    // Build search parameters
     const searchParams = new URLSearchParams();
     if (selectedBrand) searchParams.append('marque', selectedBrand);
     if (selectedModel) searchParams.append('modele', selectedModel);
     if (selectedBudget) searchParams.append('budget', selectedBudget);
     if (selectedFuel) searchParams.append('energie', selectedFuel);
     
-    // For now, just show a toast notification with the search parameters
     toast.success('Recherche lancée', {
       description: `Marque: ${selectedBrand || 'Toutes'}, Modèle: ${selectedModel || 'Tous'}, Budget: ${selectedBudget ? selectedBudget + '€' : 'Tous'}, Énergie: ${selectedFuel || 'Toutes'}`,
       duration: 3000,
     });
     
-    // In a real application, this would navigate to a search results page
-    // window.location.href = `/vehicules/occasion?${searchParams.toString()}`;
+    navigate(`/vehicules/occasion?${searchParams.toString()}`);
     
     console.log('Search params:', {
       brand: selectedBrand,
