@@ -275,11 +275,16 @@ const Financement = () => {
                 </div>
               </div>
 
-              <div className="hidden lg:block">
+              <div className="lg:flex flex-col gap-6">
                 <img 
-                  src="https://images.unsplash.com/photo-1621252179027-1a3750f382c7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
-                  alt="Financement automobile" 
-                  className="rounded-lg shadow-lg object-cover h-[500px] w-full"
+                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
+                  alt="Simulation de financement" 
+                  className="rounded-lg shadow-lg object-cover h-[300px] w-full"
+                />
+                <img 
+                  src="https://images.unsplash.com/photo-1565514920664-800a21b5d566?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" 
+                  alt="Calculateur de financement" 
+                  className="rounded-lg shadow-lg object-cover h-[180px] w-full hidden lg:block"
                 />
               </div>
             </div>
