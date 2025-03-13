@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
@@ -9,12 +10,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check } from 'lucide-react';
 import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 
 const VehicleDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [vehicle, setVehicle] = useState<ImportedVehicle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const { toast: shadowToast } = useToast();
   
   useEffect(() => {
     if (!id) {
@@ -186,7 +189,12 @@ const VehicleDetails = () => {
                         variant="default" 
                         className="w-full md:w-auto flex-1 bg-brand-blue hover:bg-brand-darkBlue"
                         onClick={() => {
+                          // Utiliser les deux systèmes de toast pour s'assurer qu'au moins l'un fonctionne
                           toast.success("Votre demande d'achat a été envoyée");
+                          shadowToast({
+                            title: "Commande envoyée",
+                            description: "Votre demande d'achat a été envoyée avec succès",
+                          });
                         }}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
@@ -203,6 +211,10 @@ const VehicleDetails = () => {
                           }).catch(() => {
                             navigator.clipboard.writeText(window.location.href);
                             toast.success("Lien copié dans le presse-papier");
+                            shadowToast({
+                              title: "Lien copié",
+                              description: "L'URL a été copiée dans votre presse-papier",
+                            });
                           });
                         }}
                       >
