@@ -102,7 +102,7 @@ const Services = () => {
               <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
                   <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Tool className="h-7 w-7 text-brand-blue" />
+                    <Wrench className="h-7 w-7 text-brand-blue" />
                   </div>
                   <CardTitle>Réparations mécaniques</CardTitle>
                 </CardHeader>
