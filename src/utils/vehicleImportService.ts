@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -686,4 +687,96 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
       }
     }
     
-    // Si aucun véhicule n'
+    // Si aucun véhicule n'est trouvé ou si ce n'est pas un tableau,
+    // initialiser avec les véhicules par défaut
+    const defaultVehicles = [
+      audiRSQ8,
+      mercedesGLC350e,
+      skodaOctavia,
+      mercedesC220,
+      jeepCompass,
+      mercedesGLA,
+      mercedesCLA,
+      bmwSerie2,
+      volvoV60,
+      volvoV60Second,
+      mercedesC350e,
+      audiA6,
+      volkswagenPolo,
+      volkswagenTCross,
+      bmwX5,
+      audiA3ETron,
+      kiaNiro,
+      bmwX1,
+      audiQ5,
+      audiQ7,
+      audiA3Sportback,
+      bmwX3
+    ];
+    
+    // Sauvegarder les véhicules par défaut
+    localStorage.setItem(storageKey, JSON.stringify(defaultVehicles));
+    
+    return defaultVehicles;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des véhicules:", error);
+    return [];
+  }
+};
+
+/**
+ * Ajoute un nouveau véhicule importé au stockage local
+ */
+export const addImportedVehicle = (vehicle: ImportedVehicle): boolean => {
+  try {
+    const catalogId = getCatalogIdFromUrl();
+    const storageKey = catalogId ? `${STORAGE_KEY}_${catalogId}` : STORAGE_KEY;
+    
+    const existingVehicles = getImportedVehicles();
+    
+    // Vérifier si le véhicule existe déjà
+    const existingVehicleIndex = existingVehicles.findIndex(v => v.id === vehicle.id);
+    
+    if (existingVehicleIndex >= 0) {
+      // Mettre à jour le véhicule existant
+      existingVehicles[existingVehicleIndex] = vehicle;
+      toast.success(`Le véhicule ${vehicle.brand} ${vehicle.model} a été mis à jour`);
+    } else {
+      // Ajouter le nouveau véhicule
+      existingVehicles.push(vehicle);
+      toast.success(`Le véhicule ${vehicle.brand} ${vehicle.model} a été ajouté`);
+    }
+    
+    localStorage.setItem(storageKey, JSON.stringify(existingVehicles));
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du véhicule:", error);
+    toast.error("Erreur lors de l'ajout du véhicule");
+    return false;
+  }
+};
+
+/**
+ * Supprime un véhicule importé du stockage local
+ */
+export const deleteImportedVehicle = (vehicleId: string): boolean => {
+  try {
+    const catalogId = getCatalogIdFromUrl();
+    const storageKey = catalogId ? `${STORAGE_KEY}_${catalogId}` : STORAGE_KEY;
+    
+    const existingVehicles = getImportedVehicles();
+    const filteredVehicles = existingVehicles.filter(v => v.id !== vehicleId);
+    
+    localStorage.setItem(storageKey, JSON.stringify(filteredVehicles));
+    toast.success("Le véhicule a été supprimé avec succès");
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la suppression du véhicule:", error);
+    toast.error("Erreur lors de la suppression du véhicule");
+    return false;
+  }
+};
+
+// Aliasing pour compatibilité avec le code existant
+export const addVehicle = addImportedVehicle;
+export const deleteVehicle = deleteImportedVehicle;
