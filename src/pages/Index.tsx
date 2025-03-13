@@ -7,6 +7,7 @@ import Brands from '@/components/Brands';
 import CallToAction from '@/components/CallToAction';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ConditionsHighlight from '@/components/ConditionsHighlight';
 
 const Index = () => {
   return (
@@ -14,7 +15,8 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <div className="mt-20">
+        <ConditionsHighlight />
+        <div className="mt-10">
           <FeaturedCars />
         </div>
         <Benefits />

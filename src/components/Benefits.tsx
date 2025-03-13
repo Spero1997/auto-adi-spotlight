@@ -1,5 +1,5 @@
 
-import { ShieldCheck, Clock, Car, DollarSign } from 'lucide-react';
+import { ShieldCheck, Clock, Car, DollarSign, Settings } from 'lucide-react';
 
 const Benefits = () => {
   const benefits = [
@@ -16,12 +16,17 @@ const Benefits = () => {
     {
       icon: <Car className="h-12 w-12 text-brand-blue" />,
       title: "Essai gratuit",
-      description: "Testez votre future voiture pendant 7 jours ou 1000 km avec une garantie satisfait ou remboursé."
+      description: "Testez votre future voiture pendant 14 jours avec notre garantie satisfait ou remboursé."
     },
     {
       icon: <DollarSign className="h-12 w-12 text-brand-blue" />,
       title: "Financement sur mesure",
-      description: "Des solutions de financement adaptées à votre budget avec des taux compétitifs."
+      description: "Des solutions de financement adaptées à votre budget avec des mensualités sans intérêt de 6 à 84 mois."
+    },
+    {
+      icon: <Settings className="h-12 w-12 text-brand-blue" />,
+      title: "Service garage",
+      description: "Notre garage automobile prend soin de votre véhicule pour l'entretien et les réparations en Europe."
     }
   ];
 
@@ -35,7 +40,7 @@ const Benefits = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {benefits.map((benefit, index) => (
             <div 
               key={index}

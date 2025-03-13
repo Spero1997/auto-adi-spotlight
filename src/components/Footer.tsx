@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, Twitter, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter, Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -17,7 +17,7 @@ const Footer = () => {
               />
             </Link>
             <p className="text-gray-600">
-              Auto Adi, votre partenaire de confiance pour l'achat de véhicules neufs et d'occasion.
+              Auto Adi, votre partenaire de confiance pour l'achat de véhicules neufs et d'occasion en Europe.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -111,6 +111,11 @@ const Footer = () => {
                   CGV
                 </Link>
               </li>
+              <li>
+                <Link to="/conditions" className="text-gray-600 hover:text-brand-blue transition-colors">
+                  Conditions de vente
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -120,16 +125,20 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <Phone className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
-                <span className="text-gray-600">01 23 45 67 89</span>
+                <span className="text-gray-600">‪+39 376 175 3341‬</span>
+              </li>
+              <li className="flex items-start">
+                <MessageCircle className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
+                <span className="text-gray-600">WhatsApp: ‪+39 376 175 3341‬</span>
               </li>
               <li className="flex items-start">
                 <Mail className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
-                <span className="text-gray-600">contact@auto-adi.fr</span>
+                <span className="text-gray-600">serviceautoadi@gmail.com</span>
               </li>
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
                 <span className="text-gray-600">
-                  123 Avenue de la République, 75011 Paris, France
+                  Borgo Ognissanti, 142r 50123 Firenze FI Italie
                 </span>
               </li>
             </ul>
@@ -139,7 +148,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-gray-200 mt-12 py-8 text-center">
           <p className="text-gray-600 text-sm">
-            © {new Date().getFullYear()} Auto Adi. Tous droits réservés.
+            © {new Date().getFullYear()} Auto Adi. N° d'identification: 827 514 860. Tous droits réservés.
           </p>
         </div>
       </div>
