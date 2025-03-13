@@ -17,29 +17,8 @@ const VehicleImporter = () => {
     
     setIsImporting(true);
     try {
-      // Ajouter un log pour déboguer
-      console.log("Début de l'importation depuis:", url);
-      
-      const importedVehicles = await extractVehiclesFromUrl(url);
-      
-      // Vérifier les images importées et garantir que les URLs sont valides
-      importedVehicles.forEach((vehicle, index) => {
-        console.log(`Véhicule ${index + 1} importé:`, vehicle.brand, vehicle.model);
-        console.log(`Image URL:`, vehicle.image || 'Pas d\'image');
-        
-        // S'assurer que l'URL de l'image est absolue si elle existe
-        if (vehicle.image && !vehicle.image.startsWith('http') && !vehicle.image.startsWith('/')) {
-          vehicle.image = '/' + vehicle.image;
-        }
-      });
-      
-      console.log(`${importedVehicles.length} véhicules importés avec succès`);
-      
-      toast.success(`${importedVehicles.length} véhicules importés avec succès`);
+      toast.info("Le catalogue a été supprimé, impossible d'importer des véhicules");
       setUrl('');
-      
-      // Forcer la mise à jour de l'affichage
-      window.dispatchEvent(new Event('vehiclesUpdated'));
     } catch (error) {
       console.error("Erreur lors de l'importation:", error);
       toast.error("Erreur lors de l'importation des véhicules");
@@ -54,15 +33,18 @@ const VehicleImporter = () => {
       <p className="text-gray-600">
         Entrez l'URL d'une page listant des véhicules pour importer automatiquement les informations.
       </p>
+      <div className="p-4 bg-amber-50 border border-amber-200 rounded-md">
+        <p className="text-amber-700">Le catalogue a été supprimé. L'importation de véhicules n'est plus disponible.</p>
+      </div>
       <Input
         type="url"
         placeholder="URL de la page de véhicules"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
-        disabled={isImporting}
+        disabled={true}
       />
-      <Button onClick={handleImport} disabled={isImporting}>
-        {isImporting ? 'Importation en cours...' : 'Importer'}
+      <Button onClick={handleImport} disabled={true}>
+        Importer
       </Button>
     </div>
   );

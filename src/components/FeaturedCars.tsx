@@ -35,12 +35,6 @@ const FeaturedCars = ({ searchFilters }: { searchFilters?: SearchFilters }) => {
     try {
       const importedVehicles = getImportedVehicles();
       console.log("FeaturedCars: Véhicules chargés:", importedVehicles.length);
-      
-      // Vérifier les URLs des images
-      importedVehicles.forEach((vehicle, index) => {
-        console.log(`Véhicule ${index + 1}: ${vehicle.brand} ${vehicle.model}, Image: ${vehicle.image || 'Aucune image'}`);
-      });
-      
       setVehicles(importedVehicles);
     } catch (e) {
       setError("Failed to load vehicles.");
@@ -84,12 +78,11 @@ const FeaturedCars = ({ searchFilters }: { searchFilters?: SearchFilters }) => {
       {loading && <p className="text-center">Chargement des véhicules...</p>}
       {error && <p className="text-center text-red-500">Erreur: {error}</p>}
 
-      {!loading && !error && featured.length === 0 && (
-        <div className="text-center">
-          <Search className="mx-auto h-10 w-10 text-gray-400 mb-4" />
-          <p className="text-gray-500">Aucun véhicule ne correspond à vos critères de recherche.</p>
-        </div>
-      )}
+      <div className="text-center my-12">
+        <Search className="mx-auto h-10 w-10 text-gray-400 mb-4" />
+        <p className="text-gray-500 text-lg mb-2">Le catalogue a été supprimé.</p>
+        <p className="text-gray-400">Aucun véhicule n'est disponible pour le moment.</p>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {featured.map((vehicle) => (
