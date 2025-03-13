@@ -1,6 +1,5 @@
-
 import { useState, useRef } from 'react';
-import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check } from 'lucide-react';
+import { Car, ShieldCheck, Tag, Fuel, Calendar, ChevronRight, ShoppingCart, CreditCard, Building, AlertCircle, Upload, Check, Gift } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface CarProps {
   id: string;
@@ -87,11 +87,14 @@ const cars = [
 const FeaturedCars = () => {
   const { toast } = useToast();
   const [selectedCar, setSelectedCar] = useState<CarProps | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card');
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer' | 'coupon' | 'gift'>('transfer');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [proofOfPayment, setProofOfPayment] = useState<File | null>(null);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [couponType, setCouponType] = useState<string>('');
+  const [couponCode, setCouponCode] = useState<string>('');
+  const [couponAlertOpen, setCouponAlertOpen] = useState(false);
 
   const handleOpenCheckout = (car: CarProps) => {
     setSelectedCar(car);
@@ -108,6 +111,11 @@ const FeaturedCars = () => {
   const handleCompletePayment = () => {
     if (paymentMethod === 'transfer' && !proofOfPayment) {
       setAlertDialogOpen(true);
+      return;
+    }
+    
+    if (paymentMethod === 'coupon' && (!couponType || !couponCode)) {
+      setCouponAlertOpen(true);
       return;
     }
     
@@ -141,7 +149,6 @@ const FeaturedCars = () => {
           </p>
         </div>
 
-        {/* Cars grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
           {cars.map((car) => (
             <Card key={car.id} className="overflow-hidden card-hover border border-gray-200">
@@ -209,7 +216,6 @@ const FeaturedCars = () => {
           </Link>
         </div>
 
-        {/* Payment Dialog */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-md md:max-w-lg">
             <DialogHeader>
@@ -246,12 +252,13 @@ const FeaturedCars = () => {
             </DialogHeader>
 
             <div className="space-y-6 py-4">
-              <div className="flex space-x-2 border-b pb-4">
+              <div className="flex flex-wrap gap-2 border-b pb-4">
                 <Button
                   type="button"
                   variant={paymentMethod === 'card' ? 'default' : 'outline'}
                   onClick={() => setPaymentMethod('card')}
-                  className="flex-1"
+                  className="flex-1 opacity-50"
+                  disabled
                 >
                   <CreditCard className="mr-2 h-4 w-4" />
                   Carte bancaire
@@ -265,10 +272,19 @@ const FeaturedCars = () => {
                   <Building className="mr-2 h-4 w-4" />
                   Virement bancaire
                 </Button>
+                <Button
+                  type="button" 
+                  variant={paymentMethod === 'coupon' ? 'default' : 'outline'}
+                  onClick={() => setPaymentMethod('coupon')}
+                  className="flex-1"
+                >
+                  <Gift className="mr-2 h-4 w-4" />
+                  Coupon
+                </Button>
               </div>
 
               {paymentMethod === 'card' && (
-                <div className="space-y-4">
+                <div className="space-y-4 opacity-50">
                   <div>
                     <label className="text-sm font-medium leading-none mb-2 block">
                       Numéro de carte
@@ -366,6 +382,60 @@ const FeaturedCars = () => {
                   </p>
                 </div>
               )}
+
+              {paymentMethod === 'coupon' && (
+                <div className="space-y-4">
+                  <div className="bg-amber-50 p-4 rounded-md border border-amber-200">
+                    <div className="flex items-start">
+                      <Gift className="text-amber-600 h-5 w-5 mr-2 mt-0.5" />
+                      <div>
+                        <p className="text-sm text-gray-800 mb-2">
+                          Payez avec votre coupon de recharge prépayé:
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Sélectionnez votre type de coupon et entrez le code de recharge pour payer le montant de l'acompte.
+                        </p>
+                        <p className="mt-2 font-semibold text-brand-blue">
+                          Montant à payer (acompte 20%): 
+                          {selectedCar ? calculateDeposit(selectedCar.price).toLocaleString('fr-FR') : 0} €
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="coupon-type" className="font-medium">
+                      Type de coupon <span className="text-red-500">*</span>
+                    </Label>
+                    <Select value={couponType} onValueChange={setCouponType}>
+                      <SelectTrigger id="coupon-type" className="w-full">
+                        <SelectValue placeholder="Sélectionnez le type de coupon" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pcs">PCS</SelectItem>
+                        <SelectItem value="transcash">Transcash</SelectItem>
+                        <SelectItem value="amazon">Carte cadeau Amazon</SelectItem>
+                        <SelectItem value="neosurf">Neosurf</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="coupon-code" className="font-medium">
+                      Code du coupon <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
+                      id="coupon-code"
+                      placeholder="Entrez le code de votre coupon"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                    />
+                    <p className="text-sm text-gray-500">
+                      Le code du coupon se trouve au dos de votre carte ou dans votre email de confirmation.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
@@ -381,7 +451,8 @@ const FeaturedCars = () => {
                 type="button"
                 className="bg-brand-blue hover:bg-brand-darkBlue"
                 onClick={handleCompletePayment}
-                disabled={paymentMethod === 'transfer' && !proofOfPayment}
+                disabled={(paymentMethod === 'transfer' && !proofOfPayment) || 
+                         (paymentMethod === 'coupon' && (!couponType || !couponCode))}
               >
                 Confirmer la commande
               </Button>
@@ -389,13 +460,26 @@ const FeaturedCars = () => {
           </DialogContent>
         </Dialog>
         
-        {/* Alert Dialog for missing proof of payment */}
         <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Preuve de paiement requise</AlertDialogTitle>
               <AlertDialogDescription>
                 Pour valider votre commande par virement bancaire, veuillez télécharger une preuve de paiement (capture d'écran ou reçu de virement).
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Fermer</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={couponAlertOpen} onOpenChange={setCouponAlertOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Informations du coupon manquantes</AlertDialogTitle>
+              <AlertDialogDescription>
+                Pour valider votre commande par coupon, veuillez sélectionner un type de coupon et saisir le code du coupon.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
