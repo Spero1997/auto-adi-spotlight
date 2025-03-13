@@ -455,8 +455,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/ca65b2bc-23d7-4e24-8236-2b3b89aee2e2.png",
 };
 
-// Définition des véhicules par défaut - ajout de la nouvelle Kia Niro
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro];
+// Nouvelle BMW X1 xDrive 25e
+const bmwX1 = {
+  id: `bmw-x1-fixed`,
+  brand: "BMW",
+  model: "X1 xDrive 25e",
+  year: 2021,
+  mileage: 126000,
+  fuelType: "Essence",
+  price: 14000,
+  transmission: "Automatique",
+  exteriorColor: "Beige",
+  interiorColor: "Marron",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Hybride rechargeable", "xDrive", "Système de navigation", "Toit panoramique", "Sièges chauffants", "Caméra de recul", "Jantes alliage", "Climatisation automatique", "Régulateur de vitesse adaptatif", "Bluetooth"],
+  image: "/lovable-uploads/543454e5-3db4-4509-875a-d27b0336305f.png",
+};
+
+// Définition des véhicules par défaut - ajout de la nouvelle BMW X1
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro, bmwX1];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -567,6 +594,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const bmwX5Exists = vehicles.some(v => v.id === bmwX5.id || (v.brand === "BMW" && v.model === "X5 xDrive"));
   const audiA3ETronExists = vehicles.some(v => v.id === audiA3ETron.id || (v.brand === "Audi" && v.model === "A3 E-Tron 1.4 S Tronic"));
   const kiaNiroExists = vehicles.some(v => v.id === kiaNiro.id || (v.brand === "Kia" && v.model === "Niro Hybride 149 CH"));
+  const bmwX1Exists = vehicles.some(v => v.id === bmwX1.id || (v.brand === "BMW" && v.model === "X1 xDrive 25e"));
   
   let changed = false;
   
@@ -647,6 +675,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!kiaNiroExists) {
     vehicles.push(kiaNiro);
+    changed = true;
+  }
+  
+  if (!bmwX1Exists) {
+    vehicles.push(bmwX1);
     changed = true;
   }
   
