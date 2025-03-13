@@ -11,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ImportedVehicle, extractVehiclesFromUrl, addImportedVehicles } from '@/utils/vehicleImportService';
+import { ImportedVehicle, addImportedVehicles, extractVehiclesFromUrl } from '@/utils/vehicleImportService';
 import { SUPPORTED_SITES, canExtractFromUrl } from '@/utils/extractionService';
 
 const VehicleImporter = () => {

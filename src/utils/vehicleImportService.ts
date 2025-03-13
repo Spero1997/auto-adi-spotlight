@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -640,5 +641,15 @@ export const deleteImportedVehicle = (id: string): void => {
   } catch (error) {
     console.error("Erreur lors de la suppression du véhicule:", error);
     toast.error("Erreur lors de la suppression du véhicule");
+  }
+};
+
+// Export the extractVehiclesFromUrl function to fix the import error in VehicleImporter.tsx
+export const extractVehiclesFromUrl = async (url: string): Promise<ImportedVehicle[]> => {
+  try {
+    return await extractVehiclesWithScraper(url);
+  } catch (error) {
+    console.error("Error extracting vehicles:", error);
+    throw error;
   }
 };
