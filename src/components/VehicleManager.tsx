@@ -1,16 +1,17 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, Trash2, Edit, Search, Plus, Save, X } from 'lucide-react';
+import { AlertCircle, Trash2, Edit, Search, Plus, Save, X, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, getCatalogIdFromUrl, resetCatalog } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 
 const VehicleManager = () => {
@@ -19,6 +20,7 @@ const VehicleManager = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingVehicle, setEditingVehicle] = useState<ImportedVehicle | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [sortBy, setSortBy] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isLoading, setIsLoading] = useState(true);
@@ -121,6 +123,28 @@ const VehicleManager = () => {
     setIsDialogOpen(true);
   };
 
+  const handleResetCatalog = () => {
+    try {
+      // Réinitialiser le catalogue
+      resetCatalog();
+      // Recharger les véhicules
+      setVehicles([]);
+      setIsResetDialogOpen(false);
+      
+      toast({
+        title: "Catalogue réinitialisé",
+        description: "Le catalogue a été vidé avec succès. Vous pouvez maintenant ajouter de nouveaux véhicules.",
+      });
+    } catch (error) {
+      console.error("Erreur lors de la réinitialisation du catalogue:", error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de réinitialiser le catalogue.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleSortChange = (value: string) => {
     if (value === sortBy) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -182,7 +206,30 @@ const VehicleManager = () => {
   return (
     <div className="container mx-auto p-4 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-4">Gestion des véhicules</h1>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Gestion des véhicules</h1>
+          
+          <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="destructive" className="mt-2 md:mt-0">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Réinitialiser le catalogue
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Réinitialiser le catalogue</DialogTitle>
+                <DialogDescription>
+                  Êtes-vous sûr de vouloir réinitialiser le catalogue ? Cette action supprimera tous les véhicules et créera un nouveau catalogue vide.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-4">
+                <Button variant="outline" onClick={() => setIsResetDialogOpen(false)}>Annuler</Button>
+                <Button variant="destructive" onClick={handleResetCatalog}>Réinitialiser</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
         
         {isLoading ? (
           <div className="py-8 text-center">
