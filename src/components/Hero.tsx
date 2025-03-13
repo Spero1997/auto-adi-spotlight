@@ -39,8 +39,8 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Quick search section */}
-      <div className="container mx-auto px-4 relative z-10 -mb-16">
+      {/* Quick search section - moved up by adjusting the margin */}
+      <div className="container mx-auto px-4 relative z-10 -mt-10 md:-mt-16 lg:-mt-20">
         <div className="bg-white rounded-lg shadow-xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 w-full">
