@@ -34,6 +34,7 @@ interface SearchFilters {
 
 interface FeaturedCarsProps {
   searchFilters?: SearchFilters;
+  hideViewAllButton?: boolean;
 }
 
 const defaultCars = [
@@ -69,7 +70,7 @@ const defaultCars = [
   }
 ];
 
-const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
+const FeaturedCars = ({ searchFilters, hideViewAllButton = false }: FeaturedCarsProps) => {
   const { toast } = useToast();
   const [selectedCar, setSelectedCar] = useState<CarProps | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer' | 'coupon' | 'gift'>('transfer');
@@ -354,14 +355,16 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
           </div>
         )}
         
-        <div className="text-center">
-          <Link to="/vehicules/occasion">
-            <Button className="bg-white border border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-colors px-6 py-3 rounded-md font-semibold inline-flex items-center">
-              Voir tous nos véhicules
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
+        {!hideViewAllButton && (
+          <div className="text-center">
+            <Link to="/vehicules/occasion">
+              <Button className="bg-white border border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-colors px-6 py-3 rounded-md font-semibold inline-flex items-center">
+                Voir tous nos véhicules
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+        )}
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-[700px] w-[95%] max-h-[90vh] overflow-auto p-0">
@@ -728,3 +731,4 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
 };
 
 export default FeaturedCars;
+

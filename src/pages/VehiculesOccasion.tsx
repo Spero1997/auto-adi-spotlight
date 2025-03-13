@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -9,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -38,6 +37,7 @@ const VehiculesOccasion = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [sort, setSort] = useState('price-asc');
   const [filtersApplied, setFiltersApplied] = useState(false);
+  const location = useLocation();
   
   // Features filters
   const [filterAirbags, setFilterAirbags] = useState(false);
@@ -318,6 +318,7 @@ const VehiculesOccasion = () => {
                           maxPrice: filtersApplied ? priceRange[1] : undefined,
                           fuelType: filtersApplied ? selectedFuelType === 'all' ? '' : selectedFuelType : '',
                         }}
+                        hideViewAllButton={location.pathname === '/vehicules/occasion'}
                       />
                     </div>
                   </div>
