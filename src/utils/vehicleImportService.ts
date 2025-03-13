@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -22,16 +23,31 @@ export interface ImportedVehicle {
 
 const STORAGE_KEY = 'imported_vehicles';
 
-// Récupérer les véhicules importés du stockage local
+// Récupérer les véhicules importés du stockage local avec validation
 export const getImportedVehicles = (): ImportedVehicle[] => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const parsedData = JSON.parse(stored);
+      console.log(`Véhicules récupérés du localStorage:`, parsedData);
+      
+      // Vérifier que les données sont un tableau
+      if (Array.isArray(parsedData)) {
+        // Filtrer les véhicules pour ne garder que ceux qui ont les propriétés requises
+        return parsedData.filter(vehicle => 
+          vehicle && 
+          typeof vehicle === 'object' &&
+          vehicle.id && 
+          vehicle.brand && 
+          vehicle.model &&
+          vehicle.price
+        );
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la récupération des véhicules:", error);
   }
+  console.log("Aucun véhicule trouvé dans le localStorage ou données invalides");
   return [];
 };
 
@@ -39,6 +55,7 @@ export const getImportedVehicles = (): ImportedVehicle[] => {
 export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(vehicles));
+    console.log(`${vehicles.length} véhicules enregistrés dans le localStorage`);
   } catch (error) {
     console.error("Erreur lors de l'enregistrement des véhicules:", error);
     toast.error("Erreur lors de l'enregistrement des véhicules");
@@ -49,6 +66,8 @@ export const saveImportedVehicles = (vehicles: ImportedVehicle[]): void => {
 export const addImportedVehicles = (newVehicles: ImportedVehicle[]): void => {
   try {
     const currentVehicles = getImportedVehicles();
+    console.log(`Ajout de ${newVehicles.length} véhicules aux ${currentVehicles.length} existants`);
+    
     const existingIds = new Set(currentVehicles.map(v => v.id));
     
     // Filtrer les véhicules déjà existants par ID

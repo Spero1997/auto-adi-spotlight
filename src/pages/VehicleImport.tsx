@@ -1,14 +1,22 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
+import { getImportedVehicles } from '@/utils/vehicleImportService';
 
 const VehicleImport = () => {
   const [activeTab, setActiveTab] = useState("add");
+  
+  // Force le chargement des véhicules au chargement de la page
+  useEffect(() => {
+    console.log("VehicleImport: Vérification des véhicules stockés");
+    const vehicles = getImportedVehicles();
+    console.log(`VehicleImport: ${vehicles.length} véhicules trouvés dans localStorage`);
+  }, []);
   
   return (
     <>

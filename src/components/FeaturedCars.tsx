@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -95,25 +95,36 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
   const [deliveryOption, setDeliveryOption] = useState<'pickup' | 'delivery'>('pickup');
   
   const [cars, setCars] = useState<ImportedVehicle[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     loadVehicles();
+    
+    window.addEventListener('storage', loadVehicles);
+    
+    return () => {
+      window.removeEventListener('storage', loadVehicles);
+    };
   }, []);
   
   const loadVehicles = () => {
+    setIsLoading(true);
     try {
+      console.log("FeaturedCars: Chargement des véhicules...");
       const importedVehicles = getImportedVehicles();
       
       if (importedVehicles && importedVehicles.length > 0) {
-        console.log("Utilisation des véhicules importés:", importedVehicles.length);
+        console.log(`FeaturedCars: ${importedVehicles.length} véhicules importés trouvés`);
         setCars(importedVehicles);
       } else {
-        console.log("Aucun véhicule importé trouvé, utilisation des véhicules par défaut");
+        console.log("FeaturedCars: Aucun véhicule importé trouvé, utilisation des véhicules par défaut");
         setCars(defaultCars);
       }
     } catch (error) {
-      console.error("Erreur lors du chargement des véhicules:", error);
+      console.error("FeaturedCars: Erreur lors du chargement des véhicules:", error);
       setCars(defaultCars);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -253,7 +264,15 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
               : 'Nos véhicules d\'occasion à la une'
             }
           </h2>
-          {filteredCars.length === 0 ? (
+          
+          {isLoading ? (
+            <div className="py-8 text-center">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Chargement...</span>
+              </div>
+              <p className="mt-2 text-gray-600">Chargement des véhicules...</p>
+            </div>
+          ) : filteredCars.length === 0 ? (
             <div className="text-center my-12">
               <p className="text-gray-600 mb-4">
                 Aucun véhicule ne correspond à vos critères de recherche.
@@ -272,66 +291,68 @@ const FeaturedCars = ({ searchFilters }: FeaturedCarsProps) => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {filteredCars.map((car) => (
-            <Card key={car.id} className="overflow-hidden card-hover border border-gray-200">
-              <div className="relative">
-                <img
-                  src={car.image || 'https://via.placeholder.com/400x200?text=No+Image'}
-                  alt={`${car.brand} ${car.model}`}
-                  className="w-full h-48 object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=No+Image';
-                  }}
-                />
-                <div className="absolute top-2 right-2 bg-brand-orange text-white text-sm font-semibold px-3 py-1 rounded-full">
-                  Occasion
-                </div>
-              </div>
-              <CardContent className="p-5">
-                <h3 className="text-xl font-semibold mb-1">{`${car.brand} ${car.model}`}</h3>
-                <div className="text-2xl font-bold text-brand-blue mb-4">
-                  {car.price.toLocaleString('fr-FR')} €
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3 mb-5">
-                  <div className="flex items-center text-gray-600">
-                    <Calendar className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{car.year}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Fuel className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{car.fuelType}</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <Car className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{car.mileage.toLocaleString('fr-FR')} km</span>
-                  </div>
-                  <div className="flex items-center text-gray-600">
-                    <ShieldCheck className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>Garantie</span>
+        {!isLoading && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {filteredCars.map((car) => (
+              <Card key={car.id} className="overflow-hidden card-hover border border-gray-200">
+                <div className="relative">
+                  <img
+                    src={car.image || 'https://via.placeholder.com/400x200?text=No+Image'}
+                    alt={`${car.brand} ${car.model}`}
+                    className="w-full h-48 object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=No+Image';
+                    }}
+                  />
+                  <div className="absolute top-2 right-2 bg-brand-orange text-white text-sm font-semibold px-3 py-1 rounded-full">
+                    Occasion
                   </div>
                 </div>
-                
-                <div className="flex space-x-2">
-                  <Link to={`/vehicules/${car.id}`} className="flex-1">
-                    <Button variant="default" className="w-full bg-brand-blue hover:bg-brand-darkBlue">
-                      Détails
+                <CardContent className="p-5">
+                  <h3 className="text-xl font-semibold mb-1">{`${car.brand} ${car.model}`}</h3>
+                  <div className="text-2xl font-bold text-brand-blue mb-4">
+                    {car.price.toLocaleString('fr-FR')} €
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 mb-5">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                      <span>{car.year}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Fuel className="h-4 w-4 mr-2 text-gray-500" />
+                      <span>{car.fuelType}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Car className="h-4 w-4 mr-2 text-gray-500" />
+                      <span>{car.mileage.toLocaleString('fr-FR')} km</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <ShieldCheck className="h-4 w-4 mr-2 text-gray-500" />
+                      <span>Garantie</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <Link to={`/vehicules/${car.id}`} className="flex-1">
+                      <Button variant="default" className="w-full bg-brand-blue hover:bg-brand-darkBlue">
+                        Détails
+                      </Button>
+                    </Link>
+                    <Button 
+                      variant="outline" 
+                      className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
+                      onClick={() => handleOpenCheckout(car)}
+                    >
+                      <ShoppingCart className="h-4 w-4 mr-1" />
+                      Acheter
                     </Button>
-                  </Link>
-                  <Button 
-                    variant="outline" 
-                    className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white"
-                    onClick={() => handleOpenCheckout(car)}
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-1" />
-                    Acheter
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
         
         <div className="text-center">
           <Link to="/vehicules/occasion">

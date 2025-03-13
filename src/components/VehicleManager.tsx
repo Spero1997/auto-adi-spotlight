@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, Trash2, Edit, Eye, Plus, Save, X, Search } from 'lucide-react';
+import { AlertCircle, Trash2, Edit, Search, Plus, Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -21,15 +20,37 @@ const VehicleManager = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [sortBy, setSortBy] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [isLoading, setIsLoading] = useState(true);
 
   // Charger les véhicules lors du montage du composant
   useEffect(() => {
     loadVehicles();
+    
+    // Pour s'assurer que les données sont actualisées lorsque localStorage change
+    window.addEventListener('storage', loadVehicles);
+    
+    return () => {
+      window.removeEventListener('storage', loadVehicles);
+    };
   }, []);
 
   const loadVehicles = () => {
-    const importedVehicles = getImportedVehicles();
-    setVehicles(importedVehicles);
+    try {
+      setIsLoading(true);
+      console.log("Chargement des véhicules...");
+      const importedVehicles = getImportedVehicles();
+      console.log(`${importedVehicles.length} véhicules chargés`);
+      setVehicles(importedVehicles);
+    } catch (error) {
+      console.error("Erreur lors du chargement des véhicules:", error);
+      toast({
+        title: "Erreur de chargement",
+        description: "Impossible de charger les véhicules. Veuillez rafraîchir la page.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSave = (vehicle: ImportedVehicle) => {
@@ -99,8 +120,8 @@ const VehicleManager = () => {
       
       const searchLower = searchTerm.toLowerCase();
       return (
-        vehicle.brand.toLowerCase().includes(searchLower) ||
-        vehicle.model.toLowerCase().includes(searchLower) ||
+        vehicle.brand?.toLowerCase().includes(searchLower) ||
+        vehicle.model?.toLowerCase().includes(searchLower) ||
         vehicle.fuelType?.toLowerCase().includes(searchLower) ||
         String(vehicle.year).includes(searchTerm) ||
         String(vehicle.price).includes(searchTerm)
@@ -113,15 +134,15 @@ const VehicleManager = () => {
       
       switch (sortBy) {
         case 'brand':
-          return direction * a.brand.localeCompare(b.brand);
+          return direction * (a.brand?.localeCompare(b.brand || '') || 0);
         case 'model':
-          return direction * a.model.localeCompare(b.model);
+          return direction * (a.model?.localeCompare(b.model || '') || 0);
         case 'price':
-          return direction * (a.price - b.price);
+          return direction * ((a.price || 0) - (b.price || 0));
         case 'year':
-          return direction * (a.year - b.year);
+          return direction * ((a.year || 0) - (b.year || 0));
         case 'mileage':
-          return direction * (a.mileage - b.mileage);
+          return direction * ((a.mileage || 0) - (b.mileage || 0));
         default:
           return 0;
       }
@@ -147,7 +168,14 @@ const VehicleManager = () => {
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-4">Gestion des véhicules</h1>
         
-        {vehicles.length === 0 ? (
+        {isLoading ? (
+          <div className="py-8 text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Chargement...</span>
+            </div>
+            <p className="mt-2 text-gray-600">Chargement des véhicules...</p>
+          </div>
+        ) : vehicles.length === 0 ? (
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Aucun véhicule trouvé</AlertTitle>
