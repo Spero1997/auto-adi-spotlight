@@ -9,15 +9,39 @@ import VehicleAddForm from '@/components/VehicleAddForm';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
+import { toast } from 'sonner';
 
 const VehicleImport = () => {
   const [activeTab, setActiveTab] = useState("add");
+  const [vehiclesLoaded, setVehiclesLoaded] = useState(false);
   
   // Force le chargement des véhicules au chargement de la page
   useEffect(() => {
     console.log("VehicleImport: Vérification des véhicules stockés");
-    const vehicles = getImportedVehicles();
-    console.log(`VehicleImport: ${vehicles.length} véhicules trouvés dans localStorage`);
+    try {
+      const vehicles = getImportedVehicles();
+      console.log(`VehicleImport: ${vehicles.length} véhicules trouvés dans localStorage`);
+      
+      // Recherche de la Volkswagen T-Cross
+      const tCross = vehicles.find(v => 
+        v.brand === "Volkswagen" && 
+        v.model.includes("T-Cross") && 
+        v.year === 2021
+      );
+      
+      if (tCross) {
+        console.log("La Volkswagen T-Cross est présente dans le catalogue", tCross);
+        toast.success("La Volkswagen T-Cross a été ajoutée au catalogue");
+      } else {
+        console.warn("La Volkswagen T-Cross n'est pas présente dans le catalogue");
+        toast.error("La Volkswagen T-Cross n'a pas pu être trouvée dans le catalogue");
+      }
+      
+      setVehiclesLoaded(true);
+    } catch (error) {
+      console.error("Erreur lors du chargement des véhicules:", error);
+      toast.error("Erreur lors du chargement des véhicules");
+    }
   }, []);
   
   return (

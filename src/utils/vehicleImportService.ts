@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
@@ -348,9 +347,9 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/e8318a68-3e1a-444c-995b-892f48be6b73.png",
 };
 
-// Nouvelle Volkswagen T-Cross
+// Nouvelle Volkswagen T-Cross avec ID unique
 const volkswagenTCross = {
-  id: `volkswagen-tcross-fixed`,
+  id: `volkswagen-tcross-custom-${Date.now()}`,
   brand: "Volkswagen",
   model: "T-Cross 1,0 TSI 110 hk Life ACC",
   year: 2021,
@@ -375,8 +374,8 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/68c5b5a8-be3a-4375-a4cd-36a636de7b50.png",
 };
 
-// Définition des véhicules par défaut
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross];
+// Définition des véhicules par défaut - ajout de la nouvelle T-Cross
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, volkswagenTCross];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -623,28 +622,4 @@ export const deleteImportedVehicle = (id: string): void => {
     const vehicles = getImportedVehicles();
     
     // Ne pas supprimer les véhicules par défaut
-    if (id === 'rsq8-fixed' || id === 'octavia-fixed' || id === 'mercedes-c220-fixed' || id === 'jeep-compass-fixed' || id === 'mercedes-gla-fixed' || id === 'mercedes-cla-amg-fixed' || id === 'bmw-serie2-fixed' || id === 'volvo-v60-fixed' || id === 'volvo-v60-second-fixed' || id === 'mercedes-c350e-fixed' || id === 'audi-a6-fixed' || id === 'volkswagen-polo-fixed' || id === 'volkswagen-tcross-fixed') {
-      toast.error("Ce véhicule ne peut pas être supprimé");
-      return;
-    }
-    
-    const updatedVehicles = vehicles.filter(v => v.id !== id);
-    
-    saveImportedVehicles(updatedVehicles);
-    toast.success("Véhicule supprimé avec succès");
-  } catch (error) {
-    console.error("Erreur lors de la suppression du véhicule:", error);
-    toast.error("Erreur lors de la suppression du véhicule");
-  }
-};
-
-// Fonction pour extraire les véhicules d'une URL externe
-export const extractVehiclesFromUrl = async (url: string): Promise<ImportedVehicle[]> => {
-  try {
-    // Utiliser le service d'extraction
-    return await extractVehiclesWithScraper(url);
-  } catch (error) {
-    console.error("Erreur lors de l'extraction:", error);
-    throw error;
-  }
-};
+    if (id === 'rsq8-

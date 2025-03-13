@@ -10,12 +10,35 @@ import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { getImportedVehicles } from '@/utils/vehicleImportService';
+import { toast } from 'sonner';
 
 const Index = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   
   useEffect(() => {
+    // Force un rechargement des véhicules au chargement de la page d'accueil
+    try {
+      const vehicles = getImportedVehicles();
+      console.log(`Page d'accueil: ${vehicles.length} véhicules chargés depuis le localStorage`);
+      
+      // Vérifier si la Volkswagen T-Cross est présente
+      const tCross = vehicles.find(v => 
+        v.brand === "Volkswagen" && 
+        v.model.includes("T-Cross") && 
+        v.year === 2021
+      );
+      
+      if (tCross) {
+        console.log("La Volkswagen T-Cross est présente dans le catalogue", tCross);
+      } else {
+        console.warn("La Volkswagen T-Cross n'est pas présente dans le catalogue");
+      }
+    } catch (error) {
+      console.error("Erreur lors du chargement des véhicules:", error);
+    }
+    
     // Check if there are search parameters in the URL
     if (searchParams.toString()) {
       console.log('Found search parameters:', {
