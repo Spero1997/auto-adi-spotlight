@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -12,6 +13,9 @@ import {
 
 const QuickSearch = () => {
   const [selectedBrand, setSelectedBrand] = useState<string>('');
+  const [selectedModel, setSelectedModel] = useState<string>('');
+  const [selectedBudget, setSelectedBudget] = useState<string>('');
+  const [selectedFuel, setSelectedFuel] = useState<string>('');
   const [availableModels, setAvailableModels] = useState<string[]>([]);
   
   // Mapping of brands to their models
@@ -52,6 +56,44 @@ const QuickSearch = () => {
 
   const handleBrandChange = (value: string) => {
     setSelectedBrand(value);
+    setSelectedModel(''); // Reset model when brand changes
+  };
+
+  const handleModelChange = (value: string) => {
+    setSelectedModel(value);
+  };
+
+  const handleBudgetChange = (value: string) => {
+    setSelectedBudget(value);
+  };
+
+  const handleFuelChange = (value: string) => {
+    setSelectedFuel(value);
+  };
+
+  const handleSearch = () => {
+    // Build search parameters
+    const searchParams = new URLSearchParams();
+    if (selectedBrand) searchParams.append('marque', selectedBrand);
+    if (selectedModel) searchParams.append('modele', selectedModel);
+    if (selectedBudget) searchParams.append('budget', selectedBudget);
+    if (selectedFuel) searchParams.append('energie', selectedFuel);
+    
+    // For now, just show a toast notification with the search parameters
+    toast.success('Recherche lancée', {
+      description: `Marque: ${selectedBrand || 'Toutes'}, Modèle: ${selectedModel || 'Tous'}, Budget: ${selectedBudget ? selectedBudget + '€' : 'Tous'}, Énergie: ${selectedFuel || 'Toutes'}`,
+      duration: 3000,
+    });
+    
+    // In a real application, this would navigate to a search results page
+    // window.location.href = `/vehicules/occasion?${searchParams.toString()}`;
+    
+    console.log('Search params:', {
+      brand: selectedBrand,
+      model: selectedModel,
+      budget: selectedBudget,
+      fuel: selectedFuel
+    });
   };
 
   return (
@@ -60,7 +102,7 @@ const QuickSearch = () => {
         <div className="flex-1 w-full">
           <h3 className="text-xl font-semibold mb-4 text-gray-800">Recherche rapide</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Select onValueChange={handleBrandChange}>
+            <Select onValueChange={handleBrandChange} value={selectedBrand}>
               <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
                 <SelectValue placeholder="Marque" />
               </SelectTrigger>
@@ -91,7 +133,7 @@ const QuickSearch = () => {
               </SelectContent>
             </Select>
 
-            <Select>
+            <Select value={selectedModel} onValueChange={handleModelChange}>
               <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
                 <SelectValue placeholder="Modèle" />
               </SelectTrigger>
@@ -110,7 +152,7 @@ const QuickSearch = () => {
               </SelectContent>
             </Select>
 
-            <Select>
+            <Select value={selectedBudget} onValueChange={handleBudgetChange}>
               <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
                 <SelectValue placeholder="Budget max" />
               </SelectTrigger>
@@ -125,7 +167,7 @@ const QuickSearch = () => {
               </SelectContent>
             </Select>
 
-            <Select>
+            <Select value={selectedFuel} onValueChange={handleFuelChange}>
               <SelectTrigger className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue">
                 <SelectValue placeholder="Énergie" />
               </SelectTrigger>
@@ -142,6 +184,7 @@ const QuickSearch = () => {
           <Button 
             className="bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto px-8 py-5 rounded-md text-white font-semibold flex items-center justify-center"
             size="lg"
+            onClick={handleSearch}
           >
             <Search className="h-5 w-5 mr-2" />
             Rechercher
