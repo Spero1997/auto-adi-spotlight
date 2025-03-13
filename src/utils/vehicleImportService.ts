@@ -428,8 +428,35 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   image: "/lovable-uploads/a5bbd614-2507-408f-b364-1efbec70eec8.png",
 };
 
-// Définition des véhicules par défaut - ajout de la nouvelle BMW X5
-const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron];
+// Nouvelle Kia Niro Hybride
+const kiaNiro = {
+  id: `kia-niro-fixed`,
+  brand: "Kia",
+  model: "Niro Hybride 149 CH",
+  year: 2017,
+  mileage: 83000,
+  fuelType: "Essence",
+  price: 9500,
+  transmission: "Automatique",
+  exteriorColor: "Blanche",
+  interiorColor: "Noir",
+  description: `Modalités de paiement
+ • Acompte : 20 % à la commande
+ • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+ • Offre spéciale : -10 % pour paiement comptant à la commande
+
+Nos services inclus :
+ • Délai de rétractation : 14 jours (Satisfait ou remboursé)
+ • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+ • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+  features: ["Hybride", "Système de navigation", "Bluetooth", "Caméra de recul", "Climatisation automatique", "Sièges chauffants", "Jantes alliage", "Régulateur de vitesse adaptatif", "Aide au stationnement"],
+  image: "/lovable-uploads/ca65b2bc-23d7-4e24-8236-2b3b89aee2e2.png",
+};
+
+// Définition des véhicules par défaut - ajout de la nouvelle Kia Niro
+const DEFAULT_VEHICLES = [audiRSQ8, skodaOctavia, mercedesC220, jeepCompass, mercedesGLA, mercedesCLA, bmwSerie2, volvoV60, volvoV60Second, mercedesC350e, audiA6, volkswagenPolo, volkswagenTCross, bmwX5, audiA3ETron, kiaNiro];
 
 // Générer un ID de catalogue unique s'il n'existe pas
 const getCatalogId = (): string => {
@@ -539,6 +566,7 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   const volkswagenTCrossExists = vehicles.some(v => v.id === volkswagenTCross.id || (v.brand === "Volkswagen" && v.model === "T-Cross 1,0 TSI 110 hk Life ACC"));
   const bmwX5Exists = vehicles.some(v => v.id === bmwX5.id || (v.brand === "BMW" && v.model === "X5 xDrive"));
   const audiA3ETronExists = vehicles.some(v => v.id === audiA3ETron.id || (v.brand === "Audi" && v.model === "A3 E-Tron 1.4 S Tronic"));
+  const kiaNiroExists = vehicles.some(v => v.id === kiaNiro.id || (v.brand === "Kia" && v.model === "Niro Hybride 149 CH"));
   
   let changed = false;
   
@@ -614,6 +642,11 @@ const ensureDefaultVehicles = (vehicles: ImportedVehicle[]): void => {
   
   if (!audiA3ETronExists) {
     vehicles.push(audiA3ETron);
+    changed = true;
+  }
+  
+  if (!kiaNiroExists) {
+    vehicles.push(kiaNiro);
     changed = true;
   }
   

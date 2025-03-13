@@ -58,6 +58,18 @@ const VehicleImport = () => {
         toast.success("L'Audi A3 E-Tron a été ajoutée au catalogue");
       }
       
+      // Recherche de la Kia Niro
+      const kiaNiro = vehicles.find(v => 
+        v.brand === "Kia" && 
+        v.model.includes("Niro") && 
+        v.year === 2017
+      );
+      
+      if (kiaNiro) {
+        console.log("La Kia Niro Hybride est présente dans le catalogue", kiaNiro);
+        toast.success("La Kia Niro Hybride a été ajoutée au catalogue");
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -97,11 +109,19 @@ const VehicleImport = () => {
             </AlertDescription>
           </Alert>
           
-          <Alert className="mb-6 bg-green-50 border-green-200">
+          <Alert className="mb-4 bg-green-50 border-green-200">
             <Info className="h-4 w-4 text-green-500" />
             <AlertTitle>Nouvelle Audi ajoutée</AlertTitle>
             <AlertDescription>
               L'Audi A3 E-Tron 1.4 S Tronic 2017 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-yellow-50 border-yellow-200">
+            <Info className="h-4 w-4 text-yellow-500" />
+            <AlertTitle>Nouvelle Kia ajoutée</AlertTitle>
+            <AlertDescription>
+              La Kia Niro Hybride 149 CH 2017 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           
