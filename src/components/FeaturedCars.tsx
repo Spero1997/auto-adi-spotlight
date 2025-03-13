@@ -183,7 +183,7 @@ const FeaturedCars = () => {
           </Link>
         </div>
 
-        {/* Payment Dialog */}
+        {/* Payment Dialog - Using a standard Dialog component instead of a DialogTrigger */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-md md:max-w-lg">
             <DialogHeader>
