@@ -24,7 +24,7 @@ const Index = () => {
     resetCatalog('all');
     toast.success("Les catalogues ont été réinitialisés");
     
-    // Ajouter la Jeep Compass au catalogue vedette
+    // Ajouter la Jeep Compass au catalogue vedette avec la nouvelle image
     const jeepCompass = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Jeep",
@@ -33,7 +33,7 @@ const Index = () => {
       mileage: 66000,
       fuelType: "Essence",
       price: 12000,
-      image: "/lovable-uploads/1d43c09f-608c-456e-bb7f-ae06eb9bab3b.png",
+      image: "/lovable-uploads/095b7466-7c2a-479c-861c-ebf3e0234239.png", // Nouvelle image
       description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
       exteriorColor: "Bleu",
       interiorColor: "Noir",
