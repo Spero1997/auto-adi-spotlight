@@ -10,7 +10,7 @@ import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { useLocation, useSearchParams, Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getImportedVehicles, resetCatalog } from '@/utils/vehicleImportService';
+import { getImportedVehicles, resetCatalog, addImportedVehicle } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Car } from 'lucide-react';
@@ -23,6 +23,37 @@ const Index = () => {
     // Réinitialiser les deux catalogues
     resetCatalog('all');
     toast.success("Les catalogues ont été réinitialisés");
+    
+    // Ajouter la Jeep Compass au catalogue vedette
+    const jeepCompass = {
+      id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Jeep",
+      model: "Compass 1,3 T4 PHEV 4Xe 240hk Mode S",
+      year: 2021,
+      mileage: 66000,
+      fuelType: "Essence",
+      price: 12000,
+      image: "/lovable-uploads/1d43c09f-608c-456e-bb7f-ae06eb9bab3b.png",
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Bleu",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "1.3 T4 PHEV 4Xe 240ch",
+      featured: true,
+      catalogType: 'featured',
+      features: [
+        "Système hybride rechargeable",
+        "4 roues motrices",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges chauffants",
+        "Mode de conduite S"
+      ]
+    };
+    
+    addImportedVehicle(jeepCompass, 'featured');
+    toast.success("Jeep Compass ajoutée au catalogue vedette");
     
     // Vérifier les catalogues après réinitialisation
     try {
