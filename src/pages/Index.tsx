@@ -40,7 +40,7 @@ const Index = () => {
       transmission: "Automatique",
       engine: "1.3 T4 PHEV 4Xe 240ch",
       featured: true,
-      catalogType: 'featured',
+      catalogType: 'featured' as 'standard' | 'featured',
       features: [
         "Système hybride rechargeable",
         "4 roues motrices",
