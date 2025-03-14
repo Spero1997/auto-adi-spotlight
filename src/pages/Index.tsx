@@ -94,6 +94,44 @@ const Index = () => {
     addImportedVehicle(porschePanamera, 'featured');
     toast.success("Porsche Panamera ajoutée au catalogue vedette");
     
+    // Ajouter la BMW X6 au catalogue vedette
+    const bmwX6 = {
+      id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "BMW",
+      model: "X6 245 CV",
+      year: 2011,
+      mileage: 228000,
+      fuelType: "Diesel",
+      price: 7000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Noir",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "245 CV",
+      featured: true,
+      catalogType: 'featured' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      images: [
+        "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
+        "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
+        "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
+        "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png"
+      ],
+      image: "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png", // Image principale
+      features: [
+        "SUV coupé",
+        "Transmission intégrale",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges en cuir",
+        "Jantes sport"
+      ]
+    };
+    
+    addImportedVehicle(bmwX6, 'featured');
+    toast.success("BMW X6 ajoutée au catalogue vedette");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
