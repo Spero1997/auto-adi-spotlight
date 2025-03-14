@@ -41,6 +41,7 @@ const Index = () => {
       engine: "1.3 T4 PHEV 4Xe 240ch",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/1671QH1TxG/?mibextid=wwXIfr", // Nouveau lien Facebook
       features: [
         "Système hybride rechargeable",
         "4 roues motrices",
