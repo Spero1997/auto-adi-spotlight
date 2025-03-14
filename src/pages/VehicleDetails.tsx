@@ -57,28 +57,39 @@ const VehicleDetails = () => {
     }
     
     try {
-      const vehicles = getImportedVehicles();
-      console.log("Véhicules chargés:", vehicles.length);
-      console.log("Recherche du véhicule avec ID:", id);
+      // Chercher d'abord dans le catalogue vedette
+      let vehicles = getImportedVehicles('featured');
+      console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
       
-      // Essayer de trouver le véhicule par son ID exact ou partie de l'ID
-      let foundVehicle = vehicles.find(v => v.id === id);
+      // Chercher un véhicule correspondant dans le catalogue vedette
+      let foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
       
-      // Si aucun véhicule n'est trouvé, essayer de faire correspondre avec une partie de l'URL
+      // Si aucun véhicule n'est trouvé dans le catalogue vedette, chercher dans le catalogue standard
       if (!foundVehicle) {
+        vehicles = getImportedVehicles('standard');
+        console.log("Véhicules chargés du catalogue standard:", vehicles.length);
+        foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
+      }
+      
+      // Si toujours aucun véhicule n'est trouvé, essayer avec tous les véhicules
+      if (!foundVehicle) {
+        vehicles = getImportedVehicles();
+        console.log("Véhicules chargés de tous les catalogues:", vehicles.length);
+        
+        // Essayer de trouver le véhicule par son ID exact ou partie de l'ID
         foundVehicle = vehicles.find(v => 
-          id.includes(v.id) || 
+          v.id === id || 
           v.id.includes(id) || 
+          id.includes(v.id) || 
           id.toLowerCase().includes(v.brand.toLowerCase()) || 
           id.toLowerCase().includes(v.model.toLowerCase()) ||
-          `${v.brand.toLowerCase()}-${v.model.toLowerCase()}`.includes(id.toLowerCase()) ||
-          // Ajout d'une recherche avec le mot "fixed" qui peut être ajouté à la fin
-          id.toLowerCase().includes(`${v.brand.toLowerCase()}-${v.model.toLowerCase()}-fixed`)
+          `${v.brand.toLowerCase()}-${v.model.toLowerCase()}`.includes(id.toLowerCase())
         );
       }
       
       if (foundVehicle) {
         console.log("Véhicule trouvé:", foundVehicle);
+        console.log("ID du véhicule:", foundVehicle.id);
         console.log("URL de l'image:", foundVehicle.image);
         setVehicle(foundVehicle);
       } else {

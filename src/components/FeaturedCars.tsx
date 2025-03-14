@@ -130,7 +130,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                 <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-xl font-bold text-brand-blue">{vehicle.price?.toLocaleString('fr-FR')} €</span>
-                  <Link to={`/vehicules/${vehicle.id}`}>
+                  <Link to={`/vehicule/${vehicle.id}`} data-testid={`vehicle-link-${vehicle.id}`}>
                     <Button>
                       Voir détails
                     </Button>
