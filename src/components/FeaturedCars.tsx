@@ -82,6 +82,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const featured = filteredVehicles();
 
+  // Fonction pour ouvrir le lien Facebook dans un nouvel onglet
+  const openFacebookLink = (url: string, event: React.MouseEvent) => {
+    event.preventDefault();
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <h2 className="text-3xl font-bold text-center mb-8">
@@ -129,17 +135,15 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                 <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
                 <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
                 
-                {/* Afficher le lien Facebook si disponible */}
+                {/* Modification du lien Facebook pour garantir l'ouverture correcte */}
                 {vehicle.fbLink && (
-                  <a 
-                    href={vehicle.fbLink} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800"
+                  <button 
+                    onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}
+                    className="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800 cursor-pointer"
                   >
                     <LinkIcon className="h-4 w-4 mr-1" />
                     Voir sur Facebook
-                  </a>
+                  </button>
                 )}
                 
                 <div className="mt-4 flex items-center justify-between">
