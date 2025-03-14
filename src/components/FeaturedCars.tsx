@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Search, Star, Car } from 'lucide-react';
+import { Search, Star, Car, Link as LinkIcon } from 'lucide-react';
 
 interface SearchFilters {
   brand?: string;
@@ -128,6 +128,20 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
               <CardContent className="p-4">
                 <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
                 <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
+                
+                {/* Afficher le lien Facebook si disponible */}
+                {vehicle.fbLink && (
+                  <a 
+                    href={vehicle.fbLink} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800"
+                  >
+                    <LinkIcon className="h-4 w-4 mr-1" />
+                    Voir sur Facebook
+                  </a>
+                )}
+                
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-xl font-bold text-brand-blue">{vehicle.price?.toLocaleString('fr-FR')} €</span>
                   <Link to={`/vehicule/${vehicle.id}`} data-testid={`vehicle-link-${vehicle.id}`}>

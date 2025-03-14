@@ -55,6 +55,44 @@ const Index = () => {
     addImportedVehicle(jeepCompass, 'featured');
     toast.success("Jeep Compass ajoutée au catalogue vedette");
     
+    // Ajouter la Porsche Panamera au catalogue vedette
+    const porschePanamera = {
+      id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Porsche",
+      model: "Panamera 4 E-Hubrid 2.9 V6 Sport",
+      year: 2018,
+      mileage: 85000,
+      fuelType: "Essence",
+      price: 27000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Bleu",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "2.9 V6 E-Hybrid",
+      featured: true,
+      catalogType: 'featured' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      images: [
+        "/lovable-uploads/5b0ac084-9fbd-4a0d-aab9-ca973c04ab9e.png", 
+        "/lovable-uploads/30950546-1b7b-4f41-a34b-8a334b23cdb4.png",
+        "/lovable-uploads/5292dbd1-9c95-4d0e-90db-04172cf64db6.png",
+        "/lovable-uploads/2e0556f3-89ce-4f00-85bd-dbfafda58599.png"
+      ],
+      image: "/lovable-uploads/5b0ac084-9fbd-4a0d-aab9-ca973c04ab9e.png", // Image principale
+      features: [
+        "Hybride rechargeable",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges sport",
+        "Finition luxe",
+        "Modes de conduite multiples"
+      ]
+    };
+    
+    addImportedVehicle(porschePanamera, 'featured');
+    toast.success("Porsche Panamera ajoutée au catalogue vedette");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
