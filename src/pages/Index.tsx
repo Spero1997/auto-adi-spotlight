@@ -41,7 +41,7 @@ const Index = () => {
       engine: "1.3 T4 PHEV 4Xe 240ch",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/1671QH1TxG/?mibextid=wwXIfr", // Nouveau lien Facebook
+      fbLink: "https://www.facebook.com/share/p/1671QH1TxG/?mibextid=wwXIfr", // Lien Facebook unique de la Jeep
       features: [
         "Système hybride rechargeable",
         "4 roues motrices",
@@ -56,7 +56,7 @@ const Index = () => {
     addImportedVehicle(jeepCompass, 'featured');
     toast.success("Jeep Compass ajoutée au catalogue vedette");
     
-    // Ajouter la Porsche Panamera au catalogue vedette
+    // Ajouter la Porsche Panamera au catalogue vedette avec son lien Facebook unique
     const porschePanamera = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Porsche",
@@ -72,7 +72,7 @@ const Index = () => {
       engine: "2.9 V6 E-Hybrid",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/p/1HhP4ZJ2mC/?mibextid=wwXIfr", // Lien Facebook corrigé et unique
       images: [
         "/lovable-uploads/5b0ac084-9fbd-4a0d-aab9-ca973c04ab9e.png", 
         "/lovable-uploads/30950546-1b7b-4f41-a34b-8a334b23cdb4.png",
@@ -94,7 +94,7 @@ const Index = () => {
     addImportedVehicle(porschePanamera, 'featured');
     toast.success("Porsche Panamera ajoutée au catalogue vedette");
     
-    // Ajouter la BMW X6 au catalogue vedette
+    // Ajouter la BMW X6 au catalogue vedette avec son lien Facebook unique
     const bmwX6 = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "BMW",
@@ -110,7 +110,7 @@ const Index = () => {
       engine: "245 CV",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/p/1RhcruSxuk/?mibextid=wwXIfr", // Lien Facebook corrigé et unique
       images: [
         "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
         "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
