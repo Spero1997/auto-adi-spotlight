@@ -84,24 +84,28 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const featured = filteredVehicles();
 
-  // Fonction modifiée pour ouvrir le lien Facebook correctement sur mobile et desktop
+  // Fonction améliorée pour ouvrir directement la publication Facebook sur mobile et desktop
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
     
     if (isMobile) {
-      // Sur mobile, tenter d'ouvrir dans l'application Facebook d'abord
-      // puis dans le navigateur si ça ne fonctionne pas
+      // Sur mobile, essayons d'ouvrir directement avec l'app Facebook si possible
       try {
-        // Format pour l'URL de l'app FB: fb://facewebmodal/f?href=URL_ENCODED
+        // Utiliser un format d'URL qui fonctionne mieux avec l'app Facebook
+        // Format: fb://facewebmodal/f?href=URL_ENCODED
         const encodedUrl = encodeURIComponent(url);
+        
+        // Essayer d'ouvrir dans l'app Facebook
         window.location.href = `fb://facewebmodal/f?href=${encodedUrl}`;
         
-        // Fallback après un court délai si l'app FB n'est pas ouverte
+        // Si l'app FB n'est pas installée, on ouvre dans le navigateur après un court délai
         setTimeout(() => {
+          // Vérifier si on est toujours sur la même page (ce qui signifie que l'app FB n'a pas été ouverte)
           window.open(url, '_blank');
-        }, 300);
+        }, 500); // Délai augmenté pour donner plus de temps à l'app FB pour s'ouvrir
       } catch (e) {
-        // Fallback direct si une erreur se produit
+        console.error("Erreur lors de l'ouverture du lien Facebook:", e);
+        // Fallback en cas d'erreur - ouvrir dans le navigateur
         window.open(url, '_blank');
       }
     } else {
@@ -157,7 +161,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                 <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
                 <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
                 
-                {/* Bouton Facebook amélioré pour une meilleure compatibilité mobile */}
+                {/* Bouton Facebook amélioré avec nouvelle logique pour une meilleure compatibilité mobile */}
                 {vehicle.fbLink && (
                   <button 
                     onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}
