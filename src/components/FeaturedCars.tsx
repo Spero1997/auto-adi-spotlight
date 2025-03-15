@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Search, Star, Car, Link as LinkIcon } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SearchFilters {
   brand?: string;
@@ -20,6 +21,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     loadVehicles();
@@ -82,10 +84,30 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const featured = filteredVehicles();
 
-  // Fonction pour ouvrir le lien Facebook dans un nouvel onglet
+  // Fonction modifiée pour ouvrir le lien Facebook correctement sur mobile et desktop
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
-    window.open(url, '_blank', 'noopener,noreferrer');
+    
+    if (isMobile) {
+      // Sur mobile, tenter d'ouvrir dans l'application Facebook d'abord
+      // puis dans le navigateur si ça ne fonctionne pas
+      try {
+        // Format pour l'URL de l'app FB: fb://facewebmodal/f?href=URL_ENCODED
+        const encodedUrl = encodeURIComponent(url);
+        window.location.href = `fb://facewebmodal/f?href=${encodedUrl}`;
+        
+        // Fallback après un court délai si l'app FB n'est pas ouverte
+        setTimeout(() => {
+          window.open(url, '_blank');
+        }, 300);
+      } catch (e) {
+        // Fallback direct si une erreur se produit
+        window.open(url, '_blank');
+      }
+    } else {
+      // Sur desktop, ouvrir dans un nouvel onglet normalement
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
@@ -135,11 +157,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                 <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
                 <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
                 
-                {/* Modification du lien Facebook pour garantir l'ouverture correcte */}
+                {/* Bouton Facebook amélioré pour une meilleure compatibilité mobile */}
                 {vehicle.fbLink && (
                   <button 
                     onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}
                     className="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800 cursor-pointer"
+                    aria-label="Voir sur Facebook"
                   >
                     <LinkIcon className="h-4 w-4 mr-1" />
                     Voir sur Facebook

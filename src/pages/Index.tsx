@@ -132,7 +132,7 @@ const Index = () => {
     addImportedVehicle(bmwX6, 'featured');
     toast.success("BMW X6 ajoutée au catalogue vedette");
     
-    // Ajouter l'Audi E-tron au catalogue vedette avec son lien Facebook unique
+    // Ajouter l'Audi E-tron au catalogue vedette avec son lien Facebook unique corrigé
     const audiEtron = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Audi",
@@ -148,7 +148,7 @@ const Index = () => {
       engine: "95 KWh 55 Sportback QUATTRO",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr", // Lien Facebook unique de l'Audi
+      fbLink: "https://www.facebook.com/share/p/1HWXvRRcRr/?mibextid=wwXIfr", // Lien Facebook corrigé
       image: "/lovable-uploads/3c524853-d7e0-4c6c-9b24-a8aae8dec66e.png", // Image téléchargée
       features: [
         "SUV électrique",
@@ -164,7 +164,7 @@ const Index = () => {
     addImportedVehicle(audiEtron, 'featured');
     toast.success("Audi E-tron ajoutée au catalogue vedette");
     
-    // Ajouter le Range Rover Evoque au catalogue vedette avec son lien Facebook unique
+    // Ajouter le Range Rover Evoque au catalogue vedette avec son lien Facebook unique corrigé
     const rangeRoverEvoque = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Range Rover",
@@ -180,7 +180,7 @@ const Index = () => {
       engine: "2.0 TD4",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr", // Lien Facebook du Range Rover
+      fbLink: "https://www.facebook.com/share/p/1BNJdfLvts/?mibextid=wwXIfr", // Lien Facebook corrigé
       image: "/lovable-uploads/5a883e3e-42cb-4514-bb8d-df84b1dd553e.png", // Image du Range Rover
       features: [
         "SUV compact de luxe",
