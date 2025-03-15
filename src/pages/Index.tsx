@@ -164,6 +164,38 @@ const Index = () => {
     addImportedVehicle(audiEtron, 'featured');
     toast.success("Audi E-tron ajoutée au catalogue vedette");
     
+    // Ajouter le Range Rover Evoque au catalogue vedette avec son lien Facebook unique
+    const rangeRoverEvoque = {
+      id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Range Rover",
+      model: "Evoque 2.0 TD4",
+      year: 2017,
+      mileage: 93000,
+      fuelType: "Essence",
+      price: 11000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Gris",
+      interiorColor: "beige et noir",
+      transmission: "Automatique",
+      engine: "2.0 TD4",
+      featured: true,
+      catalogType: 'featured' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr", // Lien Facebook du Range Rover
+      image: "/lovable-uploads/5a883e3e-42cb-4514-bb8d-df84b1dd553e.png", // Image du Range Rover
+      features: [
+        "SUV compact de luxe",
+        "Transmission intégrale",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges en cuir",
+        "Jantes alliage"
+      ]
+    };
+    
+    addImportedVehicle(rangeRoverEvoque, 'featured');
+    toast.success("Range Rover Evoque ajoutée au catalogue vedette");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
