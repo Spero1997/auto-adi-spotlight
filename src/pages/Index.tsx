@@ -33,7 +33,7 @@ const Index = () => {
       mileage: 66000,
       fuelType: "Essence",
       price: 12000,
-      image: "/lovable-uploads/095b7466-7c2a-479c-861c-ebf3e0234239.png", // Nouvelle image
+      image: "/lovable-uploads/095b7466-7c2a-479c-861c-ebf3e0234239.png", // Lien Facebook unique de la Jeep
       description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
       exteriorColor: "Bleu",
       interiorColor: "Noir",
@@ -131,6 +131,38 @@ const Index = () => {
     
     addImportedVehicle(bmwX6, 'featured');
     toast.success("BMW X6 ajoutée au catalogue vedette");
+    
+    // Ajouter l'Audi E-tron au catalogue vedette avec son lien Facebook unique
+    const audiEtron = {
+      id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Audi",
+      model: "E-tron 95 KWh 55 Sportback QUATTRO Full S-",
+      year: 2021,
+      mileage: 28000,
+      fuelType: "Essence",
+      price: 11000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Noir",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "95 KWh 55 Sportback QUATTRO",
+      featured: true,
+      catalogType: 'featured' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr", // Lien Facebook unique de l'Audi
+      image: "/lovable-uploads/3c524853-d7e0-4c6c-9b24-a8aae8dec66e.png", // Image téléchargée
+      features: [
+        "SUV électrique",
+        "Transmission intégrale QUATTRO",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges en cuir",
+        "Toit panoramique"
+      ]
+    };
+    
+    addImportedVehicle(audiEtron, 'featured');
+    toast.success("Audi E-tron ajoutée au catalogue vedette");
     
     // Vérifier les catalogues après réinitialisation
     try {
