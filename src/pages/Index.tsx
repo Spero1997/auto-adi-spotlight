@@ -1,4 +1,3 @@
-
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
@@ -227,6 +226,38 @@ const Index = () => {
     
     addImportedVehicle(audiQ3Sportback, 'standard');
     toast.success("Audi Q3 Sportback ajoutée au catalogue standard");
+    
+    // Ajouter l'Audi A4 au catalogue standard
+    const audiA4 = {
+      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Audi",
+      model: "A4 2.0 TDI",
+      year: 2018,
+      mileage: 86000,
+      fuelType: "Diesel",
+      price: 8500,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Noir",
+      interiorColor: "Beige",
+      transmission: "Automatique",
+      engine: "2.0 TDI",
+      featured: false,
+      catalogType: 'standard' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      image: "/lovable-uploads/aa17735f-9d1a-4373-a5f9-ede012057c94.png",
+      features: [
+        "Berline premium",
+        "Moteur TDI économique",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges en cuir beige",
+        "Jantes alliage sport"
+      ]
+    };
+    
+    addImportedVehicle(audiA4, 'standard');
+    toast.success("Audi A4 ajoutée au catalogue standard");
     
     // Vérifier les catalogues après réinitialisation
     try {
