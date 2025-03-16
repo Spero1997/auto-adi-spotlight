@@ -291,6 +291,38 @@ const Index = () => {
     addImportedVehicle(bmw518, 'standard');
     toast.success("BMW 518 ajoutée au catalogue standard");
     
+    // Ajouter la Volkswagen Polo au catalogue standard
+    const volkswagenPolo = {
+      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Volkswagen",
+      model: "Polo 1.0 TSI Complet",
+      year: 2022,
+      mileage: 57000,
+      fuelType: "Essence",
+      price: 11000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Noir",
+      interiorColor: "Gris",
+      transmission: "Automatique",
+      engine: "1.0 TSI",
+      featured: false,
+      catalogType: 'standard' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      image: "/lovable-uploads/874b916a-34fa-44b5-be0d-259391275fe7.png",
+      features: [
+        "Citadine compacte",
+        "Moteur TSI économique",
+        "Jantes alliage sportives",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Aide au stationnement"
+      ]
+    };
+    
+    addImportedVehicle(volkswagenPolo, 'standard');
+    toast.success("Volkswagen Polo ajoutée au catalogue standard");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
@@ -376,3 +408,4 @@ const Index = () => {
 };
 
 export default Index;
+
