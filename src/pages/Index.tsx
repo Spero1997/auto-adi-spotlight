@@ -212,7 +212,7 @@ const Index = () => {
       engine: "1.5 TFSI",
       featured: false,
       catalogType: 'standard' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/p/1AKFTUXv7r/?mibextid=wwXIfr",
       image: "/lovable-uploads/6589b138-2549-4b9e-a3f9-44574595942a.png",
       features: [
         "SUV coupé",
