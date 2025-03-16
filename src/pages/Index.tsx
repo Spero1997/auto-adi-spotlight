@@ -259,6 +259,38 @@ const Index = () => {
     addImportedVehicle(audiA4, 'standard');
     toast.success("Audi A4 ajoutée au catalogue standard");
     
+    // Ajouter la BMW 518 au catalogue standard
+    const bmw518 = {
+      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "BMW",
+      model: "518",
+      year: 2022,
+      mileage: 86000,
+      fuelType: "Diesel",
+      price: 12000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Noir",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "Diesel",
+      featured: false,
+      catalogType: 'standard' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      image: "/lovable-uploads/a0025433-0eb4-479f-a45e-f67c027c67b8.png",
+      features: [
+        "Berline premium",
+        "Jantes alliage sport",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges en cuir",
+        "Finition luxe"
+      ]
+    };
+    
+    addImportedVehicle(bmw518, 'standard');
+    toast.success("BMW 518 ajoutée au catalogue standard");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
