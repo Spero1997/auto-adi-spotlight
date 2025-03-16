@@ -196,6 +196,38 @@ const Index = () => {
     addImportedVehicle(rangeRoverEvoque, 'featured');
     toast.success("Range Rover Evoque ajoutée au catalogue vedette");
     
+    // Ajouter l'Audi Q3 Sportback au catalogue standard
+    const audiQ3Sportback = {
+      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Audi",
+      model: "Q3 Sportback 1.5 TFSI S-LINE",
+      year: 2020,
+      mileage: 71000,
+      fuelType: "Essence",
+      price: 9000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Blanc",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "1.5 TFSI",
+      featured: false,
+      catalogType: 'standard' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      image: "/lovable-uploads/6589b138-2549-4b9e-a3f9-44574595942a.png",
+      features: [
+        "SUV coupé",
+        "Finition S-LINE",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Sièges sport",
+        "Jantes alliage"
+      ]
+    };
+    
+    addImportedVehicle(audiQ3Sportback, 'standard');
+    toast.success("Audi Q3 Sportback ajoutée au catalogue standard");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
