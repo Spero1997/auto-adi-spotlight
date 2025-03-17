@@ -1,3 +1,4 @@
+
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
@@ -243,7 +244,7 @@ const Index = () => {
       engine: "2.0 TDI",
       featured: false,
       catalogType: 'standard' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/p/18ocATnFgF/?mibextid=wwXIfr",
       image: "/lovable-uploads/aa17735f-9d1a-4373-a5f9-ede012057c94.png",
       features: [
         "Berline premium",
@@ -275,7 +276,7 @@ const Index = () => {
       engine: "Diesel",
       featured: false,
       catalogType: 'standard' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/p/1BdqC7EyLa/?mibextid=wwXIfr",
       image: "/lovable-uploads/a0025433-0eb4-479f-a45e-f67c027c67b8.png",
       features: [
         "Berline premium",
@@ -307,7 +308,7 @@ const Index = () => {
       engine: "1.0 TSI",
       featured: false,
       catalogType: 'standard' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/p/1DXtEDYZfd/?mibextid=wwXIfr",
       image: "/lovable-uploads/874b916a-34fa-44b5-be0d-259391275fe7.png",
       features: [
         "Citadine compacte",
@@ -408,4 +409,3 @@ const Index = () => {
 };
 
 export default Index;
-
