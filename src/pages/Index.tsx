@@ -339,8 +339,8 @@ const Index = () => {
       engine: "1,5 dA",
       featured: false,
       catalogType: 'standard' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
-      image: "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png",
+      fbLink: "https://www.facebook.com/share/p/18svCvKiPp/?mibextid=wwXIfr",
+      image: "/lovable-uploads/35a31385-5aff-459e-aab9-5c59b5f95018.png",
       features: [
         "SUV compact",
         "Moteur diesel automatique",
