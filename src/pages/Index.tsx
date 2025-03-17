@@ -93,7 +93,7 @@ const Index = () => {
     addImportedVehicle(porschePanamera, 'featured');
     toast.success("Porsche Panamera ajoutée au catalogue vedette");
     
-    // Ajouter la BMW X6 au catalogue vedette avec son lien Facebook unique
+    // Ajouter la BMW X6 au catalogue vedette avec son lien Facebook unique corrigé
     const bmwX6 = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "BMW",
@@ -386,6 +386,38 @@ const Index = () => {
     
     addImportedVehicle(mercedesB180, 'standard');
     toast.success("Mercedes Benz B180 ajoutée au catalogue standard");
+    
+    // Ajouter l'Audi A6 Avant au catalogue standard
+    const audiA6Avant = {
+      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Audi",
+      model: "A6 Avant 2.0 TDI",
+      year: 2020,
+      mileage: 91000,
+      fuelType: "Diesel",
+      price: 11000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Gris",
+      interiorColor: "Beige",
+      transmission: "Automatique",
+      engine: "2.0 TDI",
+      featured: false,
+      catalogType: 'standard' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      image: "/lovable-uploads/5f88b44f-6204-470c-97d8-3426c0105de3.png",
+      features: [
+        "Break premium",
+        "Moteur TDI économique",
+        "Jantes alliage sportives",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Intérieur beige élégant"
+      ]
+    };
+    
+    addImportedVehicle(audiA6Avant, 'standard');
+    toast.success("Audi A6 Avant ajoutée au catalogue standard");
     
     // Vérifier les catalogues après réinitialisation
     try {
