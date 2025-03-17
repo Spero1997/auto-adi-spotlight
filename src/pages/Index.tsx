@@ -355,6 +355,38 @@ const Index = () => {
     addImportedVehicle(bmwX1, 'standard');
     toast.success("BMW X1 ajoutée au catalogue standard");
     
+    // Ajouter la Mercedes Benz B180 au catalogue standard
+    const mercedesB180 = {
+      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      brand: "Mercedes",
+      model: "Benz B180",
+      year: 2018,
+      mileage: 65000,
+      fuelType: "Diesel",
+      price: 13000,
+      description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
+      exteriorColor: "Gris",
+      interiorColor: "Noir",
+      transmission: "Automatique",
+      engine: "Diesel",
+      featured: false,
+      catalogType: 'standard' as 'standard' | 'featured',
+      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      image: "/lovable-uploads/f41fc6e5-ceb2-448f-966d-41c5806ff77f.png",
+      features: [
+        "Monospace compact",
+        "Moteur diesel économique",
+        "Jantes alliage",
+        "Écran tactile",
+        "Navigation GPS",
+        "Climatisation automatique",
+        "Aide au stationnement"
+      ]
+    };
+    
+    addImportedVehicle(mercedesB180, 'standard');
+    toast.success("Mercedes Benz B180 ajoutée au catalogue standard");
+    
     // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
