@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
@@ -16,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useForm } from 'react-hook-form';
 import { sendOrderConfirmationEmail } from '@/utils/emailService';
+import PaymentOptions from '@/components/PaymentOptions';
 
 interface OrderFormData {
   name: string;
@@ -24,7 +24,7 @@ interface OrderFormData {
   deliveryOption: 'pickup' | 'delivery';
   deliveryAddress: string;
   deliveryNotes?: string;
-  paymentMethod: 'bank' | 'cash' | 'card';
+  paymentMethod: string;
   couponCode?: string;
 }
 
@@ -35,6 +35,9 @@ const VehicleDetails = () => {
   const [notFound, setNotFound] = useState(false);
   const { toast: shadowToast } = useToast();
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('bank-transfer');
+  const [paymentProof, setPaymentProof] = useState<File | null>(null);
+  const [couponCode, setCouponCode] = useState('');
   
   const form = useForm<OrderFormData>({
     defaultValues: {
@@ -44,7 +47,7 @@ const VehicleDetails = () => {
       deliveryOption: 'pickup',
       deliveryAddress: '',
       deliveryNotes: '',
-      paymentMethod: 'bank',
+      paymentMethod: 'bank-transfer',
       couponCode: '',
     },
   });
@@ -57,26 +60,21 @@ const VehicleDetails = () => {
     }
     
     try {
-      // Chercher d'abord dans le catalogue vedette
       let vehicles = getImportedVehicles('featured');
       console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
       
-      // Chercher un véhicule correspondant dans le catalogue vedette
       let foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
       
-      // Si aucun véhicule n'est trouvé dans le catalogue vedette, chercher dans le catalogue standard
       if (!foundVehicle) {
         vehicles = getImportedVehicles('standard');
         console.log("Véhicules chargés du catalogue standard:", vehicles.length);
         foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
       }
       
-      // Si toujours aucun véhicule n'est trouvé, essayer avec tous les véhicules
       if (!foundVehicle) {
         vehicles = getImportedVehicles();
         console.log("Véhicules chargés de tous les catalogues:", vehicles.length);
         
-        // Essayer de trouver le véhicule par son ID exact ou partie de l'ID
         foundVehicle = vehicles.find(v => 
           v.id === id || 
           v.id.includes(id) || 
@@ -108,29 +106,50 @@ const VehicleDetails = () => {
   const handleBuyClick = () => {
     console.log("Bouton Acheter cliqué");
     setShowPaymentForm(true);
-    // Afficher un toast de confirmation
     toast.success("Vous pouvez maintenant finaliser votre achat");
     shadowToast({
       title: "Commande initiée",
       description: "Veuillez remplir le formulaire pour finaliser votre achat",
     });
     
-    // Scroll to the payment form
     setTimeout(() => {
       document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
   };
   
+  const handlePaymentMethodChange = (method: string) => {
+    setPaymentMethod(method);
+    form.setValue('paymentMethod', method);
+  };
+  
+  const handlePaymentProofChange = (file: File | null) => {
+    setPaymentProof(file);
+  };
+  
+  const handleCouponCodeChange = (code: string) => {
+    setCouponCode(code);
+    form.setValue('couponCode', code);
+  };
+  
   const onSubmitOrder = async (data: OrderFormData) => {
     if (!vehicle) return;
     
+    if (paymentMethod !== 'cash' && !paymentProof) {
+      toast.error("Veuillez télécharger une preuve de paiement");
+      shadowToast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Une preuve de paiement est requise pour finaliser votre commande",
+      });
+      return;
+    }
+    
     try {
-      // Ajouter les informations du véhicule au formulaire de commande
       const orderData = {
         ...data,
         carModel: `${vehicle.brand} ${vehicle.model}`,
         price: vehicle.price,
-        deposit: Math.round(vehicle.price * 0.2), // 20% d'acompte
+        deposit: Math.round(vehicle.price * 0.2),
       };
       
       const result = await sendOrderConfirmationEmail(orderData);
@@ -456,51 +475,12 @@ const VehicleDetails = () => {
                       <div className="border-t border-gray-200 pt-6">
                         <h3 className="text-lg font-semibold mb-4 flex items-center"><CreditCard className="mr-2 h-5 w-5" /> Méthode de paiement</h3>
                         
-                        <FormField
-                          control={form.control}
-                          name="paymentMethod"
-                          render={({ field }) => (
-                            <FormItem className="space-y-3">
-                              <FormControl>
-                                <RadioGroup
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                  className="flex flex-col space-y-1"
-                                >
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="bank" id="bank" />
-                                    <label htmlFor="bank" className="cursor-pointer">Virement bancaire</label>
-                                  </div>
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="cash" id="cash" />
-                                    <label htmlFor="cash" className="cursor-pointer">Paiement en espèces</label>
-                                  </div>
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="card" id="card" />
-                                    <label htmlFor="card" className="cursor-pointer">Carte bancaire</label>
-                                  </div>
-                                </RadioGroup>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                        <PaymentOptions 
+                          onPaymentMethodChange={handlePaymentMethodChange}
+                          price={vehicle.price}
+                          onPaymentProofChange={handlePaymentProofChange}
+                          onCouponCodeChange={handleCouponCodeChange}
                         />
-                        
-                        <div className="mt-4">
-                          <FormField
-                            control={form.control}
-                            name="couponCode"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Code promo (optionnel)</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Si vous avez un code promo" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
                       </div>
                       
                       <div className="flex flex-col md:flex-row gap-4 pt-6">
