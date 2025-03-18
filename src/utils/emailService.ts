@@ -1,3 +1,4 @@
+
 /**
  * Email Service Utility
  * 
@@ -69,14 +70,14 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
     const formData = new FormData();
     
     // Determine which Formspree form to use based on the subject
-    let formspreeId = 'movevldo';  // Default to contact form ID
+    let formspreeId = 'movevldo';  // Contact form ID
     
     if (data.subject.toLowerCase().includes('commande') || 
         data.subject.toLowerCase().includes('order') ||
         data.subject.toLowerCase().includes('paiement') ||
         data.subject.toLowerCase().includes('payment') ||
         data.subject.toLowerCase().includes('preuve')) {
-      formspreeId = 'xpwpwlra';  // Use order form ID
+      formspreeId = 'xpwpwlra';  // Order form ID
     }
     
     // Add all basic email data to FormData
