@@ -171,6 +171,7 @@ const Footer = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-brand-blue transition-colors"
+                aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
@@ -179,6 +180,7 @@ const Footer = () => {
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-500 hover:text-brand-blue transition-colors"
+                aria-label="WhatsApp"
               >
                 <MessageCircle size={20} />
               </a>
@@ -279,7 +281,12 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-brand-blue transition-colors"
                 >
-                  Page Facebook
+                  {language === 'FR' ? 'Page Facebook' : 
+                   language === 'EN' ? 'Facebook Page' :
+                   language === 'ES' ? 'Página de Facebook' :
+                   language === 'IT' ? 'Pagina Facebook' :
+                   language === 'PT' ? 'Página do Facebook' :
+                   'Pagina Facebook'}
                 </a>
               </li>
             </ul>

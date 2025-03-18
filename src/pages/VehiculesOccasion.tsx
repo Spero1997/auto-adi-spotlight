@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -17,6 +17,7 @@ import { Car, ArrowRight, Filter, RefreshCw, Share2 } from 'lucide-react';
 import { getCatalogIdFromUrl, getImportedVehicles } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 import CatalogShare from '@/components/CatalogShare';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const carBrands = [
   "Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Honda", "Hyundai", 
@@ -30,6 +31,8 @@ const MIN_PRICE = 5000;
 const MAX_PRICE = 50000;
 
 const VehiculesOccasion = () => {
+  const { translate, language } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [modelSearch, setModelSearch] = useState('');
@@ -48,6 +51,65 @@ const VehiculesOccasion = () => {
   const [filterLeather, setFilterLeather] = useState(false);
   const [filterParkingSensors, setFilterParkingSensors] = useState(false);
   
+  // Traductions pour cette page
+  const translations = {
+    pageTitle: {
+      FR: "Véhicules d'occasion",
+      EN: "Used vehicles",
+      ES: "Vehículos usados",
+      IT: "Veicoli usati",
+      PT: "Veículos usados",
+      RO: "Vehicule second-hand"
+    },
+    pageDescription: {
+      FR: "Découvrez notre sélection de véhicules d'occasion contrôlés et garantis. Toutes nos voitures sont inspectées pour vous assurer qualité et fiabilité.",
+      EN: "Discover our selection of inspected and guaranteed used vehicles. All our cars are inspected to ensure quality and reliability.",
+      ES: "Descubra nuestra selección de vehículos usados controlados y garantizados. Todos nuestros coches son inspeccionados para garantizar calidad y fiabilidad.",
+      IT: "Scopri la nostra selezione di veicoli usati controllati e garantiti. Tutte le nostre auto sono ispezionate per garantire qualità e affidabilità.",
+      PT: "Descubra a nossa seleção de veículos usados controlados e garantidos. Todos os nossos carros são inspecionados para garantir qualidade e fiabilidade.",
+      RO: "Descoperiți selecția noastră de vehicule second-hand controlate și garantate. Toate mașinile noastre sunt inspectate pentru a vă asigura calitate și fiabilitate."
+    },
+    loadingCatalog: {
+      FR: "Chargement du catalogue partagé...",
+      EN: "Loading shared catalog...",
+      ES: "Cargando catálogo compartido...",
+      IT: "Caricamento del catalogo condiviso...",
+      PT: "Carregando catálogo compartilhado...",
+      RO: "Se încarcă catalogul partajat..."
+    },
+    catalogActive: {
+      FR: "Catalogue partagé actif",
+      EN: "Active shared catalog",
+      ES: "Catálogo compartido activo",
+      IT: "Catalogo condiviso attivo",
+      PT: "Catálogo compartilhado ativo",
+      RO: "Catalog partajat activ"
+    },
+    // Ajoutez d'autres traductions au besoin
+  };
+  
+  useEffect(() => {
+    // Récupérer les paramètres de recherche de l'URL
+    const brandParam = searchParams.get('marque');
+    const modelParam = searchParams.get('modele');
+    const budgetParam = searchParams.get('budget');
+    const fuelParam = searchParams.get('energie');
+    
+    // Mettre à jour les états avec les paramètres d'URL
+    if (brandParam) setSelectedBrand(brandParam);
+    if (modelParam) setModelSearch(modelParam);
+    if (budgetParam) {
+      const budget = parseInt(budgetParam);
+      setPriceRange([MIN_PRICE, budget]);
+    }
+    if (fuelParam) setSelectedFuelType(fuelParam);
+    
+    // Appliquer les filtres automatiquement si des paramètres sont présents
+    if (brandParam || modelParam || budgetParam || fuelParam) {
+      setFiltersApplied(true);
+    }
+  }, [searchParams]);
+
   const applyFilters = () => {
     setFiltersApplied(true);
   };
@@ -112,8 +174,8 @@ const VehiculesOccasion = () => {
   return (
     <>
       <Helmet>
-        <title>Véhicules d'occasion | AutoAdi</title>
-        <meta name="description" content="Découvrez notre sélection de véhicules d'occasion de qualité chez AutoAdi. Large gamme de marques et modèles à des prix compétitifs." />
+        <title>{translate('pageTitle', translations.pageTitle)} | AutoAdi</title>
+        <meta name="description" content={translate('pageDescription', translations.pageDescription)} />
       </Helmet>
       
       <Header />
@@ -121,17 +183,16 @@ const VehiculesOccasion = () => {
       <main className="min-h-screen py-12 bg-gray-50">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Véhicules d'occasion</h1>
+            <h1 className="text-4xl font-bold mb-4">{translate('pageTitle', translations.pageTitle)}</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Découvrez notre sélection de véhicules d'occasion contrôlés et garantis.
-              Toutes nos voitures sont inspectées pour vous assurer qualité et fiabilité.
+              {translate('pageDescription', translations.pageDescription)}
             </p>
             
             {isLoadingCatalog && (
               <div className="mt-4 p-4 bg-blue-50 rounded-lg">
                 <div className="flex items-center justify-center gap-2">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-blue-500 border-r-transparent"></div>
-                  <p className="text-blue-600">Chargement du catalogue partagé...</p>
+                  <p className="text-blue-600">{translate('loadingCatalog', translations.loadingCatalog)}</p>
                 </div>
               </div>
             )}
@@ -140,7 +201,7 @@ const VehiculesOccasion = () => {
               <div className="mt-4 flex justify-center">
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4 max-w-md">
                   <div className="flex items-center gap-2 text-green-700">
-                    <span className="font-medium">Catalogue partagé actif</span>
+                    <span className="font-medium">{translate('catalogActive', translations.catalogActive)}</span>
                     <CatalogShare />
                   </div>
                 </div>

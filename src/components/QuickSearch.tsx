@@ -218,8 +218,8 @@ const QuickSearch = () => {
       fuel: selectedFuel
     });
     
-    // Navigate to the search page with parameters
-    navigate(`/vehicules?${searchParams.toString()}`);
+    // Correction: Navigate to the vehicules/occasion page with parameters instead of just /vehicules
+    navigate(`/vehicules/occasion?${searchParams.toString()}`);
   };
 
   return (
