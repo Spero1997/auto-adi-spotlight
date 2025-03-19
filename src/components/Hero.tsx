@@ -1,14 +1,11 @@
 
-import { Search, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { toast } from 'sonner';
 
 const Hero = () => {
   const { translate, language } = useLanguage();
-  const navigate = useNavigate();
 
   // Traductions pour l'interface du Hero
   const translations = {

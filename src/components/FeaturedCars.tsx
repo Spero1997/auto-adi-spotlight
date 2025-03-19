@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Search, Star, Car, Link as LinkIcon, ArrowRight } from 'lucide-react';
+import { Search, Star, Link as LinkIcon, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SearchFilters {
@@ -190,7 +190,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
           {/* Bouton pour voir tous les véhicules, visible uniquement sur la page d'accueil avec featuredOnly=true */}
           {featuredOnly && (
             <div className="mt-10 text-center">
-              <Link to="/vehicules">
+              <Link to="/vehicules/occasion">
                 <Button className="px-6" size="lg">
                   Voir tous les véhicules
                   <ArrowRight className="ml-2 h-5 w-5" />

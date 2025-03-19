@@ -54,8 +54,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
   // Ajouter le même véhicule au catalogue featured
   const mercedesFeatured = {
     ...mercedes,
-    id: `mercedes-cla250-amg-featured-${Date.now()}`,
-    catalogType: "featured" // Correction ici: utilisation de la valeur littérale au lieu d'une variable
+    id: `mercedes-cla250-amg-featured-${Date.now()}`
   };
   const successFeatured = addImportedVehicle(mercedesFeatured, 'featured');
 
