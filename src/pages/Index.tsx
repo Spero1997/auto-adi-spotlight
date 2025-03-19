@@ -7,7 +7,6 @@ import Hero from '@/components/Hero';
 import Benefits from '@/components/Benefits';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
-import Brands from '@/components/Brands';
 import CallToAction from '@/components/CallToAction';
 import TestimonialSection from '@/components/TestimonialSection';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
@@ -48,7 +47,6 @@ const Index = () => {
           <Benefits />
           <QuickSearch />
           <FeaturedCars featuredOnly={true} />
-          <Brands />
           <TestimonialSection />
           <CallToAction />
         </main>
