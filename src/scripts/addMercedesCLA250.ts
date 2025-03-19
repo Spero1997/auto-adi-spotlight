@@ -44,14 +44,23 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       "Jantes alliage AMG",
       "Système d'aide au stationnement",
       "Bluetooth"
-    ]
+    ],
+    featured: true
   };
 
   // Ajouter le véhicule au catalogue standard
-  const success = addImportedVehicle(mercedes, 'standard');
+  const successStandard = addImportedVehicle(mercedes, 'standard');
+  
+  // Ajouter le même véhicule au catalogue featured
+  const mercedesFeatured = {
+    ...mercedes,
+    id: `mercedes-cla250-amg-featured-${Date.now()}`,
+    catalogType: 'featured'
+  };
+  const successFeatured = addImportedVehicle(mercedesFeatured, 'featured');
 
-  if (success) {
-    console.log("Mercedes CLA 250 AMG ajoutée avec succès !");
+  if (successStandard && successFeatured) {
+    console.log("Mercedes CLA 250 AMG ajoutée avec succès dans les deux catalogues !");
     toast.success("Mercedes CLA 250 AMG ajoutée avec succès !");
     return true;
   } else {
@@ -60,4 +69,3 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     return false;
   }
 };
-

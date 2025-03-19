@@ -15,20 +15,28 @@ import { toast } from 'sonner';
 
 const Index = () => {
   useEffect(() => {
-    // Vérifier si la Mercedes CLA 250 AMG existe déjà dans le catalogue
-    const vehicles = getImportedVehicles('standard');
-    const mercedesCLA250 = vehicles.find(
+    // Vérifier si la Mercedes CLA 250 AMG existe déjà dans les catalogues
+    const standardVehicles = getImportedVehicles('standard');
+    const featuredVehicles = getImportedVehicles('featured');
+    
+    const mercedesInStandard = standardVehicles.find(
+      v => v.brand === "Mercedes" && 
+          v.model === "CLA 250 AMG" && 
+          v.year === 2021
+    );
+    
+    const mercedesInFeatured = featuredVehicles.find(
       v => v.brand === "Mercedes" && 
           v.model === "CLA 250 AMG" && 
           v.year === 2021
     );
 
-    if (!mercedesCLA250) {
-      console.log("Mercedes CLA 250 AMG non trouvée, ajout au catalogue...");
+    if (!mercedesInStandard || !mercedesInFeatured) {
+      console.log("Mercedes CLA 250 AMG non trouvée dans un des catalogues, ajout aux catalogues...");
       addMercedesCLA250();
     } else {
-      console.log("Mercedes CLA 250 AMG déjà présente dans le catalogue", mercedesCLA250);
-      toast.success("La Mercedes CLA 250 AMG est déjà dans le catalogue !");
+      console.log("Mercedes CLA 250 AMG déjà présente dans les deux catalogues");
+      toast.success("La Mercedes CLA 250 AMG est déjà dans les catalogues !");
     }
   }, []);
 
