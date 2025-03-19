@@ -49,6 +49,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     setLoading(true);
     setError(null);
     try {
+      // Utiliser toujours le catalogue standard sur la page des véhicules d'occasion
+      // et le catalogue featured seulement quand featuredOnly est true
       const catalogType = featuredOnly ? 'featured' : 'standard';
       const importedVehicles = getImportedVehicles(catalogType);
       console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
