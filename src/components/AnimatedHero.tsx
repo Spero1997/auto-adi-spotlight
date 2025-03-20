@@ -70,12 +70,6 @@ const AnimatedHero = () => {
           </Button>
         </Link>
       </div>
-      
-      <img 
-        src="https://via.placeholder.com/200x100.png?text=Voiture" 
-        alt="Voiture" 
-        className="animated-car"
-      />
     </div>
   );
 };
