@@ -1,12 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu } from 'lucide-react';
+import { ShoppingCart, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from 'sonner';
 
 const AnimatedHero = () => {
   const { translate } = useLanguage();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Traductions pour le bouton
   const translations = {
@@ -18,6 +26,15 @@ const AnimatedHero = () => {
       PT: "Veículos usados",
       RO: "Vehicule second-hand"
     }
+  };
+
+  const handleShopClick = () => {
+    toast.success("Boutique en ligne bientôt disponible !");
+    console.log('Shop clicked');
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -43,19 +60,43 @@ const AnimatedHero = () => {
               variant="ghost" 
               size="icon"
               className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
-              onClick={() => console.log('Shop clicked')}
+              onClick={handleShopClick}
             >
               <ShoppingCart className="h-5 w-5" />
             </Button>
             
-            {/* Bouton Menu */}
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
+            {/* Bouton Menu avec dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
+                >
+                  {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 mt-2 bg-white/90 backdrop-blur-md border-none shadow-lg rounded-lg">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                  <Link to="/" className="w-full font-medium">Accueil</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                  <Link to="/vehicules/occasion" className="w-full font-medium">Véhicules d'occasion</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                  <Link to="/services" className="w-full font-medium">Services</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                  <Link to="/financement" className="w-full font-medium">Financement</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                  <Link to="/a-propos" className="w-full font-medium">À propos</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                  <Link to="/contact" className="w-full font-medium">Contact</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
