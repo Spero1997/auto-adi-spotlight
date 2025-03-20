@@ -63,9 +63,9 @@ const AnimatedHero = () => {
       <div className="relative z-3 container mx-auto px-4 flex flex-col items-center">
         <h1 className="animated-header-title mb-16">Bienvenue chez Auto ADI</h1>
         
-        {/* Bouton Véhicules d'occasion */}
+        {/* Bouton Véhicules d'occasion plus visible */}
         <Link to="/vehicules/occasion">
-          <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-8 py-3 rounded-md font-semibold text-lg mt-8">
+          <Button className="bg-[#F97316] hover:bg-[#F97316]/80 transition-all duration-300 text-white px-8 py-6 rounded-md font-bold text-xl mt-8 shadow-lg shadow-[#F97316]/30 pulse-animation transform hover:scale-105">
             {translate('usedVehicles', translations.usedVehicles)}
           </Button>
         </Link>
