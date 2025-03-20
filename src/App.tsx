@@ -24,6 +24,7 @@ import VehicleImport from "./pages/VehicleImport";
 import VehicleDetails from "./pages/VehicleDetails";
 import { useEffect } from "react";
 import { getCatalogIdFromUrl } from "./utils/vehicleImportService";
+import AnimatedHero from "./components/AnimatedHero";
 
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -50,7 +51,10 @@ const App = () => (
         <BrowserRouter>
           <CatalogChecker>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<>
+                <AnimatedHero />
+                <Index />
+              </>} />
               
               {/* Routes implémentées */}
               <Route path="/services" element={<Services />} />

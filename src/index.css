@@ -127,4 +127,59 @@
   .section-padding {
     @apply py-12 md:py-16 lg:py-20;
   }
+  
+  /* Animated Header Styles */
+  .animated-header {
+    @apply relative w-full h-[400px] overflow-hidden flex items-center justify-center;
+    background: linear-gradient(180deg, #000428, #004e92);
+  }
+  
+  .animated-header-background {
+    @apply absolute top-0 left-0 w-full h-full z-[1];
+    background: url('https://via.placeholder.com/1920x400.png?text=Route') no-repeat center center/cover;
+    animation: moveBackground 20s linear infinite;
+  }
+  
+  .animated-header-title {
+    @apply relative text-white text-center z-[2] text-5xl md:text-6xl;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  .animated-car {
+    @apply absolute bottom-[20px] left-[-200px] w-[200px] z-[2];
+    animation: drive 6s linear infinite;
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+  }
+  
+  @keyframes drive {
+    0% {
+      left: -200px;
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      left: 100%;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes moveBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 }
