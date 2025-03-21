@@ -49,11 +49,36 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     setLoading(true);
     setError(null);
     try {
-      // Utiliser toujours le catalogue standard sur la page des véhicules d'occasion
-      // et le catalogue featured seulement quand featuredOnly est true
-      const catalogType = featuredOnly ? 'featured' : 'standard';
-      const importedVehicles = getImportedVehicles(catalogType);
-      console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
+      let importedVehicles: ImportedVehicle[] = [];
+      
+      if (featuredOnly) {
+        // Sur la page d'accueil (featuredOnly=true), on charge seulement les véhicules en vedette
+        importedVehicles = getImportedVehicles('featured');
+        console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue featured`);
+      } else {
+        // Sur la page des véhicules d'occasion, on charge TOUS les véhicules (standard et featured)
+        const standardVehicles = getImportedVehicles('standard');
+        const featuredVehicles = getImportedVehicles('featured');
+        
+        // Combiner les deux catalogues en évitant les doublons par ID (car les ID sont uniques entre catalogues)
+        const allVehiclesMap = new Map<string, ImportedVehicle>();
+        
+        // Ajouter d'abord les véhicules standard
+        standardVehicles.forEach(vehicle => {
+          allVehiclesMap.set(vehicle.id, vehicle);
+        });
+        
+        // Puis ajouter les véhicules featured (si un véhicule existe dans les deux catalogues, prioriser le featured)
+        featuredVehicles.forEach(vehicle => {
+          // Marquer comme featured même si provenant du catalogue featured
+          const vehicleWithFeatured = { ...vehicle, featured: true };
+          allVehiclesMap.set(vehicle.id, vehicleWithFeatured);
+        });
+        
+        importedVehicles = Array.from(allVehiclesMap.values());
+        console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total`);
+      }
+      
       setVehicles(importedVehicles);
     } catch (e) {
       setError("Échec du chargement des véhicules.");
