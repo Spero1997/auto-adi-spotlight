@@ -11,10 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const AnimatedHero = () => {
   const { translate } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   // Traductions pour le bouton
   const translations = {
@@ -38,7 +40,7 @@ const AnimatedHero = () => {
   };
 
   return (
-    <div className="animated-header relative">
+    <div className={`animated-header relative ${isMobile ? 'h-[450px]' : 'h-[500px] md:h-[600px]'}`}>
       <div className="animated-header-background"></div>
       
       {/* Navbar superposée */}
@@ -49,12 +51,12 @@ const AnimatedHero = () => {
             <img 
               src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
               alt="Auto Adi" 
-              className="h-12"
+              className={`${isMobile ? 'h-10' : 'h-12'}`}
             />
           </Link>
           
           {/* Boutons de droite */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {/* Bouton Shop */}
             <Button 
               variant="ghost" 
@@ -101,12 +103,16 @@ const AnimatedHero = () => {
         </div>
       </div>
       
-      <div className="relative z-3 container mx-auto px-4 flex flex-col items-center">
-        <h1 className="animated-header-title mb-16">Bienvenue chez Auto ADI</h1>
+      <div className="relative z-3 container mx-auto px-4 flex flex-col items-center justify-center h-full">
+        <h1 className={`animated-header-title mb-8 ${isMobile ? 'text-3xl' : 'text-5xl md:text-6xl'}`}>
+          Bienvenue chez Auto ADI
+        </h1>
         
         {/* Bouton Véhicules d'occasion plus visible */}
         <Link to="/vehicules/occasion">
-          <Button className="bg-[#F97316] hover:bg-[#F97316]/80 transition-all duration-300 text-white px-8 py-6 rounded-md font-bold text-xl mt-8 shadow-lg shadow-[#F97316]/30 pulse-animation transform hover:scale-105">
+          <Button className={`bg-[#FF9752] hover:bg-[#FF9752]/80 transition-all duration-300 text-white 
+                             px-6 py-4 rounded-md font-bold ${isMobile ? 'text-lg' : 'text-xl'} 
+                             shadow-lg shadow-[#FF9752]/30 pulse-animation transform hover:scale-105`}>
             {translate('usedVehicles', translations.usedVehicles)}
           </Button>
         </Link>
