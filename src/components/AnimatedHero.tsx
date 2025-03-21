@@ -111,11 +111,12 @@ const AnimatedHero = () => {
           Bienvenue chez Auto ADI
         </h1>
         
-        {/* Bouton Véhicules d'occasion plus visible */}
+        {/* Bouton Véhicules d'occasion - Luminosité/opacité augmentée */}
         <Link to="/vehicules/occasion">
-          <Button className={`bg-[#FF9752] hover:bg-[#FF9752]/80 transition-all duration-300 text-white 
+          <Button className={`bg-[#FFA76B] hover:bg-[#FF9752]/90 transition-all duration-300 text-white 
                              ${isMobile ? 'px-4 py-2 text-base' : 'px-6 py-4 text-xl'} 
-                             rounded-md font-bold shadow-lg shadow-[#FF9752]/30 pulse-animation transform hover:scale-105`}>
+                             rounded-md font-bold shadow-lg shadow-[#FF9752]/40 pulse-animation 
+                             transform hover:scale-105 border-2 border-white/30 backdrop-blur-sm`}>
             {translate('usedVehicles', translations.usedVehicles)}
           </Button>
         </Link>
