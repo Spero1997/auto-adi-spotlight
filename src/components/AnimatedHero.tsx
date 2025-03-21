@@ -40,23 +40,23 @@ const AnimatedHero = () => {
   };
 
   return (
-    <div className={`animated-header relative ${isMobile ? 'h-[450px]' : 'h-[500px] md:h-[600px]'}`}>
+    <div className={`animated-header relative ${isMobile ? 'h-[380px]' : 'h-[500px] md:h-[600px]'}`}>
       <div className="animated-header-background"></div>
       
       {/* Navbar superposée */}
-      <div className="absolute top-0 left-0 w-full z-10 py-4">
-        <div className="container mx-auto px-4 flex justify-between items-center">
+      <div className="absolute top-0 left-0 w-full z-10 py-3">
+        <div className="container mx-auto px-3 flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
               alt="Auto Adi" 
-              className={`${isMobile ? 'h-10' : 'h-12'}`}
+              className={`${isMobile ? 'h-8' : 'h-12'}`}
             />
           </Link>
           
           {/* Boutons de droite */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {/* Bouton Shop */}
             <Button 
               variant="ghost" 
@@ -64,7 +64,7 @@ const AnimatedHero = () => {
               className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
               onClick={handleShopClick}
             >
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} />
             </Button>
             
             {/* Bouton Menu avec dropdown */}
@@ -75,26 +75,29 @@ const AnimatedHero = () => {
                   size="icon"
                   className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
                 >
-                  {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                  {mobileMenuOpen ? 
+                    <X className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} /> : 
+                    <Menu className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} />
+                  }
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 mt-2 bg-white/90 backdrop-blur-md border-none shadow-lg rounded-lg">
-                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+              <DropdownMenuContent align="end" className="w-48 mt-2 bg-white/95 backdrop-blur-md border-none shadow-lg rounded-lg">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
                   <Link to="/" className="w-full font-medium">Accueil</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
                   <Link to="/vehicules/occasion" className="w-full font-medium">Véhicules d'occasion</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
                   <Link to="/services" className="w-full font-medium">Services</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
                   <Link to="/financement" className="w-full font-medium">Financement</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
                   <Link to="/a-propos" className="w-full font-medium">À propos</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-3">
+                <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
                   <Link to="/contact" className="w-full font-medium">Contact</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -103,16 +106,16 @@ const AnimatedHero = () => {
         </div>
       </div>
       
-      <div className="relative z-3 container mx-auto px-4 flex flex-col items-center justify-center h-full">
-        <h1 className={`animated-header-title mb-8 ${isMobile ? 'text-3xl' : 'text-5xl md:text-6xl'}`}>
+      <div className="relative z-3 container mx-auto px-3 flex flex-col items-center justify-center h-full">
+        <h1 className={`animated-header-title ${isMobile ? 'text-2xl mb-5' : 'text-5xl md:text-6xl mb-8'}`}>
           Bienvenue chez Auto ADI
         </h1>
         
         {/* Bouton Véhicules d'occasion plus visible */}
         <Link to="/vehicules/occasion">
           <Button className={`bg-[#FF9752] hover:bg-[#FF9752]/80 transition-all duration-300 text-white 
-                             px-6 py-4 rounded-md font-bold ${isMobile ? 'text-lg' : 'text-xl'} 
-                             shadow-lg shadow-[#FF9752]/30 pulse-animation transform hover:scale-105`}>
+                             ${isMobile ? 'px-4 py-2 text-base' : 'px-6 py-4 text-xl'} 
+                             rounded-md font-bold shadow-lg shadow-[#FF9752]/30 pulse-animation transform hover:scale-105`}>
             {translate('usedVehicles', translations.usedVehicles)}
           </Button>
         </Link>

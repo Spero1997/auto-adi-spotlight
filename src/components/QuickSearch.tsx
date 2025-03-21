@@ -223,15 +223,15 @@ const QuickSearch = () => {
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} -mt-10 mb-16`}>
-      <div className="flex flex-col md:flex-row gap-4 items-center">
+    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-3 -mt-6' : 'p-6 md:p-8 -mt-10'} mb-12`}>
+      <div className="flex flex-col md:flex-row gap-3 items-center">
         <div className="flex-1 w-full">
-          <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>
+          <h3 className={`${isMobile ? 'text-base font-bold' : 'text-xl font-semibold'} mb-3 text-gray-800`}>
             {translate('quickSearch', translations.quickSearch)}
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <Select onValueChange={handleBrandChange} value={selectedBrand}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className={`w-full ${isMobile ? 'h-9 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder={translate('brand', translations.brand)} />
               </SelectTrigger>
               <SelectContent>
@@ -262,7 +262,7 @@ const QuickSearch = () => {
             </Select>
 
             <Select value={selectedModel} onValueChange={handleModelChange} disabled={!selectedBrand}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className={`w-full ${isMobile ? 'h-9 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder={translate('model', translations.model)} />
               </SelectTrigger>
               <SelectContent>
@@ -281,7 +281,7 @@ const QuickSearch = () => {
             </Select>
 
             <Select value={selectedBudget} onValueChange={handleBudgetChange}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className={`w-full ${isMobile ? 'h-9 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder={translate('maxBudget', translations.maxBudget)} />
               </SelectTrigger>
               <SelectContent>
@@ -296,7 +296,7 @@ const QuickSearch = () => {
             </Select>
 
             <Select value={selectedFuel} onValueChange={handleFuelChange}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className={`w-full ${isMobile ? 'h-9 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
                 <SelectValue placeholder={translate('fuel', translations.fuel)} />
               </SelectTrigger>
               <SelectContent>
@@ -308,13 +308,13 @@ const QuickSearch = () => {
             </Select>
           </div>
         </div>
-        <div className="mt-4 md:mt-0 w-full md:w-auto">
+        <div className="mt-3 md:mt-0 w-full md:w-auto">
           <Button 
-            className={`bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto ${isMobile ? 'px-6 py-4 text-sm' : 'px-8 py-5'} rounded-md text-white font-semibold flex items-center justify-center`}
-            size={isMobile ? "default" : "lg"}
+            className={`bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto ${isMobile ? 'px-4 py-2 text-sm' : 'px-8 py-5'} rounded-md text-white font-semibold flex items-center justify-center`}
+            size={isMobile ? "sm" : "lg"}
             onClick={handleSearch}
           >
-            <Search className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} mr-2`} />
+            <Search className={`${isMobile ? 'h-3.5 w-3.5' : 'h-5 w-5'} mr-2`} />
             {translate('search', translations.search)}
           </Button>
         </div>

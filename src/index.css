@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -130,22 +131,22 @@
   /* Animated Header Styles */
   .animated-header {
     @apply relative w-full overflow-hidden flex items-center justify-center;
-    background: linear-gradient(180deg, #064EA2, #0A6ED5);
+    background: linear-gradient(120deg, #0A6ED5, #064EA2);
   }
   
   .animated-header-background {
-    @apply absolute top-0 left-0 w-full h-full z-[1] opacity-60;
+    @apply absolute top-0 left-0 w-full h-full z-[1] opacity-50;
     background: url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
     animation: moveBackground 20s linear infinite;
   }
   
   .animated-header-title {
     @apply relative text-white text-center z-[2];
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 2s ease-in-out;
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 1.5s ease-out;
   }
   
-  @keyframes fadeIn {
+  @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
@@ -168,7 +169,7 @@
       box-shadow: 0 0 0 0 rgba(255, 151, 82, 0.6);
     }
     70% {
-      box-shadow: 0 0 0 10px rgba(255, 151, 82, 0);
+      box-shadow: 0 0 0 8px rgba(255, 151, 82, 0);
     }
     100% {
       box-shadow: 0 0 0 0 rgba(255, 151, 82, 0);
@@ -190,8 +191,11 @@
     }
     
     .animated-header-title {
-      @apply mb-4;
+      margin-top: -1rem;
+    }
+    
+    .pulse-animation {
+      animation: pulse 1.5s infinite;
     }
   }
 }
-
