@@ -60,22 +60,42 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         const standardVehicles = getImportedVehicles('standard');
         const featuredVehicles = getImportedVehicles('featured');
         
-        // Combiner les deux catalogues en évitant les doublons par ID (car les ID sont uniques entre catalogues)
-        const allVehiclesMap = new Map<string, ImportedVehicle>();
+        // Correction: Ne pas utiliser Map qui remplace les véhicules avec le même ID
+        // Au lieu de cela, combiner les deux tableaux et marquer les véhicules featured
+        const allVehicles = [...standardVehicles];
         
-        // Ajouter d'abord les véhicules standard
-        standardVehicles.forEach(vehicle => {
-          allVehiclesMap.set(vehicle.id, vehicle);
+        // Ajouter les véhicules featured qui ne sont pas déjà dans standardVehicles
+        featuredVehicles.forEach(featuredVehicle => {
+          // Marquer le véhicule comme featured
+          const vehicleWithFeatured = { ...featuredVehicle, featured: true };
+          
+          // Vérifier si ce véhicule existe déjà dans la liste standard
+          // Note: l'ID peut être différent entre les catalogues, alors on vérifie par marque, modèle et année
+          const existsInStandard = standardVehicles.some(
+            stdVehicle => 
+              stdVehicle.brand === featuredVehicle.brand &&
+              stdVehicle.model === featuredVehicle.model &&
+              stdVehicle.year === featuredVehicle.year
+          );
+          
+          // Si le véhicule n'est pas déjà dans la liste standard, l'ajouter
+          if (!existsInStandard) {
+            allVehicles.push(vehicleWithFeatured);
+          } else {
+            // Si le véhicule existe déjà, mettre à jour sa propriété featured à true
+            const index = allVehicles.findIndex(
+              v => v.brand === featuredVehicle.brand && 
+                  v.model === featuredVehicle.model && 
+                  v.year === featuredVehicle.year
+            );
+            
+            if (index !== -1) {
+              allVehicles[index] = { ...allVehicles[index], featured: true };
+            }
+          }
         });
         
-        // Puis ajouter les véhicules featured (si un véhicule existe dans les deux catalogues, prioriser le featured)
-        featuredVehicles.forEach(vehicle => {
-          // Marquer comme featured même si provenant du catalogue featured
-          const vehicleWithFeatured = { ...vehicle, featured: true };
-          allVehiclesMap.set(vehicle.id, vehicleWithFeatured);
-        });
-        
-        importedVehicles = Array.from(allVehiclesMap.values());
+        importedVehicles = allVehicles;
         console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total`);
       }
       
