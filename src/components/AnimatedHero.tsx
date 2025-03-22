@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
+import QuickSearch from './QuickSearch';
 
 const AnimatedHero = () => {
   const { translate } = useLanguage();
@@ -122,10 +123,10 @@ const AnimatedHero = () => {
         </Link>
       </div>
       
-      {/* QuickSearch maintenant placé en bas du header */}
-      <div className="absolute bottom-0 left-0 right-0 transform translate-y-1/2 z-20">
-        <div className="container mx-auto">
-          <div id="quick-search-container"></div>
+      {/* QuickSearch intégré directement en bas du header */}
+      <div className="absolute bottom-0 left-0 right-0 w-full z-20">
+        <div className="container mx-auto px-3">
+          <QuickSearch />
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { createRoot } from 'react-dom/client';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Services from "./pages/Services";
@@ -26,7 +25,6 @@ import VehicleDetails from "./pages/VehicleDetails";
 import { useEffect } from "react";
 import { getCatalogIdFromUrl } from "./utils/vehicleImportService";
 import AnimatedHero from "./components/AnimatedHero";
-import QuickSearch from "./components/QuickSearch";
 
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -42,23 +40,6 @@ const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Composant pour positionner QuickSearch en bas du header
-const QuickSearchPositioner = () => {
-  useEffect(() => {
-    const container = document.getElementById('quick-search-container');
-    if (container) {
-      const quickSearchElement = document.createElement('div');
-      container.appendChild(quickSearchElement);
-      
-      // Rendu du composant QuickSearch dans le conteneur
-      const root = createRoot(quickSearchElement);
-      root.render(<QuickSearch />);
-    }
-  }, []);
-  
-  return null;
-};
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -72,7 +53,6 @@ const App = () => (
             <Routes>
               <Route path="/" element={<>
                 <AnimatedHero />
-                <QuickSearchPositioner />
                 <Index />
               </>} />
               
