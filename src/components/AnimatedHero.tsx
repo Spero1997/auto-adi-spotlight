@@ -111,15 +111,22 @@ const AnimatedHero = () => {
           Bienvenue chez Auto ADI
         </h1>
         
-        {/* Bouton Véhicules d'occasion - Luminosité/opacité augmentée */}
+        {/* Bouton Véhicules d'occasion - Amélioration de la lisibilité */}
         <Link to="/vehicules/occasion">
-          <Button className={`bg-[#FFA76B] hover:bg-[#FF9752]/90 transition-all duration-300 text-white 
+          <Button className={`bg-[#FF9752] hover:bg-[#FF8030] transition-all duration-300
                              ${isMobile ? 'px-4 py-2 text-base' : 'px-6 py-4 text-xl'} 
-                             rounded-md font-bold shadow-lg shadow-[#FF9752]/40 pulse-animation 
-                             transform hover:scale-105 border-2 border-white/30 backdrop-blur-sm`}>
+                             rounded-md font-bold shadow-lg shadow-black/30 pulse-animation 
+                             transform hover:scale-105 border-2 border-white text-white`}>
             {translate('usedVehicles', translations.usedVehicles)}
           </Button>
         </Link>
+      </div>
+      
+      {/* QuickSearch maintenant placé en bas du header */}
+      <div className="absolute bottom-0 left-0 right-0 transform translate-y-1/2 z-20">
+        <div className="container mx-auto">
+          <div id="quick-search-container"></div>
+        </div>
       </div>
     </div>
   );

@@ -25,6 +25,7 @@ import VehicleDetails from "./pages/VehicleDetails";
 import { useEffect } from "react";
 import { getCatalogIdFromUrl } from "./utils/vehicleImportService";
 import AnimatedHero from "./components/AnimatedHero";
+import QuickSearch from "./components/QuickSearch";
 
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -40,6 +41,23 @@ const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Composant pour positionner QuickSearch en bas du header
+const QuickSearchPositioner = () => {
+  useEffect(() => {
+    const container = document.getElementById('quick-search-container');
+    if (container) {
+      const quickSearchElement = document.createElement('div');
+      container.appendChild(quickSearchElement);
+      
+      // Rendu du composant QuickSearch dans le conteneur
+      const root = ReactDOM.createRoot(quickSearchElement);
+      root.render(<QuickSearch />);
+    }
+  }, []);
+  
+  return null;
+};
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -53,6 +71,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<>
                 <AnimatedHero />
+                <QuickSearchPositioner />
                 <Index />
               </>} />
               

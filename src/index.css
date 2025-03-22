@@ -198,4 +198,9 @@
       animation: pulse 1.5s infinite;
     }
   }
+  
+  /* Quick Search en bas du header */
+  #quick-search-container {
+    width: 100%;
+  }
 }
