@@ -125,8 +125,8 @@ const AnimatedHero = () => {
         </div>
       </div>
       
-      {/* QuickSearch en dehors et en dessous du header */}
-      <div className="container mx-auto px-3 -mt-6 md:-mt-10 mb-12">
+      {/* QuickSearch en dehors et en dessous du header avec plus d'espace */}
+      <div className="container mx-auto px-3 mt-6 mb-16">
         <QuickSearch />
       </div>
     </>
