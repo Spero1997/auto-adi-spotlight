@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { createRoot } from 'react-dom/client';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Services from "./pages/Services";
@@ -50,7 +51,7 @@ const QuickSearchPositioner = () => {
       container.appendChild(quickSearchElement);
       
       // Rendu du composant QuickSearch dans le conteneur
-      const root = ReactDOM.createRoot(quickSearchElement);
+      const root = createRoot(quickSearchElement);
       root.render(<QuickSearch />);
     }
   }, []);
