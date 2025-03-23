@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Benefits from '@/components/Benefits';
-import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import CallToAction from '@/components/CallToAction';
 import TestimonialSection from '@/components/TestimonialSection';
@@ -55,7 +54,6 @@ const Index = () => {
         <main className="flex-grow">
           {/* AnimatedHero est ajouté directement dans App.tsx, pas besoin de l'ajouter ici */}
           <Benefits />
-          <QuickSearch />
           <FeaturedCars featuredOnly={true} />
           <TestimonialSection />
           <CallToAction />

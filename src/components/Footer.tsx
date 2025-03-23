@@ -147,7 +147,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-100 pt-16">
+    <footer className="bg-brand-blue pt-16 text-white">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo and description */}
@@ -159,10 +159,10 @@ const Footer = () => {
                 className="h-12"
               />
             </Link>
-            <p className="text-gray-600">
+            <p className="text-white/90">
               {translate('companyDescription', translations.companyDescription)}
             </p>
-            <p className="text-gray-600 font-semibold">
+            <p className="text-white/90 font-semibold">
               {translate('contactAvailability', translations.contactAvailability)}
             </p>
             <div className="flex space-x-4">
@@ -170,7 +170,7 @@ const Footer = () => {
                 href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-brand-blue transition-colors"
+                className="text-white/80 hover:text-white transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
@@ -179,7 +179,7 @@ const Footer = () => {
                 href="https://wa.me/393761753341" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-brand-blue transition-colors"
+                className="text-white/80 hover:text-white transition-colors"
                 aria-label="WhatsApp"
               >
                 <MessageCircle size={20} />
@@ -192,27 +192,27 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">{translate('quickLinks', translations.quickLinks)}</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/vehicules/neufs" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/vehicules/neufs" className="text-white/80 hover:text-white transition-colors">
                   {translate('newVehicles', translations.newVehicles)}
                 </Link>
               </li>
               <li>
-                <Link to="/vehicules/occasion" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/vehicules/occasion" className="text-white/80 hover:text-white transition-colors">
                   {translate('usedVehicles', translations.usedVehicles)}
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/services" className="text-white/80 hover:text-white transition-colors">
                   {translate('services', translations.services)}
                 </Link>
               </li>
               <li>
-                <Link to="/financement" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/financement" className="text-white/80 hover:text-white transition-colors">
                   {translate('financing', translations.financing)}
                 </Link>
               </li>
               <li>
-                <Link to="/rachat" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/rachat" className="text-white/80 hover:text-white transition-colors">
                   {translate('vehicleBuyback', translations.vehicleBuyback)}
                 </Link>
               </li>
@@ -224,27 +224,27 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">{translate('legalInfo', translations.legalInfo)}</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/mentions-legales" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/mentions-legales" className="text-white/80 hover:text-white transition-colors">
                   {translate('legalNotice', translations.legalNotice)}
                 </Link>
               </li>
               <li>
-                <Link to="/politique-confidentialite" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/politique-confidentialite" className="text-white/80 hover:text-white transition-colors">
                   {translate('privacyPolicy', translations.privacyPolicy)}
                 </Link>
               </li>
               <li>
-                <Link to="/cookies" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/cookies" className="text-white/80 hover:text-white transition-colors">
                   {translate('cookieManagement', translations.cookieManagement)}
                 </Link>
               </li>
               <li>
-                <Link to="/cgv" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/cgv" className="text-white/80 hover:text-white transition-colors">
                   {translate('termsAndConditions', translations.termsAndConditions)}
                 </Link>
               </li>
               <li>
-                <Link to="/conditions" className="text-gray-600 hover:text-brand-blue transition-colors">
+                <Link to="/conditions" className="text-white/80 hover:text-white transition-colors">
                   {translate('saleConditions', translations.saleConditions)}
                 </Link>
               </li>
@@ -256,30 +256,30 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">{translate('contact', translations.contact)}</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <Phone className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
-                <span className="text-gray-600">‪+39 376 175 3341‬</span>
+                <Phone className="h-5 w-5 mr-2 text-white flex-shrink-0" />
+                <span className="text-white/90">‪+39 376 175 3341‬</span>
               </li>
               <li className="flex items-start">
-                <MessageCircle className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
-                <span className="text-gray-600">WhatsApp: ‪+39 376 175 3341‬</span>
+                <MessageCircle className="h-5 w-5 mr-2 text-white flex-shrink-0" />
+                <span className="text-white/90">WhatsApp: ‪+39 376 175 3341‬</span>
               </li>
               <li className="flex items-start">
-                <Mail className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
-                <span className="text-gray-600">serviceautoadi@gmail.com</span>
+                <Mail className="h-5 w-5 mr-2 text-white flex-shrink-0" />
+                <span className="text-white/90">serviceautoadi@gmail.com</span>
               </li>
               <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
-                <span className="text-gray-600">
+                <MapPin className="h-5 w-5 mr-2 text-white flex-shrink-0" />
+                <span className="text-white/90">
                   Borgo Ognissanti, 142r 50123 Firenze FI Italie
                 </span>
               </li>
               <li className="flex items-start">
-                <Facebook className="h-5 w-5 mr-2 text-brand-blue flex-shrink-0" />
+                <Facebook className="h-5 w-5 mr-2 text-white flex-shrink-0" />
                 <a 
                   href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-brand-blue transition-colors"
+                  className="text-white/80 hover:text-white transition-colors"
                 >
                   {language === 'FR' ? 'Page Facebook' : 
                    language === 'EN' ? 'Facebook Page' :
@@ -294,8 +294,8 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-gray-200 mt-12 py-8 text-center">
-          <p className="text-gray-600 text-sm">
+        <div className="border-t border-white/20 mt-12 py-8 text-center">
+          <p className="text-white/80 text-sm">
             {translate('copyright', translations.copyright)}
           </p>
         </div>
