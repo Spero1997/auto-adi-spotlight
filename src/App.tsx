@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -43,59 +44,61 @@ const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <CatalogChecker>
-            <Routes>
-              <Route path="/" element={<>
-                <AnimatedHero />
-                <Index />
-              </>} />
-              
-              {/* Routes implémentées */}
-              <Route path="/services" element={<Services />} />
-              <Route path="/financement" element={<Financement />} />
-              <Route path="/rachat" element={<Rachat />} />
-              <Route path="/a-propos" element={<APropos />} />
-              <Route path="/contact" element={<Contact />} />
-              
-              {/* Route pour la sauvegarde des commandes */}
-              <Route path="/orders-backup" element={<OrdersBackup />} />
-              
-              {/* Routes légales */}
-              <Route path="/mentions-legales" element={<MentionsLegales />} />
-              <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-              <Route path="/cookies" element={<Cookies />} />
-              <Route path="/cgv" element={<CGV />} />
-              <Route path="/conditions" element={<Conditions />} />
-              
-              {/* Routes pour la gestion des véhicules */}
-              <Route path="/admin/vehicules" element={<VehicleManagement />} />
-              <Route path="/vehicules/import" element={<VehicleImport />} />
-              
-              {/* Routes pour les pages secondaires */}
-              <Route path="/vehicules" element={<Index />} />
-              <Route path="/vehicule/:id" element={<VehicleDetails />} />
-              <Route path="/vehicules/:id" element={<VehicleDetails />} />
-              <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
-              <Route path="/vehicules/utilitaires" element={<Index />} />
-              <Route path="/vehicules/neufs" element={<Index />} />
-              <Route path="/rendez-vous" element={<Index />} />
-              <Route path="/marques" element={<Index />} />
-              <Route path="/marques/:marque" element={<Index />} />
-              
-              {/* Route pour capture d'erreur */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </CatalogChecker>
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
-  </QueryClientProvider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <CatalogChecker>
+              <Routes>
+                <Route path="/" element={<>
+                  <AnimatedHero />
+                  <Index />
+                </>} />
+                
+                {/* Routes implémentées */}
+                <Route path="/services" element={<Services />} />
+                <Route path="/financement" element={<Financement />} />
+                <Route path="/rachat" element={<Rachat />} />
+                <Route path="/a-propos" element={<APropos />} />
+                <Route path="/contact" element={<Contact />} />
+                
+                {/* Route pour la sauvegarde des commandes */}
+                <Route path="/orders-backup" element={<OrdersBackup />} />
+                
+                {/* Routes légales */}
+                <Route path="/mentions-legales" element={<MentionsLegales />} />
+                <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+                <Route path="/cookies" element={<Cookies />} />
+                <Route path="/cgv" element={<CGV />} />
+                <Route path="/conditions" element={<Conditions />} />
+                
+                {/* Routes pour la gestion des véhicules */}
+                <Route path="/admin/vehicules" element={<VehicleManagement />} />
+                <Route path="/vehicules/import" element={<VehicleImport />} />
+                
+                {/* Routes pour les pages secondaires */}
+                <Route path="/vehicules" element={<Index />} />
+                <Route path="/vehicule/:id" element={<VehicleDetails />} />
+                <Route path="/vehicules/:id" element={<VehicleDetails />} />
+                <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
+                <Route path="/vehicules/utilitaires" element={<Index />} />
+                <Route path="/vehicules/neufs" element={<Index />} />
+                <Route path="/rendez-vous" element={<Index />} />
+                <Route path="/marques" element={<Index />} />
+                <Route path="/marques/:marque" element={<Index />} />
+                
+                {/* Route pour capture d'erreur */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </CatalogChecker>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
 );
 
 export default App;
