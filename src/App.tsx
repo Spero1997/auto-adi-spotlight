@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -29,8 +28,6 @@ import AnimatedHero from "./components/AnimatedHero";
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
-    // Cette fonction est appelée une seule fois lorsque l'application démarre
-    // Elle vérifie si un ID de catalogue est présent dans l'URL
     const catalogId = getCatalogIdFromUrl();
     if (catalogId) {
       console.log(`Catalogue trouvé dans l'URL: ${catalogId}`);
@@ -57,28 +54,23 @@ const App = () => {
                   <Index />
                 </>} />
                 
-                {/* Routes implémentées */}
                 <Route path="/services" element={<Services />} />
                 <Route path="/financement" element={<Financement />} />
                 <Route path="/rachat" element={<Rachat />} />
                 <Route path="/a-propos" element={<APropos />} />
                 <Route path="/contact" element={<Contact />} />
                 
-                {/* Route pour la sauvegarde des commandes */}
                 <Route path="/orders-backup" element={<OrdersBackup />} />
                 
-                {/* Routes légales */}
                 <Route path="/mentions-legales" element={<MentionsLegales />} />
                 <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
                 <Route path="/cookies" element={<Cookies />} />
                 <Route path="/cgv" element={<CGV />} />
                 <Route path="/conditions" element={<Conditions />} />
                 
-                {/* Routes pour la gestion des véhicules */}
                 <Route path="/admin/vehicules" element={<VehicleManagement />} />
                 <Route path="/vehicules/import" element={<VehicleImport />} />
                 
-                {/* Routes pour les pages secondaires */}
                 <Route path="/vehicules" element={<Index />} />
                 <Route path="/vehicule/:id" element={<VehicleDetails />} />
                 <Route path="/vehicules/:id" element={<VehicleDetails />} />
@@ -89,7 +81,6 @@ const App = () => {
                 <Route path="/marques" element={<Index />} />
                 <Route path="/marques/:marque" element={<Index />} />
                 
-                {/* Route pour capture d'erreur */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </CatalogChecker>

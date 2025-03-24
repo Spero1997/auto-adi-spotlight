@@ -5,7 +5,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Benefits from '@/components/Benefits';
 import FeaturedCars from '@/components/FeaturedCars';
-import CallToAction from '@/components/CallToAction';
 import TestimonialSection from '@/components/TestimonialSection';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
@@ -56,7 +55,7 @@ const Index = () => {
           <Benefits />
           <FeaturedCars featuredOnly={true} />
           <TestimonialSection />
-          <CallToAction />
+          {/* Removed CallToAction component */}
         </main>
         
         <Footer />
