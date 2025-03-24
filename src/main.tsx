@@ -4,16 +4,12 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Ensure root element exists before attempting to render
+// S'assurer que l'élément racine existe avant de tenter le rendu
 const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error("Root element not found");
+if (!rootElement) throw new Error("Élément racine non trouvé");
 
-// Create root using the new React 19 API
+// Créer la racine en utilisant l'API React 19
 const root = createRoot(rootElement);
 
-// Render the app
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Rendre l'application sans StrictMode pour éviter les problèmes de compatibilité
+root.render(<App />);
