@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -10,6 +9,7 @@ import { getImportedVehicles } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
 import { addBMWX5 } from '@/scripts/addBMWX5';
 import { addMercedesClassC } from '@/scripts/addMercedesClassC';
+import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -64,6 +64,20 @@ const Index = () => {
       addMercedesClassC();
     } else {
       console.log("Mercedes Benz Class C Coupé 4Matic déjà présente dans le catalogue vedette");
+    }
+    
+    // Vérifier si la Porsche Cayenne Turbo PAW existe déjà dans le catalogue vedette
+    const porscheCayenneInFeatured = featuredVehicles.find(
+      v => v.brand === "Porsche" && 
+          v.model === "Cayenne Turbo PAW" && 
+          v.year === 2018
+    );
+
+    if (!porscheCayenneInFeatured) {
+      console.log("Porsche Cayenne Turbo PAW non trouvée dans le catalogue vedette, ajout au catalogue...");
+      addPorscheCayenne();
+    } else {
+      console.log("Porsche Cayenne Turbo PAW déjà présente dans le catalogue vedette");
     }
   }, []);
 
