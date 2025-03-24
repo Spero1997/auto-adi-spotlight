@@ -8,6 +8,7 @@ import FeaturedCars from '@/components/FeaturedCars';
 import TestimonialSection from '@/components/TestimonialSection';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
+import { addBMWX5 } from '@/scripts/addBMWX5';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -34,6 +35,20 @@ const Index = () => {
     } else {
       console.log("Mercedes CLA 250 AMG déjà présente dans les deux catalogues");
       toast.success("La Mercedes CLA 250 AMG est déjà dans les catalogues !");
+    }
+
+    // Vérifier si la BMW X5 existe déjà dans le catalogue vedette
+    const bmwInFeatured = featuredVehicles.find(
+      v => v.brand === "BMW" && 
+          v.model === "X5 XDrive 40e M-Sport" && 
+          v.year === 2018
+    );
+
+    if (!bmwInFeatured) {
+      console.log("BMW X5 non trouvée dans le catalogue vedette, ajout au catalogue...");
+      addBMWX5();
+    } else {
+      console.log("BMW X5 déjà présente dans le catalogue vedette");
     }
   }, []);
 
