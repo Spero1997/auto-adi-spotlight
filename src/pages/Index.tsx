@@ -9,6 +9,7 @@ import TestimonialSection from '@/components/TestimonialSection';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
 import { addBMWX5 } from '@/scripts/addBMWX5';
+import { addMercedesClassC } from '@/scripts/addMercedesClassC';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -49,6 +50,20 @@ const Index = () => {
       addBMWX5();
     } else {
       console.log("BMW X5 déjà présente dans le catalogue vedette");
+    }
+    
+    // Vérifier si la Mercedes Benz Class C Coupé 4Matic existe déjà dans le catalogue vedette
+    const mercedesClassCInFeatured = featuredVehicles.find(
+      v => v.brand === "Mercedes" && 
+          v.model === "Benz Class C Coupé 4Matic" && 
+          v.year === 2019
+    );
+
+    if (!mercedesClassCInFeatured) {
+      console.log("Mercedes Benz Class C Coupé 4Matic non trouvée dans le catalogue vedette, ajout au catalogue...");
+      addMercedesClassC();
+    } else {
+      console.log("Mercedes Benz Class C Coupé 4Matic déjà présente dans le catalogue vedette");
     }
   }, []);
 
