@@ -10,6 +10,7 @@ import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
 import { addBMWX5 } from '@/scripts/addBMWX5';
 import { addMercedesClassC } from '@/scripts/addMercedesClassC';
 import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
+import { addAudiRS6 } from '@/scripts/addAudiRS6';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -78,6 +79,20 @@ const Index = () => {
       addPorscheCayenne();
     } else {
       console.log("Porsche Cayenne Turbo PAW déjà présente dans le catalogue vedette");
+    }
+    
+    // Vérifier si l'Audi RS 6 existe déjà dans le catalogue vedette
+    const audiRS6InFeatured = featuredVehicles.find(
+      v => v.brand === "Audi" && 
+          v.model === "RS 6" && 
+          v.year === 2020
+    );
+
+    if (!audiRS6InFeatured) {
+      console.log("Audi RS 6 non trouvée dans le catalogue vedette, ajout au catalogue...");
+      addAudiRS6();
+    } else {
+      console.log("Audi RS 6 déjà présente dans le catalogue vedette");
     }
   }, []);
 
