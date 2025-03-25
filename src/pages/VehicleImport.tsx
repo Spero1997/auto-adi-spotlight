@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -142,6 +141,18 @@ const VehicleImport = () => {
         toast.success("La Range Rover Evoque 2.0 Prestige a été ajoutée au catalogue");
       }
       
+      // Recherche de la nouvelle BMW X3 2014
+      const bmwX3_2014 = vehicles.find(v => 
+        v.brand === "BMW" && 
+        v.model.includes("X3 xDrive 20d") && 
+        v.year === 2014
+      );
+      
+      if (bmwX3_2014) {
+        console.log("La BMW X3 xDrive 20d 2014 est présente dans le catalogue", bmwX3_2014);
+        toast.success("La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue");
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -242,6 +253,14 @@ const VehicleImport = () => {
             <AlertTitle>Nouvelle Range Rover ajoutée</AlertTitle>
             <AlertDescription>
               La Range Rover Evoque 2.0 Prestige 241 CH 2014 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-slate-50 border-slate-200">
+            <Info className="h-4 w-4 text-slate-500" />
+            <AlertTitle>Nouvelle BMW X3 2014 ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue avec succès.
             </AlertDescription>
           </Alert>
           

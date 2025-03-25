@@ -1,9 +1,12 @@
+
 /**
  * Email Service Utility
  * 
  * This utility handles sending emails with attachments from various parts of the application.
  * It supports different types of emails: contact forms, order confirmations, payment proofs, etc.
  */
+
+import { toast } from "sonner";
 
 interface EmailData {
   to: string;
@@ -13,6 +16,43 @@ interface EmailData {
   attachments?: File[];
   replyTo?: string;
 }
+
+interface FormspreeResponse {
+  ok: boolean;
+  status: number;
+  message?: string;
+}
+
+/**
+ * Envoie un email en utilisant Formspree
+ * @param formData Les données à envoyer
+ * @param formId L'ID du formulaire Formspree
+ */
+const sendToFormspree = async (formData: FormData, formId: string): Promise<FormspreeResponse> => {
+  try {
+    const response = await fetch(`https://formspree.io/f/${formId}`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    const jsonResponse = await response.json();
+    return {
+      ok: response.ok,
+      status: response.status,
+      message: jsonResponse.message || (response.ok ? 'Success' : 'Error')
+    };
+  } catch (error) {
+    console.error('Formspree request failed:', error);
+    return {
+      ok: false,
+      status: 0,
+      message: 'Network error when sending form'
+    };
+  }
+};
 
 /**
  * Sends an email with optional attachments
@@ -26,11 +66,21 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
     saveOrderToLocalStorage(data);
     console.log("Order successfully saved to localStorage as backup");
     
-    // Create FormData for sending the email
+    // Create FormData for Formspree
     const formData = new FormData();
     
-    // Add all basic email data
-    formData.append('to', data.to);
+    // Determine which Formspree form to use based on the subject
+    let formspreeId = 'movevldo';  // Contact form ID
+    
+    if (data.subject.toLowerCase().includes('commande') || 
+        data.subject.toLowerCase().includes('order') ||
+        data.subject.toLowerCase().includes('paiement') ||
+        data.subject.toLowerCase().includes('payment') ||
+        data.subject.toLowerCase().includes('preuve')) {
+      formspreeId = 'xpwpwlra';  // Order form ID
+    }
+    
+    // Add all basic email data to FormData
     formData.append('subject', data.subject);
     formData.append('text', data.text);
     
@@ -49,32 +99,14 @@ export const sendEmail = async (data: EmailData): Promise<boolean> => {
       });
     }
     
-    // Setup timeout to prevent hanging requests
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+    // Send email using Formspree
+    const result = await sendToFormspree(formData, formspreeId);
     
-    // Send email using EmailJS service
-    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send-form', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'User-ID': 'Efc5FFVd9Kkq7f49T', // Public ID, so it's fine to include in the code
-        'Origin': window.location.origin,
-        'Access-Control-Allow-Origin': '*',
-        'Service-ID': 'service_7h1z65s', // Adding required service ID
-        'Template-ID': 'template_kdbpzro', // Adding required template ID
-        'X-Public-Key': 'Iq2L6gxEKd7FU_BpN' // Public Key is required
-      },
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    
-    if (!response.ok) {
-      throw new Error(`Email sending failed: ${response.statusText}`);
+    if (!result.ok) {
+      throw new Error(`Email sending failed: ${result.message}`);
     }
     
-    console.log("Email sent successfully!");
+    console.log("Email sent successfully via Formspree!");
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
@@ -163,14 +195,36 @@ export const sendContactFormEmail = async (formData: any, attachments?: FileList
     <p>${formData.message.replace(/\n/g, '<br>')}</p>
   `;
   
-  return sendEmail({
-    to: 'serviceautoadi@gmail.com',
-    subject: `Nouveau contact: ${formData.sujet}`,
-    text: `Message de ${formData.prenom} ${formData.nom} (${formData.email}): ${formData.message}`,
-    html: htmlContent,
-    attachments: attachmentFiles,
-    replyTo: formData.email
-  });
+  // Créer un FormData pour Formspree
+  const formspreeData = new FormData();
+  formspreeData.append('nom', formData.nom);
+  formspreeData.append('prenom', formData.prenom);
+  formspreeData.append('email', formData.email);
+  formspreeData.append('telephone', formData.telephone);
+  formspreeData.append('sujet', formData.sujet);
+  formspreeData.append('message', formData.message);
+  
+  // Ajouter les pièces jointes
+  if (attachments && attachments.length > 0) {
+    for (let i = 0; i < attachments.length; i++) {
+      formspreeData.append('attachment', attachments[i]);
+    }
+  }
+  
+  try {
+    const result = await sendToFormspree(formspreeData, 'movevldo');
+    
+    if (!result.ok) {
+      toast.error("Erreur lors de l'envoi du message. Veuillez réessayer.");
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi du formulaire de contact:", error);
+    toast.error("Erreur lors de l'envoi du message. Veuillez réessayer.");
+    return false;
+  }
 };
 
 /**
@@ -179,53 +233,80 @@ export const sendContactFormEmail = async (formData: any, attachments?: FileList
 export const sendOrderConfirmationEmail = async (orderData: any, paymentProof?: File): Promise<boolean> => {
   const attachments = paymentProof ? [paymentProof] : [];
   
-  const htmlContent = `
-    <h2>Nouvelle commande de véhicule</h2>
-    <p><strong>Client:</strong> ${orderData.name}</p>
-    <p><strong>Email:</strong> ${orderData.email}</p>
-    <p><strong>Téléphone:</strong> ${orderData.phone}</p>
-    <h3>Détails du véhicule:</h3>
-    <p><strong>Modèle:</strong> ${orderData.carModel}</p>
-    <p><strong>Prix:</strong> ${orderData.price}€</p>
-    <h3>Livraison:</h3>
-    <p><strong>Option:</strong> ${orderData.deliveryOption === 'pickup' ? 'Enlèvement au showroom' : 'Livraison à domicile'}</p>
-    <p><strong>Adresse:</strong> ${orderData.deliveryAddress}</p>
-    ${orderData.deliveryNotes ? `<p><strong>Instructions:</strong> ${orderData.deliveryNotes}</p>` : ''}
-    <h3>Paiement:</h3>
-    <p><strong>Méthode de paiement:</strong> ${orderData.paymentMethod}</p>
-    ${orderData.couponCode ? `<p><strong>Code coupon:</strong> ${orderData.couponCode}</p>` : ''}
-    <p><strong>Acompte de 20%:</strong> ${orderData.deposit}€</p>
-  `;
+  // Create FormData for Formspree
+  const formspreeData = new FormData();
   
-  return sendEmail({
-    to: 'serviceautoadi@gmail.com',
-    subject: `Nouvelle commande: ${orderData.carModel}`,
-    text: `Nouvelle commande de ${orderData.name} pour ${orderData.carModel} à ${orderData.price}€`,
-    html: htmlContent,
-    attachments,
-    replyTo: orderData.email
+  // Add all order data
+  Object.entries(orderData).forEach(([key, value]) => {
+    formspreeData.append(key, value as string);
   });
+  
+  // Add payment proof if available
+  if (paymentProof) {
+    formspreeData.append('paymentProof', paymentProof);
+  }
+  
+  try {
+    const result = await sendToFormspree(formspreeData, 'xpwpwlra');
+    
+    if (!result.ok) {
+      toast.error("Erreur lors de l'envoi de la commande. Veuillez réessayer.");
+      // Sauvegarder en local storage comme backup
+      saveOrderToLocalStorage({
+        to: 'serviceautoadi@gmail.com',
+        subject: `Nouvelle commande: ${orderData.carModel}`,
+        text: `Nouvelle commande de ${orderData.name} pour ${orderData.carModel} à ${orderData.price}€`,
+        attachments
+      });
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la confirmation de commande:", error);
+    toast.error("Erreur lors de l'envoi de la commande. Veuillez réessayer.");
+    
+    // Sauvegarder en local storage comme backup
+    saveOrderToLocalStorage({
+      to: 'serviceautoadi@gmail.com',
+      subject: `Nouvelle commande: ${orderData.carModel}`,
+      text: `Nouvelle commande de ${orderData.name} pour ${orderData.carModel} à ${orderData.price}€`,
+      attachments
+    });
+    
+    return false;
+  }
 };
 
 /**
  * Sends a payment proof email
  */
 export const sendPaymentProofEmail = async (customerData: any, paymentProof: File): Promise<boolean> => {
-  return sendEmail({
-    to: 'serviceautoadi@gmail.com',
-    subject: `Preuve de paiement: ${customerData.reference || 'Sans référence'}`,
-    text: `Preuve de paiement envoyée par ${customerData.name} (${customerData.email})`,
-    html: `
-      <h2>Preuve de paiement reçue</h2>
-      <p><strong>Client:</strong> ${customerData.name}</p>
-      <p><strong>Email:</strong> ${customerData.email}</p>
-      <p><strong>Référence:</strong> ${customerData.reference || 'Non spécifiée'}</p>
-      <p><strong>Montant:</strong> ${customerData.amount}€</p>
-      <p>La preuve de paiement est jointe à cet email.</p>
-    `,
-    attachments: [paymentProof],
-    replyTo: customerData.email
+  // Create FormData for Formspree
+  const formspreeData = new FormData();
+  
+  // Add customer data
+  Object.entries(customerData).forEach(([key, value]) => {
+    formspreeData.append(key, value as string);
   });
+  
+  // Add payment proof
+  formspreeData.append('paymentProof', paymentProof);
+  
+  try {
+    const result = await sendToFormspree(formspreeData, 'xpwpwlra');
+    
+    if (!result.ok) {
+      toast.error("Erreur lors de l'envoi de la preuve de paiement. Veuillez réessayer.");
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de la preuve de paiement:", error);
+    toast.error("Erreur lors de l'envoi de la preuve de paiement. Veuillez réessayer.");
+    return false;
+  }
 };
 
 /**

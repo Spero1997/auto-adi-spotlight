@@ -74,14 +74,15 @@ const App = () => (
               <Route path="/vehicules/import" element={<VehicleImport />} />
               
               {/* Routes pour les pages secondaires */}
-              <Route path="/vehicules" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/vehicules" element={<Index />} />
+              <Route path="/vehicule/:id" element={<VehicleDetails />} />
               <Route path="/vehicules/:id" element={<VehicleDetails />} />
               <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
-              <Route path="/vehicules/utilitaires" element={<Index />} /> {/* À implémenter plus tard */}
-              <Route path="/vehicules/neufs" element={<Index />} /> {/* À implémenter plus tard */}
-              <Route path="/rendez-vous" element={<Index />} /> {/* À implémenter plus tard */}
-              <Route path="/marques" element={<Index />} /> {/* À implémenter plus tard */}
-              <Route path="/marques/:marque" element={<Index />} /> {/* À implémenter plus tard */}
+              <Route path="/vehicules/utilitaires" element={<Index />} />
+              <Route path="/vehicules/neufs" element={<Index />} />
+              <Route path="/rendez-vous" element={<Index />} />
+              <Route path="/marques" element={<Index />} />
+              <Route path="/marques/:marque" element={<Index />} />
               
               {/* Route pour capture d'erreur */}
               <Route path="*" element={<NotFound />} />

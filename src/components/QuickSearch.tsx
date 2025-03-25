@@ -12,10 +12,12 @@ import {
 } from '@/components/ui/select';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const QuickSearch = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { language, translate } = useLanguage();
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [selectedBudget, setSelectedBudget] = useState<string>('');
@@ -48,6 +50,122 @@ const QuickSearch = () => {
     volvo: ['S60', 'S90', 'V60', 'V90', 'XC40', 'XC60', 'XC90'],
   };
 
+  // Traductions pour l'interface
+  const translations = {
+    quickSearch: {
+      FR: "Recherche rapide",
+      EN: "Quick search",
+      ES: "Búsqueda rápida",
+      IT: "Ricerca rapida",
+      PT: "Pesquisa rápida",
+      RO: "Căutare rapidă"
+    },
+    brand: {
+      FR: "Marque",
+      EN: "Brand",
+      ES: "Marca",
+      IT: "Marca",
+      PT: "Marca",
+      RO: "Marcă"
+    },
+    model: {
+      FR: "Modèle",
+      EN: "Model",
+      ES: "Modelo",
+      IT: "Modello",
+      PT: "Modelo",
+      RO: "Model"
+    },
+    maxBudget: {
+      FR: "Budget max",
+      EN: "Max budget",
+      ES: "Presupuesto máx",
+      IT: "Budget massimo",
+      PT: "Orçamento máx",
+      RO: "Buget maxim"
+    },
+    fuel: {
+      FR: "Énergie",
+      EN: "Fuel",
+      ES: "Combustible",
+      IT: "Carburante",
+      PT: "Combustível",
+      RO: "Combustibil"
+    },
+    search: {
+      FR: "Rechercher",
+      EN: "Search",
+      ES: "Buscar",
+      IT: "Cerca",
+      PT: "Pesquisar",
+      RO: "Căutare"
+    },
+    selectBrandFirst: {
+      FR: "Sélectionnez une marque d'abord",
+      EN: "Select a brand first",
+      ES: "Seleccione una marca primero",
+      IT: "Seleziona prima una marca",
+      PT: "Selecione uma marca primeiro",
+      RO: "Selectați mai întâi o marcă"
+    },
+    petrol: {
+      FR: "Essence",
+      EN: "Petrol",
+      ES: "Gasolina",
+      IT: "Benzina",
+      PT: "Gasolina",
+      RO: "Benzină"
+    },
+    diesel: {
+      FR: "Diesel",
+      EN: "Diesel",
+      ES: "Diesel",
+      IT: "Diesel",
+      PT: "Diesel",
+      RO: "Diesel"
+    },
+    hybrid: {
+      FR: "Hybride",
+      EN: "Hybrid",
+      ES: "Híbrido",
+      IT: "Ibrido",
+      PT: "Híbrido",
+      RO: "Hibrid"
+    },
+    electric: {
+      FR: "Électrique",
+      EN: "Electric",
+      ES: "Eléctrico",
+      IT: "Elettrico",
+      PT: "Elétrico",
+      RO: "Electric"
+    },
+    searchWarning: {
+      FR: "Veuillez sélectionner au moins un critère de recherche",
+      EN: "Please select at least one search criteria",
+      ES: "Por favor, seleccione al menos un criterio de búsqueda",
+      IT: "Si prega di selezionare almeno un criterio di ricerca",
+      PT: "Por favor, selecione pelo menos um critério de pesquisa",
+      RO: "Vă rugăm să selectați cel puțin un criteriu de căutare"
+    },
+    searchStarted: {
+      FR: "Recherche lancée",
+      EN: "Search started",
+      ES: "Búsqueda iniciada",
+      IT: "Ricerca avviata",
+      PT: "Pesquisa iniciada",
+      RO: "Căutare inițiată"
+    },
+    all: {
+      FR: "Toutes",
+      EN: "All",
+      ES: "Todas",
+      IT: "Tutte",
+      PT: "Todas",
+      RO: "Toate"
+    }
+  };
+
   useEffect(() => {
     if (selectedBrand && brandModels[selectedBrand]) {
       setAvailableModels(brandModels[selectedBrand]);
@@ -76,7 +194,7 @@ const QuickSearch = () => {
   const handleSearch = () => {
     // Check if at least one filter is selected
     if (!selectedBrand && !selectedModel && !selectedBudget && !selectedFuel) {
-      toast.warning('Veuillez sélectionner au moins un critère de recherche', {
+      toast.warning(translate('searchWarning', translations.searchWarning), {
         duration: 3000,
       });
       return;
@@ -88,12 +206,11 @@ const QuickSearch = () => {
     if (selectedBudget) searchParams.append('budget', selectedBudget);
     if (selectedFuel) searchParams.append('energie', selectedFuel);
     
-    toast.success('Recherche lancée', {
-      description: `Marque: ${selectedBrand || 'Toutes'}, Modèle: ${selectedModel || 'Tous'}, Budget: ${selectedBudget ? selectedBudget + '€' : 'Tous'}, Énergie: ${selectedFuel || 'Toutes'}`,
+    toast.success(translate('searchStarted', translations.searchStarted), {
+      description: `${translate('brand', translations.brand)}: ${selectedBrand || translate('all', translations.all)}, ${translate('model', translations.model)}: ${selectedModel || translate('all', translations.all)}, ${translate('maxBudget', translations.maxBudget)}: ${selectedBudget ? selectedBudget + '€' : translate('all', translations.all)}, ${translate('fuel', translations.fuel)}: ${selectedFuel || translate('all', translations.all)}`,
       duration: 3000,
     });
     
-    // For now, redirect to Index page with search params until we create a proper search results page
     console.log('Search initiated with params:', {
       brand: selectedBrand,
       model: selectedModel,
@@ -101,19 +218,21 @@ const QuickSearch = () => {
       fuel: selectedFuel
     });
     
-    // Navigate to the search page with parameters
-    navigate(`/vehicules?${searchParams.toString()}`);
+    // Correction: Navigate to the vehicules/occasion page with parameters instead of just /vehicules
+    navigate(`/vehicules/occasion?${searchParams.toString()}`);
   };
 
   return (
     <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} -mt-10 mb-16`}>
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1 w-full">
-          <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>Recherche rapide</h3>
+          <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>
+            {translate('quickSearch', translations.quickSearch)}
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Select onValueChange={handleBrandChange} value={selectedBrand}>
               <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder="Marque" />
+                <SelectValue placeholder={translate('brand', translations.brand)} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="audi">Audi</SelectItem>
@@ -144,7 +263,7 @@ const QuickSearch = () => {
 
             <Select value={selectedModel} onValueChange={handleModelChange} disabled={!selectedBrand}>
               <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder="Modèle" />
+                <SelectValue placeholder={translate('model', translations.model)} />
               </SelectTrigger>
               <SelectContent>
                 {selectedBrand ? (
@@ -155,7 +274,7 @@ const QuickSearch = () => {
                   ))
                 ) : (
                   <SelectItem value="brand-required" disabled>
-                    Sélectionnez une marque d'abord
+                    {translate('selectBrandFirst', translations.selectBrandFirst)}
                   </SelectItem>
                 )}
               </SelectContent>
@@ -163,7 +282,7 @@ const QuickSearch = () => {
 
             <Select value={selectedBudget} onValueChange={handleBudgetChange}>
               <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder="Budget max" />
+                <SelectValue placeholder={translate('maxBudget', translations.maxBudget)} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="3000">3 000 €</SelectItem>
@@ -178,13 +297,13 @@ const QuickSearch = () => {
 
             <Select value={selectedFuel} onValueChange={handleFuelChange}>
               <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder="Énergie" />
+                <SelectValue placeholder={translate('fuel', translations.fuel)} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="essence">Essence</SelectItem>
-                <SelectItem value="diesel">Diesel</SelectItem>
-                <SelectItem value="hybride">Hybride</SelectItem>
-                <SelectItem value="electrique">Électrique</SelectItem>
+                <SelectItem value="essence">{translate('petrol', translations.petrol)}</SelectItem>
+                <SelectItem value="diesel">{translate('diesel', translations.diesel)}</SelectItem>
+                <SelectItem value="hybride">{translate('hybrid', translations.hybrid)}</SelectItem>
+                <SelectItem value="electrique">{translate('electric', translations.electric)}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -196,7 +315,7 @@ const QuickSearch = () => {
             onClick={handleSearch}
           >
             <Search className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'} mr-2`} />
-            Rechercher
+            {translate('search', translations.search)}
           </Button>
         </div>
       </div>

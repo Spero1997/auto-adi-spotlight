@@ -22,6 +22,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const formSchema = z.object({
   nom: z.string().min(2, { message: 'Le nom doit contenir au moins 2 caractères' }),
@@ -35,8 +36,212 @@ const formSchema = z.object({
 
 const Contact = () => {
   const { toast } = useToast();
+  const { language, translate } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  
+  const translations = {
+    contactUs: {
+      FR: "Contactez-nous",
+      EN: "Contact us",
+      ES: "Contáctenos",
+      IT: "Contattaci",
+      PT: "Contacte-nos",
+      RO: "Contactați-ne"
+    },
+    teamAvailable: {
+      FR: "Notre équipe est à votre disposition pour répondre à toutes vos questions",
+      EN: "Our team is available to answer all your questions",
+      ES: "Nuestro equipo está disponible para responder a todas sus preguntas",
+      IT: "Il nostro team è a disposizione per rispondere a tutte le tue domande",
+      PT: "A nossa equipa está disponível para responder a todas as suas perguntas",
+      RO: "Echipa noastră este disponibilă pentru a răspunde la toate întrebările dvs."
+    },
+    contactInfo: {
+      FR: "Informations de contact",
+      EN: "Contact information",
+      ES: "Información de contacto",
+      IT: "Informazioni di contatto",
+      PT: "Informações de contacto",
+      RO: "Informații de contact"
+    },
+    phoneNumber: {
+      FR: "Téléphone",
+      EN: "Phone",
+      ES: "Teléfono",
+      IT: "Telefono",
+      PT: "Telefone",
+      RO: "Telefon"
+    },
+    availableHours: {
+      FR: "Nous sommes disponibles du lundi au samedi",
+      EN: "We are available Monday to Saturday",
+      ES: "Estamos disponibles de lunes a sábado",
+      IT: "Siamo disponibili dal lunedì al sabato",
+      PT: "Estamos disponíveis de segunda a sábado",
+      RO: "Suntem disponibili de luni până sâmbătă"
+    },
+    contactViaWhatsApp: {
+      FR: "Contactez-nous par WhatsApp",
+      EN: "Contact us via WhatsApp",
+      ES: "Contáctenos por WhatsApp",
+      IT: "Contattaci tramite WhatsApp",
+      PT: "Contacte-nos via WhatsApp",
+      RO: "Contactați-ne prin WhatsApp"
+    },
+    email: {
+      FR: "Email",
+      EN: "Email",
+      ES: "Correo electrónico",
+      IT: "Email",
+      PT: "Email",
+      RO: "Email"
+    },
+    guaranteedResponse: {
+      FR: "Réponse garantie sous 24h",
+      EN: "Response guaranteed within 24h",
+      ES: "Respuesta garantizada en 24h",
+      IT: "Risposta garantita entro 24h",
+      PT: "Resposta garantida em 24h",
+      RO: "Răspuns garantat în 24 de ore"
+    },
+    sendMessage: {
+      FR: "Envoyez-nous un message",
+      EN: "Send us a message",
+      ES: "Envíenos un mensaje",
+      IT: "Inviaci un messaggio",
+      PT: "Envie-nos uma mensagem",
+      RO: "Trimiteți-ne un mesaj"
+    },
+    messageSent: {
+      FR: "Message envoyé avec succès!",
+      EN: "Message sent successfully!",
+      ES: "¡Mensaje enviado con éxito!",
+      IT: "Messaggio inviato con successo!",
+      PT: "Mensagem enviada com sucesso!",
+      RO: "Mesaj trimis cu succes!"
+    },
+    thankYou: {
+      FR: "Merci pour votre message. Nous vous répondrons dans les plus brefs délais.",
+      EN: "Thank you for your message. We will reply as soon as possible.",
+      ES: "Gracias por su mensaje. Le responderemos lo antes posible.",
+      IT: "Grazie per il tuo messaggio. Ti risponderemo il prima possibile.",
+      PT: "Obrigado pela sua mensagem. Responderemos o mais rapidamente possível.",
+      RO: "Vă mulțumim pentru mesaj. Vă vom răspunde cât mai curând posibil."
+    },
+    lastName: {
+      FR: "Nom",
+      EN: "Last name",
+      ES: "Apellido",
+      IT: "Cognome",
+      PT: "Sobrenome",
+      RO: "Nume"
+    },
+    firstName: {
+      FR: "Prénom",
+      EN: "First name",
+      ES: "Nombre",
+      IT: "Nome",
+      PT: "Nome próprio",
+      RO: "Prenume"
+    },
+    phone: {
+      FR: "Téléphone",
+      EN: "Phone",
+      ES: "Teléfono",
+      IT: "Telefono",
+      PT: "Telefone",
+      RO: "Telefon"
+    },
+    subject: {
+      FR: "Sujet",
+      EN: "Subject",
+      ES: "Asunto",
+      IT: "Oggetto",
+      PT: "Assunto",
+      RO: "Subiect"
+    },
+    message: {
+      FR: "Message",
+      EN: "Message",
+      ES: "Mensaje",
+      IT: "Messaggio",
+      PT: "Mensagem",
+      RO: "Mesaj"
+    },
+    attachments: {
+      FR: "Pièces jointes (facultatif)",
+      EN: "Attachments (optional)",
+      ES: "Archivos adjuntos (opcional)",
+      IT: "Allegati (facoltativo)",
+      PT: "Anexos (opcional)",
+      RO: "Atașamente (opțional)"
+    },
+    dragAndDrop: {
+      FR: "Glissez-déposez vos fichiers ici ou",
+      EN: "Drag and drop your files here or",
+      ES: "Arrastre y suelte sus archivos aquí o",
+      IT: "Trascina e rilascia i tuoi file qui o",
+      PT: "Arraste e solte os seus ficheiros aqui ou",
+      RO: "Trageți și plasați fișierele dvs. aici sau"
+    },
+    browseFiles: {
+      FR: "parcourir les fichiers",
+      EN: "browse files",
+      ES: "explorar archivos",
+      IT: "sfoglia i file",
+      PT: "procurar ficheiros",
+      RO: "răsfoiți fișierele"
+    },
+    maxFileSize: {
+      FR: "PDF, JPEG, PNG (Max 10 Mo)",
+      EN: "PDF, JPEG, PNG (Max 10 MB)",
+      ES: "PDF, JPEG, PNG (Máx 10 MB)",
+      IT: "PDF, JPEG, PNG (Max 10 MB)",
+      PT: "PDF, JPEG, PNG (Máx 10 MB)",
+      RO: "PDF, JPEG, PNG (Max 10 MB)"
+    },
+    sending: {
+      FR: "Envoi en cours...",
+      EN: "Sending...",
+      ES: "Enviando...",
+      IT: "Invio in corso...",
+      PT: "A enviar...",
+      RO: "Se trimite..."
+    },
+    send: {
+      FR: "Envoyer le message",
+      EN: "Send message",
+      ES: "Enviar mensaje",
+      IT: "Invia messaggio",
+      PT: "Enviar mensagem",
+      RO: "Trimite mesaj"
+    },
+    ourDealer: {
+      FR: "Notre concession",
+      EN: "Our dealership",
+      ES: "Nuestro concesionario",
+      IT: "La nostra concessionaria",
+      PT: "O nosso concessionário",
+      RO: "Reprezentanța noastră"
+    },
+    messageSentToast: {
+      FR: "Message envoyé",
+      EN: "Message sent",
+      ES: "Mensaje enviado",
+      IT: "Messaggio inviato",
+      PT: "Mensagem enviada",
+      RO: "Mesaj trimis"
+    },
+    willReplyShortly: {
+      FR: "Nous vous répondrons dans les plus brefs délais.",
+      EN: "We will reply shortly.",
+      ES: "Le responderemos en breve.",
+      IT: "Ti risponderemo a breve.",
+      PT: "Responderemos em breve.",
+      RO: "Vă vom răspunde în curând."
+    }
+  };
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,13 +259,13 @@ const Contact = () => {
     setIsSubmitting(true);
     console.log(values);
     
-    // Prepare email data
-    const emailData = new FormData();
+    // Create FormData for Formspree
+    const formData = new FormData();
     
     // Add all form fields
     Object.entries(values).forEach(([key, value]) => {
       if (key !== 'attachment') {
-        emailData.append(key, value as string);
+        formData.append(key, value as string);
       }
     });
     
@@ -68,36 +273,26 @@ const Contact = () => {
     const attachmentFiles = values.attachment;
     if (attachmentFiles && attachmentFiles.length > 0) {
       for (let i = 0; i < attachmentFiles.length; i++) {
-        emailData.append('attachment', attachmentFiles[i]);
+        formData.append('attachment', attachmentFiles[i]);
       }
     }
     
-    // Create an email content for the form submission
-    const emailSubject = `Nouveau message de contact: ${values.sujet}`;
-    const emailContent = `
-      Nom: ${values.nom}
-      Prénom: ${values.prenom}
-      Email: ${values.email}
-      Téléphone: ${values.telephone}
-      Sujet: ${values.sujet}
-      Message: ${values.message}
-    `;
-    
-    emailData.append('to', 'serviceautoadi@gmail.com');
-    emailData.append('subject', emailSubject);
-    emailData.append('text', emailContent);
-    
-    // In a real application, you would now send this data to a backend service
-    // that handles sending emails with attachments.
-    // For demonstration purposes, we'll simulate an API call:
-    
-    setTimeout(() => {
+    // Send form to Formspree with the correct ID
+    fetch('https://formspree.io/f/movevldo', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
       setIsSubmitting(false);
       setSubmitSuccess(true);
       
       toast({
-        title: "Message envoyé",
-        description: "Nous vous répondrons dans les plus brefs délais.",
+        title: translate('messageSentToast', translations.messageSentToast),
+        description: translate('willReplyShortly', translations.willReplyShortly),
         duration: 5000,
       });
       
@@ -106,7 +301,18 @@ const Contact = () => {
       
       // Reset success message after a delay
       setTimeout(() => setSubmitSuccess(false), 5000);
-    }, 1500);
+    })
+    .catch(error => {
+      console.error('Error submitting form:', error);
+      setIsSubmitting(false);
+      
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        duration: 5000,
+        variant: "destructive",
+      });
+    });
   }
 
   return (
@@ -117,9 +323,11 @@ const Contact = () => {
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-20 text-white">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Contactez-nous</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              {translate('contactUs', translations.contactUs)}
+            </h1>
             <p className="text-xl max-w-2xl mx-auto">
-              Notre équipe est à votre disposition pour répondre à toutes vos questions
+              {translate('teamAvailable', translations.teamAvailable)}
             </p>
           </div>
         </section>
@@ -132,8 +340,8 @@ const Contact = () => {
                 <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                   <Phone className="h-6 w-6 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Téléphone</h3>
-                <p className="text-gray-600 mb-4">Nous sommes disponibles du lundi au samedi</p>
+                <h3 className="text-xl font-semibold mb-2">{translate('phoneNumber', translations.phoneNumber)}</h3>
+                <p className="text-gray-600 mb-4">{translate('availableHours', translations.availableHours)}</p>
                 <a href="tel:+393761753341" className="text-blue-600 font-medium">+39 376 175 3341</a>
               </div>
               
@@ -142,7 +350,7 @@ const Contact = () => {
                   <MessageCircle className="h-6 w-6 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">WhatsApp</h3>
-                <p className="text-gray-600 mb-4">Contactez-nous par WhatsApp</p>
+                <p className="text-gray-600 mb-4">{translate('contactViaWhatsApp', translations.contactViaWhatsApp)}</p>
                 <a href="https://wa.me/393761753341" className="text-blue-600 font-medium">+39 376 175 3341</a>
               </div>
               
@@ -150,8 +358,8 @@ const Contact = () => {
                 <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                   <Mail className="h-6 w-6 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Email</h3>
-                <p className="text-gray-600 mb-4">Réponse garantie sous 24h</p>
+                <h3 className="text-xl font-semibold mb-2">{translate('email', translations.email)}</h3>
+                <p className="text-gray-600 mb-4">{translate('guaranteedResponse', translations.guaranteedResponse)}</p>
                 <a href="mailto:serviceautoadi@gmail.com" className="text-blue-600 font-medium">serviceautoadi@gmail.com</a>
               </div>
             </div>
@@ -162,13 +370,13 @@ const Contact = () => {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-              <h2 className="text-3xl font-bold mb-6 text-center">Envoyez-nous un message</h2>
+              <h2 className="text-3xl font-bold mb-6 text-center">{translate('sendMessage', translations.sendMessage)}</h2>
               
               {submitSuccess && (
                 <Alert className="mb-6 bg-green-50 border-green-200">
-                  <AlertTitle className="text-green-800">Message envoyé avec succès!</AlertTitle>
+                  <AlertTitle className="text-green-800">{translate('messageSent', translations.messageSent)}</AlertTitle>
                   <AlertDescription className="text-green-700">
-                    Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
+                    {translate('thankYou', translations.thankYou)}
                   </AlertDescription>
                 </Alert>
               )}
@@ -181,9 +389,9 @@ const Contact = () => {
                       name="nom"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Nom</FormLabel>
+                          <FormLabel>{translate('lastName', translations.lastName)}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Votre nom" {...field} />
+                            <Input placeholder={translate('lastName', translations.lastName)} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -195,9 +403,9 @@ const Contact = () => {
                       name="prenom"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Prénom</FormLabel>
+                          <FormLabel>{translate('firstName', translations.firstName)}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Votre prénom" {...field} />
+                            <Input placeholder={translate('firstName', translations.firstName)} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -211,7 +419,7 @@ const Contact = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{translate('email', translations.email)}</FormLabel>
                           <FormControl>
                             <Input type="email" placeholder="votre@email.fr" {...field} />
                           </FormControl>
@@ -225,7 +433,7 @@ const Contact = () => {
                       name="telephone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Téléphone</FormLabel>
+                          <FormLabel>{translate('phone', translations.phone)}</FormLabel>
                           <FormControl>
                             <Input placeholder="01 23 45 67 89" {...field} />
                           </FormControl>
@@ -240,9 +448,9 @@ const Contact = () => {
                     name="sujet"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sujet</FormLabel>
+                        <FormLabel>{translate('subject', translations.subject)}</FormLabel>
                         <FormControl>
-                          <Input placeholder="Le sujet de votre message" {...field} />
+                          <Input placeholder={translate('subject', translations.subject)} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -254,10 +462,10 @@ const Contact = () => {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message</FormLabel>
+                        <FormLabel>{translate('message', translations.message)}</FormLabel>
                         <FormControl>
                           <Textarea 
-                            placeholder="Détaillez votre demande ici..." 
+                            placeholder={translate('message', translations.message)}
                             className="min-h-[150px]" 
                             {...field} 
                           />
@@ -272,7 +480,7 @@ const Contact = () => {
                     name="attachment"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                       <FormItem>
-                        <FormLabel>Pièces jointes (facultatif)</FormLabel>
+                        <FormLabel>{translate('attachments', translations.attachments)}</FormLabel>
                         <FormControl>
                           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer">
                             <Input
@@ -285,9 +493,9 @@ const Contact = () => {
                             />
                             <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center justify-center">
                               <Upload className="h-10 w-10 text-gray-400 mb-2" />
-                              <span className="text-sm text-gray-600 mb-1">Glissez-déposez vos fichiers ici ou</span>
-                              <span className="text-sm font-medium text-blue-600">parcourir les fichiers</span>
-                              <span className="text-xs text-gray-500 mt-2">PDF, JPEG, PNG (Max 10 Mo)</span>
+                              <span className="text-sm text-gray-600 mb-1">{translate('dragAndDrop', translations.dragAndDrop)}</span>
+                              <span className="text-sm font-medium text-blue-600">{translate('browseFiles', translations.browseFiles)}</span>
+                              <span className="text-xs text-gray-500 mt-2">{translate('maxFileSize', translations.maxFileSize)}</span>
                             </label>
                           </div>
                         </FormControl>
@@ -297,7 +505,7 @@ const Contact = () => {
                   />
                   
                   <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
-                    {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                    {isSubmitting ? translate('sending', translations.sending) : translate('send', translations.send)}
                   </Button>
                 </form>
               </Form>
@@ -308,7 +516,7 @@ const Contact = () => {
         {/* Map section */}
         <section className="py-12 bg-gray-50" id="locations">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8 text-center">Notre concession</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">{translate('ourDealer', translations.ourDealer)}</h2>
             
             <div className="max-w-4xl mx-auto">
               <div className="bg-white p-6 rounded-lg shadow-md">
