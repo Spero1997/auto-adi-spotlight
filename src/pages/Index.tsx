@@ -14,6 +14,7 @@ import { addAudiRS6 } from '@/scripts/addAudiRS6';
 import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
+import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -138,6 +139,20 @@ const Index = () => {
       addMercedesCLA200();
     } else {
       console.log("Mercedes Benz CLA 200 CDI déjà présente dans le catalogue standard");
+    }
+    
+    // Vérifier si la Mercedes Classe C 180 AMG existe déjà dans le catalogue standard
+    const mercedesClassC180InStandard = standardVehicles.find(
+      v => v.brand === "Mercedes" && 
+          v.model === "Benz Classe C 180 AMG" && 
+          v.year === 2014
+    );
+
+    if (!mercedesClassC180InStandard) {
+      console.log("Mercedes Benz Classe C 180 AMG non trouvée dans le catalogue standard, ajout au catalogue...");
+      addMercedesClassC180();
+    } else {
+      console.log("Mercedes Benz Classe C 180 AMG déjà présente dans le catalogue standard");
     }
   }, []);
 
