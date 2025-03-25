@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -11,6 +12,7 @@ import { addBMWX5 } from '@/scripts/addBMWX5';
 import { addMercedesClassC } from '@/scripts/addMercedesClassC';
 import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 import { addAudiRS6 } from '@/scripts/addAudiRS6';
+import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -93,6 +95,20 @@ const Index = () => {
       addAudiRS6();
     } else {
       console.log("Audi RS 6 déjà présente dans le catalogue vedette");
+    }
+    
+    // Vérifier si la Mercedes GLC existe déjà dans le catalogue standard
+    const mercedesGLCInStandard = standardVehicles.find(
+      v => v.brand === "Mercedes" && 
+          v.model === "Benz GLC 350e 326 CV 4Matic AMG" && 
+          v.year === 2018
+    );
+
+    if (!mercedesGLCInStandard) {
+      console.log("Mercedes Benz GLC 350e non trouvée dans le catalogue standard, ajout au catalogue...");
+      addMercedesGLC();
+    } else {
+      console.log("Mercedes Benz GLC 350e déjà présente dans le catalogue standard");
     }
   }, []);
 
