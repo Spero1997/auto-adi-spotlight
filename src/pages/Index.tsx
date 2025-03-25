@@ -13,6 +13,7 @@ import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 import { addAudiRS6 } from '@/scripts/addAudiRS6';
 import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
+import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -123,6 +124,20 @@ const Index = () => {
       addMercedesClasseE();
     } else {
       console.log("Mercedes Benz Classe E déjà présente dans le catalogue standard");
+    }
+    
+    // Vérifier si la Mercedes CLA 200 CDI existe déjà dans le catalogue standard
+    const mercedesCLA200InStandard = standardVehicles.find(
+      v => v.brand === "Mercedes" && 
+          v.model === "Benz CLA 200 CDI 136 CV AMG" && 
+          v.year === 2014
+    );
+
+    if (!mercedesCLA200InStandard) {
+      console.log("Mercedes Benz CLA 200 CDI non trouvée dans le catalogue standard, ajout au catalogue...");
+      addMercedesCLA200();
+    } else {
+      console.log("Mercedes Benz CLA 200 CDI déjà présente dans le catalogue standard");
     }
   }, []);
 
