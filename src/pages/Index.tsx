@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -13,6 +12,7 @@ import { addMercedesClassC } from '@/scripts/addMercedesClassC';
 import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 import { addAudiRS6 } from '@/scripts/addAudiRS6';
 import { addMercedesGLC } from '@/scripts/addMercedesGLC';
+import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -109,6 +109,20 @@ const Index = () => {
       addMercedesGLC();
     } else {
       console.log("Mercedes Benz GLC 350e déjà présente dans le catalogue standard");
+    }
+    
+    // Vérifier si la Mercedes Classe E existe déjà dans le catalogue standard
+    const mercedesClasseEInStandard = standardVehicles.find(
+      v => v.brand === "Mercedes" && 
+          v.model === "Benz Classe E" && 
+          v.year === 2018
+    );
+
+    if (!mercedesClasseEInStandard) {
+      console.log("Mercedes Benz Classe E non trouvée dans le catalogue standard, ajout au catalogue...");
+      addMercedesClasseE();
+    } else {
+      console.log("Mercedes Benz Classe E déjà présente dans le catalogue standard");
     }
   }, []);
 
