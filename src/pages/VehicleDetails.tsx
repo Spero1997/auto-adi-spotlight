@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
@@ -7,50 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check, CreditCard, Truck, FilePenLine } from 'lucide-react';
+import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check } from 'lucide-react';
 import { toast } from 'sonner';
-import { useToast } from '@/hooks/use-toast';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useForm } from 'react-hook-form';
-import { sendOrderConfirmationEmail } from '@/utils/emailService';
-import PaymentOptions from '@/components/PaymentOptions';
-
-interface OrderFormData {
-  name: string;
-  email: string;
-  phone: string;
-  deliveryOption: 'pickup' | 'delivery';
-  deliveryAddress: string;
-  deliveryNotes?: string;
-  paymentMethod: string;
-  couponCode?: string;
-}
 
 const VehicleDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [vehicle, setVehicle] = useState<ImportedVehicle | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const { toast: shadowToast } = useToast();
-  const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('bank-transfer');
-  const [paymentProof, setPaymentProof] = useState<File | null>(null);
-  const [couponCode, setCouponCode] = useState('');
-  
-  const form = useForm<OrderFormData>({
-    defaultValues: {
-      name: '',
-      email: '',
-      phone: '',
-      deliveryOption: 'pickup',
-      deliveryAddress: '',
-      deliveryNotes: '',
-      paymentMethod: 'bank-transfer',
-      couponCode: '',
-    },
-  });
   
   useEffect(() => {
     if (!id) {
@@ -60,38 +25,12 @@ const VehicleDetails = () => {
     }
     
     try {
-      let vehicles = getImportedVehicles('featured');
-      console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
-      
-      let foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
-      
-      if (!foundVehicle) {
-        vehicles = getImportedVehicles('standard');
-        console.log("Véhicules chargés du catalogue standard:", vehicles.length);
-        foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
-      }
-      
-      if (!foundVehicle) {
-        vehicles = getImportedVehicles();
-        console.log("Véhicules chargés de tous les catalogues:", vehicles.length);
-        
-        foundVehicle = vehicles.find(v => 
-          v.id === id || 
-          v.id.includes(id) || 
-          id.includes(v.id) || 
-          id.toLowerCase().includes(v.brand.toLowerCase()) || 
-          id.toLowerCase().includes(v.model.toLowerCase()) ||
-          `${v.brand.toLowerCase()}-${v.model.toLowerCase()}`.includes(id.toLowerCase())
-        );
-      }
+      const vehicles = getImportedVehicles();
+      const foundVehicle = vehicles.find(v => v.id === id);
       
       if (foundVehicle) {
-        console.log("Véhicule trouvé:", foundVehicle);
-        console.log("ID du véhicule:", foundVehicle.id);
-        console.log("URL de l'image:", foundVehicle.image);
         setVehicle(foundVehicle);
       } else {
-        console.error("Véhicule non trouvé avec l'ID:", id);
         setNotFound(true);
         toast.error("Véhicule non trouvé");
       }
@@ -102,79 +41,6 @@ const VehicleDetails = () => {
       setIsLoading(false);
     }
   }, [id]);
-  
-  const handleBuyClick = () => {
-    console.log("Bouton Acheter cliqué");
-    setShowPaymentForm(true);
-    toast.success("Vous pouvez maintenant finaliser votre achat");
-    shadowToast({
-      title: "Commande initiée",
-      description: "Veuillez remplir le formulaire pour finaliser votre achat",
-    });
-    
-    setTimeout(() => {
-      document.getElementById('payment-form')?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  };
-  
-  const handlePaymentMethodChange = (method: string) => {
-    setPaymentMethod(method);
-    form.setValue('paymentMethod', method);
-  };
-  
-  const handlePaymentProofChange = (file: File | null) => {
-    setPaymentProof(file);
-  };
-  
-  const handleCouponCodeChange = (code: string) => {
-    setCouponCode(code);
-    form.setValue('couponCode', code);
-  };
-  
-  const onSubmitOrder = async (data: OrderFormData) => {
-    if (!vehicle) return;
-    
-    if (paymentMethod !== 'cash' && !paymentProof) {
-      toast.error("Veuillez télécharger une preuve de paiement");
-      shadowToast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Une preuve de paiement est requise pour finaliser votre commande",
-      });
-      return;
-    }
-    
-    try {
-      const orderData = {
-        ...data,
-        carModel: `${vehicle.brand} ${vehicle.model}`,
-        price: vehicle.price,
-        deposit: Math.round(vehicle.price * 0.2),
-      };
-      
-      const result = await sendOrderConfirmationEmail(orderData);
-      
-      if (result) {
-        toast.success("Votre commande a été enregistrée avec succès");
-        shadowToast({
-          title: "Commande envoyée",
-          description: "Nous avons bien reçu votre demande d'achat",
-        });
-        setShowPaymentForm(false);
-        form.reset();
-      } else {
-        throw new Error("Échec de l'envoi de la commande");
-      }
-    } catch (error) {
-      console.error("Erreur lors de la soumission de la commande:", error);
-      toast.error("Une erreur s'est produite lors de l'envoi de votre commande");
-      shadowToast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible d'envoyer votre commande pour le moment. Veuillez réessayer plus tard.",
-      });
-    }
-  };
   
   if (isLoading) {
     return (
@@ -247,23 +113,14 @@ const VehicleDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
                   <div className="space-y-4">
                     <div className="relative overflow-hidden rounded-lg h-[300px] md:h-[400px] bg-gray-100">
-                      {vehicle.image ? (
-                        <>
-                          <img 
-                            src={vehicle.image} 
-                            alt={`${vehicle.brand} ${vehicle.model}`}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              console.error("Erreur de chargement de l'image:", vehicle.image);
-                              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x600?text=No+Image';
-                            }}
-                          />
-                        </>
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                          <p className="text-gray-500">Aucune image disponible</p>
-                        </div>
-                      )}
+                      <img 
+                        src={vehicle.image || 'https://via.placeholder.com/800x600?text=No+Image'} 
+                        alt={`${vehicle.brand} ${vehicle.model}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x600?text=No+Image';
+                        }}
+                      />
                       <div className="absolute top-3 right-3 bg-brand-orange text-white text-sm font-semibold px-3 py-1 rounded-full">
                         Occasion
                       </div>
@@ -315,7 +172,9 @@ const VehicleDetails = () => {
                       <Button 
                         variant="default" 
                         className="w-full md:w-auto flex-1 bg-brand-blue hover:bg-brand-darkBlue"
-                        onClick={handleBuyClick}
+                        onClick={() => {
+                          toast.info("Veuillez consulter la page des véhicules pour acheter ce véhicule");
+                        }}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         Acheter ce véhicule
@@ -331,10 +190,6 @@ const VehicleDetails = () => {
                           }).catch(() => {
                             navigator.clipboard.writeText(window.location.href);
                             toast.success("Lien copié dans le presse-papier");
-                            shadowToast({
-                              title: "Lien copié",
-                              description: "L'URL a été copiée dans votre presse-papier",
-                            });
                           });
                         }}
                       >
@@ -344,165 +199,6 @@ const VehicleDetails = () => {
                   </div>
                 </div>
               </div>
-              
-              {showPaymentForm && (
-                <div id="payment-form" className="bg-white rounded-lg shadow-md p-6 mb-8">
-                  <h2 className="text-2xl font-bold mb-6 text-center">Finaliser votre achat</h2>
-                  <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">Véhicule:</span>
-                      <span>{vehicle.brand} {vehicle.model}</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">Prix total:</span>
-                      <span className="font-bold">{vehicle.price.toLocaleString('fr-FR')} €</span>
-                    </div>
-                    <div className="flex justify-between items-center text-brand-blue">
-                      <span className="font-medium">Acompte (20%):</span>
-                      <span className="font-bold">{Math.round(vehicle.price * 0.2).toLocaleString('fr-FR')} €</span>
-                    </div>
-                  </div>
-                  
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmitOrder)} className="space-y-6">
-                      <div className="grid md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <h3 className="text-lg font-semibold flex items-center"><FilePenLine className="mr-2 h-5 w-5" /> Vos coordonnées</h3>
-                          
-                          <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Nom complet</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="John Doe" required {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                  <Input type="email" placeholder="votre@email.com" required {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Téléphone</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="+33 6 12 34 56 78" required {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <h3 className="text-lg font-semibold flex items-center"><Truck className="mr-2 h-5 w-5" /> Livraison</h3>
-                          
-                          <FormField
-                            control={form.control}
-                            name="deliveryOption"
-                            render={({ field }) => (
-                              <FormItem className="space-y-3">
-                                <FormLabel>Option de livraison</FormLabel>
-                                <FormControl>
-                                  <RadioGroup
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                    className="flex flex-col space-y-1"
-                                  >
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="pickup" id="pickup" />
-                                      <label htmlFor="pickup" className="cursor-pointer">Enlèvement au showroom</label>
-                                    </div>
-                                    <div className="flex items-center space-x-2">
-                                      <RadioGroupItem value="delivery" id="delivery" />
-                                      <label htmlFor="delivery" className="cursor-pointer">Livraison à domicile</label>
-                                    </div>
-                                  </RadioGroup>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={form.control}
-                            name="deliveryAddress"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Adresse de livraison</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Votre adresse complète" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                          
-                          <FormField
-                            control={form.control}
-                            name="deliveryNotes"
-                            render={({ field }) => (
-                              <FormItem>
-                                <FormLabel>Instructions spéciales (optionnel)</FormLabel>
-                                <FormControl>
-                                  <Input placeholder="Code portail, instructions..." {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="border-t border-gray-200 pt-6">
-                        <h3 className="text-lg font-semibold mb-4 flex items-center"><CreditCard className="mr-2 h-5 w-5" /> Méthode de paiement</h3>
-                        
-                        <PaymentOptions 
-                          onPaymentMethodChange={handlePaymentMethodChange}
-                          price={vehicle.price}
-                          onPaymentProofChange={handlePaymentProofChange}
-                          onCouponCodeChange={handleCouponCodeChange}
-                        />
-                      </div>
-                      
-                      <div className="flex flex-col md:flex-row gap-4 pt-6">
-                        <Button 
-                          type="button" 
-                          variant="outline" 
-                          className="w-full md:w-auto"
-                          onClick={() => setShowPaymentForm(false)}
-                        >
-                          Annuler
-                        </Button>
-                        <Button 
-                          type="submit" 
-                          className="w-full md:w-auto md:ml-auto bg-brand-blue hover:bg-brand-darkBlue"
-                        >
-                          Confirmer la commande
-                        </Button>
-                      </div>
-                    </form>
-                  </Form>
-                </div>
-              )}
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">

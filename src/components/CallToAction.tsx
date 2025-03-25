@@ -1,76 +1,22 @@
 
-import { Phone, Mail, Calendar, MessageCircle, ShoppingCart, Facebook } from 'lucide-react';
+import { Phone, Mail, Calendar, MessageCircle, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 const CallToAction = () => {
-  const { language, translate } = useLanguage();
-
-  const translations = {
-    needHelpTitle: {
-      FR: "Besoin d'aide pour votre projet automobile ?",
-      EN: "Need help with your car project?",
-      ES: "¿Necesita ayuda con su proyecto de automóvil?",
-      IT: "Hai bisogno di aiuto per il tuo progetto automobilistico?",
-      PT: "Precisa de ajuda com o seu projeto automóvel?",
-      RO: "Aveți nevoie de ajutor pentru proiectul dvs. auto?"
-    },
-    advisorsAvailable: {
-      FR: "Nos conseillers sont à votre disposition pour vous aider à trouver le véhicule de vos rêves. Achetez en ligne ou contactez-nous pour toute question.",
-      EN: "Our advisors are at your disposal to help you find the vehicle of your dreams. Buy online or contact us for any questions.",
-      ES: "Nuestros asesores están a su disposición para ayudarle a encontrar el vehículo de sus sueños. Compre en línea o contáctenos para cualquier pregunta.",
-      IT: "I nostri consulenti sono a tua disposizione per aiutarti a trovare il veicolo dei tuoi sogni. Acquista online o contattaci per qualsiasi domanda.",
-      PT: "Os nossos consultores estão à sua disposição para o ajudar a encontrar o veículo dos seus sonhos. Compre online ou contacte-nos para qualquer pergunta.",
-      RO: "Consilierii noștri sunt la dispoziția dvs. pentru a vă ajuta să găsiți vehiculul visurilor dvs. Cumpărați online sau contactați-ne pentru orice întrebare."
-    },
-    contactUs: {
-      FR: "Nous contacter",
-      EN: "Contact us",
-      ES: "Contáctenos",
-      IT: "Contattaci",
-      PT: "Contacte-nos",
-      RO: "Contactați-ne"
-    },
-    buyOnline: {
-      FR: "Acheter en ligne",
-      EN: "Buy online",
-      ES: "Comprar en línea",
-      IT: "Acquista online",
-      PT: "Comprar online",
-      RO: "Cumpără online"
-    },
-    hoursAvailable: {
-      FR: "Lun-Sam: 9h00-19h00",
-      EN: "Mon-Sat: 9AM-7PM",
-      ES: "Lun-Sáb: 9h00-19h00",
-      IT: "Lun-Sab: 9:00-19:00",
-      PT: "Seg-Sáb: 9h00-19h00",
-      RO: "Lun-Sâm: 9:00-19:00"
-    },
-    socialMediaInfo: {
-      FR: "Disponible sur Facebook et WhatsApp",
-      EN: "Available on Facebook and WhatsApp",
-      ES: "Disponible en Facebook y WhatsApp",
-      IT: "Disponibile su Facebook e WhatsApp",
-      PT: "Disponível no Facebook e WhatsApp",
-      RO: "Disponibil pe Facebook și WhatsApp"
-    }
-  };
-
   return (
     <section className="py-16 bg-brand-blue text-white">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {translate('needHelpTitle', translations.needHelpTitle)}
+              Besoin d'aide pour votre projet automobile ?
             </h2>
             <p className="text-lg mb-8 text-blue-100">
-              {translate('advisorsAvailable', translations.advisorsAvailable)}
+              Nos conseillers sont à votre disposition pour vous aider à trouver le véhicule de vos rêves. Achetez en ligne ou contactez-nous pour toute question.
             </p>
             
-            <div className="space-y-4 mb-4">
+            <div className="space-y-4 mb-8">
               <div className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 text-brand-orange" />
                 <span className="text-lg">+39 376 175 3341</span>
@@ -85,47 +31,20 @@ const CallToAction = () => {
               </div>
               <div className="flex items-center">
                 <Calendar className="h-5 w-5 mr-3 text-brand-orange" />
-                <span className="text-lg">{translate('hoursAvailable', translations.hoursAvailable)}</span>
-              </div>
-            </div>
-            
-            <div className="mb-6">
-              <p className="text-lg font-semibold flex items-center mb-2">
-                <Facebook className="h-5 w-5 mr-3 text-brand-orange" />
-                {translate('socialMediaInfo', translations.socialMediaInfo)}
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a 
-                  href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-[#1877F2] text-white px-3 py-2 rounded flex items-center hover:bg-[#166fe5] transition-colors"
-                >
-                  <Facebook className="h-5 w-5 mr-2" />
-                  Facebook
-                </a>
-                <a 
-                  href="https://wa.me/393761753341" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-[#25D366] text-white px-3 py-2 rounded flex items-center hover:bg-[#22c35e] transition-colors"
-                >
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  WhatsApp
-                </a>
+                <span className="text-lg">Lun-Sam: 9h00-19h00</span>
               </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/contact">
                 <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-6 py-3 text-lg font-semibold">
-                  {translate('contactUs', translations.contactUs)}
+                  Nous contacter
                 </Button>
               </Link>
               <Link to="/vehicules/occasion">
                 <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors px-6 py-3 text-lg text-white font-semibold inline-flex items-center">
                   <ShoppingCart className="h-5 w-5 mr-2" />
-                  {translate('buyOnline', translations.buyOnline)}
+                  Acheter en ligne
                 </Button>
               </Link>
             </div>

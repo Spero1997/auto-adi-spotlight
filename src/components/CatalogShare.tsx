@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Share2, Copy, Check, Link as LinkIcon, Download, QrCode } from "lucide-react";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ const CatalogShare = () => {
   const [shareableUrl, setShareableUrl] = useState("");
   const [isSharedCatalog, setIsSharedCatalog] = useState(false);
 
+  // Vérifie si on est actuellement sur un catalogue partagé
   useEffect(() => {
     const catalogId = getCatalogIdFromUrl();
     setIsSharedCatalog(!!catalogId);
@@ -39,24 +41,29 @@ const CatalogShare = () => {
   const downloadQRCode = () => {
     const svg = document.getElementById("share-qrcode");
     if (svg) {
+      // Créer un canvas temporaire pour convertir le SVG en image
       const canvas = document.createElement("canvas");
       canvas.width = 1024;
       canvas.height = 1024;
       const ctx = canvas.getContext("2d");
       
       if (ctx) {
+        // Créer une image à partir du SVG
         const img = new Image();
         const svgData = new XMLSerializer().serializeToString(svg);
         const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
         const url = URL.createObjectURL(svgBlob);
         
         img.onload = () => {
+          // Dessiner l'image sur le canvas
           ctx.fillStyle = 'white';
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           
+          // Convertir le canvas en png
           canvas.toBlob((blob) => {
             if (blob) {
+              // Créer un lien de téléchargement
               const link = document.createElement('a');
               link.download = 'catalogue-vehicules-qr.png';
               link.href = URL.createObjectURL(blob);
