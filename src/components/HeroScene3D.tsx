@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Environment, MeshReflectorMaterial, useTexture } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Environment, MeshReflectorMaterial, useTexture, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Component pour le véhicule principal
@@ -205,10 +205,18 @@ const CameraAnimation = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <group>
       {animationStage >= 1 && (
-        <mesh position={[0, 6, 0]}>
-          <textGeometry args={['Auto Adi', { font: new THREE.Font({}), size: 1, height: 0.1 }]} />
-          <meshStandardMaterial color="#ff9800" emissive="#ff6000" emissiveIntensity={2} />
-        </mesh>
+        <Text
+          position={[0, 6, 0]}
+          fontSize={1}
+          color="#ff9800"
+          font="/fonts/inter-bold.woff"
+          anchorX="center"
+          anchorY="middle"
+          outlineWidth={0.05}
+          outlineColor="#ff6000"
+        >
+          Auto Adi
+        </Text>
       )}
     </group>
   );
