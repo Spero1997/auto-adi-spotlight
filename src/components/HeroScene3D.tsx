@@ -195,7 +195,7 @@ const FloatingIcons = () => {
       {/* Icône de confort */}
       <group position={[3, 2, -4]}>
         <mesh>
-          <boxGeometry args={[0.6, 0.4, 0.1]} radius={0.1} />
+          <boxGeometry args={[0.6, 0.4, 0.1]} />
           <meshStandardMaterial color="#00c853" emissive="#00c853" emissiveIntensity={0.5} />
         </mesh>
         <mesh position={[0, 0.2, 0]}>
@@ -210,10 +210,15 @@ const FloatingIcons = () => {
           <boxGeometry args={[0.5, 0.7, 0.1]} />
           <meshStandardMaterial color="#d50000" emissive="#d50000" emissiveIntensity={0.5} />
         </mesh>
-        <mesh position={[0, 0, 0.1]}>
-          <textGeometry args={['!', { size: 0.3, height: 0.1 }]} />
-          <meshStandardMaterial color="#ffffff" />
-        </mesh>
+        <Text
+          position={[0, 0, 0.1]}
+          fontSize={0.3}
+          color="#ffffff"
+          anchorX="center"
+          anchorY="middle"
+        >
+          !
+        </Text>
       </group>
     </group>
   );
