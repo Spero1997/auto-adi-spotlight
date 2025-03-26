@@ -92,6 +92,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -108,6 +109,12 @@
 
   h3 {
     @apply text-2xl md:text-3xl;
+  }
+  
+  /* La scène 3D doit toujours prendre le contrôle total */
+  canvas {
+    touch-action: none;
+    outline: none;
   }
 }
 
@@ -126,5 +133,30 @@
 
   .section-padding {
     @apply py-12 md:py-16 lg:py-20;
+  }
+  
+  /* Animation d'apparition pour l'intro 3D */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideInUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 1s ease-out forwards;
+  }
+  
+  .slide-in-up {
+    animation: slideInUp 0.8s ease-out forwards;
   }
 }

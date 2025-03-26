@@ -1,3 +1,6 @@
+
+import { useState, useEffect } from 'react';
+import HeroScene3D from '@/components/HeroScene3D';
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
@@ -8,8 +11,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { useLocation, useSearchParams, Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { getImportedVehicles, resetCatalog, addImportedVehicle } from '@/utils/vehicleImportService';
+import { resetCatalog, addImportedVehicle, getImportedVehicles } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Car } from 'lucide-react';
@@ -17,6 +19,24 @@ import { Car } from 'lucide-react';
 const Index = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const [is3DMode, setIs3DMode] = useState(true);
+  const [introCompleted, setIntroCompleted] = useState(false);
+  
+  useEffect(() => {
+    // Vérifier si l'utilisateur a déjà vu l'intro 3D
+    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
+    if (hasSeenIntro) {
+      setIs3DMode(false);
+      setIntroCompleted(true);
+    } else {
+      // Ajouter un timer pour passer au mode normal après 10 secondes
+      const timer = setTimeout(() => {
+        setIs3DMode(false);
+        sessionStorage.setItem('hasSeenIntro', 'true');
+      }, 10000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
   
   useEffect(() => {
     // Réinitialiser les deux catalogues
@@ -438,6 +458,10 @@ const Index = () => {
         energie: searchParams.get('energie')
       });
       
+      // Si des paramètres de recherche sont présents, passons en mode normal
+      setIs3DMode(false);
+      setIntroCompleted(true);
+      
       // Scroll to FeaturedCars section as it would display search results
       const featuredCarsElement = document.getElementById('featured-cars');
       if (featuredCarsElement) {
@@ -452,8 +476,21 @@ const Index = () => {
     if (catalogId) {
       const catalogType = searchParams.get('type') || 'standard';
       console.log(`Catalog found in URL: ${catalogId}, type: ${catalogType}, will pre-load vehicles`);
+      
+      // Si un paramètre de catalogue est présent, passons en mode normal
+      setIs3DMode(false);
+      setIntroCompleted(true);
     }
   }, [searchParams]);
+  
+  // Handler pour quand l'intro 3D est terminée
+  const handleIntroComplete = () => {
+    setIntroCompleted(true);
+    setTimeout(() => {
+      setIs3DMode(false);
+      sessionStorage.setItem('hasSeenIntro', 'true');
+    }, 2000);
+  };
   
   // Extract search params to pass to FeaturedCars
   const searchFilters = {
@@ -467,36 +504,46 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
-        <HeroCarousel />
-        <div className="container mx-auto px-4 relative z-10">
-          <QuickSearch />
-        </div>
-        <ConditionsHighlight />
-        <div className="mt-10" id="featured-cars">
-          <FeaturedCars featuredOnly={true} />
-        </div>
+        {is3DMode ? (
+          <HeroScene3D onComplete={handleIntroComplete} />
+        ) : (
+          <HeroCarousel />
+        )}
         
-        {/* Bouton Tous nos véhicules d'occasion */}
-        <div className="container mx-auto px-4 py-8 text-center">
-          <Link to="/vehicules/occasion">
-            <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
-              <Car className="h-5 w-5" />
-              Tous nos véhicules d'occasion
-            </Button>
-          </Link>
-        </div>
-        
-        {/* This section shows standard vehicles or search results */}
-        {searchParams.toString() ? (
-          <div className="mt-10">
-            <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
-          </div>
-        ) : null}
-        <Benefits />
-        <div id="testimonials">
-          <TestimonialSection />
-        </div>
-        <CallToAction />
+        {/* Afficher seulement le reste du contenu une fois l'intro terminée */}
+        {(!is3DMode || introCompleted) && (
+          <>
+            <div className="container mx-auto px-4 relative z-10">
+              <QuickSearch />
+            </div>
+            <ConditionsHighlight />
+            <div className="mt-10" id="featured-cars">
+              <FeaturedCars featuredOnly={true} />
+            </div>
+            
+            {/* Bouton Tous nos véhicules d'occasion */}
+            <div className="container mx-auto px-4 py-8 text-center">
+              <Link to="/vehicules/occasion">
+                <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
+                  <Car className="h-5 w-5" />
+                  Tous nos véhicules d'occasion
+                </Button>
+              </Link>
+            </div>
+            
+            {/* This section shows standard vehicles or search results */}
+            {searchParams.toString() ? (
+              <div className="mt-10">
+                <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
+              </div>
+            ) : null}
+            <Benefits />
+            <div id="testimonials">
+              <TestimonialSection />
+            </div>
+            <CallToAction />
+          </>
+        )}
       </main>
       <Footer />
     </div>
