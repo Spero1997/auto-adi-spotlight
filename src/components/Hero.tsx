@@ -1,5 +1,5 @@
 
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, Shield, Zap, Award, DollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -87,6 +87,40 @@ const Hero = () => {
       IT: "Cerca",
       PT: "Pesquisar",
       RO: "Căutare"
+    },
+    features: {
+      performance: {
+        FR: "Performance",
+        EN: "Performance",
+        ES: "Rendimiento",
+        IT: "Prestazioni",
+        PT: "Desempenho",
+        RO: "Performanță"
+      },
+      safety: {
+        FR: "Sécurité",
+        EN: "Safety",
+        ES: "Seguridad",
+        IT: "Sicurezza",
+        PT: "Segurança",
+        RO: "Siguranță"
+      },
+      warranty: {
+        FR: "Garantie",
+        EN: "Warranty",
+        ES: "Garantía",
+        IT: "Garanzia",
+        PT: "Garantia",
+        RO: "Garanție"
+      },
+      quality: {
+        FR: "Qualité",
+        EN: "Quality",
+        ES: "Calidad",
+        IT: "Qualità",
+        PT: "Qualidade",
+        RO: "Calitate"
+      }
     }
   };
 
@@ -110,27 +144,51 @@ const Hero = () => {
 
   return (
     <div className="relative bg-gray-900 overflow-hidden py-12">
-      {/* Background image */}
+      {/* Background image with enhanced overlay for better text contrast */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-60"
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80')" 
+          backgroundImage: "url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80')",
+          filter: "brightness(0.6) contrast(1.1)"
         }}
       />
       
+      {/* Overlay gradient for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-transparent z-0"></div>
+      
       <div className="container mx-auto px-4 py-8 md:py-12 relative z-10">
         <div className="max-w-3xl text-white">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 drop-shadow-lg">
             {translate('heroTitle', translations.heroTitle)}
           </h1>
-          <p className="text-lg md:text-xl mb-6 text-gray-100">
+          <p className="text-lg md:text-xl mb-6 text-gray-100 drop-shadow">
             {translate('heroDescription', translations.heroDescription)}
           </p>
+          
+          {/* Key features with icons */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+              <Zap className="h-5 w-5 text-brand-orange" />
+              <span>{translate('features.performance', translations.features.performance)}</span>
+            </div>
+            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+              <Shield className="h-5 w-5 text-brand-orange" />
+              <span>{translate('features.safety', translations.features.safety)}</span>
+            </div>
+            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+              <Award className="h-5 w-5 text-brand-orange" />
+              <span>{translate('features.quality', translations.features.quality)}</span>
+            </div>
+            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+              <DollarSign className="h-5 w-5 text-brand-orange" />
+              <span>{translate('features.warranty', translations.features.warranty)}</span>
+            </div>
+          </div>
           
           {/* Call to action button */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to="/vehicules/occasion">
-              <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg">
+              <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg shadow-lg">
                 {translate('usedVehicles', translations.usedVehicles)}
               </Button>
             </Link>
@@ -196,7 +254,7 @@ const Hero = () => {
             </div>
             <div className="mt-4 md:mt-0 w-full md:w-auto">
               <Button 
-                className="bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto px-8 py-5 rounded-md text-white font-semibold flex items-center justify-center"
+                className="bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto px-8 py-5 rounded-md text-white font-semibold flex items-center justify-center shadow-lg"
                 size="lg"
                 onClick={handleSearch}
               >

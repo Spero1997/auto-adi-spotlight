@@ -156,6 +156,69 @@ const Particles = () => {
   );
 };
 
+// Icônes flottantes autour du véhicule
+const FloatingIcons = () => {
+  const iconsRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (iconsRef.current) {
+      iconsRef.current.rotation.y = state.clock.getElapsedTime() * 0.1;
+    }
+  });
+  
+  return (
+    <group ref={iconsRef}>
+      {/* Icône de clé */}
+      <group position={[5, 3, 0]}>
+        <mesh>
+          <boxGeometry args={[0.8, 0.3, 0.1]} />
+          <meshStandardMaterial color="#ff9800" emissive="#ff6000" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh position={[0.6, 0, 0]}>
+          <cylinderGeometry args={[0.2, 0.2, 0.2, 8]} />
+          <meshStandardMaterial color="#ff9800" emissive="#ff6000" emissiveIntensity={0.5} />
+        </mesh>
+      </group>
+      
+      {/* Icône de vitesse */}
+      <group position={[-4, 2.5, 3]}>
+        <mesh>
+          <ringGeometry args={[0.4, 0.5, 32]} />
+          <meshStandardMaterial color="#4169e1" emissive="#4169e1" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh rotation={[0, 0, Math.PI / 4]}>
+          <boxGeometry args={[0.05, 0.4, 0.05]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+      </group>
+      
+      {/* Icône de confort */}
+      <group position={[3, 2, -4]}>
+        <mesh>
+          <boxGeometry args={[0.6, 0.4, 0.1]} radius={0.1} />
+          <meshStandardMaterial color="#00c853" emissive="#00c853" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh position={[0, 0.2, 0]}>
+          <boxGeometry args={[0.4, 0.1, 0.1]} />
+          <meshStandardMaterial color="#00c853" emissive="#00c853" emissiveIntensity={0.5} />
+        </mesh>
+      </group>
+      
+      {/* Icône de sécurité */}
+      <group position={[-3, 3.5, -3]}>
+        <mesh>
+          <boxGeometry args={[0.5, 0.7, 0.1]} />
+          <meshStandardMaterial color="#d50000" emissive="#d50000" emissiveIntensity={0.5} />
+        </mesh>
+        <mesh position={[0, 0, 0.1]}>
+          <textGeometry args={['!', { size: 0.3, height: 0.1 }]} />
+          <meshStandardMaterial color="#ffffff" />
+        </mesh>
+      </group>
+    </group>
+  );
+};
+
 // Animation de la caméra pour l'introduction
 const CameraAnimation = ({ onComplete }: { onComplete: () => void }) => {
   const { camera } = useThree();
@@ -232,6 +295,7 @@ const Scene3D = ({ onComplete }: { onComplete: () => void }) => {
       <Lights />
       <MainVehicle position={[0, 0, 0]} rotation={[0, Math.PI / 6, 0]} />
       <Particles />
+      <FloatingIcons />
       <Floor />
       <Pillars />
       <Environment preset="night" />
@@ -276,6 +340,21 @@ const HeroScene3D = ({ onComplete }: { onComplete: () => void }) => {
       </Canvas>
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white text-center">
         <p className="text-lg animate-pulse">Découvrez notre sélection de véhicules d'exception</p>
+        <div className="flex justify-center mt-4 space-x-2">
+          {/* Ajout d'icônes pour les caractéristiques clés */}
+          <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
+            <span className="text-sm">🏁 Performance</span>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
+            <span className="text-sm">✨ Luxe</span>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
+            <span className="text-sm">🔒 Sécurité</span>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full">
+            <span className="text-sm">💰 Garantie</span>
+          </div>
+        </div>
       </div>
     </div>
   );
