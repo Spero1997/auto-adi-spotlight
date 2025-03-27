@@ -15,22 +15,6 @@ import { Car } from 'lucide-react';
 const Index = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const [is3DMode, setIs3DMode] = useState(true);
-  const [introCompleted, setIntroCompleted] = useState(false);
-  
-  useEffect(() => {
-    const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
-    if (hasSeenIntro) {
-      setIs3DMode(false);
-      setIntroCompleted(true);
-    } else {
-      const timer = setTimeout(() => {
-        setIs3DMode(false);
-        sessionStorage.setItem('hasSeenIntro', 'true');
-      }, 10000);
-      return () => clearTimeout(timer);
-    }
-  }, []);
   
   useEffect(() => {
     resetCatalog('all');
@@ -437,9 +421,6 @@ const Index = () => {
         energie: searchParams.get('energie')
       });
       
-      setIs3DMode(false);
-      setIntroCompleted(true);
-      
       const featuredCarsElement = document.getElementById('featured-cars');
       if (featuredCarsElement) {
         setTimeout(() => {
@@ -452,19 +433,8 @@ const Index = () => {
     if (catalogId) {
       const catalogType = searchParams.get('type') || 'standard';
       console.log(`Catalog found in URL: ${catalogId}, type: ${catalogType}, will pre-load vehicles`);
-      
-      setIs3DMode(false);
-      setIntroCompleted(true);
     }
   }, [searchParams]);
-  
-  const handleIntroComplete = () => {
-    setIntroCompleted(true);
-    setTimeout(() => {
-      setIs3DMode(false);
-      sessionStorage.setItem('hasSeenIntro', 'true');
-    }, 2000);
-  };
   
   const searchFilters = {
     brand: searchParams.get('marque') || '',
@@ -476,42 +446,34 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <main>
-        {is3DMode ? (
-          <HeroScene3D onComplete={handleIntroComplete} />
-        ) : (
-          <HeroCarousel />
-        )}
+        <HeroCarousel />
         
-        {(!is3DMode || introCompleted) && (
-          <>
-            <div className="container mx-auto px-4 relative z-10">
-              <QuickSearch />
-            </div>
-            <ConditionsHighlight />
-            <div className="mt-10" id="featured-cars">
-              <FeaturedCars featuredOnly={true} />
-            </div>
-            
-            <div className="container mx-auto px-4 py-8 text-center">
-              <Link to="/vehicules/occasion">
-                <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
-                  <Car className="h-5 w-5" />
-                  Tous nos véhicules d'occasion
-                </Button>
-              </Link>
-            </div>
-            
-            {searchParams.toString() ? (
-              <div className="mt-10">
-                <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
-              </div>
-            ) : null}
-            <Benefits />
-            <div id="testimonials">
-              <TestimonialSection />
-            </div>
-          </>
-        )}
+        <div className="container mx-auto px-4 relative z-10">
+          <QuickSearch />
+        </div>
+        <ConditionsHighlight />
+        <div className="mt-10" id="featured-cars">
+          <FeaturedCars featuredOnly={true} />
+        </div>
+        
+        <div className="container mx-auto px-4 py-8 text-center">
+          <Link to="/vehicules/occasion">
+            <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
+              <Car className="h-5 w-5" />
+              Tous nos véhicules d'occasion
+            </Button>
+          </Link>
+        </div>
+        
+        {searchParams.toString() ? (
+          <div className="mt-10">
+            <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
+          </div>
+        ) : null}
+        <Benefits />
+        <div id="testimonials">
+          <TestimonialSection />
+        </div>
       </main>
       <Footer />
     </div>
