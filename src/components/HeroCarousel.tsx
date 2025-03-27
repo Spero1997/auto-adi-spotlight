@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Globe } from 'lucide-react';
 
-// Mise à jour des chemins d'accès aux images
+// Images du carrousel
 const carImages = [
   "/lovable-uploads/b0b6f649-3ce2-455a-99e9-189b91475576.png",
   "/lovable-uploads/63df3762-9be9-4c57-92f4-a165c500700e.png",
@@ -24,6 +25,7 @@ const HeroCarousel = () => {
   const [autoPlay, setAutoPlay] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!carouselApi) {
@@ -58,11 +60,64 @@ const HeroCarousel = () => {
     };
   }, [autoPlay, carouselApi]);
 
-  // Ajout de console.log pour déboguer
-  console.log("Images du carrousel:", carImages);
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <div className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
+      {/* Logo en superposition */}
+      <div className="absolute top-6 left-6 z-20">
+        <img 
+          src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
+          alt="Auto Adi" 
+          className="h-12"
+        />
+      </div>
+
+      {/* Navigation en superposition */}
+      <div className="absolute bottom-6 right-6 z-20 flex items-center gap-4">
+        <button 
+          onClick={() => handleNavigation('/')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          Accueil
+        </button>
+        <button 
+          onClick={() => handleNavigation('/vehicules/occasion')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          Véhicules
+        </button>
+        <button 
+          onClick={() => handleNavigation('/services')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          Services
+        </button>
+        <button 
+          onClick={() => handleNavigation('/financement')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          Financement
+        </button>
+        <button 
+          onClick={() => handleNavigation('/a-propos')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          À propos
+        </button>
+        <button 
+          onClick={() => handleNavigation('/contact')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          Contact
+        </button>
+        <button className="text-white hover:text-opacity-70 transition-opacity">
+          <Globe className="h-5 w-5" />
+        </button>
+      </div>
+
       <Carousel 
         className="w-full h-full" 
         opts={{ loop: true, align: "start" }} 

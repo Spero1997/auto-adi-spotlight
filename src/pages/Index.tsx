@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import HeroScene3D from '@/components/HeroScene3D';
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { useLocation, useSearchParams, Link } from 'react-router-dom';
@@ -290,7 +288,7 @@ const Index = () => {
         "Écran tactile",
         "Navigation GPS",
         "Climatisation automatique",
-        "Si��ges en cuir",
+        "Siges en cuir",
         "Finition luxe"
       ]
     };
@@ -477,7 +475,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
       <main>
         {is3DMode ? (
           <HeroScene3D onComplete={handleIntroComplete} />
