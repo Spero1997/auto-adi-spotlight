@@ -10,7 +10,12 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { Globe } from 'lucide-react';
+import { Globe, Menu, Car, Settings, CreditCard, TruckIcon } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 // Images du carrousel
 const carImages = [
@@ -75,8 +80,70 @@ const HeroCarousel = () => {
         />
       </div>
 
-      {/* Navigation en superposition */}
-      <div className="absolute bottom-6 right-6 z-20 flex items-center gap-4">
+      {/* Burger menu pour mobile */}
+      <div className="absolute top-6 right-6 z-20 md:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="bg-white/80 hover:bg-white">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <div className="py-4 flex flex-col gap-4 mt-8">
+              <Link 
+                to="/vehicules/occasion" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <Car className="h-5 w-5" />
+                <span>Véhicules d'occasion</span>
+              </Link>
+              <Link 
+                to="/services" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <Settings className="h-5 w-5" />
+                <span>Services</span>
+              </Link>
+              <Link 
+                to="/financement" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <CreditCard className="h-5 w-5" />
+                <span>Financement</span>
+              </Link>
+              <Link 
+                to="/rachat" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <TruckIcon className="h-5 w-5" />
+                <span>Rachat de votre véhicule</span>
+              </Link>
+              <div className="border-t my-2"></div>
+              <Link 
+                to="/" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                Accueil
+              </Link>
+              <Link 
+                to="/a-propos" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                À propos
+              </Link>
+              <Link 
+                to="/contact" 
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                Contact
+              </Link>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Navigation en superposition - visible uniquement sur desktop */}
+      <div className="absolute bottom-6 right-6 z-20 hidden md:flex items-center gap-4">
         <button 
           onClick={() => handleNavigation('/')}
           className="text-white hover:text-opacity-70 transition-opacity font-medium"
@@ -112,6 +179,12 @@ const HeroCarousel = () => {
           className="text-white hover:text-opacity-70 transition-opacity font-medium"
         >
           Contact
+        </button>
+        <button 
+          onClick={() => handleNavigation('/rachat')}
+          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+        >
+          Rachat
         </button>
         <button className="text-white hover:text-opacity-70 transition-opacity">
           <Globe className="h-5 w-5" />
