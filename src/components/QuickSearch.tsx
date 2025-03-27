@@ -14,7 +14,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const QuickSearch = () => {
+type QuickSearchProps = {
+  insideHero?: boolean;
+};
+
+const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { language, translate } = useLanguage();
@@ -223,7 +227,7 @@ const QuickSearch = () => {
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} -mt-10 mb-16`}>
+    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} ${insideHero ? '' : '-mt-10 mb-16'}`}>
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1 w-full">
           <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>
