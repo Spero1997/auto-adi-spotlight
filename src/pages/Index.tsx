@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import HeroScene3D from '@/components/HeroScene3D';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -6,7 +5,6 @@ import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
-import CallToAction from '@/components/CallToAction';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
@@ -23,13 +21,11 @@ const Index = () => {
   const [introCompleted, setIntroCompleted] = useState(false);
   
   useEffect(() => {
-    // Vérifier si l'utilisateur a déjà vu l'intro 3D
     const hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
     if (hasSeenIntro) {
       setIs3DMode(false);
       setIntroCompleted(true);
     } else {
-      // Ajouter un timer pour passer au mode normal après 10 secondes
       const timer = setTimeout(() => {
         setIs3DMode(false);
         sessionStorage.setItem('hasSeenIntro', 'true');
@@ -39,11 +35,9 @@ const Index = () => {
   }, []);
   
   useEffect(() => {
-    // Réinitialiser les deux catalogues
     resetCatalog('all');
     toast.success("Les catalogues ont été réinitialisés");
     
-    // Ajouter la Jeep Compass au catalogue vedette avec la nouvelle image
     const jeepCompass = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Jeep",
@@ -52,7 +46,7 @@ const Index = () => {
       mileage: 66000,
       fuelType: "Essence",
       price: 12000,
-      image: "/lovable-uploads/095b7466-7c2a-479c-861c-ebf3e0234239.png", // Lien Facebook unique de la Jeep
+      image: "/lovable-uploads/095b7466-7c2a-479c-861c-ebf3e0234239.png",
       description: "Modalités de paiement\n • Acompte : 20 % à la commande\n • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)\n • Offre spéciale : -10 % pour paiement comptant à la commande\nNos services inclus :\n • Délai de rétractation : 14 jours (Satisfait ou remboursé)\n • Facilité de paiement : Payable comptant ou en mensualités sans intérêt.\n • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !\nGarantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.",
       exteriorColor: "Bleu",
       interiorColor: "Noir",
@@ -60,7 +54,7 @@ const Index = () => {
       engine: "1.3 T4 PHEV 4Xe 240ch",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/1671QH1TxG/?mibextid=wwXIfr", // Lien Facebook unique de la Jeep
+      fbLink: "https://www.facebook.com/share/p/1671QH1TxG/?mibextid=wwXIfr",
       features: [
         "Système hybride rechargeable",
         "4 roues motrices",
@@ -75,7 +69,6 @@ const Index = () => {
     addImportedVehicle(jeepCompass, 'featured');
     toast.success("Jeep Compass ajoutée au catalogue vedette");
     
-    // Ajouter la Porsche Panamera au catalogue vedette avec son lien Facebook unique
     const porschePanamera = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Porsche",
@@ -91,14 +84,14 @@ const Index = () => {
       engine: "2.9 V6 E-Hybrid",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/1HhP4ZJ2mC/?mibextid=wwXIfr", // Lien Facebook corrigé et unique
+      fbLink: "https://www.facebook.com/share/p/1HhP4ZJ2mC/?mibextid=wwXIfr",
       images: [
         "/lovable-uploads/5b0ac084-9fbd-4a0d-aab9-ca973c04ab9e.png", 
         "/lovable-uploads/30950546-1b7b-4f41-a34b-8a334b23cdb4.png",
         "/lovable-uploads/5292dbd1-9c95-4d0e-90db-04172cf64db6.png",
         "/lovable-uploads/2e0556f3-89ce-4f00-85bd-dbfafda58599.png"
       ],
-      image: "/lovable-uploads/5b0ac084-9fbd-4a0d-aab9-ca973c04ab9e.png", // Image principale
+      image: "/lovable-uploads/5b0ac084-9fbd-4a0d-aab9-ca973c04ab9e.png",
       features: [
         "Hybride rechargeable",
         "Écran tactile",
@@ -113,7 +106,6 @@ const Index = () => {
     addImportedVehicle(porschePanamera, 'featured');
     toast.success("Porsche Panamera ajoutée au catalogue vedette");
     
-    // Ajouter la BMW X6 au catalogue vedette avec son lien Facebook unique corrigé
     const bmwX6 = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "BMW",
@@ -129,14 +121,14 @@ const Index = () => {
       engine: "245 CV",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/1RhcruSxuk/?mibextid=wwXIfr", // Lien Facebook corrigé et unique
+      fbLink: "https://www.facebook.com/share/p/1RhcruSxuk/?mibextid=wwXIfr",
       images: [
         "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
         "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
         "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
         "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png"
       ],
-      image: "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png", // Image principale
+      image: "/lovable-uploads/3039077e-1e13-41c6-8c3d-f15276d09415.png",
       features: [
         "SUV coupé",
         "Transmission intégrale",
@@ -151,7 +143,6 @@ const Index = () => {
     addImportedVehicle(bmwX6, 'featured');
     toast.success("BMW X6 ajoutée au catalogue vedette");
     
-    // Ajouter l'Audi E-tron au catalogue vedette avec son lien Facebook unique corrigé
     const audiEtron = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Audi",
@@ -167,8 +158,8 @@ const Index = () => {
       engine: "95 KWh 55 Sportback QUATTRO",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/1HWXvRRcRr/?mibextid=wwXIfr", // Lien Facebook corrigé
-      image: "/lovable-uploads/3c524853-d7e0-4c6c-9b24-a8aae8dec66e.png", // Image téléchargée
+      fbLink: "https://www.facebook.com/share/p/1HWXvRRcRr/?mibextid=wwXIfr",
+      image: "/lovable-uploads/3c524853-d7e0-4c6c-9b24-a8aae8dec66e.png",
       features: [
         "SUV électrique",
         "Transmission intégrale QUATTRO",
@@ -183,7 +174,6 @@ const Index = () => {
     addImportedVehicle(audiEtron, 'featured');
     toast.success("Audi E-tron ajoutée au catalogue vedette");
     
-    // Ajouter le Range Rover Evoque au catalogue vedette avec son lien Facebook unique corrigé
     const rangeRoverEvoque = {
       id: `vehicle-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Range Rover",
@@ -199,8 +189,8 @@ const Index = () => {
       engine: "2.0 TD4",
       featured: true,
       catalogType: 'featured' as 'standard' | 'featured',
-      fbLink: "https://www.facebook.com/share/p/1BNJdfLvts/?mibextid=wwXIfr", // Lien Facebook corrigé
-      image: "/lovable-uploads/5a883e3e-42cb-4514-bb8d-df84b1dd553e.png", // Image du Range Rover
+      fbLink: "https://www.facebook.com/share/p/1BNJdfLvts/?mibextid=wwXIfr",
+      image: "/lovable-uploads/5a883e3e-42cb-4514-bb8d-df84b1dd553e.png",
       features: [
         "SUV compact de luxe",
         "Transmission intégrale",
@@ -215,7 +205,6 @@ const Index = () => {
     addImportedVehicle(rangeRoverEvoque, 'featured');
     toast.success("Range Rover Evoque ajoutée au catalogue vedette");
     
-    // Ajouter l'Audi Q3 Sportback au catalogue standard
     const audiQ3Sportback = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Audi",
@@ -247,7 +236,6 @@ const Index = () => {
     addImportedVehicle(audiQ3Sportback, 'standard');
     toast.success("Audi Q3 Sportback ajoutée au catalogue standard");
     
-    // Ajouter l'Audi A4 au catalogue standard
     const audiA4 = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Audi",
@@ -279,7 +267,6 @@ const Index = () => {
     addImportedVehicle(audiA4, 'standard');
     toast.success("Audi A4 ajoutée au catalogue standard");
     
-    // Ajouter la BMW 518 au catalogue standard
     const bmw518 = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "BMW",
@@ -303,7 +290,7 @@ const Index = () => {
         "Écran tactile",
         "Navigation GPS",
         "Climatisation automatique",
-        "Sièges en cuir",
+        "Si��ges en cuir",
         "Finition luxe"
       ]
     };
@@ -311,7 +298,6 @@ const Index = () => {
     addImportedVehicle(bmw518, 'standard');
     toast.success("BMW 518 ajoutée au catalogue standard");
     
-    // Ajouter la Volkswagen Polo au catalogue standard
     const volkswagenPolo = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Volkswagen",
@@ -343,7 +329,6 @@ const Index = () => {
     addImportedVehicle(volkswagenPolo, 'standard');
     toast.success("Volkswagen Polo ajoutée au catalogue standard");
     
-    // Ajouter la BMW X1 au catalogue standard
     const bmwX1 = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "BMW",
@@ -375,7 +360,6 @@ const Index = () => {
     addImportedVehicle(bmwX1, 'standard');
     toast.success("BMW X1 ajoutée au catalogue standard");
     
-    // Ajouter la Mercedes Benz B180 au catalogue standard
     const mercedesB180 = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Mercedes",
@@ -407,7 +391,6 @@ const Index = () => {
     addImportedVehicle(mercedesB180, 'standard');
     toast.success("Mercedes Benz B180 ajoutée au catalogue standard");
     
-    // Ajouter l'Audi A6 Avant au catalogue standard
     const audiA6Avant = {
       id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       brand: "Audi",
@@ -439,7 +422,6 @@ const Index = () => {
     addImportedVehicle(audiA6Avant, 'standard');
     toast.success("Audi A6 Avant ajoutée au catalogue standard");
     
-    // Vérifier les catalogues après réinitialisation
     try {
       const standardVehicles = getImportedVehicles('standard');
       const featuredVehicles = getImportedVehicles('featured');
@@ -449,7 +431,6 @@ const Index = () => {
       console.error("Erreur lors du chargement des véhicules:", error);
     }
     
-    // Check if there are search parameters in the URL
     if (searchParams.toString()) {
       console.log('Found search parameters:', {
         marque: searchParams.get('marque'),
@@ -458,11 +439,9 @@ const Index = () => {
         energie: searchParams.get('energie')
       });
       
-      // Si des paramètres de recherche sont présents, passons en mode normal
       setIs3DMode(false);
       setIntroCompleted(true);
       
-      // Scroll to FeaturedCars section as it would display search results
       const featuredCarsElement = document.getElementById('featured-cars');
       if (featuredCarsElement) {
         setTimeout(() => {
@@ -471,19 +450,16 @@ const Index = () => {
       }
     }
     
-    // Check for the catalog parameter and pre-load if necessary
     const catalogId = searchParams.get('catalog');
     if (catalogId) {
       const catalogType = searchParams.get('type') || 'standard';
       console.log(`Catalog found in URL: ${catalogId}, type: ${catalogType}, will pre-load vehicles`);
       
-      // Si un paramètre de catalogue est présent, passons en mode normal
       setIs3DMode(false);
       setIntroCompleted(true);
     }
   }, [searchParams]);
   
-  // Handler pour quand l'intro 3D est terminée
   const handleIntroComplete = () => {
     setIntroCompleted(true);
     setTimeout(() => {
@@ -492,7 +468,6 @@ const Index = () => {
     }, 2000);
   };
   
-  // Extract search params to pass to FeaturedCars
   const searchFilters = {
     brand: searchParams.get('marque') || '',
     model: searchParams.get('modele') || '',
@@ -510,7 +485,6 @@ const Index = () => {
           <HeroCarousel />
         )}
         
-        {/* Afficher seulement le reste du contenu une fois l'intro terminée */}
         {(!is3DMode || introCompleted) && (
           <>
             <div className="container mx-auto px-4 relative z-10">
@@ -521,7 +495,6 @@ const Index = () => {
               <FeaturedCars featuredOnly={true} />
             </div>
             
-            {/* Bouton Tous nos véhicules d'occasion */}
             <div className="container mx-auto px-4 py-8 text-center">
               <Link to="/vehicules/occasion">
                 <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
@@ -531,7 +504,6 @@ const Index = () => {
               </Link>
             </div>
             
-            {/* This section shows standard vehicles or search results */}
             {searchParams.toString() ? (
               <div className="mt-10">
                 <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
@@ -541,7 +513,6 @@ const Index = () => {
             <div id="testimonials">
               <TestimonialSection />
             </div>
-            <CallToAction />
           </>
         )}
       </main>
