@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe, Truck, MapPin, Phone } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,7 +30,6 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState(0);
   const [currentLanguage, setCurrentLanguage] = useState<Language>('FR');
-  const [isScrolled, setIsScrolled] = useState(false);
 
   // Load language preference from localStorage on component mount
   useEffect(() => {
@@ -39,19 +37,6 @@ const Header = () => {
     if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
       setCurrentLanguage(savedLanguage as Language);
     }
-
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    
-    // Set initial value
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   const toggleMenu = () => {
@@ -205,192 +190,67 @@ const Header = () => {
       'IT': 'Carrello',
       'PT': 'Carrinho',
       'RO': 'Coș'
-    },
-    'contact': {
-      'FR': 'Contact',
-      'EN': 'Contact',
-      'ES': 'Contacto',
-      'IT': 'Contatto',
-      'PT': 'Contato',
-      'RO': 'Contact'
     }
   };
 
-  // Translation for top info bar
-  const infoTranslations: Record<Language, { 
-    location: string,
-    phone: string,
-    promotion: string
-  }> = {
-    'FR': { 
-      location: 'Notre showroom', 
-      phone: 'Appelez-nous', 
-      promotion: 'Livraison gratuite à partir de 500 Dh'
-    },
-    'EN': { 
-      location: 'Our showroom', 
-      phone: 'Call us', 
-      promotion: 'Free shipping from 500 Dh'
-    },
-    'ES': { 
-      location: 'Nuestro showroom', 
-      phone: 'Llámanos', 
-      promotion: 'Envío gratis a partir de 500 Dh'
-    },
-    'IT': { 
-      location: 'Il nostro showroom', 
-      phone: 'Chiamaci', 
-      promotion: 'Spedizione gratuita da 500 Dh'
-    },
-    'PT': { 
-      location: 'Nosso showroom', 
-      phone: 'Ligue para nós', 
-      promotion: 'Envio gratuito a partir de 500 Dh'
-    },
-    'RO': { 
-      location: 'Showroom-ul nostru', 
-      phone: 'Sunați-ne', 
-      promotion: 'Livrare gratuită de la 500 Dh'
-    }
+  // Translation for free shipping banner
+  const shippingTranslations: Record<Language, { text: string, amount: string }> = {
+    'FR': { text: 'Livraison gratuite à partir de', amount: '500 Dh' },
+    'EN': { text: 'Free shipping from', amount: '500 Dh' },
+    'ES': { text: 'Envío gratis a partir de', amount: '500 Dh' },
+    'IT': { text: 'Spedizione gratuita da', amount: '500 Dh' },
+    'PT': { text: 'Envio gratuito a partir de', amount: '500 Dh' },
+    'RO': { text: 'Livrare gratuită de la', amount: '500 Dh' }
   };
 
   return (
-    <header className={cn(
-      "w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      isScrolled ? "bg-white shadow-md" : "bg-transparent"
-    )}>
-      {/* Top info bar */}
-      <div className="w-full bg-brand-blue text-white py-2 hidden md:block">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-4 w-4" />
-              <span className="text-sm">
-                {infoTranslations[currentLanguage].location}: Casa, Maroc
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Phone className="h-4 w-4" />
-              <span className="text-sm">
-                {infoTranslations[currentLanguage].phone}: +212 522 000 000
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <Truck className="h-4 w-4" />
-              <span className="text-sm">
-                {infoTranslations[currentLanguage].promotion}
-              </span>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="text-white hover:text-white/80 p-0"
-                >
-                  <Globe className="h-4 w-4 mr-1" />
-                  <span className="text-sm">{languageFlags[currentLanguage]}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="mt-1">
-                <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
-                  🇫🇷 Français
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
-                  🇬🇧 English
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
-                  🇪🇸 Español
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
-                  🇮🇹 Italiano
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
-                  🇵🇹 Português
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
-                  🇷🇴 Română
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+    <header className="w-full">
+      {/* Top banner notification */}
+      <div className="w-full bg-black text-white py-3">
+        <div className="container mx-auto px-4 flex justify-center items-center">
+          <Truck className="h-5 w-5 mr-2" />
+          <span className="text-sm md:text-base">
+            {shippingTranslations[currentLanguage].text}{' '}
+            <span className="font-bold">{shippingTranslations[currentLanguage].amount}</span>
+          </span>
         </div>
       </div>
       
       {/* Main header */}
-      <div className={cn(
-        "w-full transition-colors duration-300", 
-        isScrolled ? "bg-white" : "bg-white/90 backdrop-blur-sm"
-      )}>
+      <div className="w-full bg-gray-300">
         <div className="container px-4 mx-auto">
           {/* Main navigation */}
           <nav className="flex justify-between items-center py-4">
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleMenu}
+                className="p-2 rounded-md text-gray-800 hover:text-brand-blue focus:outline-none"
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
+            
             {/* Logo */}
             <button 
               onClick={() => handleNavigation('/')} 
-              className="flex items-center"
+              className="flex items-center mx-auto lg:mx-0"
             >
               <img 
                 src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
                 alt="Auto Adi" 
-                className="h-10 md:h-12"
+                className="h-12"
               />
             </button>
 
-            {/* Desktop navigation links */}
-            <div className="hidden lg:flex items-center space-x-6">
-              <Button 
-                variant="ghost" 
-                className="px-2 py-2 text-gray-800 hover:text-brand-blue font-medium"
-                onClick={() => handleNavigation('/vehicules/occasion')}
-              >
-                {getTranslation('vehicles', currentLanguage, menuTranslations)}
-              </Button>
-
-              <Button 
-                variant="ghost" 
-                className="px-2 py-2 text-gray-800 hover:text-brand-blue font-medium"
-                onClick={() => handleNavigation('/services')}
-              >
-                {getTranslation('services', currentLanguage, menuTranslations)}
-              </Button>
-
-              <Button 
-                variant="ghost" 
-                className="px-2 py-2 text-gray-800 hover:text-brand-blue font-medium"
-                onClick={() => handleNavigation('/financement')}
-              >
-                {getTranslation('financing', currentLanguage, menuTranslations)}
-              </Button>
-
-              <Button 
-                variant="ghost" 
-                className="px-2 py-2 text-gray-800 hover:text-brand-blue font-medium"
-                onClick={() => handleNavigation('/rachat')}
-              >
-                {getTranslation('buyback', currentLanguage, menuTranslations)}
-              </Button>
-
-              <Button 
-                variant="ghost" 
-                className="px-2 py-2 text-gray-800 hover:text-brand-blue font-medium"
-                onClick={() => handleNavigation('/a-propos')}
-              >
-                {getTranslation('about', currentLanguage, menuTranslations)}
-              </Button>
-              
-              <Button 
-                variant="ghost" 
-                className="px-2 py-2 text-gray-800 hover:text-brand-blue font-medium"
-                onClick={() => handleNavigation('/contact')}
-              >
-                {getTranslation('contact', currentLanguage, menuTranslations)}
-              </Button>
-            </div>
-
-            {/* Search, Cart, hamburger (Right side) */}
+            {/* Search, Cart, Language (Right side) */}
             <div className="flex items-center gap-2">
               {/* Search Button */}
               <Button
@@ -399,8 +259,43 @@ const Header = () => {
                 onClick={() => navigate('/search')}
                 className="text-gray-800 hover:text-brand-blue"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-6 w-6" />
               </Button>
+              
+              {/* Language Dropdown - Desktop Only */}
+              <div className="hidden lg:block">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="text-gray-800 hover:text-brand-blue"
+                    >
+                      <Globe className="h-6 w-6" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
+                      🇫🇷 Français
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
+                      🇬🇧 English
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
+                      🇪🇸 Español
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
+                      🇮🇹 Italiano
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
+                      🇵🇹 Português
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
+                      🇷🇴 Română
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
               
               {/* Cart Button */}
               <Button 
@@ -409,42 +304,73 @@ const Header = () => {
                 className="text-gray-800 hover:text-brand-blue relative"
                 onClick={handleCartClick}
               >
-                <ShoppingCart className="h-5 w-5" /> 
+                <ShoppingCart className="h-6 w-6" /> 
                 {cartItems > 0 && (
                   <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {cartItems}
                   </span>
                 )}
               </Button>
-              
-              {/* Mobile menu button */}
-              <div className="lg:hidden">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleMenu}
-                  className="p-2 rounded-md text-gray-800 hover:text-brand-blue focus:outline-none"
-                  aria-expanded={isMenuOpen}
-                >
-                  {isMenuOpen ? (
-                    <X className="h-6 w-6" />
-                  ) : (
-                    <Menu className="h-6 w-6" />
-                  )}
-                </Button>
-              </div>
-              
-              {/* Contact button on desktop */}
-              <div className="hidden lg:block">
-                <Button 
-                  className="bg-brand-orange hover:bg-brand-lightOrange text-white"
-                  onClick={() => handleNavigation('/contact')}
-                >
-                  Contactez-nous
-                </Button>
-              </div>
             </div>
           </nav>
+        </div>
+      </div>
+
+      {/* Desktop menu - Hidden on mobile */}
+      <div className="hidden lg:block bg-white border-b">
+        <div className="container px-4 mx-auto">
+          <div className="flex justify-center items-center py-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+                >
+                  {getTranslation('vehicles', currentLanguage, menuTranslations)} <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/occasion')}>
+                  {getTranslation('usedVehicles', currentLanguage, menuTranslations)}
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/utilitaires')}>
+                  {getTranslation('commercialVehicles', currentLanguage, menuTranslations)}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/services')}
+            >
+              {getTranslation('services', currentLanguage, menuTranslations)}
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/financement')}
+            >
+              {getTranslation('financing', currentLanguage, menuTranslations)}
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/rachat')}
+            >
+              {getTranslation('buyback', currentLanguage, menuTranslations)}
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/a-propos')}
+            >
+              {getTranslation('about', currentLanguage, menuTranslations)}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -540,85 +466,68 @@ const Header = () => {
             >
               {getTranslation('about', currentLanguage, menuTranslations)}
             </Button>
-            
-            <Button
-              variant="ghost"
-              onClick={() => handleNavigation('/contact')}
-              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-            >
-              {getTranslation('contact', currentLanguage, menuTranslations)}
-            </Button>
 
-            {/* Mobile contact info */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <div className="flex items-center space-x-2 py-2">
-                <MapPin className="h-5 w-5 text-brand-blue" />
-                <span className="text-sm">Casa, Maroc</span>
-              </div>
-              <div className="flex items-center space-x-2 py-2">
-                <Phone className="h-5 w-5 text-brand-blue" />
-                <span className="text-sm">+212 522 000 000</span>
-              </div>
-              
-              {/* Language selector (Mobile) */}
-              <div className="mt-4">
-                <div
-                  className="flex items-center px-3 py-2 text-base font-medium text-gray-700"
-                >
+            {/* Langue (Mobile) */}
+            <div>
+              <Button
+                variant="ghost"
+                className="w-full flex justify-between items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                onClick={() => toggleDropdown('language-mobile')}
+                aria-expanded={activeDropdown === 'language-mobile'}
+                aria-haspopup="true"
+              >
+                <span className="flex items-center">
                   <Globe className="mr-3 h-5 w-5 text-brand-blue" />
                   {getTranslation('language', currentLanguage, menuTranslations)} ({languageFlags[currentLanguage]})
-                </div>
-                <div className="pl-10 mt-1 space-y-1 flex flex-wrap gap-2">
+                </span>
+                <ChevronDown className="h-5 w-5" />
+              </Button>
+              {activeDropdown === 'language-mobile' && (
+                <div className="pl-10 mt-1 space-y-1">
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
                     onClick={() => handleLanguageChange('FR')}
-                    className="text-xs"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    🇫🇷 FR
+                    🇫🇷 Français
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
                     onClick={() => handleLanguageChange('EN')}
-                    className="text-xs"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    🇬🇧 EN
+                    🇬🇧 English
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
                     onClick={() => handleLanguageChange('ES')}
-                    className="text-xs"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    🇪🇸 ES
+                    🇪🇸 Español
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
                     onClick={() => handleLanguageChange('IT')}
-                    className="text-xs"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    🇮🇹 IT
+                    🇮🇹 Italiano
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
                     onClick={() => handleLanguageChange('PT')}
-                    className="text-xs"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    🇵🇹 PT
+                    🇵🇹 Português
                   </Button>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="ghost"
                     onClick={() => handleLanguageChange('RO')}
-                    className="text-xs"
+                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    🇷🇴 RO
+                    🇷🇴 Română
                   </Button>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </nav>

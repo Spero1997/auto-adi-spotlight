@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
-import Hero from '@/components/Hero';
+import HeroCarousel from '@/components/HeroCarousel';
+import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
@@ -50,7 +51,11 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
-        <Hero />
+        <HeroCarousel />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <QuickSearch />
+        </div>
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
           <FeaturedCars featuredOnly={true} />
