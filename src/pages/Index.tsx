@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
@@ -12,6 +11,7 @@ import Footer from '@/components/Footer';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import PaymentOptions from '@/components/PaymentOptions';
 import { useLanguage } from '@/contexts/LanguageContext';
+import Hero from '@/components/Hero';
 
 const Index = () => {
   const { language } = useLanguage();
@@ -51,9 +51,9 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main>
-        <HeroCarousel />
+        <Hero />
         
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-4 relative z-10 -mt-20">
           <QuickSearch />
         </div>
         <ConditionsHighlight />
