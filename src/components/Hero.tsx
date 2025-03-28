@@ -7,14 +7,16 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Hero = () => {
   const { translate } = useLanguage();
   const navigate = useNavigate();
-  const [selectedVehicleType, setSelectedVehicleType] = useState<'homme' | 'femme' | null>(null);
+  const [selectedVehicleType, setSelectedVehicleType] = useState<'sedan' | 'suv' | 'compact' | null>(null);
 
-  const handleVehicleTypeClick = (type: 'homme' | 'femme') => {
+  const handleVehicleTypeClick = (type: 'sedan' | 'suv' | 'compact') => {
     setSelectedVehicleType(type);
     
-    // Naviguer vers la page appropriée
-    if (type === 'homme') {
-      navigate('/vehicules/occasion?categories=berline,suv');
+    // Navigate to the appropriate page
+    if (type === 'sedan') {
+      navigate('/vehicules/occasion?categories=berline');
+    } else if (type === 'suv') {
+      navigate('/vehicules/occasion?categories=suv');
     } else {
       navigate('/vehicules/occasion?categories=citadine,compacte');
     }
@@ -22,47 +24,54 @@ const Hero = () => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Image de fond */}
+      {/* Background image */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{ 
-          backgroundImage: "url('/lovable-uploads/4823ca5c-e9d1-4587-af3e-99002b7b76ad.png')",
-          filter: "brightness(0.85)"
+          backgroundImage: "url('/lovable-uploads/2a03c911-dfae-4186-b265-5b9977a7b1cb.png')",
+          filter: "brightness(0.75)"
         }}
       />
       
-      {/* Contenu du hero */}
+      {/* Hero content */}
       <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
         <div className="max-w-3xl">
-          {/* Titre principal avec mise en évidence */}
+          {/* Main title with highlight */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Exigez <span className="text-yellow-400">la compétence</span>,<br />
-            même en uniforme.
+            Trouvez la <span className="text-yellow-400">voiture d'occasion</span><br />
+            de vos rêves.
           </h1>
           
-          {/* Sous-titre */}
+          {/* Subtitle */}
           <div className="text-white text-xl md:text-2xl mb-10">
-            <p className="mb-2">Qualité, Confort et Style.</p>
+            <p className="mb-2">Large choix de véhicules. Prix compétitifs.</p>
             <p>
-              Pour vous accompagner là où la compétence est<br />
-              le reflet de votre engagement.
+              Garantie et financement disponibles<br />
+              pour votre prochaine voiture.
             </p>
           </div>
           
-          {/* Boutons d'action */}
+          {/* Action buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
             <Button 
-              onClick={() => handleVehicleTypeClick('homme')}
+              onClick={() => handleVehicleTypeClick('sedan')}
               className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-6 rounded-md font-bold text-lg"
             >
-              POUR HOMME
+              BERLINES
             </Button>
             
             <Button 
-              onClick={() => handleVehicleTypeClick('femme')}
+              onClick={() => handleVehicleTypeClick('suv')}
               className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-6 rounded-md font-bold text-lg"
             >
-              POUR FEMME
+              SUV & CROSSOVERS
+            </Button>
+            
+            <Button 
+              onClick={() => handleVehicleTypeClick('compact')}
+              className="bg-white hover:bg-gray-100 text-gray-900 px-8 py-6 rounded-md font-bold text-lg"
+            >
+              CITADINES
             </Button>
           </div>
         </div>
