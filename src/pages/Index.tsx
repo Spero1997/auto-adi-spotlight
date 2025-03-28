@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
@@ -15,6 +16,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Index = () => {
   const { language } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('credit_card');
+  const [couponCode, setCouponCode] = useState('');
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +33,19 @@ const Index = () => {
     // Remove event listener on cleanup
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handlePaymentMethodChange = (method: string) => {
+    setSelectedPaymentMethod(method);
+  };
+
+  const handleCouponCodeChange = (code: string) => {
+    setCouponCode(code);
+  };
+
+  const handlePaymentProofChange = (file: File | null) => {
+    console.log('Payment proof file:', file);
+    // Handle the payment proof file
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -49,7 +65,12 @@ const Index = () => {
         <TestimonialSection />
         <CallToAction />
         <Brands />
-        <PaymentOptions />
+        <PaymentOptions 
+          price={1000}
+          onPaymentMethodChange={handlePaymentMethodChange}
+          onCouponCodeChange={handleCouponCodeChange}
+          onPaymentProofChange={handlePaymentProofChange}
+        />
       </main>
       <Footer />
     </div>

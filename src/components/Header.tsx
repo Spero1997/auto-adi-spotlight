@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
 export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
 
@@ -193,24 +193,133 @@ const Header = () => {
     }
   };
 
-  return (
-    <header className="w-full bg-white shadow-md">
-      <div className="container px-4 mx-auto">
-        {/* Main navigation */}
-        <nav className="flex justify-between items-center py-4">
-          <button 
-            onClick={() => handleNavigation('/')} 
-            className="flex items-center"
-          >
-            <img 
-              src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
-              alt="Auto Adi" 
-              className="h-12"
-            />
-          </button>
+  // Translation for free shipping banner
+  const shippingTranslations: Record<Language, { text: string, amount: string }> = {
+    'FR': { text: 'Livraison gratuite à partir de', amount: '500 Dh' },
+    'EN': { text: 'Free shipping from', amount: '500 Dh' },
+    'ES': { text: 'Envío gratis a partir de', amount: '500 Dh' },
+    'IT': { text: 'Spedizione gratuita da', amount: '500 Dh' },
+    'PT': { text: 'Envio gratuito a partir de', amount: '500 Dh' },
+    'RO': { text: 'Livrare gratuită de la', amount: '500 Dh' }
+  };
 
-          {/* Desktop menu */}
-          <div className="hidden lg:flex items-center gap-1">
+  return (
+    <header className="w-full">
+      {/* Top banner notification */}
+      <div className="w-full bg-black text-white py-3">
+        <div className="container mx-auto px-4 flex justify-center items-center">
+          <Truck className="h-5 w-5 mr-2" />
+          <span className="text-sm md:text-base">
+            {shippingTranslations[currentLanguage].text}{' '}
+            <span className="font-bold">{shippingTranslations[currentLanguage].amount}</span>
+          </span>
+        </div>
+      </div>
+      
+      {/* Main header */}
+      <div className="w-full bg-gray-300">
+        <div className="container px-4 mx-auto">
+          {/* Main navigation */}
+          <nav className="flex justify-between items-center py-4">
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleMenu}
+                className="p-2 rounded-md text-gray-800 hover:text-brand-blue focus:outline-none"
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </Button>
+            </div>
+            
+            {/* Logo */}
+            <button 
+              onClick={() => handleNavigation('/')} 
+              className="flex items-center mx-auto lg:mx-0"
+            >
+              <img 
+                src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
+                alt="Auto Adi" 
+                className="h-12"
+              />
+            </button>
+
+            {/* Search, Cart, Language (Right side) */}
+            <div className="flex items-center gap-2">
+              {/* Search Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate('/search')}
+                className="text-gray-800 hover:text-brand-blue"
+              >
+                <Search className="h-6 w-6" />
+              </Button>
+              
+              {/* Language Dropdown - Desktop Only */}
+              <div className="hidden lg:block">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="text-gray-800 hover:text-brand-blue"
+                    >
+                      <Globe className="h-6 w-6" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
+                      🇫🇷 Français
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
+                      🇬🇧 English
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
+                      🇪🇸 Español
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
+                      🇮🇹 Italiano
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
+                      🇵🇹 Português
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
+                      🇷🇴 Română
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              
+              {/* Cart Button */}
+              <Button 
+                variant="ghost"
+                size="icon"
+                className="text-gray-800 hover:text-brand-blue relative"
+                onClick={handleCartClick}
+              >
+                <ShoppingCart className="h-6 w-6" /> 
+                {cartItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItems}
+                  </span>
+                )}
+              </Button>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+      {/* Desktop menu - Hidden on mobile */}
+      <div className="hidden lg:block bg-white border-b">
+        <div className="container px-4 mx-auto">
+          <div className="flex justify-center items-center py-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -262,91 +371,7 @@ const Header = () => {
               {getTranslation('about', currentLanguage, menuTranslations)}
             </Button>
           </div>
-
-          {/* Cart and Language buttons (Desktop) */}
-          <div className="hidden lg:flex items-center gap-2">
-            {/* Language Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="flex items-center border-gray-300"
-                >
-                  <Globe className="h-4 w-4 mr-1" /> {languageFlags[currentLanguage]} {currentLanguage}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
-                  🇫🇷 Français
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
-                  🇬🇧 English
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
-                  🇪🇸 Español
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
-                  🇮🇹 Italiano
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
-                  🇵🇹 Português
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
-                  🇷🇴 Română
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            
-            {/* Cart Button */}
-            <Button 
-              variant="outline"
-              size="sm"
-              className="flex items-center border-gray-300 relative"
-              onClick={handleCartClick}
-            >
-              <ShoppingCart className="h-4 w-4 mr-1" /> 
-              {getTranslation('cart', currentLanguage, menuTranslations)}
-              {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItems}
-                </span>
-              )}
-            </Button>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="lg:hidden flex items-center gap-2">
-            {/* Cart Button (Mobile) */}
-            <Button 
-              variant="ghost"
-              size="icon"
-              className="relative"
-              onClick={handleCartClick}
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItems}
-                </span>
-              )}
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleMenu}
-              className="p-2 rounded-md text-gray-800 hover:text-brand-blue focus:outline-none"
-              aria-expanded={isMenuOpen}
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </Button>
-          </div>
-        </nav>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -512,4 +537,3 @@ const Header = () => {
 };
 
 export default Header;
-
