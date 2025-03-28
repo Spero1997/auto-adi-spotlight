@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,11 +13,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-type QuickSearchProps = {
-  insideHero?: boolean;
-};
-
-const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
+const QuickSearch = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { language, translate } = useLanguage();
@@ -54,7 +49,6 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
     volvo: ['S60', 'S90', 'V60', 'V90', 'XC40', 'XC60', 'XC90'],
   };
 
-  // Traductions pour l'interface
   const translations = {
     quickSearch: {
       FR: "Recherche rapide",
@@ -196,7 +190,6 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
   };
 
   const handleSearch = () => {
-    // Check if at least one filter is selected
     if (!selectedBrand && !selectedModel && !selectedBudget && !selectedFuel) {
       toast.warning(translate('searchWarning', translations.searchWarning), {
         duration: 3000,
@@ -222,12 +215,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       fuel: selectedFuel
     });
     
-    // Correction: Navigate to the vehicules/occasion page with parameters instead of just /vehicules
     navigate(`/vehicules/occasion?${searchParams.toString()}`);
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} ${insideHero ? '' : '-mt-10 mb-16'}`}>
+    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} -mt-10 mb-16`}>
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1 w-full">
           <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>

@@ -16,7 +16,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import QuickSearch from './QuickSearch';
 
 // Images du carrousel
 const carImages = [
@@ -249,7 +248,7 @@ const HeroCarousel = () => {
       </Carousel>
 
       {/* Indicateurs de pagination améliorés */}
-      <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {carImages.map((_, index) => (
           <button
             key={index}
@@ -265,13 +264,6 @@ const HeroCarousel = () => {
             aria-label={`Voir l'image ${index + 1}`}
           />
         ))}
-      </div>
-      
-      {/* Intégration du QuickSearch en bas du hero */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
-        <div className="container mx-auto px-4">
-          <QuickSearch insideHero={true} />
-        </div>
       </div>
     </div>
   );
