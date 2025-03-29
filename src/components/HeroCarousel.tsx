@@ -16,7 +16,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import QuickSearch from './QuickSearch';
 
 // Images du carrousel
 const carImages = [
@@ -265,13 +264,6 @@ const HeroCarousel = () => {
             aria-label={`Voir l'image ${index + 1}`}
           />
         ))}
-      </div>
-      
-      {/* Intégration du QuickSearch en bas du hero */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
-        <div className="container mx-auto px-4">
-          <QuickSearch insideHero={true} />
-        </div>
       </div>
     </div>
   );

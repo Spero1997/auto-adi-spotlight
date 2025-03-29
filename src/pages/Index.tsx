@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import HeroCarousel from '@/components/HeroCarousel';
+import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
@@ -446,6 +447,10 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <main>
         <HeroCarousel />
+        
+        <div className="container mx-auto px-4 -mt-10">
+          <QuickSearch />
+        </div>
         
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
