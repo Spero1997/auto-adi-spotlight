@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
@@ -449,7 +448,7 @@ const Index = () => {
       <main>
         <HeroCarousel />
         
-        <div className="container mx-auto px-4 -mt-2">
+        <div className="container mx-auto px-4 mt-16">
           <QuickSearch />
         </div>
         
