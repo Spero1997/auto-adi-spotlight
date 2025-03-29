@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
@@ -11,17 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
-
-export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
-
-// Create a context to manage language state throughout the app
-export const getTranslation = (
-  key: string, 
-  language: Language,
-  translations: Record<string, Record<Language, string>>
-) => {
-  return translations[key]?.[language] || translations[key]?.['FR'] || key;
-};
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,15 +18,8 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState(0);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('FR');
-
-  // Load language preference from localStorage on component mount
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
-      setCurrentLanguage(savedLanguage as Language);
-    }
-  }, []);
+  
+  const { language, setLanguage, translate } = useLanguage();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -52,12 +34,10 @@ const Header = () => {
   };
 
   const handleNavigation = (path: string) => {
-    // Fermer le menu mobile si ouvert
     if (isMenuOpen) {
       setIsMenuOpen(false);
     }
     
-    // Naviguer vers la page
     navigate(path);
   };
 
@@ -80,8 +60,7 @@ const Header = () => {
   };
 
   const handleLanguageChange = (lang: Language) => {
-    setCurrentLanguage(lang);
-    localStorage.setItem('preferredLanguage', lang);
+    setLanguage(lang);
     
     const messages: Record<Language, string> = {
       'FR': 'Le site est maintenant en Français',
@@ -109,20 +88,19 @@ const Header = () => {
     };
     
     toast({
-      title: cartMessages[currentLanguage].includes('cart') ? 'Cart' : 
-             cartMessages[currentLanguage].includes('carrito') ? 'Carrito' :
-             cartMessages[currentLanguage].includes('carrello') ? 'Carrello' :
-             cartMessages[currentLanguage].includes('coșul') ? 'Coș' : 'Panier',
-      description: cartMessages[currentLanguage],
+      title: cartMessages[language].includes('cart') ? 'Cart' : 
+             cartMessages[language].includes('carrito') ? 'Carrito' :
+             cartMessages[language].includes('carrello') ? 'Carrello' :
+             cartMessages[language].includes('coșul') ? 'Coș' : 'Panier',
+      description: cartMessages[language],
     });
   };
 
-  // Translations for menu items
   const menuTranslations: Record<string, Record<Language, string>> = {
     'vehicles': {
       'FR': 'Véhicules',
       'EN': 'Vehicles',
-      'ES': 'Vehículos',
+      'ES': 'Veh��culos',
       'IT': 'Veicoli',
       'PT': 'Veículos',
       'RO': 'Vehicule'
@@ -196,7 +174,6 @@ const Header = () => {
   return (
     <header className="w-full bg-white shadow-md">
       <div className="container px-4 mx-auto">
-        {/* Main navigation */}
         <nav className="flex justify-between items-center py-4">
           <button 
             onClick={() => handleNavigation('/')} 
@@ -209,7 +186,6 @@ const Header = () => {
             />
           </button>
 
-          {/* Desktop menu */}
           <div className="hidden lg:flex items-center gap-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -217,15 +193,15 @@ const Header = () => {
                   variant="ghost"
                   className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
                 >
-                  {getTranslation('vehicles', currentLanguage, menuTranslations)} <ChevronDown className="ml-1 h-4 w-4" />
+                  {translate('vehicles', menuTranslations.vehicles)} <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/occasion')}>
-                  {getTranslation('usedVehicles', currentLanguage, menuTranslations)}
+                  {translate('usedVehicles', menuTranslations.usedVehicles)}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/utilitaires')}>
-                  {getTranslation('commercialVehicles', currentLanguage, menuTranslations)}
+                  {translate('commercialVehicles', menuTranslations.commercialVehicles)}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -235,7 +211,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/services')}
             >
-              {getTranslation('services', currentLanguage, menuTranslations)}
+              {translate('services', menuTranslations.services)}
             </Button>
 
             <Button 
@@ -243,7 +219,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/financement')}
             >
-              {getTranslation('financing', currentLanguage, menuTranslations)}
+              {translate('financing', menuTranslations.financing)}
             </Button>
 
             <Button 
@@ -251,7 +227,7 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/rachat')}
             >
-              {getTranslation('buyback', currentLanguage, menuTranslations)}
+              {translate('buyback', menuTranslations.buyback)}
             </Button>
 
             <Button 
@@ -259,13 +235,11 @@ const Header = () => {
               className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
               onClick={() => handleNavigation('/a-propos')}
             >
-              {getTranslation('about', currentLanguage, menuTranslations)}
+              {translate('about', menuTranslations.about)}
             </Button>
           </div>
 
-          {/* Cart and Language buttons (Desktop) */}
           <div className="hidden lg:flex items-center gap-2">
-            {/* Language Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
@@ -273,7 +247,7 @@ const Header = () => {
                   size="sm"
                   className="flex items-center border-gray-300"
                 >
-                  <Globe className="h-4 w-4 mr-1" /> {languageFlags[currentLanguage]} {currentLanguage}
+                  <Globe className="h-4 w-4 mr-1" /> {languageFlags[language]} {language}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -298,7 +272,6 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             
-            {/* Cart Button */}
             <Button 
               variant="outline"
               size="sm"
@@ -306,7 +279,7 @@ const Header = () => {
               onClick={handleCartClick}
             >
               <ShoppingCart className="h-4 w-4 mr-1" /> 
-              {getTranslation('cart', currentLanguage, menuTranslations)}
+              {translate('cart', menuTranslations.cart)}
               {cartItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItems}
@@ -315,9 +288,7 @@ const Header = () => {
             </Button>
           </div>
 
-          {/* Mobile menu button */}
           <div className="lg:hidden flex items-center gap-2">
-            {/* Cart Button (Mobile) */}
             <Button 
               variant="ghost"
               size="icon"
@@ -349,7 +320,6 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* Mobile menu */}
       <div
         className={cn(
           "lg:hidden fixed inset-0 z-50 bg-white transform transition-transform duration-300 ease-in-out",
@@ -386,7 +356,7 @@ const Header = () => {
               >
                 <span className="flex items-center">
                   <Car className="mr-3 h-5 w-5 text-brand-blue" />
-                  {getTranslation('vehicles', currentLanguage, menuTranslations)}
+                  {translate('vehicles', menuTranslations.vehicles)}
                 </span>
                 <ChevronDown className="h-5 w-5" />
               </Button>
@@ -397,14 +367,14 @@ const Header = () => {
                     onClick={() => handleNavigation('/vehicules/occasion')}
                     className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    {getTranslation('usedVehicles', currentLanguage, menuTranslations)}
+                    {translate('usedVehicles', menuTranslations.usedVehicles)}
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => handleNavigation('/vehicules/utilitaires')}
                     className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
                   >
-                    {getTranslation('commercialVehicles', currentLanguage, menuTranslations)}
+                    {translate('commercialVehicles', menuTranslations.commercialVehicles)}
                   </Button>
                 </div>
               )}
@@ -415,7 +385,7 @@ const Header = () => {
               onClick={() => handleNavigation('/services')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              {getTranslation('services', currentLanguage, menuTranslations)}
+              {translate('services', menuTranslations.services)}
             </Button>
 
             <Button
@@ -423,7 +393,7 @@ const Header = () => {
               onClick={() => handleNavigation('/financement')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              {getTranslation('financing', currentLanguage, menuTranslations)}
+              {translate('financing', menuTranslations.financing)}
             </Button>
 
             <Button
@@ -431,7 +401,7 @@ const Header = () => {
               onClick={() => handleNavigation('/rachat')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              {getTranslation('buyback', currentLanguage, menuTranslations)}
+              {translate('buyback', menuTranslations.buyback)}
             </Button>
 
             <Button
@@ -439,10 +409,9 @@ const Header = () => {
               onClick={() => handleNavigation('/a-propos')}
               className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
             >
-              {getTranslation('about', currentLanguage, menuTranslations)}
+              {translate('about', menuTranslations.about)}
             </Button>
 
-            {/* Langue (Mobile) */}
             <div>
               <Button
                 variant="ghost"
@@ -453,7 +422,7 @@ const Header = () => {
               >
                 <span className="flex items-center">
                   <Globe className="mr-3 h-5 w-5 text-brand-blue" />
-                  {getTranslation('language', currentLanguage, menuTranslations)} ({languageFlags[currentLanguage]})
+                  {translate('language', menuTranslations.language)} ({languageFlags[language]})
                 </span>
                 <ChevronDown className="h-5 w-5" />
               </Button>
@@ -512,4 +481,3 @@ const Header = () => {
 };
 
 export default Header;
-
