@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, getCatalogIdFromUrl, resetCatalog } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
-import InitializeDataButton from '@/components/InitializeDataButton';
 
 const VehicleManager = () => {
   const { toast } = useToast();
@@ -125,7 +125,9 @@ const VehicleManager = () => {
 
   const handleResetCatalog = () => {
     try {
+      // Réinitialiser le catalogue
       resetCatalog();
+      // Recharger les véhicules
       setVehicles([]);
       setIsResetDialogOpen(false);
       
@@ -207,30 +209,26 @@ const VehicleManager = () => {
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Gestion des véhicules</h1>
           
-          <div className="flex space-x-2 mt-2 md:mt-0">
-            <InitializeDataButton />
-            
-            <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="destructive">
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  Vider le catalogue
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Réinitialiser le catalogue</DialogTitle>
-                  <DialogDescription>
-                    Êtes-vous sûr de vouloir réinitialiser le catalogue ? Cette action supprimera tous les véhicules et créera un nouveau catalogue vide.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className="mt-4">
-                  <Button variant="outline" onClick={() => setIsResetDialogOpen(false)}>Annuler</Button>
-                  <Button variant="destructive" onClick={handleResetCatalog}>Réinitialiser</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
+          <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="destructive" className="mt-2 md:mt-0">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Réinitialiser le catalogue
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Réinitialiser le catalogue</DialogTitle>
+                <DialogDescription>
+                  Êtes-vous sûr de vouloir réinitialiser le catalogue ? Cette action supprimera tous les véhicules et créera un nouveau catalogue vide.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-4">
+                <Button variant="outline" onClick={() => setIsResetDialogOpen(false)}>Annuler</Button>
+                <Button variant="destructive" onClick={handleResetCatalog}>Réinitialiser</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
         
         {isLoading ? (
