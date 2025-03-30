@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
@@ -11,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
+import VerticalMarquee from './VerticalMarquee';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -175,16 +177,23 @@ const Header = () => {
     <header className="w-full bg-white shadow-md">
       <div className="container px-4 mx-auto">
         <nav className="flex justify-between items-center py-4">
-          <button 
-            onClick={() => handleNavigation('/')} 
-            className="flex items-center"
-          >
-            <img 
-              src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
-              alt="Auto Adi" 
-              className="h-12"
-            />
-          </button>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => handleNavigation('/')} 
+              className="flex items-center"
+            >
+              <img 
+                src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
+                alt="Auto Adi" 
+                className="h-12"
+              />
+            </button>
+            
+            {/* Vertical Marquee */}
+            <div className="hidden md:block h-[60px] w-[250px] border-l border-gray-200 pl-4">
+              <VerticalMarquee />
+            </div>
+          </div>
 
           <div className="hidden lg:flex items-center gap-1">
             <DropdownMenu>
@@ -289,6 +298,11 @@ const Header = () => {
           </div>
 
           <div className="lg:hidden flex items-center gap-2">
+            {/* Mobile Marquee */}
+            <div className="h-[40px] w-[180px] overflow-hidden border-l border-gray-200 pl-2 mr-2">
+              <VerticalMarquee />
+            </div>
+            
             <Button 
               variant="ghost"
               size="icon"

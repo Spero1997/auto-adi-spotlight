@@ -76,6 +76,20 @@
   }
 }
 
+/* Vertical marquee animation */
+@keyframes scrollVertical {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-marquee-vertical {
+  animation: scrollVertical 25s linear infinite;
+}
+
 .animate-slide-in {
   animation-duration: 0.3s;
   animation-fill-mode: both;
