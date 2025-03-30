@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { Toaster as ShadcnToaster } from '@/components/ui/toaster';
@@ -14,6 +15,17 @@ function App() {
         <Route path="/" element={<Index />} />
         {/* ... autres routes */}
       </Routes>
+      
+      {/* Styles spécifiques pour les selects */}
+      <style jsx global>{`
+        .select-value-text {
+          color: #333 !important;
+        }
+        
+        [data-radix-select-trigger] [data-placeholder] {
+          color: #6b7280 !important;
+        }
+      `}</style>
       
       {/* Toast pour les notifications */}
       <Toaster position="top-right" richColors closeButton />
