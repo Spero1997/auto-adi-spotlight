@@ -235,10 +235,10 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Select onValueChange={handleBrandChange} value={selectedBrand}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className="w-full bg-white text-gray-800">
                 <SelectValue placeholder={translate('brand', translations.brand)} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="audi">Audi</SelectItem>
                 <SelectItem value="bmw">BMW</SelectItem>
                 <SelectItem value="citroen">Citroën</SelectItem>
@@ -266,10 +266,10 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
             </Select>
 
             <Select value={selectedModel} onValueChange={handleModelChange} disabled={!selectedBrand}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className="w-full bg-white text-gray-800">
                 <SelectValue placeholder={translate('model', translations.model)} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 {selectedBrand ? (
                   availableModels.map((model) => (
                     <SelectItem key={model} value={model.toLowerCase()}>
@@ -285,10 +285,10 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
             </Select>
 
             <Select value={selectedBudget} onValueChange={handleBudgetChange}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className="w-full bg-white text-gray-800">
                 <SelectValue placeholder={translate('maxBudget', translations.maxBudget)} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="3000">3 000 €</SelectItem>
                 <SelectItem value="5000">5 000 €</SelectItem>
                 <SelectItem value="10000">10 000 €</SelectItem>
@@ -300,10 +300,10 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
             </Select>
 
             <Select value={selectedFuel} onValueChange={handleFuelChange}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+              <SelectTrigger className="w-full bg-white text-gray-800">
                 <SelectValue placeholder={translate('fuel', translations.fuel)} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="essence">{translate('petrol', translations.petrol)}</SelectItem>
                 <SelectItem value="diesel">{translate('diesel', translations.diesel)}</SelectItem>
                 <SelectItem value="hybride">{translate('hybrid', translations.hybrid)}</SelectItem>
