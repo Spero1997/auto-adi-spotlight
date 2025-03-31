@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -235,9 +234,26 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         v.year === 2013
       );
       
-      if (hyundaiSantaFe) {
+      if (!hyundaiSantaFe) {
+        console.log("Ajout automatique du Hyundai Santa Fe Sport au catalogue");
+        addHyundaiSantaFe();
+      } else {
         console.log("Le Hyundai Santa Fe Sport est présent dans le catalogue", hyundaiSantaFe);
         toast.success("Le Hyundai Santa Fe Sport a été ajouté au catalogue");
+      }
+      
+      const toyotaCamry = vehicles.find(v => 
+        v.brand === "Toyota" && 
+        v.model.includes("Camry SE") && 
+        v.year === 2022
+      );
+      
+      if (!toyotaCamry) {
+        console.log("Ajout automatique du Toyota Camry SE au catalogue");
+        addToyotaCamrySE();
+      } else {
+        console.log("La Toyota Camry SE est présente dans le catalogue", toyotaCamry);
+        toast.success("La Toyota Camry SE a été ajoutée au catalogue");
       }
       
       setVehiclesLoaded(true);
