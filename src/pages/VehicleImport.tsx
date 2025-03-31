@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -53,6 +54,50 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       toast.success('Hyundai Santa Fe Sport ajouté avec succès au catalogue!');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
+      toast.error('Erreur lors de l\'ajout du véhicule');
+    }
+  };
+  
+  const addToyotaCamrySE = () => {
+    try {
+      const toyotaCamrySE: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-toyota-camry-se`,
+        brand: 'Toyota',
+        model: 'Camry SE',
+        year: 2022,
+        mileage: 28000,
+        price: 15500,
+        fuelType: 'Essence',
+        transmission: 'Automatique',
+        exteriorColor: 'Rouge',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/d2af5dfc-e41f-41e3-a318-9ce590c3135e.png',
+        fbLink: 'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+        features: [
+          'Transmission automatique',
+          'Climatisation',
+          'Direction assistée',
+          'Vitres électriques',
+          'Jantes alliage',
+          'Système de navigation',
+          'Caméra de recul'
+        ],
+        catalogType: 'standard'
+      };
+      
+      addImportedVehicle(toyotaCamrySE, 'standard');
+      toast.success('Toyota Camry SE ajouté avec succès au catalogue!');
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du Toyota Camry SE:', error);
       toast.error('Erreur lors de l\'ajout du véhicule');
     }
   };
@@ -305,12 +350,27 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
             </AlertDescription>
           </Alert>
           
-          <div className="mb-6 flex justify-center">
+          <Alert className="mb-4 bg-red-50 border-red-200">
+            <Info className="h-4 w-4 text-red-500" />
+            <AlertTitle>Nouvelle Toyota ajoutée</AlertTitle>
+            <AlertDescription>
+              La Toyota Camry SE 2022 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
             <Button 
               onClick={addHyundaiSantaFe}
               className="bg-emerald-600 hover:bg-emerald-700 text-white"
             >
               Ajouter le Hyundai Santa Fe Sport au catalogue
+            </Button>
+            
+            <Button 
+              onClick={addToyotaCamrySE}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Ajouter la Toyota Camry SE au catalogue
             </Button>
           </div>
           
