@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const VerticalMarquee = () => {
@@ -84,14 +83,14 @@ const VerticalMarquee = () => {
   // Animate scrolling
   useEffect(() => {
     const scrollHeight = items.length * 40; // Height of each item approximately 40px
-    const animationSpeed = 30; // Lower number means slower animation
+    const animationSpeed = 50; // Higher number means slower animation (was 30)
     
     const animationFrame = () => {
       setScrollPosition(prev => {
         if (prev >= scrollHeight) {
           return 0;
         }
-        return prev + 0.5;
+        return prev + 0.4; // Reduced speed from 0.5 to 0.4
       });
     };
     
@@ -103,15 +102,20 @@ const VerticalMarquee = () => {
   }, [items.length]);
 
   return (
-    <div className="h-full flex flex-col items-center justify-center overflow-hidden">
+    <div className="h-full w-full flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white rounded-md shadow-inner">
       <div className="h-[120px] overflow-hidden relative w-full">
         <div 
           className="absolute left-0 right-0 transition-transform" 
           style={{ transform: `translateY(-${scrollPosition}px)` }}
         >
           {duplicatedItems.map((item, index) => (
-            <div key={index} className="py-2 text-center">
-              <p className="text-sm font-medium">• {item}</p>
+            <div 
+              key={index} 
+              className="py-2 text-center px-4"
+            >
+              <p className="text-sm font-medium text-gray-800 bg-gradient-to-r from-brand-blue to-brand-darkBlue bg-clip-text text-transparent hover:scale-105 transition-transform duration-300">
+                • {item}
+              </p>
             </div>
           ))}
         </div>
