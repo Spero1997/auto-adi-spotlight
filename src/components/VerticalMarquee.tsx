@@ -1,11 +1,11 @@
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const VerticalMarquee = () => {
   const { language } = useLanguage();
   const [scrollPosition, setScrollPosition] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
   
   // Translations for the marquee items
   const translations = {
@@ -81,45 +81,37 @@ const VerticalMarquee = () => {
   // Duplicate items to create seamless loop
   const duplicatedItems = [...items, ...items, ...items];
   
-  // Animate scrolling with CSS animation
+  // Animate scrolling
   useEffect(() => {
-    const animation = `
-      @keyframes scrollVertical {
-        from { transform: translateY(0); }
-        to { transform: translateY(-${items.length * 40}px); }
-      }
-    `;
+    const scrollHeight = items.length * 40; // Height of each item approximately 40px
+    const animationSpeed = 30; // Lower number means slower animation
     
-    // Add animation to document
-    const styleElement = document.createElement('style');
-    styleElement.innerHTML = animation;
-    document.head.appendChild(styleElement);
+    const animationFrame = () => {
+      setScrollPosition(prev => {
+        if (prev >= scrollHeight) {
+          return 0;
+        }
+        return prev + 0.5;
+      });
+    };
+    
+    const intervalId = setInterval(animationFrame, animationSpeed);
     
     return () => {
-      // Clean up
-      document.head.removeChild(styleElement);
+      clearInterval(intervalId);
     };
   }, [items.length]);
 
   return (
-    <div className="h-full flex flex-col items-center justify-center overflow-hidden p-1">
-      <div 
-        ref={containerRef}
-        className="h-full w-full overflow-hidden relative"
-        style={{ maxHeight: '60px' }}
-      >
+    <div className="h-full flex flex-col items-center justify-center overflow-hidden">
+      <div className="h-[120px] overflow-hidden relative w-full">
         <div 
-          className="absolute left-0 right-0 w-full"
-          style={{
-            animation: `scrollVertical 20s linear infinite`,
-          }}
+          className="absolute left-0 right-0 transition-transform" 
+          style={{ transform: `translateY(-${scrollPosition}px)` }}
         >
           {duplicatedItems.map((item, index) => (
-            <div 
-              key={index} 
-              className="py-2 text-center whitespace-nowrap"
-            >
-              <p className="text-sm font-medium text-gray-700">• {item}</p>
+            <div key={index} className="py-2 text-center">
+              <p className="text-sm font-medium">• {item}</p>
             </div>
           ))}
         </div>
