@@ -52,6 +52,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       const catalogType = featuredOnly ? 'featured' : 'standard';
       const importedVehicles = getImportedVehicles(catalogType);
       console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
+      
+      // Log individual vehicles to help with debugging
+      importedVehicles.forEach(vehicle => {
+        console.log(`Véhicule: ${vehicle.brand} ${vehicle.model}, Type: ${vehicle.catalogType || 'non spécifié'}`);
+      });
+      
       setVehicles(importedVehicles);
     } catch (e) {
       setError("Échec du chargement des véhicules.");
@@ -63,6 +69,9 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const filteredVehicles = () => {
     let filtered = [...vehicles];
+    
+    // Debug log to see what vehicles we're working with
+    console.log(`Filtrage: ${filtered.length} véhicules avant filtre`);
 
     if (searchFilters) {
       if (searchFilters.brand) {
@@ -78,7 +87,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         filtered = filtered.filter(v => v.fuelType?.toLowerCase().includes(searchFilters.fuelType!.toLowerCase()));
       }
     }
-
+    
+    console.log(`Filtrage: ${filtered.length} véhicules après filtre`);
     return filtered;
   };
 
@@ -161,7 +171,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                 <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
                 <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
                 
-                {/* Bouton Facebook amélioré avec nouvelle logique pour une meilleure compatibilité mobile */}
                 {vehicle.fbLink && (
                   <button 
                     onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}

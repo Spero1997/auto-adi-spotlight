@@ -97,13 +97,24 @@ export const getImportedVehicles = (catalogType: 'standard' | 'featured' = 'stan
     const storageKey = catalogType === 'featured' ? FEATURED_STORAGE_KEY : STORAGE_KEY;
     const vehiclesJson = localStorage.getItem(storageKey);
     
+    console.log(`getImportedVehicles: Chargement du catalogue ${catalogType}, clé de stockage: ${storageKey}`);
+    
     // Si aucun véhicule n'est trouvé, initialiser avec un catalogue vide
     if (!vehiclesJson) {
+      console.log(`getImportedVehicles: Aucun véhicule trouvé pour le catalogue ${catalogType}, initialisation d'un catalogue vide`);
       saveImportedVehicles(defaultVehicles, catalogType);
       return defaultVehicles;
     }
     
-    return JSON.parse(vehiclesJson);
+    const vehicles = JSON.parse(vehiclesJson);
+    console.log(`getImportedVehicles: ${vehicles.length} véhicules chargés du catalogue ${catalogType}`);
+    
+    // Assurez-vous que chaque véhicule a sa propriété catalogType définie correctement
+    return vehicles.map(vehicle => ({
+      ...vehicle,
+      catalogType: catalogType,
+      featured: catalogType === 'featured' ? true : vehicle.featured
+    }));
   } catch (error) {
     console.error(`Erreur lors du chargement des véhicules (${catalogType}):`, error);
     return defaultVehicles;
@@ -116,7 +127,16 @@ export const getImportedVehicles = (catalogType: 'standard' | 'featured' = 'stan
 export const saveImportedVehicles = (vehicles: ImportedVehicle[], catalogType: 'standard' | 'featured' = 'standard'): boolean => {
   try {
     const storageKey = catalogType === 'featured' ? FEATURED_STORAGE_KEY : STORAGE_KEY;
-    localStorage.setItem(storageKey, JSON.stringify(vehicles));
+    
+    // S'assurer que chaque véhicule a le catalogType approprié avant la sauvegarde
+    const updatedVehicles = vehicles.map(vehicle => ({
+      ...vehicle,
+      catalogType: catalogType,
+      featured: catalogType === 'featured' ? true : vehicle.featured
+    }));
+    
+    localStorage.setItem(storageKey, JSON.stringify(updatedVehicles));
+    console.log(`saveImportedVehicles: ${updatedVehicles.length} véhicules sauvegardés dans le catalogue ${catalogType}`);
     
     // Déclencher un événement pour notifier les autres composants
     window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
@@ -165,17 +185,26 @@ export const resetCatalog = (catalogType?: 'standard' | 'featured' | 'all'): boo
 export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType: 'standard' | 'featured' = 'standard'): boolean => {
   try {
     const vehicles = getImportedVehicles(catalogType);
+    
+    // Assurez-vous que le véhicule a toutes les propriétés nécessaires définies
     const vehicleWithId = {
       ...vehicle,
       id: vehicle.id || `vehicle-${catalogType}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-      catalogType
+      catalogType: catalogType,
+      featured: catalogType === 'featured' ? true : !!vehicle.featured
     };
     
-    const updatedVehicles = [...vehicles, vehicleWithId];
-    saveImportedVehicles(updatedVehicles, catalogType);
+    console.log(`addImportedVehicle: Ajout d'un véhicule au catalogue ${catalogType}:`, vehicleWithId);
     
-    toast.success(`Véhicule ajouté au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
-    return true;
+    const updatedVehicles = [...vehicles, vehicleWithId];
+    const success = saveImportedVehicles(updatedVehicles, catalogType);
+    
+    if (success) {
+      console.log(`addImportedVehicle: Véhicule ${vehicleWithId.brand} ${vehicleWithId.model} ajouté avec succès au catalogue ${catalogType}`);
+      toast.success(`Véhicule ajouté au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
+    }
+    
+    return success;
   } catch (error) {
     console.error(`Erreur lors de l'ajout du véhicule (${catalogType}):`, error);
     toast.error("Erreur lors de l'ajout du véhicule");
@@ -260,18 +289,21 @@ export const extractVehiclesFromUrl = async (url: string, catalogType: 'standard
     // Ajouter les véhicules extraits au catalogue
     const existingVehicles = getImportedVehicles(catalogType);
     
+    console.log(`extractVehiclesFromUrl: ${vehicles.length} véhicules extraits pour le catalogue ${catalogType}`);
+    
     // Assigner des IDs uniques et normaliser les URLs des images
     const processedVehicles = vehicles.map(vehicle => ({
       ...vehicle,
       id: `vehicle-${catalogType}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       image: vehicle.image || 'https://via.placeholder.com/640x480?text=No+Image',
-      catalogType,
+      catalogType: catalogType,
       featured: catalogType === 'featured' // Marquer comme vedette si ajouté au catalogue vedette
     }));
     
     const updatedVehicles = [...existingVehicles, ...processedVehicles];
     saveImportedVehicles(updatedVehicles, catalogType);
     
+    console.log(`extractVehiclesFromUrl: ${processedVehicles.length} véhicules importés dans le catalogue ${catalogType}`);
     toast.success(`${vehicles.length} véhicule(s) importé(s) avec succès dans le catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
     return processedVehicles;
   } catch (error) {
