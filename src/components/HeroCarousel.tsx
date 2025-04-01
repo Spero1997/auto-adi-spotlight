@@ -142,8 +142,8 @@ const HeroCarousel = () => {
         </Sheet>
       </div>
 
-      {/* Navigation en superposition - visible uniquement sur desktop */}
-      <div className="absolute bottom-6 right-6 z-20 hidden md:flex items-center gap-4">
+      {/* Navigation en superposition - visible uniquement sur desktop - DÉPLACÉ EN HAUT */}
+      <div className="absolute top-6 right-6 z-20 hidden md:flex items-center gap-4">
         <button 
           onClick={() => handleNavigation('/')}
           className="text-white hover:text-opacity-70 transition-opacity font-medium"
