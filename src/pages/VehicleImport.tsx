@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -70,7 +71,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         transmission: 'Automatique',
         exteriorColor: 'Rouge',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/d2af5dfc-e41f-41e3-a318-9ce590c3135e.png',
+        image: '/lovable-uploads/86cf6e1b-5f63-424c-8a21-168c2f127e59.png',
         fbLink: 'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
