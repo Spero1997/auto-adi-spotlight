@@ -30,8 +30,17 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       const customEvent = event as CustomEvent;
       const catalogType = customEvent.detail?.catalogType;
       
-      if (!catalogType || catalogType === 'standard' || catalogType === 'all' || 
-          (featuredOnly && catalogType === 'featured')) {
+      console.log(`FeaturedCars: Event vehiclesUpdated reçu, catalogType=${catalogType}`);
+      
+      // On recharge les véhicules si:
+      // - catalogType n'est pas défini (pour compatibilité)
+      // - catalogType est 'standard' et nous affichons le catalogue standard (pas featuredOnly)
+      // - catalogType est 'featured' et nous affichons le catalogue vedette (featuredOnly)
+      // - catalogType est 'all'
+      if (!catalogType || 
+          (catalogType === 'standard' && !featuredOnly) || 
+          (catalogType === 'featured' && featuredOnly) || 
+          catalogType === 'all') {
         loadVehicles();
       }
     };
