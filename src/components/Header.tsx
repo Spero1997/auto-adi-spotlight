@@ -174,7 +174,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-white shadow-md">
+    <header className="w-full bg-white shadow-md sticky top-0 z-50">
       <div className="container px-4 mx-auto">
         <nav className="flex justify-between items-center py-4">
           <div className="flex items-center gap-4">
