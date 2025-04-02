@@ -198,8 +198,10 @@ const Header = () => {
 
   return (
     <header className={cn(
-      "w-full bg-white sticky top-0 z-50 transition-all duration-300", 
-      isScrolled ? "shadow-md" : "shadow-sm"
+      "w-full sticky top-0 z-50 transition-all duration-300", 
+      isScrolled 
+        ? "bg-black/90 backdrop-blur-lg shadow-lg" 
+        : "bg-black/80 backdrop-blur-md"
     )}>
       <div className="container px-4 mx-auto">
         <nav className="flex justify-between items-center py-4">
@@ -215,122 +217,101 @@ const Header = () => {
               />
             </button>
             
-            <div className="hidden md:block h-[60px] w-[250px] border-l border-gray-200 pl-4">
+            <div className="hidden md:block h-[60px] w-[250px] border-l border-gray-700 pl-4">
               <VerticalMarquee />
             </div>
           </div>
 
           <div className="hidden lg:block">
-            <NavigationMenu>
-              <NavigationMenuList className="gap-1">
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger 
-                    luxurious
-                    className="text-base"
-                    onClick={() => {}}
-                  >
-                    {translate('vehicles', menuTranslations.vehicles)}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
-                      <div 
-                        onClick={() => handleNavigation('/vehicules/occasion')}
-                        className="flex cursor-pointer items-center gap-2 rounded-md p-3 hover:bg-gray-50 transition-colors"
-                      >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-blue/10 text-brand-blue">
-                          <Car className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium">
-                            {translate('usedVehicles', menuTranslations.usedVehicles)}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            Trouvez votre prochain véhicule d'occasion
-                          </div>
-                        </div>
-                      </div>
-
-                      <div 
-                        onClick={() => handleNavigation('/vehicules/utilitaires')}
-                        className="flex cursor-pointer items-center gap-2 rounded-md p-3 hover:bg-gray-50 transition-colors"
-                      >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-orange/10 text-brand-orange">
-                          <Car className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium">
-                            {translate('commercialVehicles', menuTranslations.commercialVehicles)}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            Solutions pour les professionnels
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink 
-                    asChild
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center bg-transparent px-5 py-3 text-base text-gray-800 hover:text-brand-blue font-medium transition-all duration-300",
-                      "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-brand-blue after:transition-transform after:duration-300",
-                      "hover:after:origin-bottom-left hover:after:scale-x-100"
-                    )}
-                  >
-                    <button onClick={() => handleNavigation('/services')}>
-                      {translate('services', menuTranslations.services)}
+            <ul className="flex space-x-1">
+              <li>
+                <button 
+                  onClick={() => handleNavigation('/')} 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+                >
+                  Accueil
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+              </li>
+              
+              <li className="relative group">
+                <button 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base flex items-center relative"
+                  onClick={() => {}}
+                >
+                  Véhicules
+                  <ChevronDown className="ml-1 h-4 w-4 transform group-hover:rotate-180 transition-transform duration-200" />
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+                
+                <div className="absolute top-full left-0 mt-1 hidden group-hover:block bg-black/90 backdrop-blur-lg shadow-lg rounded-md overflow-hidden min-w-[220px] z-50">
+                  <div className="py-2">
+                    <button
+                      onClick={() => handleNavigation('/vehicules/occasion')}
+                      className="w-full text-left px-4 py-2 text-white hover:bg-gray-800 transition-colors duration-200"
+                    >
+                      Véhicules d'occasion
                     </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink 
-                    asChild
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center bg-transparent px-5 py-3 text-base text-gray-800 hover:text-brand-blue font-medium transition-all duration-300",
-                      "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-brand-blue after:transition-transform after:duration-300",
-                      "hover:after:origin-bottom-left hover:after:scale-x-100"
-                    )}
-                  >
-                    <button onClick={() => handleNavigation('/financement')}>
-                      {translate('financing', menuTranslations.financing)}
+                    <button
+                      onClick={() => handleNavigation('/vehicules/utilitaires')}
+                      className="w-full text-left px-4 py-2 text-white hover:bg-gray-800 transition-colors duration-200"
+                    >
+                      Véhicules utilitaires
                     </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink 
-                    asChild
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center bg-transparent px-5 py-3 text-base text-gray-800 hover:text-brand-blue font-medium transition-all duration-300",
-                      "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-brand-blue after:transition-transform after:duration-300",
-                      "hover:after:origin-bottom-left hover:after:scale-x-100"
-                    )}
-                  >
-                    <button onClick={() => handleNavigation('/rachat')}>
-                      {translate('buyback', menuTranslations.buyback)}
-                    </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink 
-                    asChild
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center bg-transparent px-5 py-3 text-base text-gray-800 hover:text-brand-blue font-medium transition-all duration-300",
-                      "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-brand-blue after:transition-transform after:duration-300",
-                      "hover:after:origin-bottom-left hover:after:scale-x-100"
-                    )}
-                  >
-                    <button onClick={() => handleNavigation('/a-propos')}>
-                      {translate('about', menuTranslations.about)}
-                    </button>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+                  </div>
+                </div>
+              </li>
+              
+              <li>
+                <button 
+                  onClick={() => handleNavigation('/services')} 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+                >
+                  Services
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+              </li>
+              
+              <li>
+                <button 
+                  onClick={() => handleNavigation('/financement')} 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+                >
+                  Financement
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+              </li>
+              
+              <li>
+                <button 
+                  onClick={() => handleNavigation('/a-propos')} 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+                >
+                  À propos
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+              </li>
+              
+              <li>
+                <button 
+                  onClick={() => handleNavigation('/contact')} 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+                >
+                  Contact
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+              </li>
+              
+              <li>
+                <button 
+                  onClick={() => handleNavigation('/rachat')} 
+                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+                >
+                  Rachat
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
+                </button>
+              </li>
+            </ul>
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
@@ -339,12 +320,12 @@ const Header = () => {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="flex items-center border-gray-300 hover:bg-gray-50 hover:text-brand-blue transition-colors"
+                  className="flex items-center border-gray-700 bg-transparent text-white hover:bg-gray-800 hover:text-brand-orange transition-colors"
                 >
                   <Globe className="h-4 w-4 mr-1" /> {languageFlags[language]} {language}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[180px] p-2">
+              <DropdownMenuContent align="end" className="w-[180px] p-2 bg-black/90 backdrop-blur-lg border border-gray-700">
                 <div className="grid grid-cols-2 gap-1">
                   <DropdownMenuItem 
                     onSelect={() => handleLanguageChange('FR')}
@@ -395,13 +376,13 @@ const Header = () => {
             <Button 
               variant="outline"
               size="sm"
-              className="flex items-center border-gray-300 relative hover:bg-gray-50 hover:text-brand-blue transition-colors"
+              className="flex items-center border-gray-700 bg-transparent text-white relative hover:bg-gray-800 hover:text-brand-orange transition-colors"
               onClick={handleCartClick}
             >
               <ShoppingCart className="h-4 w-4 mr-1" /> 
               {translate('cart', menuTranslations.cart)}
               {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-brand-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItems}
                 </span>
               )}
@@ -410,7 +391,7 @@ const Header = () => {
             <Button 
               variant="default" 
               size="sm"
-              className="bg-brand-blue hover:bg-brand-darkBlue text-white"
+              className="bg-brand-orange hover:bg-brand-lightOrange text-white"
               onClick={() => handleNavigation('/contact')}
             >
               Contact
@@ -430,7 +411,7 @@ const Header = () => {
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-brand-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItems}
                 </span>
               )}

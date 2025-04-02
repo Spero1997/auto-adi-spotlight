@@ -6,7 +6,7 @@ import { Toaster as Sonner } from "sonner"
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  // Fix potential SSR issues by providing a fallback value
+  // Utilisation sécurisée du hook useTheme avec une valeur par défaut
   const { theme = "system" } = useTheme() || { theme: "system" };
 
   return (
@@ -16,14 +16,14 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-white group-[.toaster]:text-foreground group-[.toaster]:border-gray-100 group-[.toaster]:shadow-lg group-[.toaster]:rounded-lg",
-          description: "group-[.toast]:text-muted-foreground",
+            "group toast group-[.toaster]:bg-black/90 group-[.toaster]:backdrop-blur-lg group-[.toaster]:text-white group-[.toaster]:border-gray-700 group-[.toaster]:shadow-lg group-[.toaster]:rounded-lg",
+          description: "group-[.toast]:text-gray-300",
           actionButton:
-            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
+            "group-[.toast]:bg-brand-orange group-[.toast]:text-white",
           cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+            "group-[.toast]:bg-gray-700 group-[.toast]:text-white",
         },
-        duration: 5000, // Limit display time to 5 seconds
+        duration: 5000,
       }}
       {...props}
     />

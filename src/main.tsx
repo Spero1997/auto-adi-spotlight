@@ -4,8 +4,14 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Make sure we have a valid DOM element before rendering
-const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error("Failed to find the root element");
+// Assurer un environnement compatible
+const isClient = typeof window !== 'undefined';
 
-createRoot(rootElement).render(<App />);
+// Make sure we have a valid DOM element before rendering
+const rootElement = isClient ? document.getElementById("root") : null;
+if (isClient && !rootElement) throw new Error("Failed to find the root element");
+
+// Ne rendre l'application que côté client
+if (isClient && rootElement) {
+  createRoot(rootElement).render(<App />);
+}

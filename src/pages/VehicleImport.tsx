@@ -1,223 +1,245 @@
+import { useRef, useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import Layout from "@/components/LegalPageLayout";
+import VehicleImporter from "@/components/VehicleImporter";
 
-import { useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import VehicleImporter from '@/components/VehicleImporter';
-import VehicleAddForm from '@/components/VehicleAddForm';
-import { getImportedVehicles, addImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Info } from 'lucide-react';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+// Remplacer la déclaration React globale par une importation correcte
+// import React from 'react'; <- Ceci est déjà fait via l'import de useRef et useState
 
-// Clé pour vérifier si l'initialisation a déjà été faite dans cette session
-const SESSION_INIT_KEY = "vehicle_import_initialized";
+interface VehicleData {
+  url: string;
+  brand?: string;
+  model?: string;
+  year?: string;
+  price?: number;
+  description?: string;
+  error?: string;
+  catalogId?: string;
+}
 
 const VehicleImport = () => {
-  const [activeTab, setActiveTab] = useState("add");
-  const [vehiclesLoaded, setVehiclesLoaded] = useState(false);
-  // Tableau d'alertes vides pour ne pas afficher les alertes au chargement
-  const [alerts, setAlerts] = useState<string[]>([]);
-  
-  const addHyundaiSantaFe = () => {
+  const { toast } = useToast();
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [vehicleData, setVehicleData] = useState<VehicleData | null>(null);
+  const [vehicles, setVehicles] = useState<VehicleData[]>([]);
+  const [selectedTab, setSelectedTab] = useState<"url" | "json" | "csv">("url");
+  const jsonInputRef = useRef<HTMLTextAreaElement>(null);
+  const csvInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUrlImport = async () => {
+    setLoading(true);
     try {
-      const hyundaiSantaFe: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-hyundai-santa-fe`,
-        brand: 'Hyundai',
-        model: 'Santa Fe Sport',
-        year: 2013,
-        mileage: 79000,
-        price: 4500,
-        fuelType: 'Essence',
-        transmission: 'Automatique',
-        exteriorColor: 'Vert',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/74794e1d-cef3-4179-9428-d3359d588743.png',
-        fbLink: 'https://www.facebook.com/share/p/1GsrVVncej/?mibextid=wwXIfr',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
-Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
-        features: [
-          'Transmission automatique',
-          'Climatisation',
-          'Direction assistée',
-          'Vitres électriques',
-          'Jantes alliage'
-        ],
-        catalogType: 'standard'
-      };
-      
-      addImportedVehicle(hyundaiSantaFe, 'standard');
-      toast.success('Hyundai Santa Fe Sport ajouté avec succès au catalogue!');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
-      toast.error('Erreur lors de l\'ajout du véhicule');
-    }
-  };
-  
-  const addToyotaCamrySE = () => {
-    try {
-      const toyotaCamrySE: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-toyota-camry-se`,
-        brand: 'Toyota',
-        model: 'Camry SE',
-        year: 2022,
-        mileage: 28000,
-        price: 15500,
-        fuelType: 'Essence',
-        transmission: 'Automatique',
-        exteriorColor: 'Rouge',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/86cf6e1b-5f63-424c-8a21-168c2f127e59.png',
-        fbLink: 'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
-Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
-        features: [
-          'Transmission automatique',
-          'Climatisation',
-          'Direction assistée',
-          'Vitres électriques',
-          'Jantes alliage',
-          'Système de navigation',
-          'Caméra de recul'
-        ],
-        catalogType: 'standard'
-      };
-      
-      addImportedVehicle(toyotaCamrySE, 'standard');
-      toast.success('Toyota Camry SE ajouté avec succès au catalogue!');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du Toyota Camry SE:', error);
-      toast.error('Erreur lors de l\'ajout du véhicule');
+      const response = await fetch(`/api/import-vehicle?url=${encodeURIComponent(url)}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `Failed to import vehicle from URL. Status: ${response.status}`);
+      }
+      const data = await response.json();
+      setVehicleData(data);
+      toast({
+        title: "Vehicle Imported",
+        description: "Vehicle data has been successfully imported.",
+      });
+    } catch (error: any) {
+      console.error("Import error:", error);
+      toast({
+        variant: "destructive",
+        title: "Import Error",
+        description: error.message || "Failed to import vehicle from URL.",
+      });
+      setVehicleData({ url, error: error.message });
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Ce code est maintenant exécuté uniquement si l'initialisation n'a pas encore été effectuée
-  const initializeCatalog = () => {
-    // Ne pas exécuter si déjà initialisé dans cette session
-    if (sessionStorage.getItem(SESSION_INIT_KEY)) {
-      console.log("Le catalogue a déjà été initialisé dans cette session");
-      setVehiclesLoaded(true);
-      return;
-    }
-    
-    // Marquer comme initialisé pour cette session
-    sessionStorage.setItem(SESSION_INIT_KEY, "true");
-    
+  const handleJsonImport = () => {
+    if (!jsonInputRef.current) return;
     try {
-      const vehicles = getImportedVehicles();
-      
-      // Vérifier et ajouter les véhicules manquants
-      const hyundaiSantaFe = vehicles.find(v => 
-        v.brand === "Hyundai" && 
-        v.model.includes("Santa Fe Sport") && 
-        v.year === 2013
-      );
-      
-      if (!hyundaiSantaFe) {
-        console.log("Ajout automatique du Hyundai Santa Fe Sport au catalogue");
-        addHyundaiSantaFe();
-      }
-      
-      const toyotaCamry = vehicles.find(v => 
-        v.brand === "Toyota" && 
-        v.model.includes("Camry SE") && 
-        v.year === 2022
-      );
-      
-      if (!toyotaCamry) {
-        console.log("Ajout automatique du Toyota Camry SE au catalogue");
-        addToyotaCamrySE();
-      }
-      
-      setVehiclesLoaded(true);
-    } catch (error) {
-      console.error("Erreur lors du chargement des véhicules:", error);
+      const jsonData = JSON.parse(jsonInputRef.current.value);
+      setVehicles(Array.isArray(jsonData) ? jsonData : [jsonData]);
+      toast({
+        title: "Vehicles Imported",
+        description: "Vehicles have been successfully imported from JSON.",
+      });
+    } catch (error: any) {
+      console.error("JSON parsing error:", error);
+      toast({
+        variant: "destructive",
+        title: "JSON Parsing Error",
+        description: error.message || "Failed to parse JSON.",
+      });
     }
   };
-  
-  // Utilise useState pour effectuer l'initialisation une seule fois
-  React.useEffect(() => {
-    initializeCatalog();
-  }, []);
-  
-  return (
-    <>
-      <Helmet>
-        <title>Importation de véhicules | AutoAdi</title>
-        <meta name="description" content="Outil d'importation de véhicules depuis des sites de vente automobiles pour AutoAdi" />
-      </Helmet>
-      
-      <Header />
-      
-      <main className="min-h-screen py-12 bg-gray-50">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <h1 className="text-3xl font-bold mb-2 text-center">Gestion des véhicules</h1>
-          <p className="text-center text-gray-600 mb-8">
-            Ajoutez ou importez facilement des véhicules
-          </p>
-          
-          {alerts.length > 0 && 
-            <div className="space-y-4 mb-6">
-              {alerts.map((alert, index) => (
-                <Alert key={index} className="mb-4">
-                  <Info className="h-4 w-4" />
-                  <AlertDescription>{alert}</AlertDescription>
-                </Alert>
-              ))}
-            </div>
+
+  const handleCsvImport = () => {
+    if (!csvInputRef.current) return;
+    const file = csvInputRef.current.files?.[0];
+    if (!file) {
+      toast({
+        variant: "destructive",
+        title: "No CSV File",
+        description: "Please select a CSV file to import.",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const csvText = e.target?.result as string;
+      const lines = csvText.split('\n');
+      const headers = lines[0].split(',');
+      const importedVehicles: VehicleData[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const data = lines[i].split(',');
+        if (data.length === headers.length) {
+          const vehicle: any = {};
+          for (let j = 0; j < headers.length; j++) {
+            vehicle[headers[j].trim()] = data[j].trim();
           }
-          
-          <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
-            <Button 
-              onClick={addHyundaiSantaFe}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
-            >
-              Ajouter le Hyundai Santa Fe Sport au catalogue
-            </Button>
-            
-            <Button 
-              onClick={addToyotaCamrySE}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              Ajouter la Toyota Camry SE au catalogue
-            </Button>
-          </div>
-          
-          <Tabs defaultValue="add" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="add">Ajout manuel</TabsTrigger>
-              <TabsTrigger value="import">Import depuis URL</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="add" className="mt-0">
-              <VehicleAddForm />
-            </TabsContent>
-            
-            <TabsContent value="import" className="mt-0">
-              <VehicleImporter />
-            </TabsContent>
-          </Tabs>
+          importedVehicles.push(vehicle);
+        }
+      }
+
+      setVehicles(importedVehicles);
+      toast({
+        title: "Vehicles Imported",
+        description: "Vehicles have been successfully imported from CSV.",
+      });
+    };
+
+    reader.onerror = () => {
+      toast({
+        variant: "destructive",
+        title: "CSV File Error",
+        description: "Failed to read the CSV file.",
+      });
+    };
+
+    reader.readAsText(file);
+  };
+
+  return (
+    <Layout title="Import de Véhicules" description="Importez des véhicules depuis des sites externes">
+      <div className="w-full mb-8">
+        <div className="flex space-x-2 mb-6">
+          <Button 
+            variant={selectedTab === "url" ? "default" : "outline"}
+            onClick={() => setSelectedTab("url")}
+          >
+            URL
+          </Button>
+          <Button 
+            variant={selectedTab === "json" ? "default" : "outline"}
+            onClick={() => setSelectedTab("json")}
+          >
+            JSON
+          </Button>
+          <Button 
+            variant={selectedTab === "csv" ? "default" : "outline"}
+            onClick={() => setSelectedTab("csv")}
+          >
+            CSV
+          </Button>
         </div>
-      </main>
-      
-      <Footer />
-    </>
+
+        {selectedTab === "url" && (
+          <Card className="p-4">
+            <Label htmlFor="url">URL du Véhicule</Label>
+            <div className="flex mt-2">
+              <Input
+                id="url"
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://www.example.com/vehicle123"
+              />
+              <Button
+                className="ml-2"
+                onClick={handleUrlImport}
+                disabled={loading}
+              >
+                {loading ? "Importing..." : "Importer"}
+              </Button>
+            </div>
+            {vehicleData && vehicleData.error && (
+              <p className="text-red-500 mt-2">Error: {vehicleData.error}</p>
+            )}
+            {vehicleData && !vehicleData.error && vehicleData.brand && (
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold">Vehicle Details</h3>
+                <p>Brand: {vehicleData.brand}</p>
+                <p>Model: {vehicleData.model}</p>
+                {/* Display other vehicle details here */}
+              </div>
+            )}
+          </Card>
+        )}
+
+        {selectedTab === "json" && (
+          <Card className="p-4">
+            <Label htmlFor="json">JSON Data</Label>
+            <Textarea
+              id="json"
+              ref={jsonInputRef}
+              placeholder='[{"brand": "Toyota", "model": "Camry"}, {"brand": "Honda", "model": "Civic"}]'
+              className="mt-2"
+            />
+            <Button className="mt-4" onClick={handleJsonImport}>
+              Importer JSON
+            </Button>
+          </Card>
+        )}
+
+        {selectedTab === "csv" && (
+          <Card className="p-4">
+            <Label htmlFor="csv">CSV File</Label>
+            <Input
+              id="csv"
+              type="file"
+              accept=".csv"
+              ref={csvInputRef}
+              className="mt-2"
+            />
+            <Button className="mt-4" onClick={handleCsvImport}>
+              Importer CSV
+            </Button>
+          </Card>
+        )}
+
+        {vehicles.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-2xl font-semibold mb-4">Imported Vehicles</h2>
+            {vehicles.map((vehicle, index) => (
+              <Card key={index} className="mb-4 p-4">
+                <h3 className="text-lg font-semibold">Vehicle #{index + 1}</h3>
+                {Object.entries(vehicle).map(([key, value]) => (
+                  <p key={key}>
+                    {key}: {value}
+                  </p>
+                ))}
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <VehicleImporter />
+    </Layout>
   );
 };
 
