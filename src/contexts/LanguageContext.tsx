@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+
+import * as React from 'react';
 
 // Define the Language type
 export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
@@ -11,17 +12,19 @@ type LanguageContextType = {
 };
 
 // Create the context with default values
-export const LanguageContext = createContext<LanguageContextType>({
+export const LanguageContext = React.createContext<LanguageContextType>({
   language: 'FR',
   setLanguage: () => {},
   translate: () => '',
 });
 
 // Hook to use the language context
-export const useLanguage = () => useContext(LanguageContext);
+export const useLanguage = () => React.useContext(LanguageContext);
 
 // Helper function to detect browser language and map it to supported languages
 const detectBrowserLanguage = (): Language => {
+  if (typeof window === 'undefined') return 'FR'; // Default for SSR
+
   // Get browser language, e.g. "en-US", "fr-FR", etc.
   const browserLang = navigator.language || (navigator as any).userLanguage;
   const langCode = browserLang.split('-')[0].toUpperCase();
@@ -67,11 +70,14 @@ const detectBrowserLanguage = (): Language => {
 
 // Provider component
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>('FR');
+  const [language, setLanguageState] = React.useState<Language>('FR');
 
   // Load language preference from localStorage on component mount
   // If no preference is found, detect browser language
-  useEffect(() => {
+  React.useEffect(() => {
+    // Ensure we're running in the browser
+    if (typeof window === 'undefined') return;
+    
     const savedLanguage = localStorage.getItem('preferredLanguage');
     if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
       setLanguageState(savedLanguage as Language);
@@ -86,7 +92,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Function to set language and save to localStorage
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('preferredLanguage', lang);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('preferredLanguage', lang);
+    }
   };
 
   // Translation function
