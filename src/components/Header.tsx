@@ -1,16 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger
-} from '@/components/ui/navigation-menu';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,24 +20,8 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState(0);
-  const [isScrolled, setIsScrolled] = useState(false);
   
   const { language, setLanguage, translate } = useLanguage();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -125,7 +102,7 @@ const Header = () => {
     'vehicles': {
       'FR': 'Véhicules',
       'EN': 'Vehicles',
-      'ES': 'Vehículos',
+      'ES': 'Veh��culos',
       'IT': 'Veicoli',
       'PT': 'Veículos',
       'RO': 'Vehicule'
@@ -197,12 +174,7 @@ const Header = () => {
   };
 
   return (
-    <header className={cn(
-      "w-full sticky top-0 z-50 transition-all duration-300", 
-      isScrolled 
-        ? "bg-black/90 backdrop-blur-lg shadow-lg" 
-        : "bg-black/80 backdrop-blur-md"
-    )}>
+    <header className="w-full bg-white shadow-md sticky top-0 z-50">
       <div className="container px-4 mx-auto">
         <nav className="flex justify-between items-center py-4">
           <div className="flex items-center gap-4">
@@ -217,188 +189,116 @@ const Header = () => {
               />
             </button>
             
-            <div className="hidden md:block h-[60px] w-[250px] border-l border-gray-700 pl-4">
+            {/* Vertical Marquee */}
+            <div className="hidden md:block h-[60px] w-[250px] border-l border-gray-200 pl-4">
               <VerticalMarquee />
             </div>
           </div>
 
-          <div className="hidden lg:block">
-            <ul className="flex space-x-1">
-              <li>
-                <button 
-                  onClick={() => handleNavigation('/')} 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
+          <div className="hidden lg:flex items-center gap-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
                 >
-                  Accueil
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-              </li>
-              
-              <li className="relative group">
-                <button 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base flex items-center relative"
-                  onClick={() => {}}
-                >
-                  Véhicules
-                  <ChevronDown className="ml-1 h-4 w-4 transform group-hover:rotate-180 transition-transform duration-200" />
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-                
-                <div className="absolute top-full left-0 mt-1 hidden group-hover:block bg-black/90 backdrop-blur-lg shadow-lg rounded-md overflow-hidden min-w-[220px] z-50">
-                  <div className="py-2">
-                    <button
-                      onClick={() => handleNavigation('/vehicules/occasion')}
-                      className="w-full text-left px-4 py-2 text-white hover:bg-gray-800 transition-colors duration-200"
-                    >
-                      Véhicules d'occasion
-                    </button>
-                    <button
-                      onClick={() => handleNavigation('/vehicules/utilitaires')}
-                      className="w-full text-left px-4 py-2 text-white hover:bg-gray-800 transition-colors duration-200"
-                    >
-                      Véhicules utilitaires
-                    </button>
-                  </div>
-                </div>
-              </li>
-              
-              <li>
-                <button 
-                  onClick={() => handleNavigation('/services')} 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
-                >
-                  Services
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-              </li>
-              
-              <li>
-                <button 
-                  onClick={() => handleNavigation('/financement')} 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
-                >
-                  Financement
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-              </li>
-              
-              <li>
-                <button 
-                  onClick={() => handleNavigation('/a-propos')} 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
-                >
-                  À propos
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-              </li>
-              
-              <li>
-                <button 
-                  onClick={() => handleNavigation('/contact')} 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
-                >
-                  Contact
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-              </li>
-              
-              <li>
-                <button 
-                  onClick={() => handleNavigation('/rachat')} 
-                  className="px-6 py-2 text-white hover:text-brand-orange font-medium text-base relative group"
-                >
-                  Rachat
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-orange transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </button>
-              </li>
-            </ul>
+                  {translate('vehicles', menuTranslations.vehicles)} <ChevronDown className="ml-1 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/occasion')}>
+                  {translate('usedVehicles', menuTranslations.usedVehicles)}
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/utilitaires')}>
+                  {translate('commercialVehicles', menuTranslations.commercialVehicles)}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/services')}
+            >
+              {translate('services', menuTranslations.services)}
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/financement')}
+            >
+              {translate('financing', menuTranslations.financing)}
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/rachat')}
+            >
+              {translate('buyback', menuTranslations.buyback)}
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              onClick={() => handleNavigation('/a-propos')}
+            >
+              {translate('about', menuTranslations.about)}
+            </Button>
           </div>
 
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="flex items-center border-gray-700 bg-transparent text-white hover:bg-gray-800 hover:text-brand-orange transition-colors"
+                  className="flex items-center border-gray-300"
                 >
                   <Globe className="h-4 w-4 mr-1" /> {languageFlags[language]} {language}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[180px] p-2 bg-black/90 backdrop-blur-lg border border-gray-700">
-                <div className="grid grid-cols-2 gap-1">
-                  <DropdownMenuItem 
-                    onSelect={() => handleLanguageChange('FR')}
-                    className="flex items-center justify-between hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <span>🇫🇷 Français</span>
-                    {language === 'FR' && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onSelect={() => handleLanguageChange('EN')}
-                    className="flex items-center justify-between hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <span>🇬🇧 English</span>
-                    {language === 'EN' && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onSelect={() => handleLanguageChange('ES')}
-                    className="flex items-center justify-between hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <span>🇪🇸 Español</span>
-                    {language === 'ES' && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onSelect={() => handleLanguageChange('IT')}
-                    className="flex items-center justify-between hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <span>🇮🇹 Italiano</span>
-                    {language === 'IT' && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onSelect={() => handleLanguageChange('PT')}
-                    className="flex items-center justify-between hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <span>🇵🇹 Português</span>
-                    {language === 'PT' && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onSelect={() => handleLanguageChange('RO')}
-                    className="flex items-center justify-between hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    <span>🇷🇴 Română</span>
-                    {language === 'RO' && <span className="h-1.5 w-1.5 rounded-full bg-brand-blue"></span>}
-                  </DropdownMenuItem>
-                </div>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
+                  🇫🇷 Français
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
+                  🇬🇧 English
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
+                  🇪🇸 Español
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
+                  🇮🇹 Italiano
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
+                  🇵🇹 Português
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
+                  🇷🇴 Română
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             
             <Button 
               variant="outline"
               size="sm"
-              className="flex items-center border-gray-700 bg-transparent text-white relative hover:bg-gray-800 hover:text-brand-orange transition-colors"
+              className="flex items-center border-gray-300 relative"
               onClick={handleCartClick}
             >
               <ShoppingCart className="h-4 w-4 mr-1" /> 
               {translate('cart', menuTranslations.cart)}
               {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItems}
                 </span>
               )}
             </Button>
-
-            <Button 
-              variant="default" 
-              size="sm"
-              className="bg-brand-orange hover:bg-brand-lightOrange text-white"
-              onClick={() => handleNavigation('/contact')}
-            >
-              Contact
-            </Button>
           </div>
 
           <div className="lg:hidden flex items-center gap-2">
+            {/* Mobile Marquee */}
             <div className="h-[40px] w-[180px] overflow-hidden border-l border-gray-200 pl-2 mr-2">
               <VerticalMarquee />
             </div>
@@ -411,7 +311,7 @@ const Header = () => {
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-brand-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-brand-blue text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItems}
                 </span>
               )}

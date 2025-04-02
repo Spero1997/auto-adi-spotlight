@@ -1,13 +1,10 @@
-
-import * as React from "react"
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 
 type ToasterProps = React.ComponentProps<typeof Sonner>
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  // Utilisation sécurisée du hook useTheme avec une valeur par défaut
-  const { theme = "system" } = useTheme() || { theme: "system" };
+  const { theme = "system" } = useTheme()
 
   return (
     <Sonner
@@ -16,14 +13,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-black/90 group-[.toaster]:backdrop-blur-lg group-[.toaster]:text-white group-[.toaster]:border-gray-700 group-[.toaster]:shadow-lg group-[.toaster]:rounded-lg",
-          description: "group-[.toast]:text-gray-300",
+            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
+          description: "group-[.toast]:text-muted-foreground",
           actionButton:
-            "group-[.toast]:bg-brand-orange group-[.toast]:text-white",
+            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton:
-            "group-[.toast]:bg-gray-700 group-[.toast]:text-white",
+            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
         },
-        duration: 5000,
       }}
       {...props}
     />

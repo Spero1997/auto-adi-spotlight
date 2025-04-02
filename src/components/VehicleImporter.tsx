@@ -13,9 +13,6 @@ const VehicleImporter = () => {
   const [isImporting, setIsImporting] = useState(false);
   const [catalogType, setCatalogType] = useState<'standard' | 'featured'>('standard');
 
-  // Limite l'ajout automatique des véhicules à une seule fois par session
-  const addedKey = "vehicleAdded";
-
   const handleImport = async () => {
     if (!url.trim()) {
       toast.error("Veuillez entrer une URL valide");
