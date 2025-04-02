@@ -54,7 +54,7 @@ const VehicleImporter = () => {
         transmission: 'Automatique',
         exteriorColor: 'Rouge',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/15d96b88-ab2b-448d-b2c2-f9b6a6cc69f4.png',
+        image: '/lovable-uploads/e619a891-0a93-420b-bae9-6d66cfdb9a8b.png',
         fbLink: 'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -144,7 +144,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
             <div className="border rounded-lg p-4 space-y-3">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <img 
-                  src="/lovable-uploads/15d96b88-ab2b-448d-b2c2-f9b6a6cc69f4.png" 
+                  src="/lovable-uploads/e619a891-0a93-420b-bae9-6d66cfdb9a8b.png" 
                   alt="Toyota Camry SE 2022" 
                   className="w-full h-full object-cover"
                 />
