@@ -1,3 +1,4 @@
+
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
 export interface ImportedVehicle {
@@ -257,7 +258,7 @@ export const moveVehicleBetweenCatalogs = (vehicleId: string, fromCatalogType: '
     const updatedDestinationVehicles = [...destinationVehicles, updatedVehicle];
     saveImportedVehicles(updatedDestinationVehicles, toCatalogType);
     
-    toast.success(`Véhicule déplacé du catalogue ${fromCatalogType === 'featured' ? 'vedette' : 'standard'} vers le catalogue ${toCatalogType === 'featured' ? 'vedette' : 'standard'}`);
+    console.log(`Véhicule déplacé du catalogue ${fromCatalogType === 'featured' ? 'vedette' : 'standard'} vers le catalogue ${toCatalogType === 'featured' ? 'vedette' : 'standard'}`);
     return true;
   } catch (error) {
     console.error(`Erreur lors du déplacement du véhicule:`, error);

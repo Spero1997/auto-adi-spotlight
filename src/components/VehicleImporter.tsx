@@ -52,7 +52,7 @@ const VehicleImporter = () => {
         transmission: 'Automatique',
         exteriorColor: 'Rouge',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/e619a891-0a93-420b-bae9-6d66cfdb9a8b.png',
+        image: '/lovable-uploads/3f3ae6c7-07fd-46fe-a81c-1a4dc615db1c.png',
         fbLink: 'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
