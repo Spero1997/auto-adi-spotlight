@@ -1,5 +1,3 @@
-
-import { toast } from "sonner";
 import { extractVehiclesFromUrl as extractVehiclesWithScraper } from "./extractionService";
 
 export interface ImportedVehicle {
@@ -143,7 +141,6 @@ export const saveImportedVehicles = (vehicles: ImportedVehicle[], catalogType: '
     return true;
   } catch (error) {
     console.error(`Erreur lors de la sauvegarde des véhicules (${catalogType}):`, error);
-    toast.error("Erreur lors de la sauvegarde des véhicules.");
     return false;
   }
 };
@@ -158,7 +155,7 @@ export const resetCatalog = (catalogType?: 'standard' | 'featured' | 'all'): boo
       const newCatalogId = `catalog-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
       localStorage.setItem(CATALOG_ID_KEY, newCatalogId);
       saveImportedVehicles([], 'standard');
-      toast.success("Le catalogue standard a été réinitialisé");
+      console.log("Le catalogue standard a été réinitialisé");
     }
     
     if (catalogType === 'featured' || catalogType === 'all') {
@@ -166,7 +163,7 @@ export const resetCatalog = (catalogType?: 'standard' | 'featured' | 'all'): boo
       const newFeaturedCatalogId = `catalog-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
       localStorage.setItem(FEATURED_CATALOG_ID_KEY, newFeaturedCatalogId);
       saveImportedVehicles([], 'featured');
-      toast.success("Le catalogue vedette a été réinitialisé");
+      console.log("Le catalogue vedette a été réinitialisé");
     }
     
     // Notifier les autres composants du changement de catalogue
@@ -174,7 +171,6 @@ export const resetCatalog = (catalogType?: 'standard' | 'featured' | 'all'): boo
     return true;
   } catch (error) {
     console.error("Erreur lors de la réinitialisation du catalogue:", error);
-    toast.error("Erreur lors de la réinitialisation du catalogue");
     return false;
   }
 };
@@ -201,13 +197,11 @@ export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType: 'stand
     
     if (success) {
       console.log(`addImportedVehicle: Véhicule ${vehicleWithId.brand} ${vehicleWithId.model} ajouté avec succès au catalogue ${catalogType}`);
-      toast.success(`Véhicule ajouté au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
     }
     
     return success;
   } catch (error) {
     console.error(`Erreur lors de l'ajout du véhicule (${catalogType}):`, error);
-    toast.error("Erreur lors de l'ajout du véhicule");
     return false;
   }
 };
@@ -229,7 +223,6 @@ export const deleteImportedVehicle = (vehicleId: string, catalogType: 'standard'
     return true;
   } catch (error) {
     console.error(`Erreur lors de la suppression du véhicule (${catalogType}):`, error);
-    toast.error("Erreur lors de la suppression du véhicule");
     return false;
   }
 };
@@ -268,7 +261,6 @@ export const moveVehicleBetweenCatalogs = (vehicleId: string, fromCatalogType: '
     return true;
   } catch (error) {
     console.error(`Erreur lors du déplacement du véhicule:`, error);
-    toast.error("Erreur lors du déplacement du véhicule");
     return false;
   }
 };
@@ -278,11 +270,11 @@ export const moveVehicleBetweenCatalogs = (vehicleId: string, fromCatalogType: '
  */
 export const extractVehiclesFromUrl = async (url: string, catalogType: 'standard' | 'featured' = 'standard'): Promise<ImportedVehicle[]> => {
   try {
-    toast.info("Extraction des véhicules en cours...");
+    console.log("Extraction des véhicules en cours...");
     const vehicles = await extractVehiclesWithScraper(url);
     
     if (!vehicles || vehicles.length === 0) {
-      toast.error("Aucun véhicule trouvé sur cette URL");
+      console.warn("Aucun véhicule trouvé sur cette URL");
       return [];
     }
     
@@ -304,11 +296,9 @@ export const extractVehiclesFromUrl = async (url: string, catalogType: 'standard
     saveImportedVehicles(updatedVehicles, catalogType);
     
     console.log(`extractVehiclesFromUrl: ${processedVehicles.length} véhicules importés dans le catalogue ${catalogType}`);
-    toast.success(`${vehicles.length} véhicule(s) importé(s) avec succès dans le catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
     return processedVehicles;
   } catch (error) {
     console.error(`Erreur lors de l'extraction des véhicules pour le catalogue ${catalogType}:`, error);
-    toast.error("Erreur lors de l'extraction des véhicules");
     return [];
   }
 };

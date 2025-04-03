@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,9 +6,6 @@ import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 import { getImportedVehicles, addImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Info } from 'lucide-react';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 
 const VehicleImport = () => {
@@ -51,10 +47,10 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       };
       
       addImportedVehicle(hyundaiSantaFe, 'standard');
-      toast.success('Hyundai Santa Fe Sport ajouté avec succès au catalogue!');
+      console.log('Hyundai Santa Fe Sport ajouté avec succès au catalogue!');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
-      toast.error('Erreur lors de l\'ajout du véhicule');
+      console.error('Erreur lors de l\'ajout du véhicule');
     }
   };
   
@@ -95,10 +91,10 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       };
       
       addImportedVehicle(toyotaCamrySE, 'standard');
-      toast.success('Toyota Camry SE ajouté avec succès au catalogue!');
+      console.log('Toyota Camry SE ajouté avec succès au catalogue!');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Toyota Camry SE:', error);
-      toast.error('Erreur lors de l\'ajout du véhicule');
+      console.error('Erreur lors de l\'ajout du véhicule');
     }
   };
   
@@ -116,7 +112,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (bmwX5) {
         console.log("La BMW X5 xDrive est présente dans le catalogue", bmwX5);
-        toast.success("La BMW X5 xDrive a été ajoutée au catalogue");
       }
 
       const tCross = vehicles.find(v => 
@@ -127,7 +122,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (tCross) {
         console.log("La Volkswagen T-Cross est présente dans le catalogue", tCross);
-        toast.success("La Volkswagen T-Cross a été ajoutée au catalogue");
       }
       
       const audiA3 = vehicles.find(v => 
@@ -138,7 +132,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (audiA3) {
         console.log("L'Audi A3 E-Tron est présente dans le catalogue", audiA3);
-        toast.success("L'Audi A3 E-Tron a été ajoutée au catalogue");
       }
       
       const kiaNiro = vehicles.find(v => 
@@ -149,7 +142,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (kiaNiro) {
         console.log("La Kia Niro Hybride est présente dans le catalogue", kiaNiro);
-        toast.success("La Kia Niro Hybride a été ajoutée au catalogue");
       }
       
       const bmwX1 = vehicles.find(v => 
@@ -160,7 +152,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (bmwX1) {
         console.log("La BMW X1 xDrive 25e est présente dans le catalogue", bmwX1);
-        toast.success("La BMW X1 xDrive 25e a été ajoutée au catalogue");
       }
       
       const audiQ5 = vehicles.find(v => 
@@ -171,7 +162,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (audiQ5) {
         console.log("L'Audi Q5 Quattro S-Tronic est présente dans le catalogue", audiQ5);
-        toast.success("L'Audi Q5 Quattro S-Tronic a été ajoutée au catalogue");
       }
       
       const audiQ7 = vehicles.find(v => 
@@ -182,7 +172,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (audiQ7) {
         console.log("L'Audi Q7 245HK-2XS-Line est présente dans le catalogue", audiQ7);
-        toast.success("L'Audi Q7 245HK-2XS-Line a été ajoutée au catalogue");
       }
       
       const audiA3Sportback = vehicles.find(v => 
@@ -193,7 +182,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (audiA3Sportback) {
         console.log("L'Audi A3 Sportback 35 1,5 TFSI est présente dans le catalogue", audiA3Sportback);
-        toast.success("L'Audi A3 Sportback 35 1,5 TFSI a été ajoutée au catalogue");
       }
       
       const bmwX3 = vehicles.find(v => 
@@ -204,7 +192,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (bmwX3) {
         console.log("La BMW X3 xDrive 20d M-sport est présente dans le catalogue", bmwX3);
-        toast.success("La BMW X3 xDrive 20d M-sport a été ajoutée au catalogue");
       }
       
       const rangeRoverEvoque = vehicles.find(v => 
@@ -215,7 +202,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (rangeRoverEvoque) {
         console.log("La Range Rover Evoque 2.0 Prestige est présente dans le catalogue", rangeRoverEvoque);
-        toast.success("La Range Rover Evoque 2.0 Prestige a été ajoutée au catalogue");
       }
       
       const bmwX3_2014 = vehicles.find(v => 
@@ -226,7 +212,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (bmwX3_2014) {
         console.log("La BMW X3 xDrive 20d 2014 est présente dans le catalogue", bmwX3_2014);
-        toast.success("La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue");
       }
       
       const hyundaiSantaFe = vehicles.find(v => 
@@ -240,7 +225,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         addHyundaiSantaFe();
       } else {
         console.log("Le Hyundai Santa Fe Sport est présent dans le catalogue", hyundaiSantaFe);
-        toast.success("Le Hyundai Santa Fe Sport a été ajouté au catalogue");
       }
       
       const toyotaCamry = vehicles.find(v => 
@@ -254,13 +238,11 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         addToyotaCamrySE();
       } else {
         console.log("La Toyota Camry SE est présente dans le catalogue", toyotaCamry);
-        toast.success("La Toyota Camry SE a été ajoutée au catalogue");
       }
       
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
-      toast.error("Erreur lors du chargement des véhicules");
     }
   }, []);
   
@@ -279,101 +261,6 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
           <p className="text-center text-gray-600 mb-8">
             Ajoutez ou importez facilement des véhicules
           </p>
-          
-          <Alert className="mb-4">
-            <Info className="h-4 w-4" />
-            <AlertTitle>Mise à jour effectuée</AlertTitle>
-            <AlertDescription>
-              La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue avec sa nouvelle image.
-            </AlertDescription>
-          </Alert>
-
-          <Alert className="mb-4 bg-blue-50 border-blue-200">
-            <Info className="h-4 w-4 text-blue-500" />
-            <AlertTitle>Nouvelle BMW ajoutée</AlertTitle>
-            <AlertDescription>
-              La BMW X5 xDrive 2016 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-green-50 border-green-200">
-            <Info className="h-4 w-4 text-green-500" />
-            <AlertDescription>
-              L'Audi A3 E-Tron 1.4 S Tronic 2017 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-yellow-50 border-yellow-200">
-            <Info className="h-4 w-4 text-yellow-500" />
-            <AlertDescription>
-              La Kia Niro Hybride 149 CH 2017 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-amber-50 border-amber-200">
-            <Info className="h-4 w-4 text-amber-500" />
-            <AlertDescription>
-              La BMW X1 xDrive 25e 2021 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-indigo-50 border-indigo-200">
-            <Info className="h-4 w-4 text-indigo-500" />
-            <AlertDescription>
-              L'Audi Q5 Quattro S-Tronic 2014 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-purple-50 border-purple-200">
-            <Info className="h-4 w-4 text-purple-500" />
-            <AlertDescription>
-              L'Audi Q7 245HK-2XS-Line 2012 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-pink-50 border-pink-200">
-            <Info className="h-4 w-4 text-pink-500" />
-            <AlertDescription>
-              L'Audi A3 Sportback 35 1,5 TFSI 2019 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-6 bg-gray-50 border-gray-200">
-            <Info className="h-4 w-4 text-gray-500" />
-            <AlertDescription>
-              La BMW X3 xDrive 20d M-sport 190 CH 2016 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-6 bg-teal-50 border-teal-200">
-            <Info className="h-4 w-4 text-teal-500" />
-            <AlertDescription>
-              La Range Rover Evoque 2.0 Prestige 241 CH 2014 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-6 bg-slate-50 border-slate-200">
-            <Info className="h-4 w-4 text-slate-500" />
-            <AlertDescription>
-              La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-emerald-50 border-emerald-200">
-            <Info className="h-4 w-4 text-emerald-500" />
-            <AlertTitle>Nouveau Hyundai ajouté</AlertTitle>
-            <AlertDescription>
-              Le Hyundai Santa Fe Sport 2013 a été ajouté au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-red-50 border-red-200">
-            <Info className="h-4 w-4 text-red-500" />
-            <AlertTitle>Nouvelle Toyota ajoutée</AlertTitle>
-            <AlertDescription>
-              La Toyota Camry SE 2022 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
           
           <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
             <Button 

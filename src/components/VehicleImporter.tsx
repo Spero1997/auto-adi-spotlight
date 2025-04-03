@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 import { extractVehiclesFromUrl, addImportedVehicle, ImportedVehicle } from "@/utils/vehicleImportService";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
@@ -15,7 +14,7 @@ const VehicleImporter = () => {
 
   const handleImport = async () => {
     if (!url.trim()) {
-      toast.error("Veuillez entrer une URL valide");
+      console.error("Veuillez entrer une URL valide");
       return;
     }
     
@@ -25,17 +24,16 @@ const VehicleImporter = () => {
       const importedVehicles = await extractVehiclesFromUrl(url, catalogType);
       
       if (importedVehicles.length > 0) {
-        toast.success(`${importedVehicles.length} véhicule(s) importé(s) avec succès dans le catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
+        console.log(`${importedVehicles.length} véhicule(s) importé(s) avec succès dans le catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
       } else {
-        toast.warning("Aucun véhicule n'a pu être importé depuis cette URL");
+        console.warn("Aucun véhicule n'a pu être importé depuis cette URL");
       }
       
       setUrl('');
     } catch (error) {
       console.error("Erreur lors de l'importation:", error);
-      toast.error("Erreur lors de l'importation des véhicules");
     } finally {
       setIsImporting(false);
     }
@@ -80,15 +78,14 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       const success = addImportedVehicle(toyotaCamrySE, 'standard');
       
       if (success) {
-        toast.success('Toyota Camry SE 2022 ajoutée avec succès au catalogue standard!');
+        console.log('Toyota Camry SE 2022 ajoutée avec succès au catalogue standard!');
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
       } else {
-        toast.error("Une erreur s'est produite lors de l'ajout de la Toyota Camry SE");
+        console.error("Une erreur s'est produite lors de l'ajout de la Toyota Camry SE");
       }
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la Toyota Camry SE:', error);
-      toast.error('Erreur lors de l\'ajout du véhicule');
     }
   };
 
