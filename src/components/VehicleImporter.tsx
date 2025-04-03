@@ -50,6 +50,64 @@ const VehicleImporter = () => {
     }
   };
   
+  // Fonction pour ajouter un véhicule manuellement à partir d'informations fournies
+  const addVehicleFromInfo = (
+    brand: string,
+    model: string,
+    year: number,
+    mileage: number,
+    price: number,
+    fuelType: string,
+    transmission: string,
+    exteriorColor: string,
+    interiorColor: string,
+    image: string,
+    fbLink: string,
+    description: string,
+    features: string[],
+    catalogType: 'standard' | 'featured' = 'standard'
+  ) => {
+    try {
+      const newVehicle: ImportedVehicle = {
+        id: `vehicle-${catalogType}-${Date.now()}-${brand.toLowerCase()}-${model.toLowerCase().replace(/\s+/g, '-')}`,
+        brand,
+        model,
+        year,
+        mileage,
+        price,
+        fuelType,
+        transmission,
+        exteriorColor,
+        interiorColor,
+        image,
+        fbLink,
+        description,
+        features,
+        catalogType
+      };
+      
+      const success = addImportedVehicle(newVehicle, catalogType);
+      
+      if (success) {
+        console.log(`${brand} ${model} ${year} ajouté avec succès au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}!`);
+        // Déclencher un événement pour mettre à jour l'affichage des véhicules
+        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
+        
+        // Générer une URL partageable et l'afficher à l'utilisateur
+        const url = generateShareableUrl(catalogType);
+        setShareableUrl(url);
+        setShowShareAlert(true);
+        return true;
+      } else {
+        console.error(`Une erreur s'est produite lors de l'ajout de ${brand} ${model}`);
+        return false;
+      }
+    } catch (error) {
+      console.error(`Erreur lors de l'ajout de ${brand} ${model}:`, error);
+      return false;
+    }
+  };
+  
   const addToyotaCamrySE = () => {
     try {
       const toyotaCamrySE: ImportedVehicle = {
