@@ -87,6 +87,43 @@ const AiVehicleAdder = () => {
   // @ts-ignore - Cette fonction sera utilisée par l'assistant directement
   window.addVehicleFromAssistant = addVehicleFromAssistant;
 
+  // Ajouter immédiatement la Toyota Camry SE demandée
+  useState(() => {
+    // Ajouter la Toyota Camry SE
+    addVehicleFromAssistant(
+      'Toyota',
+      'Camry SE',
+      2022,
+      28000,
+      15500,
+      'Essence',
+      'Automatique',
+      'Rouge',
+      'Noir',
+      '/lovable-uploads/25f252b3-1c08-470b-af84-3a21d067ec38.png',
+      'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
+      `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+      [
+        'Transmission automatique',
+        'Climatisation',
+        'Direction assistée',
+        'Vitres électriques',
+        'Jantes alliage',
+        'Système de navigation',
+        'Caméra de recul'
+      ],
+      'standard'
+    );
+  }, []);
+
   return (
     <div className="mb-6">
       {showShareAlert && (
