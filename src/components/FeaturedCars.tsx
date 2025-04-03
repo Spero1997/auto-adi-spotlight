@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from 'react-router-dom';
-import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { getImportedVehicles, ImportedVehicle, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
 import { Search, Star, Car, Link as LinkIcon } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -22,6 +22,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
   useEffect(() => {
     loadVehicles();
@@ -48,17 +50,25 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     window.addEventListener('catalogChanged', handleVehiclesUpdated);
     
+    // Recharger les véhicules quand l'URL change
+    loadVehicles();
+    
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
       window.removeEventListener('catalogChanged', handleVehiclesUpdated);
     };
-  }, [featuredOnly]);
+  }, [featuredOnly, location.search]);
 
   const loadVehicles = () => {
     setLoading(true);
     setError(null);
     try {
       const catalogType = featuredOnly ? 'featured' : 'standard';
+      // Récupérer l'ID du catalogue à partir de l'URL si disponible
+      const catalogId = getCatalogIdFromUrl(catalogType);
+      
+      console.log(`FeaturedCars: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
+      
       const importedVehicles = getImportedVehicles(catalogType);
       console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
       

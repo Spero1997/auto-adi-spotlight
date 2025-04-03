@@ -2,15 +2,21 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { extractVehiclesFromUrl, addImportedVehicle, ImportedVehicle } from "@/utils/vehicleImportService";
+import { extractVehiclesFromUrl, addImportedVehicle, ImportedVehicle, generateShareableUrl } from "@/utils/vehicleImportService";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useNavigate } from 'react-router-dom';
 
 const VehicleImporter = () => {
   const [url, setUrl] = useState('');
   const [isImporting, setIsImporting] = useState(false);
   const [catalogType, setCatalogType] = useState<'standard' | 'featured'>('standard');
+  const [showShareAlert, setShowShareAlert] = useState(false);
+  const [shareableUrl, setShareableUrl] = useState('');
+  const navigate = useNavigate();
 
   const handleImport = async () => {
     if (!url.trim()) {
@@ -27,6 +33,11 @@ const VehicleImporter = () => {
         console.log(`${importedVehicles.length} véhicule(s) importé(s) avec succès dans le catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
+        
+        // Générer une URL partageable et l'afficher à l'utilisateur
+        const url = generateShareableUrl(catalogType);
+        setShareableUrl(url);
+        setShowShareAlert(true);
       } else {
         console.warn("Aucun véhicule n'a pu être importé depuis cette URL");
       }
@@ -81,6 +92,11 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         console.log('Toyota Camry SE 2022 ajoutée avec succès au catalogue standard!');
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+        
+        // Générer une URL partageable et l'afficher à l'utilisateur
+        const url = generateShareableUrl('standard');
+        setShareableUrl(url);
+        setShowShareAlert(true);
       } else {
         console.error("Une erreur s'est produite lors de l'ajout de la Toyota Camry SE");
       }
@@ -89,8 +105,38 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     }
   };
 
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(shareableUrl);
+      console.log('URL copiée dans le presse-papiers');
+    } catch (err) {
+      console.error('Impossible de copier l\'URL:', err);
+    }
+  };
+  
+  const handleViewCatalog = () => {
+    navigate(shareableUrl);
+  };
+
   return (
     <div className="flex flex-col space-y-6">
+      {showShareAlert && (
+        <Alert className="bg-green-50 border-green-200">
+          <AlertTitle className="text-green-800 flex items-center gap-2">
+            <Link className="h-5 w-5" />
+            Véhicule ajouté avec succès
+          </AlertTitle>
+          <AlertDescription className="text-green-700">
+            <p className="mb-2">Pour voir ce véhicule sur d'autres appareils, partagez ce lien :</p>
+            <div className="flex items-center gap-2 mt-3">
+              <Input value={shareableUrl} readOnly className="flex-1" />
+              <Button variant="outline" onClick={handleCopyUrl}>Copier</Button>
+              <Button variant="default" onClick={handleViewCatalog}>Voir</Button>
+            </div>
+          </AlertDescription>
+        </Alert>
+      )}
+      
       <Tabs defaultValue="url" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-4">
           <TabsTrigger value="url">Importer depuis URL</TabsTrigger>
@@ -141,7 +187,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
             <div className="border rounded-lg p-4 space-y-3">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <img 
-                  src="/lovable-uploads/e619a891-0a93-420b-bae9-6d66cfdb9a8b.png" 
+                  src="/lovable-uploads/3f3ae6c7-07fd-46fe-a81c-1a4dc615db1c.png" 
                   alt="Toyota Camry SE 2022" 
                   className="w-full h-full object-cover"
                 />
