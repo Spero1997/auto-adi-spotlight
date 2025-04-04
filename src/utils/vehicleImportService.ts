@@ -29,8 +29,8 @@ export {
 // Re-export catalog management services
 export {
   resetCatalog,
-  addVehicle as addImportedVehicle,
-  deleteVehicle as deleteImportedVehicle,
+  addVehicle,
+  deleteVehicle,
   moveVehicleBetweenCatalogs
 } from './services/vehicleCatalogService';
 
@@ -40,5 +40,5 @@ export {
 } from './services/vehicleExtractionService';
 
 // Aliasing for compatibility with the code existant
-export const addVehicle = addImportedVehicle;
-export const deleteVehicle = deleteImportedVehicle;
+export const addImportedVehicle = addVehicle;
+export const deleteImportedVehicle = deleteVehicle;

@@ -18,11 +18,17 @@ export const extractVehiclesFromUrl = async (
     
     // Ajouter les véhicules extraits au catalogue
     const importedVehicles = mockVehicles.map(vehicle => {
-      // Assigner un ID unique et le type de catalogue
-      const enhancedVehicle = {
+      // Make sure we have the required fields based on ImportedVehicle type
+      const enhancedVehicle: ImportedVehicle = {
         ...vehicle,
         id: `vehicle-${catalogType}-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`,
-        catalogType
+        catalogType,
+        brand: vehicle.brand || '',
+        model: vehicle.model || '',
+        year: vehicle.year || 0,
+        mileage: vehicle.mileage || 0,
+        price: vehicle.price || 0,
+        fuelType: vehicle.fuelType || ''
       };
       
       // Ajouter au catalogue
