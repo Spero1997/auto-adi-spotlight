@@ -3,7 +3,7 @@
 // from the new modular files, to maintain backwards compatibility
 
 // Export types
-export { ImportedVehicle } from './types/vehicle';
+export type { ImportedVehicle } from './types/vehicle';
 
 // Re-export constants
 export {
@@ -29,8 +29,8 @@ export {
 // Re-export catalog management services
 export {
   resetCatalog,
-  addImportedVehicle,
-  deleteImportedVehicle,
+  addVehicle as addImportedVehicle,
+  deleteVehicle as deleteImportedVehicle,
   moveVehicleBetweenCatalogs
 } from './services/vehicleCatalogService';
 

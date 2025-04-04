@@ -1,124 +1,141 @@
 
 import { ImportedVehicle } from '../types/vehicle';
-import { CATALOG_ID_KEY, FEATURED_CATALOG_ID_KEY } from '../constants/vehicleStorage';
 import { getImportedVehicles, saveImportedVehicles } from './vehicleStorageService';
 
 /**
- * Réinitialise le catalogue en supprimant tous les véhicules
+ * Resets all catalogs to their default empty state
  */
-export const resetCatalog = (catalogType?: 'standard' | 'featured' | 'all'): boolean => {
+export const resetCatalog = (catalogType: 'standard' | 'featured' | 'all' = 'all'): void => {
+  if (catalogType === 'all' || catalogType === 'standard') {
+    console.log("Réinitialisation du catalogue standard");
+    localStorage.removeItem('catalog_id');
+    localStorage.removeItem('imported_vehicles');
+  }
+  
+  if (catalogType === 'all' || catalogType === 'featured') {
+    console.log("Réinitialisation du catalogue vedette");
+    localStorage.removeItem('featured_catalog_id');
+    localStorage.removeItem('featured_vehicles');
+  }
+  
+  // Déclencher un événement pour informer l'application du changement
+  window.dispatchEvent(new CustomEvent('catalogChanged', { 
+    detail: { catalogType: 'all' } 
+  }));
+};
+
+/**
+ * Adds a vehicle to the specified catalog
+ */
+export const addVehicle = (
+  vehicle: ImportedVehicle, 
+  catalogType: 'standard' | 'featured' = 'standard'
+): boolean => {
   try {
-    if (catalogType === 'standard' || catalogType === 'all' || !catalogType) {
-      // Réinitialiser le catalogue standard
-      const newCatalogId = `catalog-standard-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-      localStorage.setItem(CATALOG_ID_KEY, newCatalogId);
-      saveImportedVehicles([], 'standard');
-      console.log("Le catalogue standard a été réinitialisé");
+    const vehicles = getImportedVehicles(catalogType);
+    
+    // Check if a vehicle with this ID already exists
+    const existingVehicleIndex = vehicles.findIndex(v => v.id === vehicle.id);
+    
+    if (existingVehicleIndex >= 0) {
+      // Update existing vehicle
+      vehicles[existingVehicleIndex] = vehicle;
+    } else {
+      // Add new vehicle
+      vehicles.push(vehicle);
     }
     
-    if (catalogType === 'featured' || catalogType === 'all') {
-      // Réinitialiser le catalogue vedette
-      const newFeaturedCatalogId = `catalog-featured-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-      localStorage.setItem(FEATURED_CATALOG_ID_KEY, newFeaturedCatalogId);
-      saveImportedVehicles([], 'featured');
-      console.log("Le catalogue vedette a été réinitialisé");
-    }
+    saveImportedVehicles(vehicles, catalogType);
     
-    // Notifier les autres composants du changement de catalogue
-    window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: catalogType || 'all' } }));
+    // Déclencher un événement pour informer l'application du changement
+    window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+      detail: { catalogType } 
+    }));
+    
     return true;
   } catch (error) {
-    console.error("Erreur lors de la réinitialisation du catalogue:", error);
+    console.error("Erreur lors de l'ajout du véhicule:", error);
     return false;
   }
 };
 
 /**
- * Ajoute un nouveau véhicule importé au stockage local
+ * Deletes a vehicle from the specified catalog
  */
-export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType: 'standard' | 'featured' = 'standard'): boolean => {
+export const deleteVehicle = (
+  id: string,
+  catalogType: 'standard' | 'featured' = 'standard'
+): boolean => {
   try {
     const vehicles = getImportedVehicles(catalogType);
+    const filteredVehicles = vehicles.filter(vehicle => vehicle.id !== id);
     
-    // Assurez-vous que le véhicule a toutes les propriétés nécessaires définies
-    const vehicleWithId = {
-      ...vehicle,
-      id: vehicle.id || `vehicle-${catalogType}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-      catalogType: catalogType,
-      featured: catalogType === 'featured' ? true : !!vehicle.featured
-    };
-    
-    console.log(`addImportedVehicle: Ajout d'un véhicule au catalogue ${catalogType}:`, vehicleWithId);
-    
-    const updatedVehicles = [...vehicles, vehicleWithId];
-    const success = saveImportedVehicles(updatedVehicles, catalogType);
-    
-    if (success) {
-      console.log(`addImportedVehicle: Véhicule ${vehicleWithId.brand} ${vehicleWithId.model} ajouté avec succès au catalogue ${catalogType}`);
-    }
-    
-    return success;
-  } catch (error) {
-    console.error(`Erreur lors de l'ajout du véhicule (${catalogType}):`, error);
-    return false;
-  }
-};
-
-/**
- * Supprime un véhicule importé du stockage local
- */
-export const deleteImportedVehicle = (vehicleId: string, catalogType: 'standard' | 'featured' = 'standard'): boolean => {
-  try {
-    const vehicles = getImportedVehicles(catalogType);
-    const updatedVehicles = vehicles.filter(v => v.id !== vehicleId);
-    
-    if (vehicles.length === updatedVehicles.length) {
-      console.warn(`Véhicule avec l'ID ${vehicleId} non trouvé dans le catalogue ${catalogType}`);
+    if (vehicles.length === filteredVehicles.length) {
+      console.warn(`Aucun véhicule trouvé avec l'ID ${id} dans le catalogue ${catalogType}`);
       return false;
     }
     
-    saveImportedVehicles(updatedVehicles, catalogType);
+    saveImportedVehicles(filteredVehicles, catalogType);
+    
+    // Déclencher un événement pour informer l'application du changement
+    window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+      detail: { catalogType } 
+    }));
+    
     return true;
   } catch (error) {
-    console.error(`Erreur lors de la suppression du véhicule (${catalogType}):`, error);
+    console.error("Erreur lors de la suppression du véhicule:", error);
     return false;
   }
 };
 
 /**
- * Déplace un véhicule d'un catalogue à l'autre
+ * Moves a vehicle between catalogs
  */
-export const moveVehicleBetweenCatalogs = (vehicleId: string, fromCatalogType: 'standard' | 'featured', toCatalogType: 'standard' | 'featured'): boolean => {
+export const moveVehicleBetweenCatalogs = (
+  vehicleId: string,
+  sourceCatalogType: 'standard' | 'featured',
+  targetCatalogType: 'standard' | 'featured'
+): boolean => {
   try {
-    // Récupérer le véhicule du catalogue source
-    const sourceVehicles = getImportedVehicles(fromCatalogType);
+    if (sourceCatalogType === targetCatalogType) {
+      console.warn("Les catalogues source et cible sont identiques");
+      return false;
+    }
+    
+    const sourceVehicles = getImportedVehicles(sourceCatalogType);
+    const targetVehicles = getImportedVehicles(targetCatalogType);
+    
+    // Trouver le véhicule à déplacer
     const vehicleToMove = sourceVehicles.find(v => v.id === vehicleId);
     
     if (!vehicleToMove) {
-      console.warn(`Véhicule avec l'ID ${vehicleId} non trouvé dans le catalogue ${fromCatalogType}`);
+      console.warn(`Véhicule avec ID ${vehicleId} non trouvé dans le catalogue ${sourceCatalogType}`);
       return false;
     }
     
-    // Supprimer le véhicule du catalogue source
-    const updatedSourceVehicles = sourceVehicles.filter(v => v.id !== vehicleId);
-    saveImportedVehicles(updatedSourceVehicles, fromCatalogType);
-    
-    // Ajouter le véhicule au catalogue de destination avec un nouvel ID
+    // Mettre à jour le type de catalogue du véhicule
     const updatedVehicle = {
       ...vehicleToMove,
-      id: `vehicle-${toCatalogType}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-      catalogType: toCatalogType,
-      featured: toCatalogType === 'featured' // Mettre à jour le statut "featured" en fonction du catalogue de destination
+      catalogType: targetCatalogType
     };
     
-    const destinationVehicles = getImportedVehicles(toCatalogType);
-    const updatedDestinationVehicles = [...destinationVehicles, updatedVehicle];
-    saveImportedVehicles(updatedDestinationVehicles, toCatalogType);
+    // Retirer du catalogue source
+    const updatedSourceVehicles = sourceVehicles.filter(v => v.id !== vehicleId);
+    saveImportedVehicles(updatedSourceVehicles, sourceCatalogType);
     
-    console.log(`Véhicule déplacé du catalogue ${fromCatalogType === 'featured' ? 'vedette' : 'standard'} vers le catalogue ${toCatalogType === 'featured' ? 'vedette' : 'standard'}`);
+    // Ajouter au catalogue cible
+    targetVehicles.push(updatedVehicle);
+    saveImportedVehicles(targetVehicles, targetCatalogType);
+    
+    // Déclencher des événements pour informer l'application des changements
+    window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+      detail: { catalogType: 'all' } 
+    }));
+    
     return true;
   } catch (error) {
-    console.error(`Erreur lors du déplacement du véhicule:`, error);
+    console.error("Erreur lors du déplacement du véhicule entre catalogues:", error);
     return false;
   }
 };
