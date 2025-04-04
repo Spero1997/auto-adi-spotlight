@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -88,7 +88,7 @@ const AiVehicleAdder = () => {
   window.addVehicleFromAssistant = addVehicleFromAssistant;
 
   // Ajouter immédiatement la Toyota Camry SE demandée
-  useState(() => {
+  useEffect(() => {
     // Ajouter la Toyota Camry SE
     addVehicleFromAssistant(
       'Toyota',
