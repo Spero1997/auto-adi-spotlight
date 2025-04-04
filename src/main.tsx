@@ -15,6 +15,11 @@ if (catalogId) {
   console.log(`Catalogue trouvé dans l'URL: ${catalogId}`);
   // Cela mettra à jour le localStorage avec le catalogId de l'URL
   getCatalogIdFromUrl(catalogType as 'standard' | 'featured');
+  
+  // Déclencher un événement pour forcer le rechargement des véhicules
+  window.dispatchEvent(new CustomEvent('catalogChanged', { 
+    detail: { catalogType: catalogType || 'standard' } 
+  }));
 }
 
 createRoot(document.getElementById("root")!).render(
