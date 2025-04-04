@@ -26,21 +26,21 @@ export {
   saveImportedVehicles
 } from './services/vehicleStorageService';
 
-// Re-export catalog management services
-export {
-  resetCatalog,
-  addVehicle,
-  deleteVehicle,
-  moveVehicleBetweenCatalogs
-} from './services/vehicleCatalogService';
+// Explicitly import the functions we need for aliasing
+import { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs } from './services/vehicleCatalogService';
+
+// Re-export catalog management services directly
+export { resetCatalog, moveVehicleBetweenCatalogs };
+
+// Import extraction service
+import { extractVehiclesFromUrl } from './services/vehicleExtractionService';
 
 // Re-export extraction service
-export {
-  extractVehiclesFromUrl
-} from './services/vehicleExtractionService';
+export { extractVehiclesFromUrl };
 
-// Aliasing for compatibility with existing code
-import { addVehicle } from './services/vehicleCatalogService';
-import { deleteVehicle } from './services/vehicleCatalogService';
+// Define aliases for backward compatibility
 export const addImportedVehicle = addVehicle;
 export const deleteImportedVehicle = deleteVehicle;
+
+// Re-export the original functions as well
+export { addVehicle, deleteVehicle };
