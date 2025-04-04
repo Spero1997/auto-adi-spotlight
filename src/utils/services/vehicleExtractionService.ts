@@ -28,7 +28,8 @@ export const extractVehiclesFromUrl = async (
         year: vehicle.year || 0,
         mileage: vehicle.mileage || 0,
         price: vehicle.price || 0,
-        fuelType: vehicle.fuelType || ''
+        fuelType: vehicle.fuelType || '',
+        image: vehicle.image || 'https://via.placeholder.com/400x200?text=No+Image'
       };
       
       // Ajouter au catalogue

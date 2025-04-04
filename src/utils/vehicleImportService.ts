@@ -39,6 +39,8 @@ export {
   extractVehiclesFromUrl
 } from './services/vehicleExtractionService';
 
-// Aliasing for compatibility with the code existant
+// Aliasing for compatibility with existing code
+import { addVehicle } from './services/vehicleCatalogService';
+import { deleteVehicle } from './services/vehicleCatalogService';
 export const addImportedVehicle = addVehicle;
 export const deleteImportedVehicle = deleteVehicle;
