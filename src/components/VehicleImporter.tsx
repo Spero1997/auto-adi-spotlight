@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,9 +18,7 @@ const VehicleImporter = () => {
   const [shareableUrl, setShareableUrl] = useState('');
   const navigate = useNavigate();
 
-  // Trigger a reload when the component is mounted
   useEffect(() => {
-    // Déclencher un événement pour mettre à jour l'affichage des véhicules
     window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
       detail: { catalogType: 'all' } 
     }));
@@ -40,13 +37,8 @@ const VehicleImporter = () => {
       
       if (importedVehicles.length > 0) {
         console.log(`${importedVehicles.length} véhicule(s) importé(s) avec succès dans le catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
-        // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
-        
-        // Afficher une notification toast
         toast.success(`${importedVehicles.length} véhicule(s) importé(s) avec succès`);
-        
-        // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl(catalogType);
         setShareableUrl(url);
         setShowShareAlert(true);
@@ -103,13 +95,8 @@ const VehicleImporter = () => {
       
       if (success) {
         console.log(`${brand} ${model} ${year} ajouté avec succès au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}!`);
-        // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
-        
-        // Afficher une notification toast
         toast.success(`${brand} ${model} ajouté avec succès`);
-        
-        // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl(catalogType);
         setShareableUrl(url);
         setShowShareAlert(true);
@@ -166,18 +153,12 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (success) {
         console.log('Toyota Camry SE 2022 ajoutée avec succès au catalogue standard!');
-        // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
-        
-        // Afficher une notification toast
         toast.success('Toyota Camry SE 2022 ajoutée avec succès');
-        
-        // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl('standard');
         setShareableUrl(url);
         setShowShareAlert(true);
 
-        // Rediriger l'utilisateur vers la page principale après 2 secondes
         setTimeout(() => {
           navigate('/vehicules');
         }, 2000);
@@ -204,7 +185,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png',
+        image: '/lovable-uploads/ccf5d9f8-f78f-440d-86a9-56ae7dc3443d.png',
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -233,18 +214,12 @@ Nos services inclus :
       
       if (success) {
         console.log('Volvo V40 D2 R-Design ajoutée avec succès au catalogue standard!');
-        // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
-        
-        // Afficher une notification toast
         toast.success('Volvo V40 D2 R-Design ajoutée avec succès');
-        
-        // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl('standard');
         setShareableUrl(url);
         setShowShareAlert(true);
 
-        // Rediriger l'utilisateur vers la page principale après 2 secondes
         setTimeout(() => {
           navigate('/vehicules');
         }, 2000);
@@ -296,18 +271,12 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       
       if (success) {
         console.log('Hyundai Santa Fe Sport ajouté avec succès au catalogue standard!');
-        // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
-        
-        // Afficher une notification toast
         toast.success('Hyundai Santa Fe Sport ajouté avec succès');
-        
-        // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl('standard');
         setShareableUrl(url);
         setShowShareAlert(true);
 
-        // Rediriger l'utilisateur vers la page principale après 2 secondes
         setTimeout(() => {
           navigate('/vehicules');
         }, 2000);

@@ -112,7 +112,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png',
+        image: '/lovable-uploads/ccf5d9f8-f78f-440d-86a9-56ae7dc3443d.png',
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande

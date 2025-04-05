@@ -1,4 +1,3 @@
-
 import { ImportedVehicle } from '../types/vehicle';
 import { addVehicle } from './vehicleCatalogService';
 
@@ -83,7 +82,7 @@ const generateVolvoV40 = (): Partial<ImportedVehicle> => {
     mileage: 116000,
     fuelType: "Diesel",
     price: 4000,
-    image: "/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png",
+    image: "/lovable-uploads/ccf5d9f8-f78f-440d-86a9-56ae7dc3443d.png",
     exteriorColor: "Blanc",
     interiorColor: "Noir",
     transmission: "Automatique",
