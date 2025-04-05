@@ -52,6 +52,11 @@ const simulateVehicleExtraction = (url: string): Partial<ImportedVehicle>[] => {
   // Simulation de retards et de traitement
   console.log(`Simulation d'extraction depuis ${url}`);
   
+  // Si c'est un lien Facebook spécifique pour la Volvo V40, on retourne ce véhicule
+  if (url.includes('facebook.com/share/p/1Hhh6zzGhy')) {
+    return [generateVolvoV40()];
+  }
+  
   // Générer des véhicules simulés selon l'URL
   if (url.includes('autoscout24')) {
     return generateAutoScout24Vehicles();
@@ -60,8 +65,50 @@ const simulateVehicleExtraction = (url: string): Partial<ImportedVehicle>[] => {
   } else if (url.includes('leboncoin')) {
     return generateLeboncoinVehicles();
   } else {
-    return generateGenericVehicles();
+    // Pour les URLs génériques, on va maintenant aussi ajouter la Volvo V40
+    const genericVehicles = generateGenericVehicles();
+    genericVehicles.push(generateVolvoV40());
+    return genericVehicles;
   }
+};
+
+/**
+ * Génère le véhicule Volvo V40 demandé
+ */
+const generateVolvoV40 = (): Partial<ImportedVehicle> => {
+  return {
+    brand: "Volvo",
+    model: "V40 D2 R-Design",
+    year: 2014,
+    mileage: 116000,
+    fuelType: "Diesel",
+    price: 4000,
+    image: "/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png",
+    exteriorColor: "Blanc",
+    interiorColor: "Noir",
+    transmission: "Automatique",
+    doors: 5,
+    engine: "D2 115ch",
+    description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+    fbLink: "https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr",
+    features: [
+      "Toit panoramique", 
+      "Navigation", 
+      "Caméra de recul", 
+      "R-Design",
+      "Automatique",
+      "115 ch"
+    ]
+  };
 };
 
 const generateAutoScout24Vehicles = (): Partial<ImportedVehicle>[] => [

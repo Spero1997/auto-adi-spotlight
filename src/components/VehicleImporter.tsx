@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,7 +49,6 @@ const VehicleImporter = () => {
     }
   };
   
-  // Fonction pour ajouter un véhicule manuellement à partir d'informations fournies
   const addVehicleFromInfo = (
     brand: string,
     model: string,
@@ -163,6 +161,63 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     }
   };
 
+  const addVolvoV40 = () => {
+    try {
+      const volvoV40: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-volvo-v40-d2-rdesign`,
+        brand: 'Volvo',
+        model: 'V40 D2 R-Design',
+        year: 2014,
+        mileage: 116000,
+        price: 4000,
+        fuelType: 'Diesel',
+        transmission: 'Automatique',
+        exteriorColor: 'Blanc',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png',
+        fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+        features: [
+          'Toit panoramique',
+          'Navigation',
+          'Caméra de recul',
+          'R-Design',
+          'Automatique',
+          '115 ch'
+        ],
+        engine: 'D2 115ch',
+        doors: 5,
+        catalogType: 'standard'
+      };
+      
+      const success = addImportedVehicle(volvoV40, 'standard');
+      
+      if (success) {
+        console.log('Volvo V40 D2 R-Design ajoutée avec succès au catalogue standard!');
+        // Déclencher un événement pour mettre à jour l'affichage des véhicules
+        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+        
+        // Générer une URL partageable et l'afficher à l'utilisateur
+        const url = generateShareableUrl('standard');
+        setShareableUrl(url);
+        setShowShareAlert(true);
+      } else {
+        console.error("Une erreur s'est produite lors de l'ajout de la Volvo V40");
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la Volvo V40:', error);
+    }
+  };
+
   const handleCopyUrl = async () => {
     try {
       await navigator.clipboard.writeText(shareableUrl);
@@ -241,7 +296,25 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
             Ajoutez rapidement des véhicules préconçus au catalogue standard.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="border rounded-lg p-4 space-y-3">
+              <div className="aspect-video relative rounded-md overflow-hidden">
+                <img 
+                  src="/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png" 
+                  alt="Volvo V40 D2 R-Design 2014" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-semibold">Volvo V40 D2 R-Design</h3>
+              <div className="text-sm space-y-1">
+                <p>2014 • Diesel • 116 000 km</p>
+                <p className="font-bold">4 000 €</p>
+              </div>
+              <Button onClick={addVolvoV40} className="w-full">
+                Ajouter au catalogue standard
+              </Button>
+            </div>
+            
             <div className="border rounded-lg p-4 space-y-3">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <img 
@@ -256,6 +329,24 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
                 <p className="font-bold">15,500 €</p>
               </div>
               <Button onClick={addToyotaCamrySE} className="w-full">
+                Ajouter au catalogue standard
+              </Button>
+            </div>
+
+            <div className="border rounded-lg p-4 space-y-3">
+              <div className="aspect-video relative rounded-md overflow-hidden">
+                <img 
+                  src="/lovable-uploads/74794e1d-cef3-4179-9428-d3359d588743.png" 
+                  alt="Hyundai Santa Fe Sport 2013" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-semibold">Hyundai Santa Fe Sport</h3>
+              <div className="text-sm space-y-1">
+                <p>2013 • Essence • 79,000 km</p>
+                <p className="font-bold">4,500 €</p>
+              </div>
+              <Button onClick={addHyundaiSantaFe} className="w-full">
                 Ajouter au catalogue standard
               </Button>
             </div>

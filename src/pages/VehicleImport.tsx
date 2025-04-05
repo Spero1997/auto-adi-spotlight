@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -96,6 +95,54 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
       console.log('Toyota Camry SE ajouté avec succès au catalogue!');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Toyota Camry SE:', error);
+      console.error('Erreur lors de l\'ajout du véhicule');
+    }
+  };
+  
+  const addVolvoV40 = () => {
+    try {
+      const volvoV40: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-volvo-v40-d2-rdesign`,
+        brand: 'Volvo',
+        model: 'V40 D2 R-Design',
+        year: 2014,
+        mileage: 116000,
+        price: 4000,
+        fuelType: 'Diesel',
+        transmission: 'Automatique',
+        exteriorColor: 'Blanc',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png',
+        fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+        features: [
+          'Toit panoramique',
+          'Navigation',
+          'Caméra de recul',
+          'R-Design',
+          'Automatique',
+          '115 ch'
+        ],
+        engine: 'D2 115ch',
+        doors: 5,
+        catalogType: 'standard'
+      };
+      
+      addImportedVehicle(volvoV40, 'standard');
+      console.log('Volvo V40 D2 R-Design ajoutée avec succès au catalogue!');
+      
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la Volvo V40 D2 R-Design:', error);
       console.error('Erreur lors de l\'ajout du véhicule');
     }
   };
@@ -242,6 +289,19 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         console.log("La Toyota Camry SE est présente dans le catalogue", toyotaCamry);
       }
       
+      const volvoV40 = vehicles.find(v => 
+        v.brand === "Volvo" && 
+        v.model.includes("V40 D2 R-Design") && 
+        v.year === 2014
+      );
+      
+      if (!volvoV40) {
+        console.log("Ajout automatique de la Volvo V40 au catalogue");
+        addVolvoV40();
+      } else {
+        console.log("La Volvo V40 est présente dans le catalogue", volvoV40);
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -265,6 +325,13 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
           </p>
           
           <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
+            <Button 
+              onClick={addVolvoV40}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              Ajouter la Volvo V40 D2 R-Design au catalogue
+            </Button>
+            
             <Button 
               onClick={addHyundaiSantaFe}
               className="bg-emerald-600 hover:bg-emerald-700 text-white"
