@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { extractVehiclesFromUrl, addImportedVehicle, ImportedVehicle, generateShareableUrl } from "@/utils/vehicleImportService";
@@ -8,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const VehicleImporter = () => {
   const [url, setUrl] = useState('');
@@ -16,6 +18,14 @@ const VehicleImporter = () => {
   const [showShareAlert, setShowShareAlert] = useState(false);
   const [shareableUrl, setShareableUrl] = useState('');
   const navigate = useNavigate();
+
+  // Trigger a reload when the component is mounted
+  useEffect(() => {
+    // Déclencher un événement pour mettre à jour l'affichage des véhicules
+    window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+      detail: { catalogType: 'all' } 
+    }));
+  }, []);
 
   const handleImport = async () => {
     if (!url.trim()) {
@@ -33,17 +43,22 @@ const VehicleImporter = () => {
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
         
+        // Afficher une notification toast
+        toast.success(`${importedVehicles.length} véhicule(s) importé(s) avec succès`);
+        
         // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl(catalogType);
         setShareableUrl(url);
         setShowShareAlert(true);
       } else {
         console.warn("Aucun véhicule n'a pu être importé depuis cette URL");
+        toast.error("Aucun véhicule n'a pu être importé depuis cette URL");
       }
       
       setUrl('');
     } catch (error) {
       console.error("Erreur lors de l'importation:", error);
+      toast.error("Erreur lors de l'importation");
     } finally {
       setIsImporting(false);
     }
@@ -91,6 +106,9 @@ const VehicleImporter = () => {
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType } }));
         
+        // Afficher une notification toast
+        toast.success(`${brand} ${model} ajouté avec succès`);
+        
         // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl(catalogType);
         setShareableUrl(url);
@@ -98,10 +116,12 @@ const VehicleImporter = () => {
         return true;
       } else {
         console.error(`Une erreur s'est produite lors de l'ajout de ${brand} ${model}`);
+        toast.error(`Une erreur s'est produite lors de l'ajout de ${brand} ${model}`);
         return false;
       }
     } catch (error) {
       console.error(`Erreur lors de l'ajout de ${brand} ${model}:`, error);
+      toast.error(`Erreur lors de l'ajout de ${brand} ${model}`);
       return false;
     }
   };
@@ -149,15 +169,25 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
         
+        // Afficher une notification toast
+        toast.success('Toyota Camry SE 2022 ajoutée avec succès');
+        
         // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl('standard');
         setShareableUrl(url);
         setShowShareAlert(true);
+
+        // Rediriger l'utilisateur vers la page principale après 2 secondes
+        setTimeout(() => {
+          navigate('/vehicules');
+        }, 2000);
       } else {
         console.error("Une erreur s'est produite lors de l'ajout de la Toyota Camry SE");
+        toast.error("Une erreur s'est produite lors de l'ajout de la Toyota Camry SE");
       }
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la Toyota Camry SE:', error);
+      toast.error("Erreur lors de l'ajout de la Toyota Camry SE");
     }
   };
 
@@ -206,15 +236,25 @@ Nos services inclus :
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
         
+        // Afficher une notification toast
+        toast.success('Volvo V40 D2 R-Design ajoutée avec succès');
+        
         // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl('standard');
         setShareableUrl(url);
         setShowShareAlert(true);
+
+        // Rediriger l'utilisateur vers la page principale après 2 secondes
+        setTimeout(() => {
+          navigate('/vehicules');
+        }, 2000);
       } else {
         console.error("Une erreur s'est produite lors de l'ajout de la Volvo V40");
+        toast.error("Une erreur s'est produite lors de l'ajout de la Volvo V40");
       }
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la Volvo V40:', error);
+      toast.error("Erreur lors de l'ajout de la Volvo V40");
     }
   };
 
@@ -259,15 +299,25 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         // Déclencher un événement pour mettre à jour l'affichage des véhicules
         window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
         
+        // Afficher une notification toast
+        toast.success('Hyundai Santa Fe Sport ajouté avec succès');
+        
         // Générer une URL partageable et l'afficher à l'utilisateur
         const url = generateShareableUrl('standard');
         setShareableUrl(url);
         setShowShareAlert(true);
+
+        // Rediriger l'utilisateur vers la page principale après 2 secondes
+        setTimeout(() => {
+          navigate('/vehicules');
+        }, 2000);
       } else {
         console.error("Une erreur s'est produite lors de l'ajout du Hyundai Santa Fe");
+        toast.error("Une erreur s'est produite lors de l'ajout du Hyundai Santa Fe");
       }
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
+      toast.error("Erreur lors de l'ajout du Hyundai Santa Fe Sport");
     }
   };
 
@@ -275,8 +325,10 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     try {
       await navigator.clipboard.writeText(shareableUrl);
       console.log('URL copiée dans le presse-papiers');
+      toast.success('URL copiée dans le presse-papiers');
     } catch (err) {
       console.error('Impossible de copier l\'URL:', err);
+      toast.error('Impossible de copier l\'URL');
     }
   };
   
