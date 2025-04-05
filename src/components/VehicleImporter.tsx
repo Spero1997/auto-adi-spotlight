@@ -218,6 +218,59 @@ Nos services inclus :
     }
   };
 
+  const addHyundaiSantaFe = () => {
+    try {
+      const hyundaiSantaFe: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-hyundai-santa-fe`,
+        brand: 'Hyundai',
+        model: 'Santa Fe Sport',
+        year: 2013,
+        mileage: 79000,
+        price: 4500,
+        fuelType: 'Essence',
+        transmission: 'Automatique',
+        exteriorColor: 'Vert',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/74794e1d-cef3-4179-9428-d3359d588743.png',
+        fbLink: 'https://www.facebook.com/share/p/1GsrVVncej/?mibextid=wwXIfr',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
+Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
+        features: [
+          'Transmission automatique',
+          'Climatisation',
+          'Direction assistée',
+          'Vitres électriques',
+          'Jantes alliage'
+        ],
+        catalogType: 'standard'
+      };
+      
+      const success = addImportedVehicle(hyundaiSantaFe, 'standard');
+      
+      if (success) {
+        console.log('Hyundai Santa Fe Sport ajouté avec succès au catalogue standard!');
+        // Déclencher un événement pour mettre à jour l'affichage des véhicules
+        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+        
+        // Générer une URL partageable et l'afficher à l'utilisateur
+        const url = generateShareableUrl('standard');
+        setShareableUrl(url);
+        setShowShareAlert(true);
+      } else {
+        console.error("Une erreur s'est produite lors de l'ajout du Hyundai Santa Fe");
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
+    }
+  };
+
   const handleCopyUrl = async () => {
     try {
       await navigator.clipboard.writeText(shareableUrl);
