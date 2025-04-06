@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
@@ -11,11 +12,51 @@ import { resetCatalog, addImportedVehicle, getImportedVehicles } from '@/utils/v
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Car } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "AutoDealer",
+  "name": "Auto Adi",
+  "description": "Concessionnaire auto pas cher pour l'achat de voitures neuves et d'occasion à Florence, Italie",
+  "url": "https://autoadi.com",
+  "logo": "https://autoadi.com/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Florence",
+    "addressCountry": "IT"
+  },
+  "offers": {
+    "@type": "Offer",
+    "description": "Financement auto taux 0%, reprise véhicule gratuite",
+    "priceCurrency": "EUR"
+  }
+};
 
 const Index = () => {
+  const { translate, language } = useLanguage();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   
+  const translations = {
+    pageTitle: {
+      FR: "Auto Adi - Concessionnaire auto pas cher | Achat voiture neuve et occasion Florence",
+      EN: "Auto Adi - Affordable Car Dealer | New and Used Cars in Florence, Italy",
+      ES: "Auto Adi - Concesionario de coches económicos | Compra de coches nuevos y usados en Florencia, Italia",
+      IT: "Auto Adi - Concessionario auto economico | Acquisto auto nuove e usate a Firenze, Italia",
+      PT: "Auto Adi - Concessionário de automóveis acessível | Carros novos e usados em Florença, Itália",
+      RO: "Auto Adi - Dealer auto la prețuri accesibile | Mașini noi și second-hand în Florența, Italia"
+    },
+    pageDescription: {
+      FR: "Auto Adi, votre concessionnaire automobile de confiance pour l'achat de véhicules neufs et d'occasion à Florence. Financement auto taux 0%, reprise véhicule gratuite et garanties exceptionnelles.",
+      EN: "Auto Adi, your trusted car dealer for buying new and used vehicles in Florence. 0% auto financing, free vehicle trade-in and exceptional warranties.",
+      ES: "Auto Adi, su concesionario de confianza para la compra de vehículos nuevos y usados en Florencia. Financiación al 0%, recompra gratuita y garantías excepcionales.",
+      IT: "Auto Adi, il tuo concessionario di fiducia per l'acquisto di veicoli nuovi e usati a Firenze. Finanziamento auto 0%, ripresa gratuita del veicolo e garanzie eccezionali.",
+      PT: "Auto Adi, seu concessionário de confiança para a compra de veículos novos e usados em Florença. Financiamento automóvel 0%, retoma gratuita de veículos e garantias excepcionais.",
+      RO: "Auto Adi, dealerul dvs. auto de încredere pentru achiziționarea de vehicule noi și second-hand în Florența. Finanțare auto 0%, preluare gratuită a vehiculelor și garanții excepționale."
+    },
+  };
+
   useEffect(() => {
     resetCatalog('all');
     toast.success("Les catalogues ont été réinitialisés");
@@ -445,15 +486,33 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>{translate('pageTitle', translations.pageTitle)}</title>
+        <meta name="description" content={translate('pageDescription', translations.pageDescription)} />
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+      </Helmet>
+      
       <main>
         <HeroCarousel />
         
         <div className="container mx-auto px-4 mt-16">
+          <h1 className="text-4xl font-bold text-center mb-8">
+            {language === 'FR' 
+              ? "Concessionnaire Auto Pas Cher à Florence - Achat Voiture Neuve et Occasion" 
+              : "Affordable Car Dealer in Florence - New and Used Cars"}
+          </h1>
           <QuickSearch />
         </div>
         
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            {language === 'FR' 
+              ? "Nos véhicules vedettes" 
+              : "Our Featured Vehicles"}
+          </h2>
           <FeaturedCars featuredOnly={true} />
         </div>
         
@@ -461,16 +520,39 @@ const Index = () => {
           <Link to="/vehicules/occasion">
             <Button className="mx-auto flex items-center gap-2 px-6 py-3 text-base" size="lg">
               <Car className="h-5 w-5" />
-              Tous nos véhicules d'occasion
+              {language === 'FR' 
+                ? "Tous nos véhicules d'occasion" 
+                : "All our used vehicles"}
             </Button>
           </Link>
         </div>
         
         {searchParams.toString() ? (
           <div className="mt-10">
+            <h2 className="text-3xl font-bold text-center mb-8">
+              {language === 'FR' 
+                ? "Résultats de votre recherche" 
+                : "Your Search Results"}
+            </h2>
             <FeaturedCars searchFilters={searchFilters} featuredOnly={false} />
           </div>
         ) : null}
+        
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-8">
+              {language === 'FR' 
+                ? "Financement Auto Taux 0% et Reprise Véhicule Gratuite" 
+                : "0% Auto Financing and Free Vehicle Trade-in"}
+            </h2>
+            <p className="text-lg text-center max-w-3xl mx-auto mb-12 text-gray-700">
+              {language === 'FR' 
+                ? "Chez Auto Adi, nous proposons des solutions de financement avantageuses et une reprise de votre ancien véhicule sans frais supplémentaires." 
+                : "At Auto Adi, we offer advantageous financing solutions and we'll take your old vehicle with no additional fees."}
+            </p>
+          </div>
+        </section>
+        
         <Benefits />
         <div id="testimonials">
           <TestimonialSection />

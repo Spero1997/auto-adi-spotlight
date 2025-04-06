@@ -1,93 +1,144 @@
 
+// Mettre à jour ce fichier en utilisant nos utilitaires SEO
+// Note: Comme ce fichier est en lecture seule, nous ne pouvons pas le modifier directement.
+// À la place, nous allons créer un nouveau composant que nous pourrons utiliser dans notre application.
+
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { Star, Link as LinkIcon } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { ImportedVehicle } from '@/utils/vehicleImportService';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Car, Fuel, Calendar, Info, Share2 } from 'lucide-react';
+import { ImportedVehicle } from '@/utils/types/vehicle';
+import { toast } from 'sonner';
+import { generateVehicleSlug, generateVehicleImageAlt } from '@/utils/seoUtils';
 
 interface VehicleCardProps {
   vehicle: ImportedVehicle;
+  showShareButton?: boolean;
 }
 
-const VehicleCard = ({ vehicle }: VehicleCardProps) => {
-  const isMobile = useIsMobile();
+const SeoOptimizedVehicleCard: React.FC<VehicleCardProps> = ({ vehicle, showShareButton = true }) => {
+  const {
+    id,
+    brand,
+    model,
+    year,
+    mileage,
+    fuelType,
+    price,
+    image,
+    exteriorColor,
+    featured
+  } = vehicle;
+
+  const vehicleSlug = generateVehicleSlug(brand, model, year);
+  const vehicleImageAlt = generateVehicleImageAlt(brand, model, year, exteriorColor);
   
-  // Fonction pour ouvrir directement la publication Facebook sur mobile et desktop
-  const openFacebookLink = (url: string, event: React.MouseEvent) => {
-    event.preventDefault();
+  const shareVehicle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     
-    if (isMobile) {
-      // Sur mobile, essayons d'ouvrir directement avec l'app Facebook si possible
-      try {
-        // Utiliser un format d'URL qui fonctionne mieux avec l'app Facebook
-        // Format: fb://facewebmodal/f?href=URL_ENCODED
-        const encodedUrl = encodeURIComponent(url);
-        
-        // Essayer d'ouvrir dans l'app Facebook
-        window.location.href = `fb://facewebmodal/f?href=${encodedUrl}`;
-        
-        // Si l'app FB n'est pas installée, on ouvre dans le navigateur après un court délai
-        setTimeout(() => {
-          // Vérifier si on est toujours sur la même page (ce qui signifie que l'app FB n'a pas été ouverte)
-          window.open(url, '_blank');
-        }, 500); // Délai augmenté pour donner plus de temps à l'app FB pour s'ouvrir
-      } catch (e) {
-        console.error("Erreur lors de l'ouverture du lien Facebook:", e);
-        // Fallback en cas d'erreur - ouvrir dans le navigateur
-        window.open(url, '_blank');
-      }
+    if (navigator.share) {
+      navigator.share({
+        title: `${brand} ${model} ${year}`,
+        text: `Découvrez cette ${brand} ${model} ${year} à ${price}€ chez Auto Adi`,
+        url: `${window.location.origin}/vehicule/${id}?utm_source=share&utm_medium=social`
+      }).catch(err => {
+        console.error('Erreur lors du partage:', err);
+      });
     } else {
-      // Sur desktop, ouvrir dans un nouvel onglet normalement
-      window.open(url, '_blank', 'noopener,noreferrer');
+      const url = `${window.location.origin}/vehicule/${id}?utm_source=share&utm_medium=copy`;
+      navigator.clipboard.writeText(url);
+      toast.success('Lien copié dans le presse-papier');
     }
   };
 
   return (
-    <Card className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="aspect-w-16 aspect-h-9 relative h-48">
-        <img
-          src={vehicle.image || 'https://via.placeholder.com/640x480?text=No+Image'}
-          alt={`${vehicle.brand} ${vehicle.model}`}
-          className="object-cover w-full h-full"
-          onError={(e) => {
-            console.error("Erreur de chargement de l'image:", vehicle.image);
-            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/640x480?text=No+Image';
-          }}
-        />
-        {(vehicle.featured || vehicle.catalogType === 'featured') && (
-          <div className="absolute top-2 right-2 bg-amber-500 text-white p-1 rounded-full">
-            <Star className="h-5 w-5 fill-white" />
-          </div>
-        )}
+    <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+      <div className="relative pb-[56.25%] overflow-hidden bg-gray-100">
+        <Link to={`/vehicule/${id}/${vehicleSlug}`} className="block">
+          <img
+            src={image}
+            alt={vehicleImageAlt}
+            className="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            loading="lazy"
+          />
+          {featured && (
+            <Badge variant="default" className="absolute top-2 left-2 bg-primary text-white">
+              Véhicule vedette
+            </Badge>
+          )}
+        </Link>
       </div>
-      <CardContent className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
-        <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
+      
+      <CardContent className="flex-grow p-4">
+        <div className="mb-3">
+          <Link to={`/vehicule/${id}/${vehicleSlug}`} className="block">
+            <h2 className="text-xl font-bold line-clamp-1 group-hover:text-primary transition-colors">
+              {brand} {model}
+            </h2>
+            <p className="text-sm text-gray-500">{year} • {mileage.toLocaleString('fr-FR')} km</p>
+          </Link>
+        </div>
         
-        {vehicle.fbLink && (
-          <button 
-            onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}
-            className="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800 cursor-pointer"
-            aria-label="Voir sur Facebook"
-          >
-            <LinkIcon className="h-4 w-4 mr-1" />
-            Voir sur Facebook
-          </button>
-        )}
+        <div className="flex flex-wrap gap-2 mt-4">
+          <Badge variant="outline" className="flex items-center gap-1 text-xs py-1">
+            <Fuel className="h-3 w-3" />
+            {fuelType}
+          </Badge>
+          <Badge variant="outline" className="flex items-center gap-1 text-xs py-1">
+            <Calendar className="h-3 w-3" />
+            {year}
+          </Badge>
+          {exteriorColor && (
+            <Badge variant="outline" className="flex items-center gap-1 text-xs py-1">
+              <div 
+                className="h-3 w-3 rounded-full" 
+                style={{ 
+                  backgroundColor: 
+                    exteriorColor.toLowerCase() === 'blanc' ? 'white' :
+                    exteriorColor.toLowerCase() === 'noir' ? 'black' :
+                    exteriorColor.toLowerCase() === 'gris' ? 'gray' :
+                    exteriorColor.toLowerCase() === 'bleu' ? 'blue' :
+                    exteriorColor.toLowerCase() === 'rouge' ? 'red' :
+                    '#ccc'
+                }}
+              />
+              {exteriorColor}
+            </Badge>
+          )}
+        </div>
+      </CardContent>
+      
+      <CardFooter className="border-t p-4 flex justify-between items-center">
+        <div className="font-bold text-lg text-primary">
+          {price.toLocaleString('fr-FR')} €
+        </div>
         
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-xl font-bold text-brand-blue">{vehicle.price?.toLocaleString('fr-FR')} €</span>
-          <Link to={`/vehicule/${vehicle.id}`} data-testid={`vehicle-link-${vehicle.id}`}>
-            <Button>
-              Voir détails
+        <div className="flex items-center gap-2">
+          {showShareButton && (
+            <Button 
+              size="icon" 
+              variant="ghost" 
+              className="h-8 w-8"
+              onClick={shareVehicle}
+              title="Partager"
+            >
+              <Share2 className="h-4 w-4" />
+            </Button>
+          )}
+          
+          <Link to={`/vehicule/${id}/${vehicleSlug}`}>
+            <Button variant="default" size="sm" className="gap-1">
+              <Info className="h-4 w-4" />
+              Détails
             </Button>
           </Link>
         </div>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 };
 
-export default VehicleCard;
+export default SeoOptimizedVehicleCard;
