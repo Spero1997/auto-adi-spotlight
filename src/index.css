@@ -98,7 +98,8 @@
   /* Application du fond bleu foncé pour la version desktop */
   @media (min-width: 768px) {
     body {
-      background-color: hsl(var(--primary) / 0.05);
+      background-color: #064EA2;
+      background-opacity: 0.05;
     }
   }
 

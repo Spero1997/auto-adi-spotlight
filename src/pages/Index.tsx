@@ -504,7 +504,7 @@ const Index = () => {
               ? "Concessionnaire Auto Pas Cher - Achat Voiture Occasion" 
               : "Affordable Car Dealer - Used Car Sales"}
           </h1>
-          <div className="mt-6">
+          <div className="mt-12 quick-search-container">
             <QuickSearch />
           </div>
         </div>
