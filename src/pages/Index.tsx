@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -500,10 +501,12 @@ const Index = () => {
         <div className="container mx-auto px-4 mt-16">
           <h1 className="text-4xl font-bold text-center mb-8">
             {language === 'FR' 
-              ? "Concessionnaire Auto Pas Cher à Florence - Achat Voiture Neuve et Occasion" 
-              : "Affordable Car Dealer in Florence - New and Used Cars"}
+              ? "Concessionnaire Auto Pas Cher - Achat Voiture Occasion" 
+              : "Affordable Car Dealer - Used Car Sales"}
           </h1>
-          <QuickSearch />
+          <div className="mt-6">
+            <QuickSearch />
+          </div>
         </div>
         
         <ConditionsHighlight />

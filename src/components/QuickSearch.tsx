@@ -227,7 +227,7 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} ${insideHero ? '' : '-mt-10 mb-16'}`}>
+    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-4' : 'p-6 md:p-8'} ${insideHero ? '' : '-mt-10 mb-16'} quick-search-container`}>
       <div className="flex flex-col md:flex-row gap-4 items-center">
         <div className="flex-1 w-full">
           <h3 className={`${isMobile ? 'text-lg' : 'text-xl'} font-semibold mb-4 text-gray-800`}>
