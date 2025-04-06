@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+/* Ajout d'une couleur de fond bleue plus foncée pour la version desktop */
+@media (min-width: 768px) {
+  body {
+    background-color: rgba(6, 78, 162, 0.05);
+  }
+}
+
 /* Make sure the whole app is responsive with proper padding */
 @media (max-width: 640px) {
   #root {

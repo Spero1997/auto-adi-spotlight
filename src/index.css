@@ -94,6 +94,13 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
   }
+  
+  /* Application du fond bleu foncé pour la version desktop */
+  @media (min-width: 768px) {
+    body {
+      background-color: hsl(var(--primary) / 0.05);
+    }
+  }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold;
