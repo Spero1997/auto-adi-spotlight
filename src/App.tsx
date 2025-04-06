@@ -10,6 +10,14 @@ import NotFound from './pages/NotFound';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider } from './contexts/LanguageContext';
 import Blog from './pages/Blog';
+import Services from './pages/Services';
+import Financement from './pages/Financement';
+import Rachat from './pages/Rachat';
+import APropos from './pages/APropos';
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
+import Cookies from './pages/Cookies';
+import CGV from './pages/CGV';
+import Conditions from './pages/Conditions';
 
 function App() {
   return (
@@ -24,6 +32,14 @@ function App() {
           <Route path="/vehicule/:id/:slug" element={<VehicleDetails />} />
           <Route path="/vehicules/import" element={<VehicleImport />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/financement" element={<Financement />} />
+          <Route path="/rachat" element={<Rachat />} />
+          <Route path="/a-propos" element={<APropos />} />
+          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/cgv" element={<CGV />} />
+          <Route path="/conditions" element={<Conditions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
