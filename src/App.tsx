@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Index from './pages/Index';
 import Vehicules from './pages/VehiculesOccasion';
@@ -7,7 +8,7 @@ import VehicleDetails from './pages/VehicleDetails';
 import VehicleImport from './pages/VehicleImport';
 import NotFound from './pages/NotFound';
 import ScrollToTop from './components/ScrollToTop';
-import LanguageProvider from './contexts/LanguageContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 import Blog from './pages/Blog';
 
 function App() {
@@ -31,4 +32,3 @@ function App() {
 }
 
 export default App;
-
