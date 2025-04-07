@@ -29,6 +29,42 @@ const qualificationQuestions = [
   "Souhaitez-vous être recontacté par notre équipe ?",
 ];
 
+// Base de connaissances pour les réponses générales
+const knowledgeBase = [
+  {
+    keywords: ['prix', 'tarif', 'coût', 'budget'],
+    response: "Nos véhicules sont disponibles dans différentes gammes de prix, de l'entrée de gamme au premium. Avez-vous un budget spécifique en tête ?"
+  },
+  {
+    keywords: ['garantie', 'garanti'],
+    response: "Tous nos véhicules d'occasion sont garantis minimum 3 mois. Nous proposons également des extensions de garantie jusqu'à 60 mois."
+  },
+  {
+    keywords: ['essai', 'tester', 'essayer'],
+    response: "Vous pouvez essayer n'importe quel véhicule de notre parc. Il suffit de prendre rendez-vous par téléphone ou directement à notre concession."
+  },
+  {
+    keywords: ['financement', 'crédit', 'paiement', 'mensualité'],
+    response: "Nous proposons plusieurs solutions de financement adaptées à votre situation : crédit classique, LOA ou LLD. Souhaitez-vous plus d'informations sur ces options ?"
+  },
+  {
+    keywords: ['horaire', 'ouverture', 'fermeture', 'ouvert'],
+    response: "Notre concession est ouverte du lundi au vendredi de 9h à 19h et le samedi de 9h à 18h. Nous sommes fermés le dimanche."
+  },
+  {
+    keywords: ['adresse', 'localisation', 'où', 'situé'],
+    response: "Notre concession principale est située au 15 avenue de la Liberté, 75008 Paris. Vous pouvez nous trouver facilement grâce à Google Maps ou Waze."
+  },
+  {
+    keywords: ['reprise', 'racheter', 'rachat', 'échange'],
+    response: "Nous proposons un service de reprise de votre ancien véhicule. Nous pouvons évaluer votre véhicule rapidement et vous faire une offre de reprise."
+  },
+  {
+    keywords: ['délai', 'livraison', 'attente', 'quand'],
+    response: "Pour les véhicules en stock, la livraison peut se faire sous 48h après finalisation du dossier. Pour les commandes spéciales, le délai peut varier de 1 à 3 mois selon le modèle."
+  }
+];
+
 const Chatbot = () => {
   const { translate, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
@@ -71,6 +107,19 @@ const Chatbot = () => {
       timestamp: new Date(),
     };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  // Fonction pour trouver une réponse dans la base de connaissances
+  const findKnowledgeBaseResponse = (userInput: string): string | null => {
+    const lowercaseInput = userInput.toLowerCase();
+    
+    for (const item of knowledgeBase) {
+      if (item.keywords.some(keyword => lowercaseInput.includes(keyword))) {
+        return item.response;
+      }
+    }
+    
+    return null;
   };
 
   const processUserResponse = (userInput: string) => {
@@ -133,18 +182,30 @@ const Chatbot = () => {
     }
 
     // Réponses générales (hors qualification)
-    if (userInput.toLowerCase().includes('voiture') || userInput.toLowerCase().includes('véhicule')) {
-      addMessage("Nous avons une large sélection de véhicules. Souhaitez-vous répondre à quelques questions pour nous aider à trouver le véhicule idéal pour vous ?", "bot");
-    } else if (userInput.toLowerCase().includes('prix') || userInput.toLowerCase().includes('budget') || userInput.toLowerCase().includes('coût')) {
-      addMessage("Nos véhicules sont disponibles dans différentes gammes de prix. Souhaitez-vous que je vous pose quelques questions pour mieux comprendre vos besoins ?", "bot");
-    } else if (userInput.toLowerCase().includes('contact') || userInput.toLowerCase().includes('rendez-vous') || userInput.toLowerCase().includes('appeler')) {
-      startQualification();
+    // Vérifier d'abord si nous avons une réponse dans la base de connaissances
+    const knowledgeResponse = findKnowledgeBaseResponse(userInput);
+    
+    if (knowledgeResponse) {
+      addMessage(knowledgeResponse, "bot");
+      return;
+    }
+    
+    // Si on mentionne explicitement le souhait d'acheter ou de chercher un véhicule
+    if (userInput.toLowerCase().includes('acheter') || 
+        userInput.toLowerCase().includes('cherche') || 
+        userInput.toLowerCase().includes('voiture') || 
+        userInput.toLowerCase().includes('véhicule')) {
+      addMessage("Je vois que vous êtes intéressé par l'achat d'un véhicule. Je peux vous aider à trouver celui qui vous convient le mieux.", "bot");
+      setTimeout(() => {
+        startQualification();
+      }, 1000);
     } else if (userInput.toLowerCase().includes('merci')) {
       addMessage("Je vous en prie ! Y a-t-il autre chose que je puisse faire pour vous ?", "bot");
-    } else if (userInput.toLowerCase().includes('bonjour') || userInput.toLowerCase().includes('salut')) {
+    } else if (userInput.toLowerCase().includes('bonjour') || userInput.toLowerCase().includes('salut') || userInput.toLowerCase().includes('hello')) {
       addMessage("Bonjour ! Comment puis-je vous aider aujourd'hui ?", "bot");
     } else {
-      startQualification();
+      // Réponse générique et proposition d'aide
+      addMessage("Je ne suis pas sûr de comprendre votre demande. Puis-je vous aider sur des sujets comme nos véhicules disponibles, nos tarifs, les options de financement ou prendre un rendez-vous ?", "bot");
     }
   };
 
@@ -197,11 +258,11 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-6 right-6 z-50">
       {/* Bouton du chatbot */}
       <button
         onClick={toggleChat}
-        className={`bg-brand-blue hover:bg-brand-darkBlue text-white rounded-full p-4 shadow-lg transition-all ${
+        className={`bg-brand-blue hover:bg-brand-darkBlue text-white rounded-full p-4 shadow-lg transition-all chatbot-button-pulse ${
           isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
         }`}
         aria-label={translate('chatWithUs', translations.chatWithUs)}
@@ -288,3 +349,4 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
+
