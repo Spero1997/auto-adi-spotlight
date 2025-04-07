@@ -23,7 +23,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     if (searchFilters && (searchFilters.brand || searchFilters.model || searchFilters.maxPrice || searchFilters.fuelType)) {
       return "Résultats de votre recherche";
     }
-    return featuredOnly ? "Nos véhicules en vedette" : "Tous nos véhicules d'occasion";
+    return featuredOnly ? "Nos véhicules vedettes" : "Tous nos véhicules d'occasion";
   };
 
   // Message à afficher quand aucun véhicule n'est trouvé

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -511,11 +510,6 @@ const Index = () => {
         
         <ConditionsHighlight />
         <div className="mt-10" id="featured-cars">
-          <h2 className="text-3xl font-bold text-center mb-8">
-            {language === 'FR' 
-              ? "Nos véhicules vedettes" 
-              : "Our Featured Vehicles"}
-          </h2>
           <FeaturedCars featuredOnly={true} />
         </div>
         
