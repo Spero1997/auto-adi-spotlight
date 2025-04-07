@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, User, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -84,7 +83,6 @@ const Chatbot = () => {
   const [isCollectingContact, setIsCollectingContact] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Faire défiler automatiquement vers le bas lors de nouveaux messages
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -109,7 +107,6 @@ const Chatbot = () => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
-  // Fonction pour trouver une réponse dans la base de connaissances
   const findKnowledgeBaseResponse = (userInput: string): string | null => {
     const lowercaseInput = userInput.toLowerCase();
     
@@ -123,7 +120,6 @@ const Chatbot = () => {
   };
 
   const processUserResponse = (userInput: string) => {
-    // Si nous sommes en train de collecter les informations de contact
     if (isCollectingContact) {
       if (!userInfo.email) {
         setUserInfo({...userInfo, email: userInput});
@@ -134,16 +130,13 @@ const Chatbot = () => {
         addMessage("Parfait ! Notre équipe vous contactera très bientôt. En attendant, je reste à votre disposition pour toute autre question.", "bot");
         setIsCollectingContact(false);
         
-        // Envoyer les informations de lead (simulation)
         console.log("Lead qualifié:", userInfo);
         toast.success("Vos informations ont été enregistrées avec succès !");
         return;
       }
     }
 
-    // Si nous sommes dans le processus de qualification
     if (isQualifying) {
-      // Enregistrer la réponse à la question actuelle
       switch (questionIndex) {
         case 0:
           setUserInfo({...userInfo, vehicleType: userInput});
@@ -160,7 +153,6 @@ const Chatbot = () => {
         case 4:
           setUserInfo({...userInfo, contact: userInput});
           
-          // Si l'utilisateur souhaite être contacté
           if (userInput.toLowerCase().includes('oui')) {
             setIsCollectingContact(true);
             addMessage("Excellent ! Pour que notre équipe puisse vous contacter, pourriez-vous me donner votre adresse email ?", "bot");
@@ -173,7 +165,6 @@ const Chatbot = () => {
           }
       }
 
-      // Passer à la question suivante si nous n'avons pas terminé
       if (questionIndex < qualificationQuestions.length - 1) {
         setQuestionIndex(prevIndex => prevIndex + 1);
         addMessage(qualificationQuestions[questionIndex + 1], "bot");
@@ -181,8 +172,6 @@ const Chatbot = () => {
       return;
     }
 
-    // Réponses générales (hors qualification)
-    // Vérifier d'abord si nous avons une réponse dans la base de connaissances
     const knowledgeResponse = findKnowledgeBaseResponse(userInput);
     
     if (knowledgeResponse) {
@@ -190,7 +179,6 @@ const Chatbot = () => {
       return;
     }
     
-    // Si on mentionne explicitement le souhait d'acheter ou de chercher un véhicule
     if (userInput.toLowerCase().includes('acheter') || 
         userInput.toLowerCase().includes('cherche') || 
         userInput.toLowerCase().includes('voiture') || 
@@ -204,7 +192,6 @@ const Chatbot = () => {
     } else if (userInput.toLowerCase().includes('bonjour') || userInput.toLowerCase().includes('salut') || userInput.toLowerCase().includes('hello')) {
       addMessage("Bonjour ! Comment puis-je vous aider aujourd'hui ?", "bot");
     } else {
-      // Réponse générique et proposition d'aide
       addMessage("Je ne suis pas sûr de comprendre votre demande. Puis-je vous aider sur des sujets comme nos véhicules disponibles, nos tarifs, les options de financement ou prendre un rendez-vous ?", "bot");
     }
   };
@@ -229,7 +216,6 @@ const Chatbot = () => {
     }
   };
 
-  // Traduire les éléments d'interface en fonction de la langue
   const translations = {
     chatWithUs: {
       FR: "Discuter avec nous",
@@ -258,8 +244,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      {/* Bouton du chatbot */}
+    <div className="fixed right-6 z-50" style={{ top: 'calc(50% - 24px)' }}>
       <button
         onClick={toggleChat}
         className={`bg-brand-blue hover:bg-brand-darkBlue text-white rounded-full p-4 shadow-lg transition-all chatbot-button-pulse ${
@@ -270,16 +255,14 @@ const Chatbot = () => {
         <MessageSquare className="h-6 w-6" />
       </button>
 
-      {/* Fenêtre de chat */}
       <div
         className={`bg-white rounded-lg shadow-2xl overflow-hidden transition-all transform ${
           isOpen
             ? 'scale-100 opacity-100 translate-y-0'
             : 'scale-95 opacity-0 translate-y-4 pointer-events-none'
         } w-80 md:w-96 max-h-[500px] flex flex-col`}
-        style={{ visibility: isOpen ? 'visible' : 'hidden' }}
+        style={{ visibility: isOpen ? 'visible' : 'hidden', position: 'absolute', top: 'calc(-250px)', right: '0' }}
       >
-        {/* En-tête du chat */}
         <div className="bg-brand-blue text-white p-4 flex justify-between items-center">
           <h3 className="font-semibold">Auto Adi - {translate('chatWithUs', translations.chatWithUs)}</h3>
           <button onClick={toggleChat} className="text-white hover:text-gray-200">
@@ -287,7 +270,6 @@ const Chatbot = () => {
           </button>
         </div>
 
-        {/* Zone des messages */}
         <div className="flex-1 p-4 overflow-y-auto max-h-[350px]">
           {messages.map((message) => (
             <div
@@ -324,7 +306,6 @@ const Chatbot = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Zone de saisie */}
         <div className="border-t p-3 flex items-center">
           <input
             type="text"
@@ -349,4 +330,3 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
-
