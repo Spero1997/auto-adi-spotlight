@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, User, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -281,8 +282,8 @@ const Chatbot = () => {
               <div
                 className={`inline-block p-3 rounded-lg ${
                   message.sender === 'user'
-                    ? 'bg-brand-blue text-white'
-                    : 'bg-gray-100 text-gray-800'
+                    ? 'bg-brand-blue text-white font-medium'
+                    : 'bg-gray-100 text-gray-800 font-medium'
                 } max-w-[80%]`}
               >
                 <div className="flex items-start gap-2">

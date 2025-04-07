@@ -84,7 +84,7 @@ const HeroCarousel = () => {
       <div className="absolute top-6 right-6 z-20 md:hidden">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="bg-white/80 hover:bg-white">
+            <Button variant="outline" size="icon" className="bg-white/90 hover:bg-white shadow-md">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
@@ -94,46 +94,46 @@ const HeroCarousel = () => {
                 to="/vehicules/occasion" 
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
               >
-                <Car className="h-5 w-5" />
-                <span>Véhicules d'occasion</span>
+                <Car className="h-5 w-5 text-brand-blue" />
+                <span className="font-medium">Véhicules d'occasion</span>
               </Link>
               <Link 
                 to="/services" 
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
               >
-                <Settings className="h-5 w-5" />
-                <span>Services</span>
+                <Settings className="h-5 w-5 text-brand-blue" />
+                <span className="font-medium">Services</span>
               </Link>
               <Link 
                 to="/financement" 
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
               >
-                <CreditCard className="h-5 w-5" />
-                <span>Financement</span>
+                <CreditCard className="h-5 w-5 text-brand-blue" />
+                <span className="font-medium">Financement</span>
               </Link>
               <Link 
                 to="/rachat" 
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
               >
-                <TruckIcon className="h-5 w-5" />
-                <span>Rachat de votre véhicule</span>
+                <TruckIcon className="h-5 w-5 text-brand-blue" />
+                <span className="font-medium">Rachat de votre véhicule</span>
               </Link>
               <div className="border-t my-2"></div>
               <Link 
                 to="/" 
-                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors font-medium"
               >
                 Accueil
               </Link>
               <Link 
                 to="/a-propos" 
-                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors font-medium"
               >
                 À propos
               </Link>
               <Link 
                 to="/contact" 
-                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-md transition-colors font-medium"
               >
                 Contact
               </Link>
@@ -142,47 +142,47 @@ const HeroCarousel = () => {
         </Sheet>
       </div>
 
-      {/* Navigation en superposition - visible uniquement sur desktop - DÉPLACÉ EN HAUT */}
+      {/* Navigation en superposition - visible uniquement sur desktop */}
       <div className="absolute top-6 right-6 z-20 hidden md:flex items-center gap-4">
         <button 
           onClick={() => handleNavigation('/')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           Accueil
         </button>
         <button 
           onClick={() => handleNavigation('/vehicules/occasion')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           Véhicules
         </button>
         <button 
           onClick={() => handleNavigation('/services')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           Services
         </button>
         <button 
           onClick={() => handleNavigation('/financement')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           Financement
         </button>
         <button 
           onClick={() => handleNavigation('/a-propos')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           À propos
         </button>
         <button 
           onClick={() => handleNavigation('/contact')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           Contact
         </button>
         <button 
           onClick={() => handleNavigation('/rachat')}
-          className="text-white hover:text-opacity-70 transition-opacity font-medium"
+          className="text-white hover:text-opacity-70 transition-opacity font-medium text-shadow"
         >
           Rachat
         </button>
@@ -202,25 +202,28 @@ const HeroCarousel = () => {
           {carImages.map((img, index) => (
             <CarouselItem key={index} className="h-full">
               <div 
-                className="relative w-full h-full bg-cover bg-center"
+                className="relative w-full h-full bg-cover bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${img})` }}
               >
+                {/* Overlay foncé pour améliorer la lisibilité */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/30"></div>
+                
                 <div className="absolute inset-0 flex items-center">
                   {/* Conteneur avec fond coloré semi-transparent, positionné sur le côté */}
                   <div className={`
-                    ${index % 2 === 0 ? 'bg-brand-blue/80' : 'bg-brand-orange/80'} 
-                    max-w-md mx-6 p-5 rounded-lg shadow-lg backdrop-blur-sm
+                    ${index % 2 === 0 ? 'bg-brand-blue/90' : 'bg-brand-orange/90'} 
+                    max-w-md mx-6 p-5 sm:p-6 md:p-7 rounded-lg shadow-lg backdrop-blur-sm
                     transform transition-all duration-500 ease-in-out
                     ${index % 2 === 0 ? 'ml-auto mr-10 md:mr-20' : 'ml-10 md:ml-20'}
                   `}>
-                    <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white text-shadow">
                       {index === 0 && "BMW M2 - Élégance et Performance"}
                       {index === 1 && "Mercedes AMG GT - Puissance Allemande"}
                       {index === 2 && "Mercedes AMG GT - Luxe à Monaco"}
                       {index === 3 && "BMW M5 - Confort et Sportivité"}
                       {index === 4 && "Trouvez la voiture parfaite pour vous"}
                     </h2>
-                    <p className="text-base md:text-lg text-white mb-4">
+                    <p className="text-base md:text-lg text-white mb-4 font-medium">
                       {index === 0 && "Une sportive compacte pour les amateurs de sensations"}
                       {index === 1 && "Un bijou de technologie pour les passionnés"}
                       {index === 2 && "Le prestige sur la Côte d'Azur"}
@@ -231,7 +234,7 @@ const HeroCarousel = () => {
                     {index === 4 && (
                       <div className="flex mt-4">
                         <Link to="/vehicules/occasion">
-                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-4 py-2 rounded-md font-semibold">
+                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-4 py-2 rounded-md font-semibold text-base shadow-md">
                             Véhicules d'occasion
                           </Button>
                         </Link>
@@ -243,8 +246,8 @@ const HeroCarousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 z-10 bg-white/80 hover:bg-white" />
-        <CarouselNext className="absolute right-4 z-10 bg-white/80 hover:bg-white" />
+        <CarouselPrevious className="absolute left-4 z-10 bg-white/90 hover:bg-white shadow-md" />
+        <CarouselNext className="absolute right-4 z-10 bg-white/90 hover:bg-white shadow-md" />
       </Carousel>
 
       {/* Indicateurs de pagination améliorés */}
@@ -259,7 +262,7 @@ const HeroCarousel = () => {
               }
             }}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              activeIndex === index ? "bg-white scale-125" : "bg-white/50"
+              activeIndex === index ? "bg-white scale-125 shadow-lg" : "bg-white/70"
             }`}
             aria-label={`Voir l'image ${index + 1}`}
           />

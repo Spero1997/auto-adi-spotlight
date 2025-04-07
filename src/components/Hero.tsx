@@ -149,46 +149,46 @@ const Hero = () => {
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ 
           backgroundImage: "url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80')",
-          filter: "brightness(0.6) contrast(1.1)"
+          filter: "brightness(0.5) contrast(1.2)"
         }}
       />
       
       {/* Overlay gradient for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-transparent z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent z-0"></div>
       
       <div className="container mx-auto px-4 py-8 md:py-12 relative z-10">
         <div className="max-w-3xl text-white">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 drop-shadow-lg">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 drop-shadow-lg text-white">
             {translate('heroTitle', translations.heroTitle)}
           </h1>
-          <p className="text-lg md:text-xl mb-6 text-gray-100 drop-shadow">
+          <p className="text-lg md:text-xl mb-6 text-white drop-shadow-md font-medium">
             {translate('heroDescription', translations.heroDescription)}
           </p>
           
           {/* Key features with icons */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm p-3 rounded-lg shadow-md">
               <Zap className="h-5 w-5 text-brand-orange" />
-              <span>{translate('features.performance', translations.features.performance)}</span>
+              <span className="font-medium">{translate('features.performance', translations.features.performance)}</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm p-3 rounded-lg shadow-md">
               <Shield className="h-5 w-5 text-brand-orange" />
-              <span>{translate('features.safety', translations.features.safety)}</span>
+              <span className="font-medium">{translate('features.safety', translations.features.safety)}</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm p-3 rounded-lg shadow-md">
               <Award className="h-5 w-5 text-brand-orange" />
-              <span>{translate('features.quality', translations.features.quality)}</span>
+              <span className="font-medium">{translate('features.quality', translations.features.quality)}</span>
             </div>
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm p-3 rounded-lg">
+            <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm p-3 rounded-lg shadow-md">
               <DollarSign className="h-5 w-5 text-brand-orange" />
-              <span>{translate('features.warranty', translations.features.warranty)}</span>
+              <span className="font-medium">{translate('features.warranty', translations.features.warranty)}</span>
             </div>
           </div>
           
           {/* Call to action button */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to="/vehicules/occasion">
-              <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg shadow-lg">
+              <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg shadow-xl">
                 {translate('usedVehicles', translations.usedVehicles)}
               </Button>
             </Link>
@@ -198,7 +198,7 @@ const Hero = () => {
 
       {/* Quick search section - moved up by adjusting the margin */}
       <div className="container mx-auto px-4 relative z-10 -mt-8">
-        <div className="bg-white rounded-lg shadow-xl p-6 md:p-8">
+        <div className="bg-white rounded-lg shadow-xl p-6 md:p-8 border border-gray-200">
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="flex-1 w-full">
               <h3 className="text-xl font-semibold mb-4 text-gray-800">{translate('quickSearch', translations.quickSearch)}</h3>
