@@ -1,0 +1,290 @@
+
+import { useState, useRef, useEffect } from 'react';
+import { MessageSquare, Send, X, User, Bot } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { toast } from 'sonner';
+
+type Message = {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+};
+
+const initialMessages: Message[] = [
+  {
+    id: '1',
+    text: 'Bonjour ! Je suis l\'assistant virtuel d\'Auto Adi. Comment puis-je vous aider aujourd\'hui ?',
+    sender: 'bot',
+    timestamp: new Date(),
+  },
+];
+
+const qualificationQuestions = [
+  "Quel type de véhicule recherchez-vous ?",
+  "Quel est votre budget maximum ?", 
+  "Préférez-vous un véhicule essence, diesel, hybride ou électrique ?",
+  "Quand souhaitez-vous acheter un véhicule ?",
+  "Souhaitez-vous être recontacté par notre équipe ?",
+];
+
+const Chatbot = () => {
+  const { translate, language } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [inputValue, setInputValue] = useState('');
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [userInfo, setUserInfo] = useState({
+    vehicleType: '',
+    budget: '',
+    fuelType: '',
+    timeframe: '',
+    contact: '',
+    email: '',
+    phone: '',
+  });
+  const [isQualifying, setIsQualifying] = useState(false);
+  const [isCollectingContact, setIsCollectingContact] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Faire défiler automatiquement vers le bas lors de nouveaux messages
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  const toggleChat = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const addMessage = (text: string, sender: 'user' | 'bot') => {
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text,
+      sender,
+      timestamp: new Date(),
+    };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  const processUserResponse = (userInput: string) => {
+    // Si nous sommes en train de collecter les informations de contact
+    if (isCollectingContact) {
+      if (!userInfo.email) {
+        setUserInfo({...userInfo, email: userInput});
+        addMessage("Merci ! Pouvez-vous également me donner votre numéro de téléphone ?", "bot");
+        return;
+      } else if (!userInfo.phone) {
+        setUserInfo({...userInfo, phone: userInput});
+        addMessage("Parfait ! Notre équipe vous contactera très bientôt. En attendant, je reste à votre disposition pour toute autre question.", "bot");
+        setIsCollectingContact(false);
+        
+        // Envoyer les informations de lead (simulation)
+        console.log("Lead qualifié:", userInfo);
+        toast.success("Vos informations ont été enregistrées avec succès !");
+        return;
+      }
+    }
+
+    // Si nous sommes dans le processus de qualification
+    if (isQualifying) {
+      // Enregistrer la réponse à la question actuelle
+      switch (questionIndex) {
+        case 0:
+          setUserInfo({...userInfo, vehicleType: userInput});
+          break;
+        case 1:
+          setUserInfo({...userInfo, budget: userInput});
+          break;
+        case 2:
+          setUserInfo({...userInfo, fuelType: userInput});
+          break;
+        case 3:
+          setUserInfo({...userInfo, timeframe: userInput});
+          break;
+        case 4:
+          setUserInfo({...userInfo, contact: userInput});
+          
+          // Si l'utilisateur souhaite être contacté
+          if (userInput.toLowerCase().includes('oui')) {
+            setIsCollectingContact(true);
+            addMessage("Excellent ! Pour que notre équipe puisse vous contacter, pourriez-vous me donner votre adresse email ?", "bot");
+            setIsQualifying(false);
+            return;
+          } else {
+            addMessage("Je vous remercie pour ces informations ! N'hésitez pas à parcourir notre catalogue de véhicules ou à me poser d'autres questions.", "bot");
+            setIsQualifying(false);
+            return;
+          }
+      }
+
+      // Passer à la question suivante si nous n'avons pas terminé
+      if (questionIndex < qualificationQuestions.length - 1) {
+        setQuestionIndex(prevIndex => prevIndex + 1);
+        addMessage(qualificationQuestions[questionIndex + 1], "bot");
+      }
+      return;
+    }
+
+    // Réponses générales (hors qualification)
+    if (userInput.toLowerCase().includes('voiture') || userInput.toLowerCase().includes('véhicule')) {
+      addMessage("Nous avons une large sélection de véhicules. Souhaitez-vous répondre à quelques questions pour nous aider à trouver le véhicule idéal pour vous ?", "bot");
+    } else if (userInput.toLowerCase().includes('prix') || userInput.toLowerCase().includes('budget') || userInput.toLowerCase().includes('coût')) {
+      addMessage("Nos véhicules sont disponibles dans différentes gammes de prix. Souhaitez-vous que je vous pose quelques questions pour mieux comprendre vos besoins ?", "bot");
+    } else if (userInput.toLowerCase().includes('contact') || userInput.toLowerCase().includes('rendez-vous') || userInput.toLowerCase().includes('appeler')) {
+      startQualification();
+    } else if (userInput.toLowerCase().includes('merci')) {
+      addMessage("Je vous en prie ! Y a-t-il autre chose que je puisse faire pour vous ?", "bot");
+    } else if (userInput.toLowerCase().includes('bonjour') || userInput.toLowerCase().includes('salut')) {
+      addMessage("Bonjour ! Comment puis-je vous aider aujourd'hui ?", "bot");
+    } else {
+      startQualification();
+    }
+  };
+
+  const startQualification = () => {
+    setIsQualifying(true);
+    setQuestionIndex(0);
+    addMessage("Pour mieux vous aider, j'aimerais vous poser quelques questions. " + qualificationQuestions[0], "bot");
+  };
+
+  const handleSendMessage = () => {
+    if (!inputValue.trim()) return;
+
+    addMessage(inputValue, 'user');
+    processUserResponse(inputValue);
+    setInputValue('');
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  // Traduire les éléments d'interface en fonction de la langue
+  const translations = {
+    chatWithUs: {
+      FR: "Discuter avec nous",
+      EN: "Chat with us",
+      ES: "Hablar con nosotros",
+      IT: "Chatta con noi",
+      PT: "Converse conosco",
+      RO: "Discută cu noi"
+    },
+    typeMessage: {
+      FR: "Tapez votre message...",
+      EN: "Type your message...",
+      ES: "Escriba su mensaje...",
+      IT: "Scrivi il tuo messaggio...",
+      PT: "Digite sua mensagem...",
+      RO: "Scrieți mesajul dvs..."
+    },
+    send: {
+      FR: "Envoyer",
+      EN: "Send",
+      ES: "Enviar",
+      IT: "Invia",
+      PT: "Enviar",
+      RO: "Trimite"
+    }
+  };
+
+  return (
+    <div className="fixed bottom-4 right-4 z-50">
+      {/* Bouton du chatbot */}
+      <button
+        onClick={toggleChat}
+        className={`bg-brand-blue hover:bg-brand-darkBlue text-white rounded-full p-4 shadow-lg transition-all ${
+          isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+        }`}
+        aria-label={translate('chatWithUs', translations.chatWithUs)}
+      >
+        <MessageSquare className="h-6 w-6" />
+      </button>
+
+      {/* Fenêtre de chat */}
+      <div
+        className={`bg-white rounded-lg shadow-2xl overflow-hidden transition-all transform ${
+          isOpen
+            ? 'scale-100 opacity-100 translate-y-0'
+            : 'scale-95 opacity-0 translate-y-4 pointer-events-none'
+        } w-80 md:w-96 max-h-[500px] flex flex-col`}
+        style={{ visibility: isOpen ? 'visible' : 'hidden' }}
+      >
+        {/* En-tête du chat */}
+        <div className="bg-brand-blue text-white p-4 flex justify-between items-center">
+          <h3 className="font-semibold">Auto Adi - {translate('chatWithUs', translations.chatWithUs)}</h3>
+          <button onClick={toggleChat} className="text-white hover:text-gray-200">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Zone des messages */}
+        <div className="flex-1 p-4 overflow-y-auto max-h-[350px]">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`mb-3 ${
+                message.sender === 'user' ? 'text-right' : 'text-left'
+              }`}
+            >
+              <div
+                className={`inline-block p-3 rounded-lg ${
+                  message.sender === 'user'
+                    ? 'bg-brand-blue text-white'
+                    : 'bg-gray-100 text-gray-800'
+                } max-w-[80%]`}
+              >
+                <div className="flex items-start gap-2">
+                  {message.sender === 'bot' && (
+                    <Bot className="h-5 w-5 mt-1 text-brand-blue" />
+                  )}
+                  <span>{message.text}</span>
+                  {message.sender === 'user' && (
+                    <User className="h-5 w-5 mt-1 text-white" />
+                  )}
+                </div>
+              </div>
+              <div className="text-xs text-gray-500 mt-1">
+                {message.timestamp.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Zone de saisie */}
+        <div className="border-t p-3 flex items-center">
+          <input
+            type="text"
+            placeholder={translate('typeMessage', translations.typeMessage)}
+            className="flex-1 border rounded-l-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+          />
+          <Button
+            onClick={handleSendMessage}
+            className="rounded-l-none"
+            disabled={!inputValue.trim()}
+          >
+            <Send className="h-5 w-5" />
+            <span className="sr-only">{translate('send', translations.send)}</span>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Chatbot;

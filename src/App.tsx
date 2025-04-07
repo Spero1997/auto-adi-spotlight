@@ -18,6 +18,7 @@ import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
 import Cookies from './pages/Cookies';
 import CGV from './pages/CGV';
 import Conditions from './pages/Conditions';
+import Chatbot from './components/Chatbot';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/conditions" element={<Conditions />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <Chatbot />
       </Router>
     </LanguageProvider>
   );
