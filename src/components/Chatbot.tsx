@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, User, Bot, Car, Calendar, HelpCircle, Home, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,14 @@ type Message = {
 type Option = {
   text: string;
   action: string;
+};
+
+type VehicleIntent = {
+  model?: string;
+  brand?: string;
+  budget?: number;
+  state?: 'neuf' | 'occasion';
+  type?: string;
 };
 
 const initialMessages: Message[] = [
@@ -191,6 +200,50 @@ const stateOptions = [
   { text: "Occasion (bon plan)", action: "state_used_deal" }
 ];
 
+// Inventory data for specific model searches
+const vehicleInventory = [
+  { 
+    id: 'a4-tdi-2021',
+    brand: 'Audi', 
+    model: 'A4 TDI', 
+    year: 2021, 
+    price: 23900, 
+    mileage: 40000, 
+    features: ['Garantie 24 mois', 'Carnet d\'entretien complet', 'Première main'],
+    image: 'https://example.com/audi-a4.jpg'
+  },
+  { 
+    id: 'a4-sline-2020',
+    brand: 'Audi', 
+    model: 'A4 S-Line', 
+    year: 2020, 
+    price: 24500, 
+    mileage: 30000, 
+    features: ['Pack entretien offert', 'Toit ouvrant', 'Sièges chauffants'],
+    image: 'https://example.com/audi-a4-sline.jpg'
+  },
+  { 
+    id: 'q3-2022',
+    brand: 'Audi', 
+    model: 'Q3', 
+    year: 2022, 
+    price: 38900, 
+    mileage: 12500, 
+    features: ['Garantie 4 ans', 'SUV compact', 'Finition premium'],
+    image: 'https://example.com/audi-q3.jpg'
+  },
+  { 
+    id: 'x1-2022',
+    brand: 'BMW', 
+    model: 'X1', 
+    year: 2022, 
+    price: 39500, 
+    mileage: 18000, 
+    features: ['Promo -10% paiement comptant', 'Toit panoramique', 'Intérieur cuir'],
+    image: 'https://example.com/bmw-x1.jpg'
+  }
+];
+
 const Chatbot = () => {
   const { translate } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
@@ -203,6 +256,9 @@ const Chatbot = () => {
   const [currentSearchStep, setCurrentSearchStep] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState({ title: '', content: '' });
+  const [vehicleIntent, setVehicleIntent] = useState<VehicleIntent>({});
+  const [isFinanceDialogOpen, setIsFinanceDialogOpen] = useState(false);
+  const [financeDialog, setFinanceDialog] = useState({ vehicle: '', downPayment: 0, totalAmount: 0 });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -242,6 +298,72 @@ const Chatbot = () => {
     return null;
   };
 
+  // Parse user input for intentions and entities
+  const extractVehicleIntent = (message: string) => {
+    const lowerMessage = message.toLowerCase();
+    const intent: VehicleIntent = {};
+    
+    // Extract brand
+    const brands = ['audi', 'bmw', 'mercedes', 'volkswagen', 'volvo', 'tesla', 'peugeot'];
+    for (const brand of brands) {
+      if (lowerMessage.includes(brand)) {
+        intent.brand = brand.charAt(0).toUpperCase() + brand.slice(1);
+        break;
+      }
+    }
+    
+    // Extract model
+    if (intent.brand === 'Audi') {
+      const models = ['a1', 'a3', 'a4', 'a5', 'a6', 'q3', 'q5', 'q7'];
+      for (const model of models) {
+        if (lowerMessage.includes(model)) {
+          intent.model = model.toUpperCase();
+          break;
+        }
+      }
+    } else if (intent.brand === 'BMW') {
+      const models = ['x1', 'x3', 'x5', 'série 1', 'série 3', 'série 5'];
+      for (const model of models) {
+        if (lowerMessage.includes(model)) {
+          intent.model = model.charAt(0).toUpperCase() + model.slice(1);
+          break;
+        }
+      }
+    }
+    
+    // Extract budget
+    const budgetMatch = lowerMessage.match(/(\d+)k€|(\d+)k|(\d+)[., ]?000 ?€|(\d+)[., ]?000/);
+    if (budgetMatch) {
+      const match = budgetMatch[1] || budgetMatch[2] || budgetMatch[3] || budgetMatch[4];
+      intent.budget = parseInt(match) * 1000;
+    } else {
+      const numericMatch = lowerMessage.match(/(\d+)[., ]?(\d+)? ?€/);
+      if (numericMatch) {
+        intent.budget = parseInt(numericMatch[1].replace('.', '').replace(',', ''));
+      }
+    }
+    
+    // Extract state
+    if (lowerMessage.includes('neuf') || lowerMessage.includes('nouveau')) {
+      intent.state = 'neuf';
+    } else if (lowerMessage.includes('occasion') || lowerMessage.includes('usagé') || lowerMessage.includes('seconde main')) {
+      intent.state = 'occasion';
+    }
+    
+    // Extract type
+    if (lowerMessage.includes('suv') || lowerMessage.includes('4x4')) {
+      intent.type = 'suv';
+    } else if (lowerMessage.includes('berline')) {
+      intent.type = 'berline';
+    } else if (lowerMessage.includes('électrique') || lowerMessage.includes('electrique')) {
+      intent.type = 'électrique';
+    } else if (lowerMessage.includes('citadine')) {
+      intent.type = 'citadine';
+    }
+    
+    return intent;
+  };
+
   const handleOptionClick = (action: string) => {
     switch (action) {
       case 'search_car':
@@ -262,7 +384,20 @@ const Chatbot = () => {
         break;
       case 'other':
         addMessage("Autre demande", "user");
-        addMessage("Je suis là pour vous aider ! N'hésitez pas à me poser une question sur :\n- L'état des véhicules\n- Les garanties\n- Les options de financement\n- Les délais de livraison\n- Ou tout autre sujet concernant votre achat", "bot");
+        addMessage("Je suis là pour vous aider ! N'hésitez pas à me poser une question sur :\n- L'état des véhicules\n- Les garanties\n- Les options de financement\n- Les délais de livraison\n- Ou tout autre sujet concernant votre achat\n\nBesoin d'aide ? Contactez nous par WhatsApp : ☎ +393761753341 (7j/7).", "bot");
+        break;
+      case 'contact_whatsapp':
+        addMessage("Je souhaite être contacté par WhatsApp", "user");
+        addMessage("Un conseiller va vous contacter très prochainement au +393761753341. Merci de votre intérêt chez AutoAdi !", "bot");
+        toast.success("Demande de contact envoyée !");
+        break;
+      case 'view_stock':
+        window.open('https://autoadi.com/stock', '_blank');
+        addMessage("Je veux voir tout le stock", "user");
+        addMessage("Je vous ai ouvert notre inventaire en ligne. Voulez-vous que je vous aide à trouver un véhicule spécifique ?", "bot");
+        break;
+      case 'simulate_credit':
+        simulateCredit();
         break;
       default:
         if (action.startsWith('vehicle_')) {
@@ -275,8 +410,52 @@ const Chatbot = () => {
           handleStateSelection(action.replace('state_', ''));
         } else if (action.startsWith('car_details_')) {
           showVehicleDetails(action.replace('car_details_', ''));
+        } else if (action.startsWith('finance_')) {
+          const vehicleId = action.replace('finance_', '');
+          const vehicle = vehicleInventory.find(v => v.id === vehicleId);
+          if (vehicle) {
+            showFinanceOptions(vehicle);
+          }
         }
     }
+  };
+
+  const simulateCredit = () => {
+    if (!financeDialog.vehicle) {
+      addMessage("Pour simuler un crédit, veuillez d'abord sélectionner un véhicule.", "bot");
+      return;
+    }
+    
+    setIsFinanceDialogOpen(true);
+    
+    const downPayment = Math.round(financeDialog.totalAmount * 0.2);
+    const remainingAmount = financeDialog.totalAmount - downPayment;
+    
+    const rates = {
+      36: Math.round(remainingAmount / 36),
+      60: Math.round(remainingAmount / 60),
+      84: Math.round(remainingAmount / 84)
+    };
+    
+    const content = `
+      **Simulation de financement pour ${financeDialog.vehicle}**
+      
+      Prix total: **${financeDialog.totalAmount} €**
+      Acompte (20%): **${downPayment} €**
+      Montant à financer: **${remainingAmount} €**
+      
+      Options de mensualités (0% d'intérêt):
+      - 36 mois: **${rates[36]} €/mois**
+      - 60 mois: **${rates[60]} €/mois**
+      - 84 mois: **${rates[84]} €/mois**
+      
+      Souhaitez-vous recevoir cette simulation par email?
+    `;
+    
+    addMessage(`Avec un acompte de 20% (${downPayment} €), vous pouvez payer le solde (${remainingAmount} €) en :\n- 36 mois: ${rates[36]} €/mois\n- 60 mois: ${rates[60]} €/mois\n- 84 mois: ${rates[84]} €/mois\n\nJe vous envoie une simulation officielle par email? [Oui/Non]`, "bot", [
+      { text: "Oui, envoyez-moi la simulation", action: "send_simulation" },
+      { text: "Non merci", action: "no_simulation" }
+    ]);
   };
 
   const startVehicleSearch = () => {
@@ -286,6 +465,7 @@ const Chatbot = () => {
 
   const handleVehicleTypeSelection = (type: string) => {
     setSelectedVehicleType(type);
+    setVehicleIntent(prev => ({ ...prev, type }));
     addMessage(`Type de véhicule: ${type}`, "user");
     setCurrentSearchStep(2);
     addMessage("Excellent choix ! Quel est votre budget ?", "bot", budgetOptions);
@@ -293,6 +473,17 @@ const Chatbot = () => {
 
   const handleBudgetSelection = (budget: string) => {
     setSelectedBudget(budget);
+    let budgetValue = 0;
+    
+    if (budget === 'less_20k') {
+      budgetValue = 20000;
+    } else if (budget === '20_40k') {
+      budgetValue = 40000;
+    } else if (budget === 'more_40k') {
+      budgetValue = 50000;
+    }
+    
+    setVehicleIntent(prev => ({ ...prev, budget: budgetValue }));
     addMessage(`Budget: ${budget}`, "user");
     setCurrentSearchStep(3);
     addMessage("Avez-vous une préférence de marque ?", "bot", brandOptions);
@@ -300,6 +491,7 @@ const Chatbot = () => {
 
   const handleBrandSelection = (brand: string) => {
     setSelectedBrand(brand);
+    setVehicleIntent(prev => ({ ...prev, brand: brand.charAt(0).toUpperCase() + brand.slice(1) }));
     addMessage(`Marque: ${brand}`, "user");
     setCurrentSearchStep(4);
     addMessage("Et préférez-vous un véhicule neuf ou d'occasion ?", "bot", stateOptions);
@@ -307,6 +499,13 @@ const Chatbot = () => {
 
   const handleStateSelection = (state: string) => {
     setSelectedState(state);
+    
+    if (state === 'new') {
+      setVehicleIntent(prev => ({ ...prev, state: 'neuf' }));
+    } else {
+      setVehicleIntent(prev => ({ ...prev, state: 'occasion' }));
+    }
+    
     addMessage(`État: ${state}`, "user");
     
     setTimeout(() => {
@@ -314,88 +513,178 @@ const Chatbot = () => {
     }, 1000);
   };
 
-  const showSearchResults = () => {
+  const processComplexQuery = (intent: VehicleIntent) => {
+    let resultsMessage = '';
     const results = [];
     
-    if (selectedVehicleType === 'suv' && selectedBudget === 'more_40k') {
-      results.push({ id: 1, model: "Audi Q3", price: "38 900 €", highlight: "Garantie 4 ans" });
-      results.push({ id: 2, model: "BMW X1", price: "39 500 €", highlight: "Promo -10% paiement comptant" });
-      results.push({ id: 3, model: "Volvo XC40", price: "41 200 €", highlight: "Livraison en 15 jours" });
-    } else if (selectedBrand === 'audi') {
-      results.push({ id: 4, model: "Audi A4", price: "32 500 €", highlight: "Modèle S-Line" });
-      results.push({ id: 5, model: "Audi Q5", price: "45 900 €", highlight: "Toit panoramique" });
-    } else if (selectedBrand === 'bmw') {
-      results.push({ id: 6, model: "BMW Série 3", price: "33 800 €", highlight: "Pack M-Sport" });
-      results.push({ id: 7, model: "BMW X3", price: "42 500 €", highlight: "Tout-terrain" });
-    } else {
-      results.push({ id: 8, model: "Mercedes Classe C", price: "36 700 €", highlight: "Finition AMG" });
-      results.push({ id: 9, model: "Volkswagen Tiguan", price: "29 900 €", highlight: "Faible kilométrage" });
-      results.push({ id: 10, model: "Peugeot 3008", price: "27 500 €", highlight: "Full options" });
+    if (intent.model && intent.brand) {
+      const matchingVehicles = vehicleInventory.filter(v => 
+        v.brand.toLowerCase() === intent.brand?.toLowerCase() && 
+        v.model.toLowerCase().includes(intent.model?.toLowerCase() || '')
+      );
+      
+      if (matchingVehicles.length > 0) {
+        resultsMessage = `Nous avons ${matchingVehicles.length} ${intent.brand} ${intent.model} disponibles :\n\n`;
+        
+        matchingVehicles.forEach((vehicle, index) => {
+          resultsMessage += `${index + 1}. **${vehicle.brand} ${vehicle.model} ${vehicle.year}**, ${vehicle.price} €, ${vehicle.mileage} km (${vehicle.features[0]}).\n`;
+          results.push(vehicle);
+        });
+        
+        resultsMessage += "\nQue souhaitez-vous faire ?\n";
+        
+        const options = matchingVehicles.map(car => ({ 
+          text: `Voir les détails de ${car.brand} ${car.model}`, 
+          action: `car_details_${car.id}` 
+        }));
+        
+        options.push({ text: "Simuler un financement", action: "simulate_credit" });
+        options.push({ text: "Affiner ma recherche", action: "search_car" });
+        
+        addMessage(resultsMessage, "bot", options);
+        
+        if (matchingVehicles.length === 1) {
+          // Auto-set for finance simulation
+          setFinanceDialog({
+            vehicle: `${matchingVehicles[0].brand} ${matchingVehicles[0].model} ${matchingVehicles[0].year}`,
+            downPayment: Math.round(matchingVehicles[0].price * 0.2),
+            totalAmount: matchingVehicles[0].price
+          });
+        }
+        
+        return true;
+      }
+    }
+    
+    if (intent.brand && intent.budget) {
+      const matchingVehicles = vehicleInventory.filter(v => 
+        v.brand.toLowerCase() === intent.brand?.toLowerCase() && 
+        v.price <= (intent.budget || Infinity)
+      );
+      
+      if (matchingVehicles.length > 0) {
+        resultsMessage = `Nous avons ${matchingVehicles.length} ${intent.brand} dans votre budget :\n\n`;
+        
+        matchingVehicles.forEach((vehicle, index) => {
+          resultsMessage += `${index + 1}. **${vehicle.brand} ${vehicle.model} ${vehicle.year}**, ${vehicle.price} €, ${vehicle.mileage} km (${vehicle.features[0]}).\n`;
+          results.push(vehicle);
+        });
+        
+        resultsMessage += "\nQue souhaitez-vous faire ?\n";
+        
+        const options = matchingVehicles.map(car => ({ 
+          text: `Voir les détails de ${car.brand} ${car.model}`, 
+          action: `car_details_${car.id}` 
+        }));
+        
+        options.push({ text: "Simuler un financement", action: "simulate_credit" });
+        options.push({ text: "Affiner ma recherche", action: "search_car" });
+        
+        addMessage(resultsMessage, "bot", options);
+        return true;
+      }
+    }
+    
+    return false;
+  };
+
+  const showSearchResults = () => {
+    const intent = vehicleIntent;
+    const results = [];
+    
+    // First try to find exact matches
+    let filteredVehicles = vehicleInventory.filter(vehicle => {
+      if (intent.brand && vehicle.brand.toLowerCase() !== intent.brand.toLowerCase()) return false;
+      if (intent.model && !vehicle.model.toLowerCase().includes(intent.model.toLowerCase())) return false;
+      if (intent.budget && vehicle.price > intent.budget) return false;
+      if (intent.type === 'suv' && !['q3', 'q5', 'q7', 'x1', 'x3', 'x5'].some(m => vehicle.model.toLowerCase().includes(m))) return false;
+      if (intent.type === 'berline' && !['a4', 'a6', 'série'].some(m => vehicle.model.toLowerCase().includes(m))) return false;
+      return true;
+    });
+    
+    // If no matches, show all vehicles
+    if (filteredVehicles.length === 0) {
+      filteredVehicles = vehicleInventory.slice(0, 3);
     }
     
     let resultsMessage = "Voici les véhicules correspondant à vos critères :\n\n";
     
-    results.forEach((car, index) => {
-      resultsMessage += `${index + 1}. **${car.model}** – ${car.price} (${car.highlight})\n`;
+    filteredVehicles.forEach((vehicle, index) => {
+      resultsMessage += `${index + 1}. **${vehicle.brand} ${vehicle.model} ${vehicle.year}** – ${vehicle.price} € (${vehicle.features[0]})\n`;
+      results.push(vehicle);
     });
     
     resultsMessage += "\nVoulez-vous :\n";
     
-    const options = results.map(car => ({ 
-      text: `Voir les détails de ${car.model}`, 
+    const options = filteredVehicles.map(car => ({ 
+      text: `Voir les détails de ${car.brand} ${car.model}`, 
       action: `car_details_${car.id}` 
     }));
     
     options.push({ text: "Affiner ma recherche", action: "search_car" });
+    options.push({ text: "Voir tout notre stock", action: "view_stock" });
+    options.push({ text: "Contacter un conseiller", action: "contact_whatsapp" });
     
     addMessage(resultsMessage, "bot", options);
+    
+    // Reset search state for next search
+    setVehicleIntent({});
   };
 
   const showVehicleDetails = (carId: string) => {
-    let details = "";
-    let title = "";
+    const vehicle = vehicleInventory.find(v => v.id === carId);
     
-    switch (carId) {
-      case "1":
-        title = "Audi Q3 Sportback";
-        details = "**Audi Q3 Sportback**\n\n" +
-          "Prix : **38 900 €**\n" +
-          "Année : 2023\n" +
-          "Kilométrage : 12 500 km\n" +
-          "Carburant : Essence\n" +
-          "Boîte : Automatique\n" +
-          "Couleur : Noir métallisé\n\n" +
-          "**Points forts** :\n" +
-          "- Garantie constructeur jusqu'en 2027\n" +
-          "- Toit ouvrant panoramique\n" +
-          "- Sièges chauffants\n" +
-          "- Caméra de recul\n\n" +
-          "**Financement possible** à partir de 499€/mois";
-        break;
-      case "2":
-        title = "BMW X1";
-        details = "**BMW X1 xDrive20i**\n\n" +
-          "Prix : **39 500 €**\n" +
-          "Année : 2022\n" +
-          "Kilométrage : 18 300 km\n" +
-          "Carburant : Essence\n" +
-          "Boîte : Automatique\n" +
-          "Couleur : Blanc alpin\n\n" +
-          "**Points forts** :\n" +
-          "- Pack M Sport\n" +
-          "- Système audio Harman Kardon\n" +
-          "- Intérieur cuir Dakota\n" +
-          "- Navigation Professional\n\n" +
-          "**Promotion** : -10% pour paiement comptant";
-        break;
-      default:
-        title = "Détails du véhicule";
-        details = "Détails non disponibles pour ce véhicule. Un conseiller peut vous contacter pour plus d'informations.";
+    if (!vehicle) {
+      addMessage("Désolé, ce véhicule n'est plus disponible.", "bot");
+      return;
     }
+    
+    const title = `${vehicle.brand} ${vehicle.model} ${vehicle.year}`;
+    const details = `**${title}**\n\n` +
+      `Prix : **${vehicle.price} €**\n` +
+      `Année : ${vehicle.year}\n` +
+      `Kilométrage : ${vehicle.mileage} km\n` +
+      `Caractéristiques :\n` +
+      vehicle.features.map(f => `- ${f}`).join('\n') + '\n\n' +
+      `**Financement possible** à partir de ${Math.round(vehicle.price * 0.8 / 60)}€/mois sur 60 mois`;
     
     setDialogContent({
       title,
       content: details
+    });
+    
+    setFinanceDialog({
+      vehicle: title,
+      downPayment: Math.round(vehicle.price * 0.2),
+      totalAmount: vehicle.price
+    });
+    
+    setIsDialogOpen(true);
+  };
+
+  const showFinanceOptions = (vehicle: typeof vehicleInventory[0]) => {
+    const downPayment = Math.round(vehicle.price * 0.2);
+    const remainingAmount = vehicle.price - downPayment;
+    
+    const title = `Options de financement - ${vehicle.brand} ${vehicle.model}`;
+    const content = `
+      **${vehicle.brand} ${vehicle.model} ${vehicle.year}**
+      Prix : **${vehicle.price} €**
+      
+      Avec un acompte de **${downPayment} €** (20%), vous pouvez financer **${remainingAmount} €** :
+      
+      - Sur **36 mois** : ${Math.round(remainingAmount / 36)} €/mois
+      - Sur **60 mois** : ${Math.round(remainingAmount / 60)} €/mois
+      - Sur **84 mois** : ${Math.round(remainingAmount / 84)} €/mois
+      
+      Tous nos financements sont à **0% d'intérêt**
+      
+      Voulez-vous une simulation personnalisée ?
+    `;
+    
+    setDialogContent({
+      title,
+      content
     });
     
     setIsDialogOpen(true);
@@ -410,6 +699,7 @@ const Chatbot = () => {
   };
 
   const processUserMessage = (message: string) => {
+    // Check for FAQ responses first
     const faqResponse = findFaqResponse(message);
     
     if (faqResponse) {
@@ -417,6 +707,18 @@ const Chatbot = () => {
       return;
     }
     
+    // Extract vehicle intent from user message
+    const intent = extractVehicleIntent(message);
+    console.log("Detected intent:", intent);
+    
+    // If we have a complex query with brand and model or brand and budget, show results
+    if (Object.keys(intent).length > 1) {
+      setVehicleIntent(intent);
+      const processed = processComplexQuery(intent);
+      if (processed) return;
+    }
+    
+    // Process based on keywords
     const lowercaseMessage = message.toLowerCase();
     
     if (lowercaseMessage.includes('cherche') && lowercaseMessage.includes('voiture')) {
@@ -427,6 +729,10 @@ const Chatbot = () => {
       addMessage("Chez AutoAdi, c'est ultra flexible :\n\n1️⃣ **Vous payez 20%** pour réserver (ex: 6 000€ sur 30 000€)\n2️⃣ **Vous ne payez plus rien** jusqu'à la livraison\n3️⃣ **À réception** :\n   - Soit vous réglez les **80%** d'un coup\n   - Soit en **mensualités** (ex: 400€/mois sur 60 mois)\n\n*Avantage : Vous vérifiez la voiture AVANT de payer le solde !*\n\n✅ **Zéro engagement** entre acompte et livraison\n✅ **Paiement seulement si satisfait**\n✅ **Taux 0%** sur les mensualités\n✅ **Aucun frais caché**", "bot");
     } else if (lowercaseMessage.includes('livraison') || lowercaseMessage.includes('délai')) {
       addMessage("Le délai de livraison en Portugal, en France, en Espagne, en Roumanie, en Italie ne dépasse pas 5 jours. Nous proposons :\n\n🚚 Livraison à domicile (gratuite).\n🏁 Retrait en concession (cadeau de bienvenue offert).", "bot");
+    } else if (lowercaseMessage.includes('contact') || lowercaseMessage.includes('whatsapp') || lowercaseMessage.includes('conseiller')) {
+      addMessage("Vous pouvez nous contacter directement par WhatsApp au ☎ +393761753341 (7j/7). Un conseiller vous répondra dans les plus brefs délais.", "bot", [
+        { text: "Me faire contacter", action: "contact_whatsapp" }
+      ]);
     } else if (lowercaseMessage.includes('bonjour') || lowercaseMessage.includes('salut') || lowercaseMessage.includes('hello')) {
       addMessage("Bonjour ! Comment puis-je vous aider aujourd'hui ?", "bot", initialMessages[0].options);
     } else {
@@ -441,16 +747,22 @@ const Chatbot = () => {
   };
 
   const renderMessageContent = (message: Message) => {
-    const textWithLineBreaks = message.text.split('\n').map((text, index) => (
-      <span key={index}>
-        {index > 0 && <br />}
-        {text}
-      </span>
-    ));
+    // Convert markdown-like syntax to JSX
+    const processedText = message.text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .split('\n');
 
     return (
       <div className="flex flex-col">
-        <div>{textWithLineBreaks}</div>
+        <div>
+          {processedText.map((text, index) => (
+            <React.Fragment key={index}>
+              {index > 0 && <br />}
+              <span dangerouslySetInnerHTML={{ __html: text }} />
+            </React.Fragment>
+          ))}
+        </div>
         
         {message.options && message.options.length > 0 && (
           <div className="mt-3 flex flex-col gap-2">
@@ -562,20 +874,30 @@ const Chatbot = () => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogTitle>{dialogContent.title}</DialogTitle>
-          <div className="whitespace-pre-line">{dialogContent.content}</div>
-          <div className="mt-4 flex justify-between">
+          <div className="whitespace-pre-line" dangerouslySetInnerHTML={{ __html: dialogContent.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>').replace(/\n/g, '<br />') }} />
+          <div className="mt-4 flex justify-between gap-2">
             <Button 
               variant="outline" 
               onClick={() => setIsDialogOpen(false)}
             >
               Fermer
             </Button>
+            <Button
+              onClick={() => {
+                setIsDialogOpen(false);
+                handleOptionClick(`finance_${dialogContent.title.split(' ')[0].toLowerCase()}`);
+              }}
+            >
+              Simuler un financement
+            </Button>
             <Button onClick={() => {
               setIsDialogOpen(false);
               toast.success("Demande d'information envoyée !");
-              addMessage("Un conseiller va vous contacter prochainement pour ce véhicule. Merci pour votre intérêt !", "bot");
+              addMessage("Un conseiller va vous contacter prochainement pour ce véhicule. Merci pour votre intérêt !", "bot", [
+                { text: "Contacter par WhatsApp", action: "contact_whatsapp" }
+              ]);
             }}>
-              Demander plus d'informations
+              Plus d'infos
             </Button>
           </div>
         </DialogContent>
