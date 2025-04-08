@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, User, Bot, Car, Calendar, HelpCircle, Home, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -34,7 +34,6 @@ const initialMessages: Message[] = [
   },
 ];
 
-// Base de connaissances pour les réponses FAQ
 const faqKnowledgeBase = [
   {
     keywords: ['état', 'véhicule', 'kilométrage'],
