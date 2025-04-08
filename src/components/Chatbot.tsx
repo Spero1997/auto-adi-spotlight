@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, User, Bot, Car, Calendar, HelpCircle, Home, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -317,7 +316,6 @@ const Chatbot = () => {
   };
 
   const showSearchResults = () => {
-    // Simulation de résultats basés sur les critères sélectionnés
     const results = [];
     
     if (selectedVehicleType === 'suv' && selectedBudget === 'more_40k') {
@@ -355,7 +353,6 @@ const Chatbot = () => {
   };
 
   const showVehicleDetails = (carId: string) => {
-    // Simulation de détails du véhicule
     let details = "";
     let title = "";
     
@@ -414,7 +411,6 @@ const Chatbot = () => {
   };
 
   const processUserMessage = (message: string) => {
-    // Vérifier si le message correspond à une entrée de la FAQ
     const faqResponse = findFaqResponse(message);
     
     if (faqResponse) {
@@ -422,7 +418,6 @@ const Chatbot = () => {
       return;
     }
     
-    // Traitement basé sur le contenu du message
     const lowercaseMessage = message.toLowerCase();
     
     if (lowercaseMessage.includes('cherche') && lowercaseMessage.includes('voiture')) {
@@ -447,12 +442,11 @@ const Chatbot = () => {
   };
 
   const renderMessageContent = (message: Message) => {
-    // Convertir les sauts de ligne en éléments JSX
     const textWithLineBreaks = message.text.split('\n').map((text, index) => (
-      <React.Fragment key={index}>
+      <span key={index}>
         {index > 0 && <br />}
         {text}
-      </React.Fragment>
+      </span>
     ));
 
     return (
