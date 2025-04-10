@@ -1,4 +1,3 @@
-
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "next-themes"
 import App from './App.tsx'
@@ -56,7 +55,7 @@ const addDemoVehicles = () => {
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/f712b73e-a1b9-4fbf-899b-1e030d77e98b.png',
+        image: '/lovable-uploads/4fad15d8-ce39-4640-b729-609c13a29609.png', // Mise à jour avec la nouvelle image
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -85,7 +84,20 @@ Nos services inclus :
       console.log('Volvo V40 D2 R-Design ajoutée automatiquement au catalogue!');
       vehiclesUpdated = true;
     } else {
-      console.log('La Volvo V40 D2 R-Design est déjà présente dans le catalogue');
+      // Si elle existe déjà, mettre à jour son image
+      const existingVolvo = vehicles.find(v => 
+        (v.id === volvoV40Id) || 
+        (v.brand === 'Volvo' && 
+        v.model.includes('V40 D2 R-Design') && 
+        v.year === 2014)
+      );
+      
+      if (existingVolvo) {
+        existingVolvo.image = '/lovable-uploads/4fad15d8-ce39-4640-b729-609c13a29609.png';
+        saveImportedVehicles(vehicles, 'standard');
+        console.log('Image de la Volvo V40 D2 R-Design mise à jour dans le catalogue!');
+        vehiclesUpdated = true;
+      }
     }
     
     // Vérifier si la BMW X7 existe déjà dans le catalogue
