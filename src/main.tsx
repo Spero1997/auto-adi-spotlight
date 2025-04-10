@@ -25,7 +25,7 @@ if (catalogId) {
 }
 
 // Fonction pour ajouter la Volvo V40 automatiquement au premier chargement
-const checkAndAddVolvoV40 = () => {
+const checkAndAddVehicles = () => {
   // Importer les fonctions nécessaires
   import('./utils/vehicleImportService').then(({ getImportedVehicles, addImportedVehicle }) => {
     const vehicles = getImportedVehicles('standard');
@@ -85,11 +85,67 @@ Nos services inclus :
     } else {
       console.log('La Volvo V40 D2 R-Design est déjà présente dans le catalogue');
     }
+    
+    // Vérifier si la BMW X7 existe déjà dans le catalogue
+    const bmwX7Exists = vehicles.some(v => 
+      v.brand === 'BMW' && 
+      v.model.includes('X7 xDrive 40d M Sport Pro') && 
+      v.year === 2022
+    );
+    
+    // Si elle n'existe pas, on l'ajoute
+    if (!bmwX7Exists) {
+      const bmwX7: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-bmw-x7-xdrive-40d-msport-pro`,
+        brand: 'BMW',
+        model: 'X7 xDrive 40d M Sport Pro',
+        year: 2022,
+        mileage: 43000,
+        price: 27000,
+        fuelType: 'Diesel',
+        transmission: 'Automatique',
+        exteriorColor: 'Noir',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/23ec6f11-538c-4a3a-8c28-d877d2240658.png',
+        fbLink: '',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+        features: [
+          'Toit panoramique',
+          'Navigation',
+          'Caméra de recul',
+          'M Sport Pro',
+          'Automatique',
+          '259 ch'
+        ],
+        engine: 'xDrive 40d 259ch',
+        doors: 5,
+        catalogType: 'standard'
+      };
+      
+      addImportedVehicle(bmwX7, 'standard');
+      console.log('BMW X7 xDrive 40d M Sport Pro ajoutée automatiquement au catalogue!');
+      
+      // Déclencher un événement pour mettre à jour l'affichage
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
+    } else {
+      console.log('La BMW X7 xDrive 40d M Sport Pro est déjà présente dans le catalogue');
+    }
   });
 };
 
 // Appeler la fonction après le chargement initial
-window.addEventListener('load', checkAndAddVolvoV40);
+window.addEventListener('load', checkAndAddVehicles);
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
