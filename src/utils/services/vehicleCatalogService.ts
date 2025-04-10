@@ -22,6 +22,13 @@ export const resetCatalog = (catalogType: 'standard' | 'featured' | 'all' = 'all
   window.dispatchEvent(new CustomEvent('catalogChanged', { 
     detail: { catalogType: 'all' } 
   }));
+  
+  // Forcer un rechargement des véhicules
+  setTimeout(() => {
+    window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+      detail: { catalogType: 'all' } 
+    }));
+  }, 100);
 };
 
 /**
@@ -33,24 +40,42 @@ export const addVehicle = (
 ): boolean => {
   try {
     const vehicles = getImportedVehicles(catalogType);
+    console.log(`Ajout/Mise à jour du véhicule ${vehicle.brand} ${vehicle.model} (${vehicle.id}) au catalogue ${catalogType}`);
     
     // Check if a vehicle with this ID already exists
     const existingVehicleIndex = vehicles.findIndex(v => v.id === vehicle.id);
     
     if (existingVehicleIndex >= 0) {
       // Update existing vehicle
+      console.log(`Mise à jour du véhicule existant à l'index ${existingVehicleIndex}`);
       vehicles[existingVehicleIndex] = vehicle;
     } else {
       // Add new vehicle
+      console.log(`Ajout d'un nouveau véhicule au catalogue (total avant ajout: ${vehicles.length})`);
       vehicles.push(vehicle);
     }
     
+    // Assurez-vous que catalogType est correctement défini
+    if (!vehicle.catalogType) {
+      vehicle.catalogType = catalogType;
+    }
+    
     saveImportedVehicles(vehicles, catalogType);
+    console.log(`Catalogue ${catalogType} sauvegardé avec ${vehicles.length} véhicules`);
     
     // Déclencher un événement pour informer l'application du changement
+    console.log(`Déclenchement de l'événement vehiclesUpdated pour le catalogue ${catalogType}`);
     window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
       detail: { catalogType } 
     }));
+    
+    // Forcer un rechargement global après un court délai
+    setTimeout(() => {
+      console.log('Déclenchement d\'un événement vehiclesUpdated global pour assurer la mise à jour');
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'all' } 
+      }));
+    }, 100);
     
     return true;
   } catch (error) {
@@ -81,6 +106,13 @@ export const deleteVehicle = (
     window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
       detail: { catalogType } 
     }));
+    
+    // Forcer un rechargement global
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'all' } 
+      }));
+    }, 100);
     
     return true;
   } catch (error) {

@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
 
@@ -16,14 +16,42 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
+  const loadVehicles = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    try {
+      const catalogType = featuredOnly ? 'featured' : 'standard';
+      // Récupérer l'ID du catalogue à partir de l'URL si disponible
+      const catalogId = getCatalogIdFromUrl(catalogType);
+      
+      console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
+      
+      const importedVehicles = getImportedVehicles(catalogType);
+      console.log(`useVehicles: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
+      
+      // Log individual vehicles to help with debugging
+      importedVehicles.forEach((vehicle, index) => {
+        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
+      });
+      
+      setVehicles(importedVehicles);
+    } catch (e) {
+      setError("Échec du chargement des véhicules.");
+      console.error("Erreur lors du chargement des véhicules:", e);
+    } finally {
+      setLoading(false);
+    }
+  }, [featuredOnly]);
+
   useEffect(() => {
+    // Chargement initial des véhicules
     loadVehicles();
     
     const handleVehiclesUpdated = (event: Event) => {
       const customEvent = event as CustomEvent;
       const catalogType = customEvent.detail?.catalogType;
       
-      console.log(`VehicleList: Event vehiclesUpdated reçu, catalogType=${catalogType}`);
+      console.log(`useVehicles: Event vehiclesUpdated reçu, catalogType=${catalogType}`);
       
       // On recharge les véhicules si:
       // - catalogType n'est pas défini (pour compatibilité)
@@ -34,49 +62,29 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
           (catalogType === 'standard' && !featuredOnly) || 
           (catalogType === 'featured' && featuredOnly) || 
           catalogType === 'all') {
+        console.log('useVehicles: Rechargement des véhicules suite à vehiclesUpdated');
         loadVehicles();
       }
     };
     
+    const handleCatalogChanged = () => {
+      console.log('useVehicles: Event catalogChanged reçu, rechargement des véhicules');
+      loadVehicles();
+    };
+    
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    window.addEventListener('catalogChanged', handleVehiclesUpdated);
+    window.addEventListener('catalogChanged', handleCatalogChanged);
     
     // Recharger les véhicules quand l'URL change
     loadVehicles();
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
-      window.removeEventListener('catalogChanged', handleVehiclesUpdated);
+      window.removeEventListener('catalogChanged', handleCatalogChanged);
     };
-  }, [featuredOnly, location.search]);
+  }, [featuredOnly, location.search, loadVehicles]);
 
-  const loadVehicles = () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const catalogType = featuredOnly ? 'featured' : 'standard';
-      // Récupérer l'ID du catalogue à partir de l'URL si disponible
-      const catalogId = getCatalogIdFromUrl(catalogType);
-      
-      console.log(`FeaturedCars: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
-      
-      const importedVehicles = getImportedVehicles(catalogType);
-      console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
-      
-      // Log individual vehicles to help with debugging
-      importedVehicles.forEach(vehicle => {
-        console.log(`Véhicule: ${vehicle.brand} ${vehicle.model}, Type: ${vehicle.catalogType || 'non spécifié'}`);
-      });
-      
-      setVehicles(importedVehicles);
-    } catch (e) {
-      setError("Échec du chargement des véhicules.");
-      console.error("Erreur lors du chargement des véhicules:", e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Fonction pour filtrer les véhicules selon les critères de recherche
   const filteredVehicles = () => {
     let filtered = [...vehicles];
     
@@ -105,6 +113,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
   return {
     vehicles: filteredVehicles(),
     loading,
-    error
+    error,
+    refresh: loadVehicles // Exposer la fonction de rechargement
   };
 };

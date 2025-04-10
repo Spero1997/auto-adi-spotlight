@@ -24,23 +24,29 @@ if (catalogId) {
   }));
 }
 
-// Fonction pour ajouter la Volvo V40 automatiquement au premier chargement
-const checkAndAddVehicles = () => {
+// Fonction pour ajouter des véhicules de démo automatiquement au premier chargement
+const addDemoVehicles = () => {
   // Importer les fonctions nécessaires
-  import('./utils/vehicleImportService').then(({ getImportedVehicles, addImportedVehicle }) => {
+  import('./utils/vehicleImportService').then(({ getImportedVehicles, addImportedVehicle, saveImportedVehicles }) => {
     const vehicles = getImportedVehicles('standard');
+    let vehiclesUpdated = false;
+    
+    // Identifiants fixes pour éviter les duplications
+    const volvoV40Id = 'vehicle-standard-volvo-v40-d2-rdesign-2014';
+    const bmwX7Id = 'vehicle-standard-bmw-x7-xdrive-40d-msport-pro-2022';
     
     // Vérifier si la Volvo V40 existe déjà dans le catalogue
     const volvoV40Exists = vehicles.some(v => 
-      v.brand === 'Volvo' && 
+      (v.id === volvoV40Id) || 
+      (v.brand === 'Volvo' && 
       v.model.includes('V40 D2 R-Design') && 
-      v.year === 2014
+      v.year === 2014)
     );
     
     // Si elle n'existe pas, on l'ajoute
     if (!volvoV40Exists) {
       const volvoV40: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-volvo-v40-d2-rdesign`,
+        id: volvoV40Id,
         brand: 'Volvo',
         model: 'V40 D2 R-Design',
         year: 2014,
@@ -77,26 +83,23 @@ Nos services inclus :
       
       addImportedVehicle(volvoV40, 'standard');
       console.log('Volvo V40 D2 R-Design ajoutée automatiquement au catalogue!');
-      
-      // Déclencher un événement pour mettre à jour l'affichage
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'standard' } 
-      }));
+      vehiclesUpdated = true;
     } else {
       console.log('La Volvo V40 D2 R-Design est déjà présente dans le catalogue');
     }
     
     // Vérifier si la BMW X7 existe déjà dans le catalogue
     const bmwX7Exists = vehicles.some(v => 
-      v.brand === 'BMW' && 
+      (v.id === bmwX7Id) ||
+      (v.brand === 'BMW' && 
       v.model.includes('X7 xDrive 40d M Sport Pro') && 
-      v.year === 2022
+      v.year === 2022)
     );
     
     // Si elle n'existe pas, on l'ajoute
     if (!bmwX7Exists) {
       const bmwX7: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-bmw-x7-xdrive-40d-msport-pro`,
+        id: bmwX7Id,
         brand: 'BMW',
         model: 'X7 xDrive 40d M Sport Pro',
         year: 2022,
@@ -133,19 +136,31 @@ Nos services inclus :
       
       addImportedVehicle(bmwX7, 'standard');
       console.log('BMW X7 xDrive 40d M Sport Pro ajoutée automatiquement au catalogue!');
-      
-      // Déclencher un événement pour mettre à jour l'affichage
+      vehiclesUpdated = true;
+    } else {
+      console.log('La BMW X7 xDrive 40d M Sport Pro est déjà présente dans le catalogue');
+    }
+    
+    // Si des véhicules ont été ajoutés, on déclenche l'événement une seule fois
+    if (vehiclesUpdated) {
+      // Déclencher un événement global pour mettre à jour l'affichage
+      console.log('Déclenchement de l\'événement vehiclesUpdated pour rafraîchir l\'interface');
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
         detail: { catalogType: 'standard' } 
       }));
-    } else {
-      console.log('La BMW X7 xDrive 40d M Sport Pro est déjà présente dans le catalogue');
     }
   });
 };
 
 // Appeler la fonction après le chargement initial
-window.addEventListener('load', checkAndAddVehicles);
+window.addEventListener('load', addDemoVehicles);
+
+// Ajouter un écouteur pour garantir que les véhicules sont chargés
+// même si l'événement 'load' a déjà été déclenché
+document.addEventListener('DOMContentLoaded', () => {
+  // Petite temporisation pour s'assurer que tout est bien initialisé
+  setTimeout(addDemoVehicles, 500);
+});
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
