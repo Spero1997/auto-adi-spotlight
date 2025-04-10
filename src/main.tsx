@@ -109,7 +109,7 @@ Nos services inclus :
         transmission: 'Automatique',
         exteriorColor: 'Noir',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/23ec6f11-538c-4a3a-8c28-d877d2240658.png',
+        image: '/lovable-uploads/c27e0527-36ad-4ff3-bd0a-814614558773.png',
         fbLink: '',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -161,6 +161,47 @@ document.addEventListener('DOMContentLoaded', () => {
   // Petite temporisation pour s'assurer que tout est bien initialisé
   setTimeout(addDemoVehicles, 500);
 });
+
+// Ajouter manuellement la BMW X7 via l'API window
+setTimeout(() => {
+  if (window.addVehicleFromAssistant) {
+    window.addVehicleFromAssistant(
+      'BMW',
+      'X7 xDrive 40d M Sport Pro',
+      2022,
+      43000,
+      27000,
+      'Diesel',
+      'Automatique',
+      'Noir',
+      'Noir',
+      '/lovable-uploads/c27e0527-36ad-4ff3-bd0a-814614558773.png',
+      '',
+      `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+      [
+        'Toit panoramique',
+        'Navigation',
+        'Caméra de recul',
+        'M Sport Pro',
+        'Automatique',
+        '259 ch'
+      ],
+      'standard'
+    );
+    console.log('BMW X7 xDrive 40d M Sport Pro ajoutée via l\'API window.addVehicleFromAssistant');
+  } else {
+    console.error('La fonction window.addVehicleFromAssistant n\'est pas disponible');
+  }
+}, 2000);
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
