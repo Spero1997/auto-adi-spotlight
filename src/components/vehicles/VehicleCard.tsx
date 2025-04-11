@@ -1,9 +1,5 @@
 
-// Mettre à jour ce fichier en utilisant nos utilitaires SEO
-// Note: Comme ce fichier est en lecture seule, nous ne pouvons pas le modifier directement.
-// À la place, nous allons créer un nouveau composant que nous pourrons utiliser dans notre application.
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -32,6 +28,7 @@ const SeoOptimizedVehicleCard: React.FC<VehicleCardProps> = ({ vehicle, showShar
     featured
   } = vehicle;
 
+  const [imageError, setImageError] = useState(false);
   const vehicleSlug = generateVehicleSlug(brand, model, year);
   const vehicleImageAlt = generateVehicleImageAlt(brand, model, year, exteriorColor);
   
@@ -54,16 +51,29 @@ const SeoOptimizedVehicleCard: React.FC<VehicleCardProps> = ({ vehicle, showShar
     }
   };
 
+  const handleImageError = () => {
+    console.error(`Erreur de chargement de l'image: ${image}`);
+    setImageError(true);
+  };
+
   return (
     <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
       <div className="relative pb-[56.25%] overflow-hidden bg-gray-100">
         <Link to={`/vehicule/${id}/${vehicleSlug}`} className="block">
-          <img
-            src={image}
-            alt={vehicleImageAlt}
-            className="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            loading="lazy"
-          />
+          {!imageError ? (
+            <img
+              src={image}
+              alt={vehicleImageAlt}
+              className="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+              onError={handleImageError}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+              <Car className="h-16 w-16 text-gray-400" />
+              <p className="text-sm text-gray-500 mt-2">Image non disponible</p>
+            </div>
+          )}
           {featured && (
             <Badge variant="default" className="absolute top-2 left-2 bg-primary text-white">
               Véhicule vedette

@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Index from './pages/Index';
 import Vehicules from './pages/VehiculesOccasion';
@@ -19,6 +18,53 @@ import Cookies from './pages/Cookies';
 import CGV from './pages/CGV';
 import Conditions from './pages/Conditions';
 import Chatbot from './components/Chatbot';
+
+window.addVehicleFromAssistant = (
+  brand: string,
+  model: string,
+  year: number,
+  mileage: number,
+  price: number,
+  fuelType: string,
+  transmission: string,
+  exteriorColor: string,
+  interiorColor: string,
+  image: string,
+  fbLink: string = '',
+  description: string = '',
+  features: string[] = [],
+  catalogType: 'standard' | 'featured' = 'standard'
+): boolean => {
+  try {
+    import('./utils/vehicleImportService').then(({ addImportedVehicle, ImportedVehicle }) => {
+      const vehicle: ImportedVehicle = {
+        id: `vehicle-${catalogType}-${Date.now()}-${brand.toLowerCase()}-${model.toLowerCase().replace(/\s+/g, '-')}`,
+        brand,
+        model,
+        year,
+        mileage,
+        price,
+        fuelType,
+        transmission,
+        exteriorColor,
+        interiorColor,
+        image,
+        fbLink,
+        description,
+        features,
+        catalogType
+      };
+      
+      console.log(`Ajout du véhicule ${brand} ${model} via l'API window`);
+      addImportedVehicle(vehicle, catalogType);
+    });
+    
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du véhicule via l'API window:", error);
+    return false;
+  }
+};
 
 function App() {
   return (
