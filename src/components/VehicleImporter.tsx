@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const VehicleImporter = () => {
@@ -16,13 +16,25 @@ const VehicleImporter = () => {
   const [catalogType, setCatalogType] = useState<'standard' | 'featured'>('standard');
   const [showShareAlert, setShowShareAlert] = useState(false);
   const [shareableUrl, setShareableUrl] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const adminParam = params.get("admin") === "true";
+    const adminLocalStorage = localStorage.getItem("autoAdiAdmin") === "true";
+    
+    setIsAdmin(adminParam || adminLocalStorage);
+    
+    if (!adminParam && !adminLocalStorage) {
+      navigate('/vehicules');
+    }
+
     window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
       detail: { catalogType: 'all' } 
     }));
-  }, []);
+  }, [location, navigate]);
 
   const handleImport = async () => {
     if (!url.trim()) {
@@ -365,6 +377,16 @@ Nos services inclus :
   const handleViewCatalog = () => {
     navigate(shareableUrl);
   };
+
+  if (!isAdmin) {
+    return <div className="p-6 text-center">
+      <h2 className="text-xl font-bold mb-4">Accès non autorisé</h2>
+      <p>Vous n'avez pas les droits nécessaires pour accéder à cette page.</p>
+      <Button className="mt-4" onClick={() => navigate('/vehicules')}>
+        Retour aux véhicules
+      </Button>
+    </div>;
+  }
 
   return (
     <div className="flex flex-col space-y-6">

@@ -5,12 +5,28 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Link } from 'lucide-react';
 import { ImportedVehicle, addImportedVehicle, generateShareableUrl, getImportedVehicles } from "@/utils/vehicleImportService";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const AiVehicleAdder = () => {
   const [showShareAlert, setShowShareAlert] = useState(false);
   const [shareableUrl, setShareableUrl] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  useEffect(() => {
+    // Check for admin access in URL parameters or localStorage
+    const params = new URLSearchParams(location.search);
+    const adminParam = params.get("admin") === "true";
+    const adminLocalStorage = localStorage.getItem("autoAdiAdmin") === "true";
+    
+    setIsAdmin(adminParam || adminLocalStorage);
+    
+    // If not admin, redirect to the vehicles page
+    if (!adminParam && !adminLocalStorage) {
+      navigate('/vehicules');
+    }
+  }, [location, navigate]);
   
   // Fonction pour ajouter un véhicule à partir des données fournies par l'assistant
   const addVehicleFromAssistant = (
@@ -99,6 +115,16 @@ const AiVehicleAdder = () => {
   // Cette fonction sera exposée pour être utilisée par l'assistant
   // @ts-ignore - Cette fonction sera utilisée par l'assistant directement
   window.addVehicleFromAssistant = addVehicleFromAssistant;
+
+  if (!isAdmin) {
+    return <div className="p-6 text-center">
+      <h2 className="text-xl font-bold mb-4">Accès non autorisé</h2>
+      <p>Vous n'avez pas les droits nécessaires pour accéder à cette page.</p>
+      <Button className="mt-4" onClick={() => navigate('/vehicules')}>
+        Retour aux véhicules
+      </Button>
+    </div>;
+  }
 
   return (
     <div className="mb-6">
