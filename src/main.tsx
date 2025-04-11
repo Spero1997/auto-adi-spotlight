@@ -1,4 +1,3 @@
-
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "next-themes"
 import App from './App.tsx'
@@ -27,7 +26,7 @@ if (catalogId) {
 // Fonction pour ajouter des véhicules de démo automatiquement au premier chargement
 const addDemoVehicles = () => {
   // Importer les fonctions nécessaires
-  import('./utils/vehicleImportService').then(({ getImportedVehicles, addImportedVehicle, saveImportedVehicles }) => {
+  import('./utils/vehicleImportService').then(({ getImportedVehicles, addVehicle, saveImportedVehicles }) => {
     const vehicles = getImportedVehicles('standard');
     let vehiclesUpdated = false;
     
@@ -56,7 +55,7 @@ const addDemoVehicles = () => {
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/ddf9e638-8244-4690-802e-b3aeb3a748b8.png', // Image mise à jour
+        image: '/lovable-uploads/27eeacb3-e4bf-46b9-babd-527e06b998e1.png', // Image mise à jour
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -82,7 +81,7 @@ Nos services inclus :
       };
       
       console.log("Ajout de la Volvo V40 avec image:", volvoV40.image);
-      addImportedVehicle(volvoV40, 'standard');
+      addVehicle(volvoV40, 'standard');
       console.log('Volvo V40 D2 R-Design ajoutée automatiquement au catalogue!');
       vehiclesUpdated = true;
     } else {
@@ -95,7 +94,7 @@ Nos services inclus :
       );
       
       if (existingVolvo) {
-        existingVolvo.image = '/lovable-uploads/ddf9e638-8244-4690-802e-b3aeb3a748b8.png';
+        existingVolvo.image = '/lovable-uploads/27eeacb3-e4bf-46b9-babd-527e06b998e1.png';
         console.log("Mise à jour de l'image de la Volvo V40 avec:", existingVolvo.image);
         saveImportedVehicles(vehicles, 'standard');
         console.log('Image de la Volvo V40 D2 R-Design mise à jour dans le catalogue!');
@@ -149,7 +148,7 @@ Nos services inclus :
         catalogType: 'standard'
       };
       
-      addImportedVehicle(bmwX7, 'standard');
+      addVehicle(bmwX7, 'standard');
       console.log('BMW X7 xDrive 40d M Sport Pro ajoutée automatiquement au catalogue!');
       vehiclesUpdated = true;
     } else {

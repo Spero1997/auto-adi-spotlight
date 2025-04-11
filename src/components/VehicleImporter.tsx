@@ -185,7 +185,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/ddf9e638-8244-4690-802e-b3aeb3a748b8.png',
+        image: '/lovable-uploads/27eeacb3-e4bf-46b9-babd-527e06b998e1.png',
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -374,7 +374,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
             <div className="border rounded-lg p-4 space-y-3">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <img 
-                  src="/lovable-uploads/b2aaf82e-1106-47e0-91ad-13b236e74620.png" 
+                  src="/lovable-uploads/27eeacb3-e4bf-46b9-babd-527e06b998e1.png" 
                   alt="Volvo V40 D2 R-Design 2014" 
                   className="w-full h-full object-cover"
                 />

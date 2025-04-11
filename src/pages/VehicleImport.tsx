@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,7 +6,7 @@ import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 import AiVehicleAdder from '@/components/AiVehicleAdder';
-import { getImportedVehicles, addImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
+import { getImportedVehicles, addVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Button } from '@/components/ui/button';
 
 const VehicleImport = () => {
@@ -48,7 +47,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         catalogType: 'standard'
       };
       
-      addImportedVehicle(hyundaiSantaFe, 'standard');
+      addVehicle(hyundaiSantaFe, 'standard');
       console.log('Hyundai Santa Fe Sport ajouté avec succès au catalogue!');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
@@ -92,7 +91,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         catalogType: 'standard'
       };
       
-      addImportedVehicle(toyotaCamrySE, 'standard');
+      addVehicle(toyotaCamrySE, 'standard');
       console.log('Toyota Camry SE ajouté avec succès au catalogue!');
     } catch (error) {
       console.error('Erreur lors de l\'ajout du Toyota Camry SE:', error);
@@ -113,7 +112,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/ddf9e638-8244-4690-802e-b3aeb3a748b8.png', // Mise à jour avec la nouvelle image
+        image: '/lovable-uploads/27eeacb3-e4bf-46b9-babd-527e06b998e1.png',
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -138,7 +137,7 @@ Nos services inclus :
         catalogType: 'standard'
       };
       
-      addImportedVehicle(volvoV40, 'standard');
+      addVehicle(volvoV40, 'standard');
       console.log('Volvo V40 D2 R-Design ajoutée avec succès au catalogue!');
       
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
