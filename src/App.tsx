@@ -1,99 +1,75 @@
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Index from './pages/Index';
-import Vehicules from './pages/VehiculesOccasion';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
-import LegalMentions from './pages/LegalMentions';
-import VehicleDetails from './pages/VehicleDetails';
-import VehicleImport from './pages/VehicleImport';
+import Index from './pages/Index';
 import NotFound from './pages/NotFound';
-import ScrollToTop from './components/ScrollToTop';
-import { LanguageProvider } from './contexts/LanguageContext';
 import Blog from './pages/Blog';
 import Services from './pages/Services';
-import Financement from './pages/Financement';
-import Rachat from './pages/Rachat';
 import APropos from './pages/APropos';
-import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
-import Cookies from './pages/Cookies';
 import CGV from './pages/CGV';
 import Conditions from './pages/Conditions';
-import Chatbot from './components/Chatbot';
-import { type ImportedVehicle } from './utils/types/vehicle';
+import Cookies from './pages/Cookies';
+import Financement from './pages/Financement';
+import LegalMentions from './pages/LegalMentions';
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite';
+import Rachat from './pages/Rachat';
+import VehiculesOccasion from './pages/VehiculesOccasion';
+import VehicleDetails from './pages/VehicleDetails';
+import VehicleImport from './pages/VehicleImport';
+import VehicleManagement from './pages/VehicleManagement';
+import OrdersBackup from './pages/OrdersBackup';
+import ScrollToTop from './components/ScrollToTop';
 
-window.addVehicleFromAssistant = (
-  brand: string,
-  model: string,
-  year: number,
-  mileage: number,
-  price: number,
-  fuelType: string,
-  transmission: string,
-  exteriorColor: string,
-  interiorColor: string,
-  image: string,
-  fbLink: string = '',
-  description: string = '',
-  features: string[] = [],
-  catalogType: 'standard' | 'featured' = 'standard'
-): boolean => {
-  try {
-    import('./utils/vehicleImportService').then(({ addVehicle }) => {
-      const vehicle: ImportedVehicle = {
-        id: `vehicle-${catalogType}-${Date.now()}-${brand.toLowerCase()}-${model.toLowerCase().replace(/\s+/g, '-')}`,
-        brand,
-        model,
-        year,
-        mileage,
-        price,
-        fuelType,
-        transmission,
-        exteriorColor,
-        interiorColor,
-        image,
-        fbLink,
-        description,
-        features,
-        catalogType
-      };
-      
-      console.log(`Ajout du véhicule ${brand} ${model} via l'API window`);
-      addVehicle(vehicle, catalogType);
-    });
-    
-    return true;
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du véhicule via l'API window:", error);
-    return false;
-  }
-};
+// Admin Dashboard
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminVehicles from './pages/admin/AdminVehicles';
+import AdminTestimonials from './pages/admin/AdminTestimonials';
+import AdminStats from './pages/admin/AdminStats';
+import AdminSettings from './pages/admin/AdminSettings';
+import AdminLogin from './pages/admin/AdminLogin';
 
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/vehicules/occasion" element={<Vehicules />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/mentions-legales" element={<LegalMentions />} />
-          <Route path="/vehicule/:id/:slug" element={<VehicleDetails />} />
-          <Route path="/vehicules/import" element={<VehicleImport />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/financement" element={<Financement />} />
-          <Route path="/rachat" element={<Rachat />} />
-          <Route path="/a-propos" element={<APropos />} />
-          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-          <Route path="/cookies" element={<Cookies />} />
-          <Route path="/cgv" element={<CGV />} />
-          <Route path="/conditions" element={<Conditions />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Chatbot />
-      </Router>
-    </LanguageProvider>
+    <Router>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/a-propos" element={<APropos />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/vehicules" element={<VehiculesOccasion />} />
+        <Route path="/vehicule/:id" element={<VehicleDetails />} />
+        <Route path="/vehicules/import" element={<VehicleImport />} />
+        <Route path="/vehicules/gestion" element={<VehicleManagement />} />
+        <Route path="/rachat" element={<Rachat />} />
+        <Route path="/financement" element={<Financement />} />
+        <Route path="/orders" element={<OrdersBackup />} />
+        
+        {/* Legal pages */}
+        <Route path="/cgv" element={<CGV />} />
+        <Route path="/conditions" element={<Conditions />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/mentions-legales" element={<LegalMentions />} />
+        <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+        
+        {/* Admin routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="vehicles" element={<AdminVehicles />} />
+          <Route path="testimonials" element={<AdminTestimonials />} />
+          <Route path="payments" element={<AdminDashboard />} />
+          <Route path="promotions" element={<AdminDashboard />} />
+          <Route path="stats" element={<AdminStats />} />
+          <Route path="featured" element={<AdminVehicles />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 
