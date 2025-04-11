@@ -204,11 +204,13 @@ const Hero = () => {
               <h3 className="text-xl font-semibold mb-4 text-gray-800">{translate('quickSearch', translations.quickSearch)}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">{translate('brand', translations.brand)}</label>
+                  {/* Amélioré le contraste du label */}
+                  <label className="text-sm font-medium text-gray-900 block mb-1">{translate('brand', translations.brand)}</label>
                   <select 
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                     value={selectedBrand}
                     onChange={(e) => setSelectedBrand(e.target.value)}
+                    aria-label={translate('brand', translations.brand)}
                   >
                     <option value="">{translate('brand', translations.brand)}</option>
                     <option value="audi">Audi</option>
@@ -220,11 +222,13 @@ const Hero = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">{translate('model', translations.model)}</label>
+                  {/* Amélioré le contraste du label */}
+                  <label className="text-sm font-medium text-gray-900 block mb-1">{translate('model', translations.model)}</label>
                   <select 
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                     value={selectedModel}
                     onChange={(e) => setSelectedModel(e.target.value)}
+                    aria-label={translate('model', translations.model)}
                   >
                     <option value="">{translate('model', translations.model)}</option>
                     <option value="berline">Berline</option>
@@ -234,11 +238,13 @@ const Hero = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">{translate('maxBudget', translations.maxBudget)}</label>
+                  {/* Amélioré le contraste du label */}
+                  <label className="text-sm font-medium text-gray-900 block mb-1">{translate('maxBudget', translations.maxBudget)}</label>
                   <select 
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                     value={selectedBudget}
                     onChange={(e) => setSelectedBudget(e.target.value)}
+                    aria-label={translate('maxBudget', translations.maxBudget)}
                   >
                     <option value="">{translate('maxBudget', translations.maxBudget)}</option>
                     <option value="10000">10 000 €</option>
@@ -249,11 +255,13 @@ const Hero = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">{translate('fuel', translations.fuel)}</label>
+                  {/* Amélioré le contraste du label */}
+                  <label className="text-sm font-medium text-gray-900 block mb-1">{translate('fuel', translations.fuel)}</label>
                   <select 
                     className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                     value={selectedFuel}
                     onChange={(e) => setSelectedFuel(e.target.value)}
+                    aria-label={translate('fuel', translations.fuel)}
                   >
                     <option value="">{translate('fuel', translations.fuel)}</option>
                     <option value="essence">Essence</option>
