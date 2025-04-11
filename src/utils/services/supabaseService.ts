@@ -14,7 +14,7 @@ export const fetchVehiclesFromSupabase = async () => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const syncLocalVehiclesToSupabase = async (localVehicles: ImportedVehicle[]) => {
@@ -42,14 +42,14 @@ export const syncLocalVehiclesToSupabase = async (localVehicles: ImportedVehicle
     // Insert all vehicles
     const { data, error } = await supabase
       .from('vehicles')
-      .upsert(supabaseVehicles, { onConflict: ['brand', 'model', 'year'] });
+      .upsert(supabaseVehicles, { onConflict: 'brand,model,year' });
     
     if (error) {
       console.error('Error syncing vehicles to Supabase:', error);
       throw error;
     }
     
-    return data;
+    return data || [];
   } catch (error) {
     console.error('Error in syncLocalVehiclesToSupabase:', error);
     throw error;
@@ -68,7 +68,7 @@ export const addVehicleToSupabase = async (vehicle: any) => {
       throw error;
     }
     
-    return data[0];
+    return data?.[0];
   } catch (error) {
     console.error('Error in addVehicleToSupabase:', error);
     throw error;
@@ -88,7 +88,7 @@ export const updateVehicleInSupabase = async (id: string, vehicle: any) => {
       throw error;
     }
     
-    return data[0];
+    return data?.[0];
   } catch (error) {
     console.error('Error in updateVehicleInSupabase:', error);
     throw error;
@@ -131,7 +131,7 @@ export const fetchTestimonials = async (approved: boolean = true) => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const addTestimonial = async (testimonial: any) => {
@@ -145,7 +145,7 @@ export const addTestimonial = async (testimonial: any) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const approveTestimonial = async (id: string, isApproved: boolean) => {
@@ -160,7 +160,7 @@ export const approveTestimonial = async (id: string, isApproved: boolean) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const deleteTestimonial = async (id: string) => {
@@ -189,7 +189,7 @@ export const fetchPayments = async () => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const addPayment = async (payment: any) => {
@@ -203,7 +203,7 @@ export const addPayment = async (payment: any) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const updatePaymentStatus = async (id: string, status: string) => {
@@ -218,7 +218,7 @@ export const updatePaymentStatus = async (id: string, status: string) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 // Promotions Management
@@ -233,7 +233,7 @@ export const fetchPromotions = async () => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const addPromotion = async (promotion: any) => {
@@ -247,7 +247,7 @@ export const addPromotion = async (promotion: any) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const updatePromotion = async (id: string, promotion: any) => {
@@ -262,7 +262,7 @@ export const updatePromotion = async (id: string, promotion: any) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const togglePromotionStatus = async (id: string, isActive: boolean) => {
@@ -277,7 +277,7 @@ export const togglePromotionStatus = async (id: string, isActive: boolean) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 // Statistics Management
@@ -296,7 +296,7 @@ export const fetchDailyStats = async (days: number = 30) => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const updateDailyStats = async (stats: any) => {
@@ -322,7 +322,7 @@ export const updateDailyStats = async (stats: any) => {
       throw error;
     }
     
-    return data[0];
+    return data?.[0];
   } else {
     // Insert new stats
     const { data, error } = await supabase
@@ -335,7 +335,7 @@ export const updateDailyStats = async (stats: any) => {
       throw error;
     }
     
-    return data[0];
+    return data?.[0];
   }
 };
 
@@ -351,7 +351,7 @@ export const fetchTags = async () => {
     throw error;
   }
   
-  return data;
+  return data || [];
 };
 
 export const addTag = async (name: string) => {
@@ -365,7 +365,7 @@ export const addTag = async (name: string) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const fetchVehicleTags = async (vehicleId: string) => {
@@ -379,7 +379,7 @@ export const fetchVehicleTags = async (vehicleId: string) => {
     throw error;
   }
   
-  return data.map(item => item.tags);
+  return data.map(item => item.tags) || [];
 };
 
 export const addVehicleTag = async (vehicleId: string, tagId: string) => {
@@ -393,7 +393,7 @@ export const addVehicleTag = async (vehicleId: string, tagId: string) => {
     throw error;
   }
   
-  return data[0];
+  return data?.[0];
 };
 
 export const removeVehicleTag = async (vehicleId: string, tagId: string) => {
