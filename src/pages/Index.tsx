@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
+import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
@@ -43,7 +44,7 @@ const Index = () => {
       EN: "Auto Adi - Affordable Car Dealer | New and Used Cars in Florence, Italy",
       ES: "Auto Adi - Concesionario de coches económicos | Compra de coches nuevos y usados en Florencia, Italia",
       IT: "Auto Adi - Concessionario auto economico | Acquisto auto nuove e usate a Firenze, Italia",
-      PT: "Auto Adi - Concessionário de automóveis acessíveis | Carros novos e usados em Florença, Itália",
+      PT: "Auto Adi - Concessionário de automóveis acessível | Carros novos e usados em Florença, Itália",
       RO: "Auto Adi - Dealer auto la prețuri accesibile | Mașini noi și second-hand în Florența, Italia"
     },
     pageDescription: {
@@ -502,6 +503,9 @@ const Index = () => {
               ? "Concessionnaire Auto Pas Cher - Achat Voiture Occasion" 
               : "Affordable Car Dealer - Used Car Sales"}
           </h1>
+          <div className="mt-12 quick-search-container">
+            <QuickSearch />
+          </div>
         </div>
         
         <ConditionsHighlight />
