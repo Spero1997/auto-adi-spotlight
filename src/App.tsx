@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -42,6 +43,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/vehicules" element={<VehiculesOccasion />} />
+        <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
         <Route path="/vehicule/:id" element={<VehicleDetails />} />
         <Route path="/vehicules/import" element={<VehicleImport />} />
         <Route path="/vehicules/gestion" element={<VehicleManagement />} />
