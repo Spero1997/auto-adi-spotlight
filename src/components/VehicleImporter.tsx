@@ -290,6 +290,67 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     }
   };
 
+  const addBMWX7 = () => {
+    try {
+      const bmwX7: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-bmw-x7-xdrive-40d-m-sport-pro`,
+        brand: 'BMW',
+        model: 'X7 xDrive 40d M Sport Pro',
+        year: 2022,
+        mileage: 43000,
+        price: 27000,
+        fuelType: 'Diesel',
+        transmission: 'Automatique',
+        exteriorColor: 'Noir',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png',
+        fbLink: '',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+        features: [
+          'Toit panoramique',
+          'Navigation',
+          'Caméra de recul',
+          'M Sport Pro',
+          'Automatique',
+          '259 ch'
+        ],
+        engine: 'xDrive 40d 259ch',
+        doors: 5,
+        catalogType: 'standard'
+      };
+      
+      const success = addImportedVehicle(bmwX7, 'standard');
+      
+      if (success) {
+        console.log('BMW X7 xDrive 40d M Sport Pro ajoutée avec succès au catalogue standard!');
+        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+        toast.success('BMW X7 xDrive 40d M Sport Pro ajoutée avec succès');
+        const url = generateShareableUrl('standard');
+        setShareableUrl(url);
+        setShowShareAlert(true);
+
+        setTimeout(() => {
+          navigate('/vehicules');
+        }, 2000);
+      } else {
+        console.error("Une erreur s'est produite lors de l'ajout de la BMW X7");
+        toast.error("Une erreur s'est produite lors de l'ajout de la BMW X7");
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la BMW X7:', error);
+      toast.error("Erreur lors de l'ajout de la BMW X7");
+    }
+  };
+
   const handleCopyUrl = async () => {
     try {
       await navigator.clipboard.writeText(shareableUrl);
@@ -370,7 +431,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
             Ajoutez rapidement des véhicules préconçus au catalogue standard.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="border rounded-lg p-4 space-y-3">
               <div className="aspect-video relative rounded-md overflow-hidden">
                 <img 
@@ -421,6 +482,24 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
                 <p className="font-bold">4,500 €</p>
               </div>
               <Button onClick={addHyundaiSantaFe} className="w-full">
+                Ajouter au catalogue standard
+              </Button>
+            </div>
+
+            <div className="border rounded-lg p-4 space-y-3">
+              <div className="aspect-video relative rounded-md overflow-hidden">
+                <img 
+                  src="/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png" 
+                  alt="BMW X7 xDrive 40d M Sport Pro 2022" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="font-semibold">BMW X7 xDrive 40d M Sport Pro</h3>
+              <div className="text-sm space-y-1">
+                <p>2022 • Diesel • 43,000 km</p>
+                <p className="font-bold">27,000 €</p>
+              </div>
+              <Button onClick={addBMWX7} className="w-full">
                 Ajouter au catalogue standard
               </Button>
             </div>

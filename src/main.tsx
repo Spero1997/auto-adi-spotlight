@@ -1,3 +1,4 @@
+
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "next-themes"
 import App from './App.tsx'
@@ -123,7 +124,7 @@ Nos services inclus :
         transmission: 'Automatique',
         exteriorColor: 'Noir',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/c27e0527-36ad-4ff3-bd0a-814614558773.png',
+        image: '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png',
         fbLink: '',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -152,7 +153,23 @@ Nos services inclus :
       console.log('BMW X7 xDrive 40d M Sport Pro ajoutée automatiquement au catalogue!');
       vehiclesUpdated = true;
     } else {
-      console.log('La BMW X7 xDrive 40d M Sport Pro est déjà présente dans le catalogue');
+      // Si elle existe déjà, mettre à jour son image
+      const existingBMWX7 = vehicles.find(v => 
+        (v.id === bmwX7Id) || 
+        (v.brand === 'BMW' && 
+        v.model.includes('X7 xDrive 40d M Sport Pro') && 
+        v.year === 2022)
+      );
+      
+      if (existingBMWX7) {
+        existingBMWX7.image = '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png';
+        console.log("Mise à jour de l'image de la BMW X7 avec:", existingBMWX7.image);
+        saveImportedVehicles(vehicles, 'standard');
+        console.log('Image de la BMW X7 xDrive 40d M Sport Pro mise à jour dans le catalogue!');
+        vehiclesUpdated = true;
+      } else {
+        console.log('La BMW X7 xDrive 40d M Sport Pro est déjà présente dans le catalogue');
+      }
     }
     
     // Si des véhicules ont été ajoutés, on déclenche l'événement une seule fois
@@ -189,7 +206,7 @@ setTimeout(() => {
       'Automatique',
       'Noir',
       'Noir',
-      '/lovable-uploads/c27e0527-36ad-4ff3-bd0a-814614558773.png',
+      '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png',
       '',
       `Modalités de paiement
 • Acompte : 20 % à la commande

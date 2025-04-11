@@ -147,6 +147,54 @@ Nos services inclus :
     }
   };
   
+  const addBMWX7 = () => {
+    try {
+      const bmwX7: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-bmw-x7-xdrive-40d-msport-pro`,
+        brand: 'BMW',
+        model: 'X7 xDrive 40d M Sport Pro',
+        year: 2022,
+        mileage: 43000,
+        price: 27000,
+        fuelType: 'Diesel',
+        transmission: 'Automatique',
+        exteriorColor: 'Noir',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png',
+        fbLink: '',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+        features: [
+          'Toit panoramique',
+          'Navigation',
+          'Caméra de recul',
+          'M Sport Pro',
+          'Automatique',
+          '259 ch'
+        ],
+        engine: 'xDrive 40d 259ch',
+        doors: 5,
+        catalogType: 'standard'
+      };
+      
+      addVehicle(bmwX7, 'standard');
+      console.log('BMW X7 xDrive 40d M Sport Pro ajoutée avec succès au catalogue!');
+      
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la BMW X7 xDrive 40d M Sport Pro:', error);
+      console.error('Erreur lors de l\'ajout du véhicule');
+    }
+  };
+  
   useEffect(() => {
     console.log("VehicleImport: Vérification des véhicules stockés");
     try {
@@ -302,6 +350,27 @@ Nos services inclus :
         console.log("La Volvo V40 est présente dans le catalogue", volvoV40);
       }
       
+      const bmwX7 = vehicles.find(v => 
+        v.brand === "BMW" && 
+        v.model.includes("X7 xDrive 40d M Sport Pro") && 
+        v.year === 2022
+      );
+      
+      if (bmwX7) {
+        console.log("La BMW X7 xDrive 40d M Sport Pro est présente dans le catalogue", bmwX7);
+        if (bmwX7.image !== '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png') {
+          bmwX7.image = '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png';
+          const updatedVehicles = vehicles.map(v => 
+            (v.id === bmwX7.id) ? bmwX7 : v
+          );
+          addVehicle(bmwX7, 'standard');
+          console.log('Image de la BMW X7 xDrive 40d M Sport Pro mise à jour!');
+        }
+      } else {
+        console.log("Ajout automatique de la BMW X7 xDrive 40d M Sport Pro au catalogue");
+        addBMWX7();
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -344,6 +413,13 @@ Nos services inclus :
               className="bg-red-600 hover:bg-red-700 text-white"
             >
               Ajouter la Toyota Camry SE au catalogue
+            </Button>
+
+            <Button 
+              onClick={addBMWX7}
+              className="bg-gray-800 hover:bg-gray-900 text-white"
+            >
+              Ajouter la BMW X7 xDrive 40d M Sport Pro
             </Button>
           </div>
           
