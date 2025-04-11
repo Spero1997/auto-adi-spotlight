@@ -4,6 +4,7 @@ import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Label } from '@/components/ui/label';
 
 interface SearchFormProps {
   translations: {
@@ -49,12 +50,12 @@ const SearchForm = ({ translations }: SearchFormProps) => {
           <h3 className="text-xl font-semibold mb-4 text-gray-800">{translate('quickSearch', translations.quickSearch)}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900 block mb-1">{translate('brand', translations.brand)}</label>
+              <Label htmlFor="brand" className="text-sm font-medium text-gray-900 block">{translate('brand', translations.brand)}</Label>
               <select 
+                id="brand"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                aria-label={translate('brand', translations.brand)}
               >
                 <option value="">{translate('brand', translations.brand)}</option>
                 <option value="audi">Audi</option>
@@ -66,12 +67,12 @@ const SearchForm = ({ translations }: SearchFormProps) => {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900 block mb-1">{translate('model', translations.model)}</label>
+              <Label htmlFor="model" className="text-sm font-medium text-gray-900 block">{translate('model', translations.model)}</Label>
               <select 
+                id="model"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
-                aria-label={translate('model', translations.model)}
               >
                 <option value="">{translate('model', translations.model)}</option>
                 <option value="berline">Berline</option>
@@ -81,12 +82,12 @@ const SearchForm = ({ translations }: SearchFormProps) => {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900 block mb-1">{translate('maxBudget', translations.maxBudget)}</label>
+              <Label htmlFor="budget" className="text-sm font-medium text-gray-900 block">{translate('maxBudget', translations.maxBudget)}</Label>
               <select 
+                id="budget"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                 value={selectedBudget}
                 onChange={(e) => setSelectedBudget(e.target.value)}
-                aria-label={translate('maxBudget', translations.maxBudget)}
               >
                 <option value="">{translate('maxBudget', translations.maxBudget)}</option>
                 <option value="10000">10 000 €</option>
@@ -97,12 +98,12 @@ const SearchForm = ({ translations }: SearchFormProps) => {
               </select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-900 block mb-1">{translate('fuel', translations.fuel)}</label>
+              <Label htmlFor="fuel" className="text-sm font-medium text-gray-900 block">{translate('fuel', translations.fuel)}</Label>
               <select 
+                id="fuel"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
                 value={selectedFuel}
                 onChange={(e) => setSelectedFuel(e.target.value)}
-                aria-label={translate('fuel', translations.fuel)}
               >
                 <option value="">{translate('fuel', translations.fuel)}</option>
                 <option value="essence">Essence</option>
