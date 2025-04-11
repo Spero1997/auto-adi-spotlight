@@ -195,6 +195,54 @@ Nos services inclus :
     }
   };
   
+  const addAudiQ2 = () => {
+    try {
+      const audiQ2: ImportedVehicle = {
+        id: `vehicle-standard-${Date.now()}-audi-q2-ultra-sport`,
+        brand: 'Audi',
+        model: 'Q2 Ultra Sport Sièges Crochet LED',
+        year: 2018,
+        mileage: 98000,
+        price: 4000,
+        fuelType: 'Diesel',
+        transmission: 'Automatique',
+        exteriorColor: 'Bleu',
+        interiorColor: 'Noir',
+        image: '/lovable-uploads/e48430e0-9c0b-4c80-83a9-f7e586bd9a71.png',
+        fbLink: '',
+        description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % pour paiement comptant à la commande
+Nos services inclus :
+• Importation et livraison à domicile (délai : 5 jours)
+• Garantie 24 mois
+• Délai de rétractation : 14 jours (Satisfait ou remboursé)
+• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
+• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
+        features: [
+          'Toit panoramique',
+          'Navigation',
+          'Caméra de recul',
+          'Sport Sièges',
+          'Automatique',
+          '116 ch'
+        ],
+        engine: 'Ultra 116ch',
+        doors: 5,
+        catalogType: 'standard'
+      };
+      
+      addVehicle(audiQ2, 'standard');
+      console.log('Audi Q2 Ultra Sport ajoutée avec succès au catalogue!');
+      
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de l\'Audi Q2 Ultra Sport:', error);
+      console.error('Erreur lors de l\'ajout du véhicule');
+    }
+  };
+  
   useEffect(() => {
     console.log("VehicleImport: Vérification des véhicules stockés");
     try {
@@ -371,6 +419,19 @@ Nos services inclus :
         addBMWX7();
       }
       
+      const audiQ2 = vehicles.find(v => 
+        v.brand === "Audi" && 
+        v.model.includes("Q2 Ultra Sport") && 
+        v.year === 2018
+      );
+      
+      if (!audiQ2) {
+        console.log("Ajout automatique de l'Audi Q2 Ultra Sport au catalogue");
+        addAudiQ2();
+      } else {
+        console.log("L'Audi Q2 Ultra Sport est présente dans le catalogue", audiQ2);
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -420,6 +481,13 @@ Nos services inclus :
               className="bg-gray-800 hover:bg-gray-900 text-white"
             >
               Ajouter la BMW X7 xDrive 40d M Sport Pro
+            </Button>
+            
+            <Button 
+              onClick={addAudiQ2}
+              className="bg-blue-800 hover:bg-blue-900 text-white"
+            >
+              Ajouter l'Audi Q2 Ultra Sport
             </Button>
           </div>
           
