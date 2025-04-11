@@ -50,7 +50,9 @@ const SearchForm = ({ translations }: SearchFormProps) => {
           <h3 className="text-xl font-semibold mb-4 text-gray-800">{translate('quickSearch', translations.quickSearch)}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="brand" className="text-sm font-medium text-gray-900 block">{translate('brand', translations.brand)}</Label>
+              <Label htmlFor="brand" className="text-sm font-bold text-gray-900 block mb-1">
+                {translate('brand', translations.brand)}
+              </Label>
               <select 
                 id="brand"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
@@ -67,7 +69,9 @@ const SearchForm = ({ translations }: SearchFormProps) => {
               </select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="model" className="text-sm font-medium text-gray-900 block">{translate('model', translations.model)}</Label>
+              <Label htmlFor="model" className="text-sm font-bold text-gray-900 block mb-1">
+                {translate('model', translations.model)}
+              </Label>
               <select 
                 id="model"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
@@ -82,7 +86,9 @@ const SearchForm = ({ translations }: SearchFormProps) => {
               </select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="budget" className="text-sm font-medium text-gray-900 block">{translate('maxBudget', translations.maxBudget)}</Label>
+              <Label htmlFor="budget" className="text-sm font-bold text-gray-900 block mb-1">
+                {translate('maxBudget', translations.maxBudget)}
+              </Label>
               <select 
                 id="budget"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
@@ -98,7 +104,9 @@ const SearchForm = ({ translations }: SearchFormProps) => {
               </select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="fuel" className="text-sm font-medium text-gray-900 block">{translate('fuel', translations.fuel)}</Label>
+              <Label htmlFor="fuel" className="text-sm font-bold text-gray-900 block mb-1">
+                {translate('fuel', translations.fuel)}
+              </Label>
               <select 
                 id="fuel"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
