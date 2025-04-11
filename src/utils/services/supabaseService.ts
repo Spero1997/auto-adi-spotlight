@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { ImportedVehicle } from '../types/vehicle';
 
@@ -379,6 +378,7 @@ export const fetchVehicleTags = async (vehicleId: string) => {
     throw error;
   }
   
+  // Transform the data structure to return an array of Tag objects
   return data.map(item => item.tags) || [];
 };
 

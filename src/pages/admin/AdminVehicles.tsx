@@ -102,8 +102,9 @@ const AdminVehicles = () => {
         const vehicleTagsMap: Record<string, Tag[]> = {};
         
         for (const vehicle of vehiclesData) {
-          const vehicleTags = await fetchVehicleTags(vehicle.id);
-          vehicleTagsMap[vehicle.id] = vehicleTags;
+          const vTags = await fetchVehicleTags(vehicle.id);
+          // Ensure that vTags is treated as Tag[]
+          vehicleTagsMap[vehicle.id] = vTags as Tag[];
         }
         
         setVehicleTags(vehicleTagsMap);
@@ -237,7 +238,7 @@ const AdminVehicles = () => {
         setVehicles(vehiclesData);
         
         // Refresh tags for this vehicle
-        const updatedVehicleTags = await fetchVehicleTags(currentVehicle.id);
+        const updatedVehicleTags = await fetchVehicleTags(currentVehicle.id) as Tag[];
         setVehicleTags(prev => ({
           ...prev,
           [currentVehicle.id]: updatedVehicleTags
