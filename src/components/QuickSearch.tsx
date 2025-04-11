@@ -234,82 +234,102 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
             {translate('quickSearch', translations.quickSearch)}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Select onValueChange={handleBrandChange} value={selectedBrand}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder={translate('brand', translations.brand)} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="audi">Audi</SelectItem>
-                <SelectItem value="bmw">BMW</SelectItem>
-                <SelectItem value="citroen">Citroën</SelectItem>
-                <SelectItem value="dacia">Dacia</SelectItem>
-                <SelectItem value="fiat">Fiat</SelectItem>
-                <SelectItem value="ford">Ford</SelectItem>
-                <SelectItem value="honda">Honda</SelectItem>
-                <SelectItem value="hyundai">Hyundai</SelectItem>
-                <SelectItem value="kia">Kia</SelectItem>
-                <SelectItem value="mazda">Mazda</SelectItem>
-                <SelectItem value="mercedes">Mercedes</SelectItem>
-                <SelectItem value="mini">Mini</SelectItem>
-                <SelectItem value="nissan">Nissan</SelectItem>
-                <SelectItem value="opel">Opel</SelectItem>
-                <SelectItem value="peugeot">Peugeot</SelectItem>
-                <SelectItem value="renault">Renault</SelectItem>
-                <SelectItem value="seat">Seat</SelectItem>
-                <SelectItem value="skoda">Skoda</SelectItem>
-                <SelectItem value="smart">Smart</SelectItem>
-                <SelectItem value="tesla">Tesla</SelectItem>
-                <SelectItem value="toyota">Toyota</SelectItem>
-                <SelectItem value="volkswagen">Volkswagen</SelectItem>
-                <SelectItem value="volvo">Volvo</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {translate('brand', translations.brand)}
+              </label>
+              <Select onValueChange={handleBrandChange} value={selectedBrand}>
+                <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+                  <SelectValue placeholder={translate('brand', translations.brand)} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="audi">Audi</SelectItem>
+                  <SelectItem value="bmw">BMW</SelectItem>
+                  <SelectItem value="citroen">Citroën</SelectItem>
+                  <SelectItem value="dacia">Dacia</SelectItem>
+                  <SelectItem value="fiat">Fiat</SelectItem>
+                  <SelectItem value="ford">Ford</SelectItem>
+                  <SelectItem value="honda">Honda</SelectItem>
+                  <SelectItem value="hyundai">Hyundai</SelectItem>
+                  <SelectItem value="kia">Kia</SelectItem>
+                  <SelectItem value="mazda">Mazda</SelectItem>
+                  <SelectItem value="mercedes">Mercedes</SelectItem>
+                  <SelectItem value="mini">Mini</SelectItem>
+                  <SelectItem value="nissan">Nissan</SelectItem>
+                  <SelectItem value="opel">Opel</SelectItem>
+                  <SelectItem value="peugeot">Peugeot</SelectItem>
+                  <SelectItem value="renault">Renault</SelectItem>
+                  <SelectItem value="seat">Seat</SelectItem>
+                  <SelectItem value="skoda">Skoda</SelectItem>
+                  <SelectItem value="smart">Smart</SelectItem>
+                  <SelectItem value="tesla">Tesla</SelectItem>
+                  <SelectItem value="toyota">Toyota</SelectItem>
+                  <SelectItem value="volkswagen">Volkswagen</SelectItem>
+                  <SelectItem value="volvo">Volvo</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={selectedModel} onValueChange={handleModelChange} disabled={!selectedBrand}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder={translate('model', translations.model)} />
-              </SelectTrigger>
-              <SelectContent>
-                {selectedBrand ? (
-                  availableModels.map((model) => (
-                    <SelectItem key={model} value={model.toLowerCase()}>
-                      {model}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {translate('model', translations.model)}
+              </label>
+              <Select value={selectedModel} onValueChange={handleModelChange} disabled={!selectedBrand}>
+                <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+                  <SelectValue placeholder={translate('model', translations.model)} />
+                </SelectTrigger>
+                <SelectContent>
+                  {selectedBrand ? (
+                    availableModels.map((model) => (
+                      <SelectItem key={model} value={model.toLowerCase()}>
+                        {model}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="brand-required" disabled>
+                      {translate('selectBrandFirst', translations.selectBrandFirst)}
                     </SelectItem>
-                  ))
-                ) : (
-                  <SelectItem value="brand-required" disabled>
-                    {translate('selectBrandFirst', translations.selectBrandFirst)}
-                  </SelectItem>
-                )}
-              </SelectContent>
-            </Select>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={selectedBudget} onValueChange={handleBudgetChange}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder={translate('maxBudget', translations.maxBudget)} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="3000">3 000 €</SelectItem>
-                <SelectItem value="5000">5 000 €</SelectItem>
-                <SelectItem value="10000">10 000 €</SelectItem>
-                <SelectItem value="15000">15 000 €</SelectItem>
-                <SelectItem value="20000">20 000 €</SelectItem>
-                <SelectItem value="30000">30 000 €</SelectItem>
-                <SelectItem value="50000">50 000 €</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {translate('maxBudget', translations.maxBudget)}
+              </label>
+              <Select value={selectedBudget} onValueChange={handleBudgetChange}>
+                <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+                  <SelectValue placeholder={translate('maxBudget', translations.maxBudget)} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3000">3 000 €</SelectItem>
+                  <SelectItem value="5000">5 000 €</SelectItem>
+                  <SelectItem value="10000">10 000 €</SelectItem>
+                  <SelectItem value="15000">15 000 €</SelectItem>
+                  <SelectItem value="20000">20 000 €</SelectItem>
+                  <SelectItem value="30000">30 000 €</SelectItem>
+                  <SelectItem value="50000">50 000 €</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={selectedFuel} onValueChange={handleFuelChange}>
-              <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder={translate('fuel', translations.fuel)} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="essence">{translate('petrol', translations.petrol)}</SelectItem>
-                <SelectItem value="diesel">{translate('diesel', translations.diesel)}</SelectItem>
-                <SelectItem value="hybride">{translate('hybrid', translations.hybrid)}</SelectItem>
-                <SelectItem value="electrique">{translate('electric', translations.electric)}</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                {translate('fuel', translations.fuel)}
+              </label>
+              <Select value={selectedFuel} onValueChange={handleFuelChange}>
+                <SelectTrigger className={`w-full ${isMobile ? 'p-2 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
+                  <SelectValue placeholder={translate('fuel', translations.fuel)} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="essence">{translate('petrol', translations.petrol)}</SelectItem>
+                  <SelectItem value="diesel">{translate('diesel', translations.diesel)}</SelectItem>
+                  <SelectItem value="hybride">{translate('hybrid', translations.hybrid)}</SelectItem>
+                  <SelectItem value="electrique">{translate('electric', translations.electric)}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
         <div className="mt-4 md:mt-0 w-full md:w-auto">

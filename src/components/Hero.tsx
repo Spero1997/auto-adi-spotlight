@@ -203,53 +203,65 @@ const Hero = () => {
             <div className="flex-1 w-full">
               <h3 className="text-xl font-semibold mb-4 text-gray-800">{translate('quickSearch', translations.quickSearch)}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <select 
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                  value={selectedBrand}
-                  onChange={(e) => setSelectedBrand(e.target.value)}
-                >
-                  <option value="">{translate('brand', translations.brand)}</option>
-                  <option value="audi">Audi</option>
-                  <option value="bmw">BMW</option>
-                  <option value="citroen">Citroën</option>
-                  <option value="peugeot">Peugeot</option>
-                  <option value="renault">Renault</option>
-                  <option value="toyota">Toyota</option>
-                </select>
-                <select 
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                  value={selectedModel}
-                  onChange={(e) => setSelectedModel(e.target.value)}
-                >
-                  <option value="">{translate('model', translations.model)}</option>
-                  <option value="berline">Berline</option>
-                  <option value="suv">SUV</option>
-                  <option value="break">Break</option>
-                  <option value="citadine">Citadine</option>
-                </select>
-                <select 
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                  value={selectedBudget}
-                  onChange={(e) => setSelectedBudget(e.target.value)}
-                >
-                  <option value="">{translate('maxBudget', translations.maxBudget)}</option>
-                  <option value="10000">10 000 €</option>
-                  <option value="15000">15 000 €</option>
-                  <option value="20000">20 000 €</option>
-                  <option value="30000">30 000 €</option>
-                  <option value="50000">50 000 €</option>
-                </select>
-                <select 
-                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                  value={selectedFuel}
-                  onChange={(e) => setSelectedFuel(e.target.value)}
-                >
-                  <option value="">{translate('fuel', translations.fuel)}</option>
-                  <option value="essence">Essence</option>
-                  <option value="diesel">Diesel</option>
-                  <option value="hybride">Hybride</option>
-                  <option value="electrique">Électrique</option>
-                </select>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">{translate('brand', translations.brand)}</label>
+                  <select 
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    value={selectedBrand}
+                    onChange={(e) => setSelectedBrand(e.target.value)}
+                  >
+                    <option value="">{translate('brand', translations.brand)}</option>
+                    <option value="audi">Audi</option>
+                    <option value="bmw">BMW</option>
+                    <option value="citroen">Citroën</option>
+                    <option value="peugeot">Peugeot</option>
+                    <option value="renault">Renault</option>
+                    <option value="toyota">Toyota</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">{translate('model', translations.model)}</label>
+                  <select 
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    value={selectedModel}
+                    onChange={(e) => setSelectedModel(e.target.value)}
+                  >
+                    <option value="">{translate('model', translations.model)}</option>
+                    <option value="berline">Berline</option>
+                    <option value="suv">SUV</option>
+                    <option value="break">Break</option>
+                    <option value="citadine">Citadine</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">{translate('maxBudget', translations.maxBudget)}</label>
+                  <select 
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    value={selectedBudget}
+                    onChange={(e) => setSelectedBudget(e.target.value)}
+                  >
+                    <option value="">{translate('maxBudget', translations.maxBudget)}</option>
+                    <option value="10000">10 000 €</option>
+                    <option value="15000">15 000 €</option>
+                    <option value="20000">20 000 €</option>
+                    <option value="30000">30 000 €</option>
+                    <option value="50000">50 000 €</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">{translate('fuel', translations.fuel)}</label>
+                  <select 
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    value={selectedFuel}
+                    onChange={(e) => setSelectedFuel(e.target.value)}
+                  >
+                    <option value="">{translate('fuel', translations.fuel)}</option>
+                    <option value="essence">Essence</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="hybride">Hybride</option>
+                    <option value="electrique">Électrique</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div className="mt-4 md:mt-0 w-full md:w-auto">
