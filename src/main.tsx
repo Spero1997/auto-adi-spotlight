@@ -1,3 +1,4 @@
+
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "next-themes"
 import App from './App.tsx'
@@ -55,7 +56,7 @@ const addDemoVehicles = () => {
         transmission: 'Automatique',
         exteriorColor: 'Blanc',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/4fad15d8-ce39-4640-b729-609c13a29609.png', // Mise à jour avec la nouvelle image
+        image: '/lovable-uploads/ddf9e638-8244-4690-802e-b3aeb3a748b8.png', // Mise à jour avec la nouvelle image
         fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -93,7 +94,7 @@ Nos services inclus :
       );
       
       if (existingVolvo) {
-        existingVolvo.image = '/lovable-uploads/4fad15d8-ce39-4640-b729-609c13a29609.png';
+        existingVolvo.image = '/lovable-uploads/ddf9e638-8244-4690-802e-b3aeb3a748b8.png';
         saveImportedVehicles(vehicles, 'standard');
         console.log('Image de la Volvo V40 D2 R-Design mise à jour dans le catalogue!');
         vehiclesUpdated = true;
