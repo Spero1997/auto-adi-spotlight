@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ const VehicleAddForm = () => {
   const [fuelType, setFuelType] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
+  const [additionalImages, setAdditionalImages] = useState<string[]>(['']);
   const [description, setDescription] = useState('');
   const [exteriorColor, setExteriorColor] = useState('');
   const [interiorColor, setInteriorColor] = useState('');
@@ -38,6 +40,9 @@ const VehicleAddForm = () => {
       return;
     }
 
+    // Filter out empty additional images
+    const filteredAdditionalImages = additionalImages.filter(img => img.trim() !== '');
+
     const newVehicle = {
       id: `${brand}-${model}-${Date.now()}`,
       brand,
@@ -47,13 +52,14 @@ const VehicleAddForm = () => {
       fuelType,
       price: parseInt(price),
       image,
+      images: filteredAdditionalImages.length > 0 ? filteredAdditionalImages : undefined,
       description,
       exteriorColor,
       interiorColor,
       transmission,
       doors: doors ? parseInt(doors) : undefined,
       engine,
-      features,
+      features: features.filter(f => f.trim() !== ''),
     };
 
     const success = await addImportedVehicle(newVehicle);
@@ -66,6 +72,7 @@ const VehicleAddForm = () => {
       setFuelType('');
       setPrice('');
       setImage('');
+      setAdditionalImages(['']);
       setDescription('');
       setExteriorColor('');
       setInteriorColor('');
@@ -211,13 +218,52 @@ const VehicleAddForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="image">URL de l'image</Label>
+            <Label htmlFor="image">URL de l'image principale</Label>
             <Input
               type="url"
               id="image"
               value={image}
               onChange={(e) => setImage(e.target.value)}
             />
+          </div>
+          
+          <div>
+            <Label>Images additionnelles</Label>
+            {additionalImages.map((img, index) => (
+              <div key={index} className="flex items-center space-x-2 mb-2">
+                <Input
+                  type="url"
+                  value={img}
+                  placeholder="URL de l'image..."
+                  onChange={(e) => {
+                    const newImages = [...additionalImages];
+                    newImages[index] = e.target.value;
+                    setAdditionalImages(newImages);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    const newImages = [...additionalImages];
+                    newImages.splice(index, 1);
+                    setAdditionalImages(newImages);
+                  }}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setAdditionalImages([...additionalImages, ''])}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter une image
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
