@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { ImportedVehicle } from '../types/vehicle';
 import { Tag } from '../types/tag';
@@ -381,13 +380,14 @@ export const fetchVehicleTags = async (vehicleId: string): Promise<Tag[]> => {
   }
   
   // Transform the data structure to return an array of Tag objects
-  // Each item in data is an object with a 'tags' property containing the tag object
+  // The response has this structure: [{ tags: { id: '...', name: '...' } }, ...]
   const tags: Tag[] = data.map(item => {
     // Ensure that 'tags' exists and has the expected properties
     if (item && item.tags && typeof item.tags === 'object') {
+      const tagObj = item.tags as any; // Cast to any to access properties
       return {
-        id: item.tags.id,
-        name: item.tags.name
+        id: tagObj.id,
+        name: tagObj.name
       };
     }
     // Provide a fallback to avoid runtime errors
