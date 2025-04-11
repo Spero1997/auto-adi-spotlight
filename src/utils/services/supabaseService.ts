@@ -381,7 +381,12 @@ export const fetchVehicleTags = async (vehicleId: string): Promise<Tag[]> => {
   }
   
   // Transform the data structure to return an array of Tag objects
-  const tags: Tag[] = data.map(item => item.tags as Tag);
+  // Fix the type conversion issue by properly mapping the tags
+  const tags: Tag[] = data.map(item => ({
+    id: item.tags.id,
+    name: item.tags.name
+  }));
+  
   return tags || [];
 };
 
