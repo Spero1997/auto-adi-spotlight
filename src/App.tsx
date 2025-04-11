@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -28,6 +27,9 @@ import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminStats from './pages/admin/AdminStats';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminLogin from './pages/admin/AdminLogin';
+import AdminPayments from './pages/admin/AdminPayments';
+import AdminPromotions from './pages/admin/AdminPromotions';
+import AdminFeatured from './pages/admin/AdminFeatured';
 
 function App() {
   return (
@@ -55,16 +57,16 @@ function App() {
         <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
         
         {/* Admin routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="vehicles" element={<AdminVehicles />} />
           <Route path="testimonials" element={<AdminTestimonials />} />
-          <Route path="payments" element={<AdminDashboard />} />
-          <Route path="promotions" element={<AdminDashboard />} />
+          <Route path="payments" element={<AdminPayments />} />
+          <Route path="promotions" element={<AdminPromotions />} />
           <Route path="stats" element={<AdminStats />} />
-          <Route path="featured" element={<AdminVehicles />} />
+          <Route path="featured" element={<AdminFeatured />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="login" element={<AdminLogin />} />
         </Route>
         
         <Route path="*" element={<NotFound />} />

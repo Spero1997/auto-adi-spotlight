@@ -2,100 +2,100 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { 
-  fetchVehiclesFromSupabase,
-  addVehicleToSupabase,
-  updateVehicleInSupabase,
+  fetchVehiclesFromSupabase, 
+  addVehicleToSupabase, 
+  updateVehicleInSupabase, 
   deleteVehicleFromSupabase,
   fetchTags,
   fetchVehicleTags,
+  addTag,
   addVehicleTag,
   removeVehicleTag
 } from '@/utils/services/supabaseService';
+import { ImportedVehicle } from '@/utils/types/vehicle';
+import { Tag } from '@/utils/types/tag';
+import { 
+  Card, 
+  CardContent, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '@/components/ui/table';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Plus, Trash2, Edit, Eye, Car, Tag, Save, ChevronDown, ChevronUp, Search, Award } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import { 
+  Car, 
+  Edit, 
+  Trash2, 
+  Plus, 
+  MoreHorizontal, 
+  Tag as TagIcon, 
+  Star, 
+  Search, 
+  X 
+} from 'lucide-react';
 
-// TypeScript interface for vehicle
-interface Vehicle {
-  id: string;
-  brand: string;
-  model: string;
-  year: number;
-  mileage: number;
-  fuel_type: string;
-  transmission: string;
-  price: number;
-  description?: string;
-  image_url?: string;
-  additional_images?: string[];
-  exterior_color?: string;
-  interior_color?: string;
-  engine?: string;
-  power?: number;
-  doors?: number;
-  features?: string[];
-  is_featured: boolean;
-  is_sold: boolean;
-  in_stock: boolean;
-}
-
-interface Tag {
-  id: string;
-  name: string;
-}
-
-const AdminVehicles = () => {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [filteredVehicles, setFilteredVehicles] = useState<Vehicle[]>([]);
+const AdminVehicles: React.FC = () => {
+  const [vehicles, setVehicles] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [currentVehicle, setCurrentVehicle] = useState<any | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('brand');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [showAddDialog, setShowAddDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [currentVehicle, setCurrentVehicle] = useState<Vehicle | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [newTagName, setNewTagName] = useState('');
+  const [isTagDialogOpen, setIsTagDialogOpen] = useState(false);
   const [vehicleTags, setVehicleTags] = useState<Record<string, Tag[]>>({});
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [activeTab, setActiveTab] = useState('all');
 
-  // New vehicle form state
-  const [newVehicle, setNewVehicle] = useState<Partial<Vehicle>>({
-    brand: '',
-    model: '',
-    year: new Date().getFullYear(),
-    mileage: 0,
-    fuel_type: 'Diesel',
-    transmission: 'Manuelle',
-    price: 0,
-    is_featured: false,
-    is_sold: false,
-    in_stock: true,
-    features: []
-  });
-
-  // Filter by status state
-  const [filter, setFilter] = useState('all');
-
-  // Load vehicles and tags
   useEffect(() => {
-    const loadData = async () => {
+    const loadVehiclesAndTags = async () => {
       setIsLoading(true);
       try {
+        // Fetch vehicles
         const vehiclesData = await fetchVehiclesFromSupabase();
-        const tagsData = await fetchTags();
-        
         setVehicles(vehiclesData);
-        setFilteredVehicles(vehiclesData);
+        
+        // Fetch tags
+        const tagsData = await fetchTags();
         setTags(tagsData);
         
         // Fetch tags for each vehicle
@@ -103,1064 +103,648 @@ const AdminVehicles = () => {
         
         for (const vehicle of vehiclesData) {
           const vTags = await fetchVehicleTags(vehicle.id);
-          // Ensure that vTags is treated as Tag[]
-          vehicleTagsMap[vehicle.id] = vTags as Tag[];
+          vehicleTagsMap[vehicle.id] = vTags;
         }
         
         setVehicleTags(vehicleTagsMap);
       } catch (error) {
-        console.error('Error loading vehicles:', error);
-        toast.error('Erreur lors du chargement des véhicules');
+        console.error('Error loading data:', error);
+        toast.error('Erreur lors du chargement des données');
       } finally {
         setIsLoading(false);
       }
     };
     
-    loadData();
+    loadVehiclesAndTags();
   }, []);
 
-  // Handle search and filtering
-  useEffect(() => {
-    let filtered = [...vehicles];
-    
-    // Apply search
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(vehicle => 
-        vehicle.brand.toLowerCase().includes(searchLower) ||
-        vehicle.model.toLowerCase().includes(searchLower) ||
-        vehicle.fuel_type.toLowerCase().includes(searchLower) ||
-        vehicle.year.toString().includes(searchLower)
-      );
-    }
-    
-    // Apply status filter
-    if (filter === 'featured') {
-      filtered = filtered.filter(v => v.is_featured);
-    } else if (filter === 'sold') {
-      filtered = filtered.filter(v => v.is_sold);
-    } else if (filter === 'in_stock') {
-      filtered = filtered.filter(v => v.in_stock);
-    }
-    
-    // Apply sorting
-    filtered.sort((a, b) => {
-      let comparison = 0;
-      
-      if (sortBy === 'price') {
-        comparison = a.price - b.price;
-      } else if (sortBy === 'year') {
-        comparison = a.year - b.year;
-      } else if (sortBy === 'mileage') {
-        comparison = a.mileage - b.mileage;
-      } else if (sortBy === 'brand') {
-        comparison = a.brand.localeCompare(b.brand);
-      } else if (sortBy === 'model') {
-        comparison = a.model.localeCompare(b.model);
-      }
-      
-      return sortOrder === 'asc' ? comparison : -comparison;
-    });
-    
-    setFilteredVehicles(filtered);
-  }, [vehicles, searchTerm, sortBy, sortOrder, filter]);
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
-  const handleAddVehicle = async () => {
+  const filteredVehicles = vehicles.filter(vehicle => {
+    const searchLower = searchTerm.toLowerCase();
+    const isFeatured = activeTab === 'featured' ? vehicle.is_featured : true;
+    const matchesSearch = 
+      vehicle.brand?.toLowerCase().includes(searchLower) ||
+      vehicle.model?.toLowerCase().includes(searchLower) ||
+      vehicle.fuel_type?.toLowerCase().includes(searchLower) ||
+      String(vehicle.year).includes(searchTerm) ||
+      String(vehicle.price).includes(searchTerm);
+    
+    return matchesSearch && (activeTab === 'all' || isFeatured);
+  });
+
+  const handleDeleteClick = (id: string) => {
+    setVehicleToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!vehicleToDelete) return;
+    
     try {
-      const addedVehicle = await addVehicleToSupabase(newVehicle);
-      
-      if (addedVehicle) {
-        // Add tags if any are selected
-        for (const tag of selectedTags) {
-          await addVehicleTag(addedVehicle.id, tag.id);
-        }
-        
-        toast.success('Véhicule ajouté avec succès');
-        
-        // Refresh the vehicle list
-        const vehiclesData = await fetchVehiclesFromSupabase();
-        setVehicles(vehiclesData);
-        
-        // Reset the form
-        setNewVehicle({
-          brand: '',
-          model: '',
-          year: new Date().getFullYear(),
-          mileage: 0,
-          fuel_type: 'Diesel',
-          transmission: 'Manuelle',
-          price: 0,
-          is_featured: false,
-          is_sold: false,
-          in_stock: true,
-          features: []
-        });
-        
-        setSelectedTags([]);
-        setShowAddDialog(false);
-      }
+      await deleteVehicleFromSupabase(vehicleToDelete);
+      setVehicles(vehicles.filter(v => v.id !== vehicleToDelete));
+      toast.success('Véhicule supprimé avec succès');
     } catch (error) {
-      console.error('Error adding vehicle:', error);
-      toast.error("Erreur lors de l'ajout du véhicule");
+      console.error('Error deleting vehicle:', error);
+      toast.error('Erreur lors de la suppression');
+    } finally {
+      setIsDeleteDialogOpen(false);
+      setVehicleToDelete(null);
     }
   };
 
-  const handleEditVehicle = async () => {
+  const handleEditClick = (vehicle: any) => {
+    setCurrentVehicle({ ...vehicle });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSave = async () => {
     if (!currentVehicle) return;
     
     try {
-      const updatedVehicle = await updateVehicleInSupabase(currentVehicle.id, currentVehicle);
-      
-      if (updatedVehicle) {
-        // Update tags
-        const currentTags = vehicleTags[currentVehicle.id] || [];
-        const currentTagIds = currentTags.map(tag => tag.id);
-        const selectedTagIds = selectedTags.map(tag => tag.id);
-        
-        // Add new tags
-        for (const tag of selectedTags) {
-          if (!currentTagIds.includes(tag.id)) {
-            await addVehicleTag(currentVehicle.id, tag.id);
-          }
-        }
-        
-        // Remove deleted tags
-        for (const tag of currentTags) {
-          if (!selectedTagIds.includes(tag.id)) {
-            await removeVehicleTag(currentVehicle.id, tag.id);
-          }
-        }
-        
+      if (currentVehicle.id) {
+        // Update existing vehicle
+        await updateVehicleInSupabase(currentVehicle.id, currentVehicle);
+        setVehicles(vehicles.map(v => v.id === currentVehicle.id ? currentVehicle : v));
         toast.success('Véhicule mis à jour avec succès');
-        
-        // Refresh the vehicle list
-        const vehiclesData = await fetchVehiclesFromSupabase();
-        setVehicles(vehiclesData);
-        
-        // Refresh tags for this vehicle
-        const updatedVehicleTags = await fetchVehicleTags(currentVehicle.id) as Tag[];
+      } else {
+        // Add new vehicle
+        const addedVehicle = await addVehicleToSupabase(currentVehicle);
+        setVehicles([addedVehicle, ...vehicles]);
+        toast.success('Véhicule ajouté avec succès');
+      }
+    } catch (error) {
+      console.error('Error saving vehicle:', error);
+      toast.error('Erreur lors de la sauvegarde');
+    } finally {
+      setIsEditDialogOpen(false);
+      setCurrentVehicle(null);
+    }
+  };
+
+  const handleAddTag = async () => {
+    if (!newTagName.trim()) return;
+    
+    try {
+      const newTag = await addTag(newTagName);
+      setTags([...tags, newTag]);
+      setNewTagName('');
+      toast.success('Tag ajouté avec succès');
+    } catch (error) {
+      console.error('Error adding tag:', error);
+      toast.error('Erreur lors de l\'ajout du tag');
+    }
+  };
+
+  const handleAddTagToVehicle = async (vehicleId: string, tagId: string) => {
+    try {
+      await addVehicleTag(vehicleId, tagId);
+      
+      // Update local state
+      const tag = tags.find(t => t.id === tagId);
+      if (tag) {
+        const vehicleCurrentTags = vehicleTags[vehicleId] || [];
         setVehicleTags(prev => ({
           ...prev,
-          [currentVehicle.id]: updatedVehicleTags
+          [vehicleId]: [...vehicleCurrentTags, tag]
         }));
-        
-        setShowEditDialog(false);
       }
-    } catch (error) {
-      console.error('Error updating vehicle:', error);
-      toast.error('Erreur lors de la mise à jour du véhicule');
-    }
-  };
-
-  const handleDeleteVehicle = async (id: string) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
-      try {
-        const success = await deleteVehicleFromSupabase(id);
-        
-        if (success) {
-          toast.success('Véhicule supprimé avec succès');
-          
-          // Update local state
-          setVehicles(vehicles.filter(v => v.id !== id));
-        }
-      } catch (error) {
-        console.error('Error deleting vehicle:', error);
-        toast.error('Erreur lors de la suppression du véhicule');
-      }
-    }
-  };
-
-  const handleToggleFeature = async (id: string, isFeatured: boolean) => {
-    try {
-      const updatedVehicle = await updateVehicleInSupabase(id, { is_featured: !isFeatured });
       
-      if (updatedVehicle) {
-        toast.success(`Véhicule ${!isFeatured ? 'ajouté aux' : 'retiré des'} vedettes`);
-        
-        // Update local state
-        setVehicles(vehicles.map(v => 
-          v.id === id ? { ...v, is_featured: !isFeatured } : v
-        ));
-      }
+      toast.success('Tag ajouté au véhicule');
+    } catch (error) {
+      console.error('Error adding tag to vehicle:', error);
+      toast.error('Erreur lors de l\'ajout du tag au véhicule');
+    }
+  };
+
+  const handleRemoveTagFromVehicle = async (vehicleId: string, tagId: string) => {
+    try {
+      await removeVehicleTag(vehicleId, tagId);
+      
+      // Update local state
+      setVehicleTags(prev => ({
+        ...prev,
+        [vehicleId]: prev[vehicleId]?.filter(tag => tag.id !== tagId) || []
+      }));
+      
+      toast.success('Tag retiré du véhicule');
+    } catch (error) {
+      console.error('Error removing tag from vehicle:', error);
+      toast.error('Erreur lors du retrait du tag');
+    }
+  };
+
+  const handleToggleFeatured = async (vehicle: any) => {
+    try {
+      const updatedVehicle = {
+        ...vehicle,
+        is_featured: !vehicle.is_featured
+      };
+      
+      await updateVehicleInSupabase(vehicle.id, updatedVehicle);
+      
+      // Update local state
+      setVehicles(vehicles.map(v => 
+        v.id === vehicle.id ? updatedVehicle : v
+      ));
+      
+      toast.success(`Véhicule ${updatedVehicle.is_featured ? 'ajouté aux' : 'retiré des'} favoris`);
     } catch (error) {
       console.error('Error toggling featured status:', error);
-      toast.error('Erreur lors de la mise à jour du véhicule');
+      toast.error('Erreur lors de la mise à jour du statut favoris');
     }
   };
 
-  const handleToggleSold = async (id: string, isSold: boolean) => {
-    try {
-      const updatedVehicle = await updateVehicleInSupabase(id, { is_sold: !isSold });
-      
-      if (updatedVehicle) {
-        toast.success(`Véhicule marqué comme ${!isSold ? 'vendu' : 'disponible'}`);
-        
-        // Update local state
-        setVehicles(vehicles.map(v => 
-          v.id === id ? { ...v, is_sold: !isSold } : v
-        ));
-      }
-    } catch (error) {
-      console.error('Error toggling sold status:', error);
-      toast.error('Erreur lors de la mise à jour du véhicule');
-    }
-  };
-
-  const openEditDialog = (vehicle: Vehicle) => {
-    setCurrentVehicle({ ...vehicle });
-    setSelectedTags(vehicleTags[vehicle.id] || []);
-    setShowEditDialog(true);
-  };
-
-  // Fuel type options
-  const fuelTypes = [
-    'Diesel', 'Essence', 'Hybride', 'Électrique', 'GPL', 'Hybride rechargeable'
-  ];
-
-  // Transmission options
-  const transmissionTypes = [
-    'Manuelle', 'Automatique', 'Semi-automatique', 'CVT'
-  ];
-
-  // Feature management
-  const handleAddFeature = () => {
-    if (currentVehicle) {
-      setCurrentVehicle({
-        ...currentVehicle,
-        features: [...(currentVehicle.features || []), '']
-      });
-    } else {
-      setNewVehicle({
-        ...newVehicle,
-        features: [...(newVehicle.features || []), '']
-      });
-    }
-  };
-
-  const handleUpdateFeature = (index: number, value: string) => {
-    if (currentVehicle) {
-      const features = [...(currentVehicle.features || [])];
-      features[index] = value;
-      setCurrentVehicle({ ...currentVehicle, features });
-    } else {
-      const features = [...(newVehicle.features || [])];
-      features[index] = value;
-      setNewVehicle({ ...newVehicle, features });
-    }
-  };
-
-  const handleRemoveFeature = (index: number) => {
-    if (currentVehicle) {
-      const features = [...(currentVehicle.features || [])];
-      features.splice(index, 1);
-      setCurrentVehicle({ ...currentVehicle, features });
-    } else {
-      const features = [...(newVehicle.features || [])];
-      features.splice(index, 1);
-      setNewVehicle({ ...newVehicle, features });
-    }
+  const handleAddNewVehicle = () => {
+    setCurrentVehicle({
+      brand: '',
+      model: '',
+      year: new Date().getFullYear(),
+      price: 0,
+      mileage: 0,
+      fuel_type: '',
+      transmission: '',
+      description: '',
+      image_url: '',
+      is_featured: false
+    });
+    setIsEditDialogOpen(true);
   };
 
   return (
     <>
       <Helmet>
-        <title>Gestion des véhicules | Admin Auto ADI</title>
+        <title>Gestion des véhicules | Administration</title>
       </Helmet>
 
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Gestion des véhicules</h1>
+      <div className="p-6">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold mb-4 md:mb-0">Gestion des véhicules</h1>
           
-          <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-            <DialogTrigger asChild>
-              <Button className="flex items-center gap-2">
-                <Plus className="h-4 w-4" />
-                Ajouter un véhicule
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Ajouter un véhicule</DialogTitle>
-                <DialogDescription>
-                  Remplissez les informations du véhicule ci-dessous.
-                </DialogDescription>
-              </DialogHeader>
-              
-              <Tabs defaultValue="basic">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="basic">Informations de base</TabsTrigger>
-                  <TabsTrigger value="details">Détails techniques</TabsTrigger>
-                  <TabsTrigger value="features">Équipements</TabsTrigger>
-                  <TabsTrigger value="images">Images</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="basic" className="space-y-4 py-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="brand">Marque *</Label>
-                      <Input
-                        id="brand"
-                        value={newVehicle.brand}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, brand: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="model">Modèle *</Label>
-                      <Input
-                        id="model"
-                        value={newVehicle.model}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, model: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="year">Année *</Label>
-                      <Input
-                        id="year"
-                        type="number"
-                        value={newVehicle.year}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, year: parseInt(e.target.value) })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="price">Prix (€) *</Label>
-                      <Input
-                        id="price"
-                        type="number"
-                        value={newVehicle.price}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, price: parseFloat(e.target.value) })}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="mileage">Kilométrage *</Label>
-                      <Input
-                        id="mileage"
-                        type="number"
-                        value={newVehicle.mileage}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, mileage: parseInt(e.target.value) })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="fuel_type">Type de carburant *</Label>
-                      <Select 
-                        value={newVehicle.fuel_type}
-                        onValueChange={(value) => setNewVehicle({ ...newVehicle, fuel_type: value })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionner..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {fuelTypes.map(type => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      value={newVehicle.description || ''}
-                      onChange={(e) => setNewVehicle({ ...newVehicle, description: e.target.value })}
-                      rows={4}
-                    />
-                  </div>
-                  
-                  <div className="flex space-x-4">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="is_featured"
-                        checked={newVehicle.is_featured}
-                        onCheckedChange={(checked) => 
-                          setNewVehicle({ ...newVehicle, is_featured: checked as boolean })
-                        }
-                      />
-                      <Label htmlFor="is_featured">Véhicule en vedette</Label>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="is_sold"
-                        checked={newVehicle.is_sold}
-                        onCheckedChange={(checked) => 
-                          setNewVehicle({ ...newVehicle, is_sold: checked as boolean })
-                        }
-                      />
-                      <Label htmlFor="is_sold">Véhicule vendu</Label>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="in_stock"
-                        checked={newVehicle.in_stock}
-                        onCheckedChange={(checked) => 
-                          setNewVehicle({ ...newVehicle, in_stock: checked as boolean })
-                        }
-                      />
-                      <Label htmlFor="in_stock">En stock</Label>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label>Tags</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map(tag => (
-                        <Badge 
-                          key={tag.id}
-                          variant={selectedTags.some(t => t.id === tag.id) ? "default" : "outline"}
-                          className="cursor-pointer"
-                          onClick={() => {
-                            if (selectedTags.some(t => t.id === tag.id)) {
-                              setSelectedTags(selectedTags.filter(t => t.id !== tag.id));
-                            } else {
-                              setSelectedTags([...selectedTags, tag]);
-                            }
-                          }}
-                        >
-                          {tag.name}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="details" className="space-y-4 py-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="transmission">Transmission</Label>
-                      <Select 
-                        value={newVehicle.transmission}
-                        onValueChange={(value) => setNewVehicle({ ...newVehicle, transmission: value })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Sélectionner..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {transmissionTypes.map(type => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="doors">Nombre de portes</Label>
-                      <Input
-                        id="doors"
-                        type="number"
-                        value={newVehicle.doors || ''}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, doors: parseInt(e.target.value) })}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="exterior_color">Couleur extérieure</Label>
-                      <Input
-                        id="exterior_color"
-                        value={newVehicle.exterior_color || ''}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, exterior_color: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="interior_color">Couleur intérieure</Label>
-                      <Input
-                        id="interior_color"
-                        value={newVehicle.interior_color || ''}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, interior_color: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="engine">Moteur</Label>
-                      <Input
-                        id="engine"
-                        value={newVehicle.engine || ''}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, engine: e.target.value })}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="power">Puissance (ch)</Label>
-                      <Input
-                        id="power"
-                        type="number"
-                        value={newVehicle.power || ''}
-                        onChange={(e) => setNewVehicle({ ...newVehicle, power: parseInt(e.target.value) })}
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="features" className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label>Équipements</Label>
-                    <div className="border rounded-md p-4 space-y-2">
-                      {(newVehicle.features || []).map((feature, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <Input
-                            value={feature}
-                            onChange={(e) => handleUpdateFeature(index, e.target.value)}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleRemoveFeature(index)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ))}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleAddFeature}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Ajouter un équipement
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="images" className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="image_url">URL de l'image principale</Label>
-                    <Input
-                      id="image_url"
-                      value={newVehicle.image_url || ''}
-                      onChange={(e) => setNewVehicle({ ...newVehicle, image_url: e.target.value })}
-                    />
-                    {newVehicle.image_url && (
-                      <div className="mt-2 rounded-md overflow-hidden h-40 bg-gray-100 flex items-center justify-center">
-                        <img
-                          src={newVehicle.image_url}
-                          alt="Aperçu"
-                          className="h-full w-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=Image+Invalid';
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label>Images additionnelles (URLs séparées par des virgules)</Label>
-                    <Textarea
-                      value={(newVehicle.additional_images || []).join(', ')}
-                      onChange={(e) => setNewVehicle({ 
-                        ...newVehicle, 
-                        additional_images: e.target.value.split(',').map(url => url.trim()).filter(Boolean)
-                      })}
-                      rows={3}
-                    />
-                  </div>
-                </TabsContent>
-              </Tabs>
-              
-              <DialogFooter className="mt-6">
-                <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-                  Annuler
-                </Button>
-                <Button onClick={handleAddVehicle}>
-                  <Save className="h-4 w-4 mr-2" />
-                  Ajouter le véhicule
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* Filters and Search */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-            <Input
-              placeholder="Rechercher un véhicule..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full"
-              prefix={<Search className="h-4 w-4 text-gray-400" />}
-            />
-          </div>
-          
-          <div className="flex gap-2">
-            <Select value={filter} onValueChange={setFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filtrer par statut" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tous les véhicules</SelectItem>
-                <SelectItem value="featured">En vedette</SelectItem>
-                <SelectItem value="sold">Vendus</SelectItem>
-                <SelectItem value="in_stock">En stock</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Rechercher..."
+                value={searchTerm}
+                onChange={handleSearch}
+                className="pl-10"
+              />
+            </div>
             
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Trier par" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="brand">Marque</SelectItem>
-                <SelectItem value="model">Modèle</SelectItem>
-                <SelectItem value="price">Prix</SelectItem>
-                <SelectItem value="year">Année</SelectItem>
-                <SelectItem value="mileage">Kilométrage</SelectItem>
-              </SelectContent>
-            </Select>
+            <Button onClick={handleAddNewVehicle}>
+              <Plus className="mr-2 h-4 w-4" />
+              Ajouter un véhicule
+            </Button>
             
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            >
-              {sortOrder === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            <Button variant="outline" onClick={() => setIsTagDialogOpen(true)}>
+              <TagIcon className="mr-2 h-4 w-4" />
+              Gérer les tags
             </Button>
           </div>
         </div>
-
-        {/* Vehicles List */}
-        {isLoading ? (
-          <div className="flex justify-center items-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-          </div>
-        ) : filteredVehicles.length === 0 ? (
-          <div className="text-center p-8 border rounded-lg bg-gray-50">
-            <Car className="h-12 w-12 mx-auto text-gray-400" />
-            <h3 className="mt-2 text-lg font-medium">Aucun véhicule trouvé</h3>
-            <p className="mt-1 text-gray-500">
-              Ajoutez des véhicules ou modifiez vos filtres pour voir des résultats.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredVehicles.map((vehicle) => (
-              <Card key={vehicle.id} className="overflow-hidden">
-                <div className="aspect-video relative">
-                  <img
-                    src={vehicle.image_url || 'https://via.placeholder.com/400x200?text=No+Image'}
-                    alt={`${vehicle.brand} ${vehicle.model}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=No+Image';
-                    }}
-                  />
-                  
-                  {vehicle.is_featured && (
-                    <div className="absolute top-2 left-2 bg-yellow-500 text-white px-2 py-1 rounded-md text-xs font-semibold">
-                      En vedette
-                    </div>
-                  )}
-                  
-                  {vehicle.is_sold && (
-                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-semibold">
-                      Vendu
-                    </div>
-                  )}
-                  
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                  <div className="absolute bottom-3 left-3 right-3 text-white">
-                    <h3 className="font-bold text-lg">{vehicle.brand} {vehicle.model}</h3>
-                    <div className="flex justify-between items-center">
-                      <span className="text-lg font-semibold">{vehicle.price.toLocaleString('fr-FR')} €</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <CardContent className="p-4">
-                  <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-                    <div>
-                      <span className="text-gray-500">Année:</span> {vehicle.year}
-                    </div>
-                    <div>
-                      <span className="text-gray-500">Énergie:</span> {vehicle.fuel_type}
-                    </div>
-                    <div>
-                      <span className="text-gray-500">Kilométrage:</span> {vehicle.mileage.toLocaleString('fr-FR')} km
-                    </div>
-                    <div>
-                      <span className="text-gray-500">Transmission:</span> {vehicle.transmission || 'N/A'}
-                    </div>
-                  </div>
-                  
-                  {vehicleTags[vehicle.id] && vehicleTags[vehicle.id].length > 0 && (
-                    <div className="mb-4 flex flex-wrap gap-1">
-                      {vehicleTags[vehicle.id].map(tag => (
-                        <Badge key={tag.id} variant="secondary" className="text-xs">
-                          {tag.name}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                  
-                  <div className="flex space-x-2 justify-between">
-                    <div className="space-x-2">
-                      <Button size="sm" variant="outline" onClick={() => openEditDialog(vehicle)}>
-                        <Edit className="h-4 w-4 mr-1" />
-                        Modifier
-                      </Button>
-                      
-                      <Button size="sm" variant="outline" asChild>
-                        <a href={`/vehicule/${vehicle.id}`} target="_blank" rel="noreferrer">
-                          <Eye className="h-4 w-4 mr-1" />
-                          Voir
-                        </a>
-                      </Button>
-                    </div>
-                    
-                    <div className="space-x-2">
-                      <Button
-                        size="sm"
-                        variant={vehicle.is_featured ? "default" : "outline"}
-                        onClick={() => handleToggleFeature(vehicle.id, vehicle.is_featured)}
-                      >
-                        <Award className={`h-4 w-4 mr-1 ${vehicle.is_featured ? 'text-yellow-200' : ''}`} />
-                        {vehicle.is_featured ? 'Vedette' : 'Mettre en vedette'}
-                      </Button>
-                      
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleDeleteVehicle(vehicle.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="all">Tous les véhicules</TabsTrigger>
+            <TabsTrigger value="featured">Véhicules en vedette</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="all" className="p-0">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+              </div>
+            ) : filteredVehicles.length === 0 ? (
+              <div className="text-center p-12 border rounded-lg bg-gray-50">
+                <Car className="h-12 w-12 mx-auto text-gray-400" />
+                <h3 className="mt-2 text-lg font-medium">Aucun véhicule trouvé</h3>
+                <p className="mt-1 text-gray-500">
+                  {searchTerm ? "Aucun résultat pour cette recherche." : "Ajoutez des véhicules pour commencer."}
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Image</TableHead>
+                      <TableHead>Marque & Modèle</TableHead>
+                      <TableHead>Prix</TableHead>
+                      <TableHead>Année</TableHead>
+                      <TableHead>Carburant</TableHead>
+                      <TableHead>Vedette</TableHead>
+                      <TableHead>Tags</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredVehicles.map((vehicle) => (
+                      <TableRow key={vehicle.id}>
+                        <TableCell>
+                          {vehicle.image_url ? (
+                            <div className="h-16 w-24 rounded overflow-hidden">
+                              <img
+                                src={vehicle.image_url}
+                                alt={`${vehicle.brand} ${vehicle.model}`}
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'https://via.placeholder.com/150x100?text=No+Image';
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div className="h-16 w-24 bg-gray-200 flex items-center justify-center rounded">
+                              <Car className="h-8 w-8 text-gray-400" />
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">{vehicle.brand}</div>
+                            <div className="text-sm text-gray-500">{vehicle.model}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell>{vehicle.price?.toLocaleString('fr-FR')} €</TableCell>
+                        <TableCell>{vehicle.year}</TableCell>
+                        <TableCell>{vehicle.fuel_type}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant={vehicle.is_featured ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handleToggleFeatured(vehicle)}
+                          >
+                            <Star
+                              className={`h-4 w-4 ${vehicle.is_featured ? 'text-yellow-400 fill-yellow-400' : ''}`}
+                            />
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-wrap gap-1 max-w-xs">
+                            {vehicleTags[vehicle.id]?.map((tag) => (
+                              <Badge key={tag.id} variant="outline" className="flex items-center gap-1">
+                                {tag.name}
+                                <button
+                                  onClick={() => handleRemoveTagFromVehicle(vehicle.id, tag.id)}
+                                  className="hover:text-red-500"
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              </Badge>
+                            ))}
+                            
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                  <Plus className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuLabel>Ajouter un tag</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {tags
+                                  .filter(tag => !vehicleTags[vehicle.id]?.some(vt => vt.id === tag.id))
+                                  .map(tag => (
+                                    <DropdownMenuItem
+                                      key={tag.id}
+                                      onClick={() => handleAddTagToVehicle(vehicle.id, tag.id)}
+                                    >
+                                      {tag.name}
+                                    </DropdownMenuItem>
+                                  ))
+                                }
+                                {tags.filter(tag => !vehicleTags[vehicle.id]?.some(vt => vt.id === tag.id)).length === 0 && (
+                                  <div className="px-2 py-1 text-sm text-gray-500">
+                                    Aucun tag disponible
+                                  </div>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => handleEditClick(vehicle)}>
+                                <Edit className="mr-2 h-4 w-4" />
+                                Modifier
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteClick(vehicle.id)}
+                                className="text-red-600"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Supprimer
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="featured" className="p-0">
+            {/* Same content structure as "all" tab but with featured vehicles only */}
+            {/* The filtering is handled in the filteredVehicles variable */}
+          </TabsContent>
+        </Tabs>
       </div>
 
-      {/* Edit Dialog */}
-      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirmer la suppression</DialogTitle>
+            <DialogDescription>
+              Êtes-vous sûr de vouloir supprimer ce véhicule ? Cette action est irréversible.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+              Annuler
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Supprimer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Vehicle Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Modifier le véhicule</DialogTitle>
-            <DialogDescription>
-              Modifiez les informations du véhicule ci-dessous.
-            </DialogDescription>
+            <DialogTitle>
+              {currentVehicle?.id ? 'Modifier le véhicule' : 'Ajouter un véhicule'}
+            </DialogTitle>
           </DialogHeader>
           
           {currentVehicle && (
             <Tabs defaultValue="basic">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList>
                 <TabsTrigger value="basic">Informations de base</TabsTrigger>
                 <TabsTrigger value="details">Détails techniques</TabsTrigger>
-                <TabsTrigger value="features">Équipements</TabsTrigger>
-                <TabsTrigger value="images">Images</TabsTrigger>
+                <TabsTrigger value="media">Médias</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="basic" className="space-y-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
+              <TabsContent value="basic" className="space-y-4 pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="edit-brand">Marque *</Label>
+                    <Label htmlFor="brand">Marque</Label>
                     <Input
-                      id="edit-brand"
-                      value={currentVehicle.brand}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, brand: e.target.value })}
-                      required
+                      id="brand"
+                      value={currentVehicle.brand || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, brand: e.target.value})}
                     />
                   </div>
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="edit-model">Modèle *</Label>
+                    <Label htmlFor="model">Modèle</Label>
                     <Input
-                      id="edit-model"
-                      value={currentVehicle.model}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, model: e.target.value })}
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-year">Année *</Label>
-                    <Input
-                      id="edit-year"
-                      type="number"
-                      value={currentVehicle.year}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, year: parseInt(e.target.value) })}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-price">Prix (€) *</Label>
-                    <Input
-                      id="edit-price"
-                      type="number"
-                      value={currentVehicle.price}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, price: parseFloat(e.target.value) })}
-                      required
+                      id="model"
+                      value={currentVehicle.model || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, model: e.target.value})}
                     />
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="edit-mileage">Kilométrage *</Label>
+                    <Label htmlFor="year">Année</Label>
                     <Input
-                      id="edit-mileage"
+                      id="year"
                       type="number"
-                      value={currentVehicle.mileage}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, mileage: parseInt(e.target.value) })}
-                      required
+                      value={currentVehicle.year || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, year: parseInt(e.target.value)})}
                     />
                   </div>
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="edit-fuel_type">Type de carburant *</Label>
-                    <Select 
-                      value={currentVehicle.fuel_type}
-                      onValueChange={(value) => setCurrentVehicle({ ...currentVehicle, fuel_type: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Sélectionner..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {fuelTypes.map(type => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="price">Prix (€)</Label>
+                    <Input
+                      id="price"
+                      type="number"
+                      value={currentVehicle.price || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, price: parseInt(e.target.value)})}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="mileage">Kilométrage</Label>
+                    <Input
+                      id="mileage"
+                      type="number"
+                      value={currentVehicle.mileage || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, mileage: parseInt(e.target.value)})}
+                    />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="edit-description">Description</Label>
+                  <Label htmlFor="description">Description</Label>
                   <Textarea
-                    id="edit-description"
+                    id="description"
                     value={currentVehicle.description || ''}
-                    onChange={(e) => setCurrentVehicle({ ...currentVehicle, description: e.target.value })}
-                    rows={4}
+                    onChange={(e) => setCurrentVehicle({...currentVehicle, description: e.target.value})}
+                    rows={5}
                   />
                 </div>
                 
-                <div className="flex space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="edit-is_featured"
-                      checked={currentVehicle.is_featured}
-                      onCheckedChange={(checked) => 
-                        setCurrentVehicle({ ...currentVehicle, is_featured: checked })
-                      }
-                    />
-                    <Label htmlFor="edit-is_featured">Véhicule en vedette</Label>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="edit-is_sold"
-                      checked={currentVehicle.is_sold}
-                      onCheckedChange={(checked) => 
-                        setCurrentVehicle({ ...currentVehicle, is_sold: checked })
-                      }
-                    />
-                    <Label htmlFor="edit-is_sold">Véhicule vendu</Label>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="edit-in_stock"
-                      checked={currentVehicle.in_stock}
-                      onCheckedChange={(checked) => 
-                        setCurrentVehicle({ ...currentVehicle, in_stock: checked })
-                      }
-                    />
-                    <Label htmlFor="edit-in_stock">En stock</Label>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label>Tags</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map(tag => (
-                      <Badge 
-                        key={tag.id}
-                        variant={selectedTags.some(t => t.id === tag.id) ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          if (selectedTags.some(t => t.id === tag.id)) {
-                            setSelectedTags(selectedTags.filter(t => t.id !== tag.id));
-                          } else {
-                            setSelectedTags([...selectedTags, tag]);
-                          }
-                        }}
-                      >
-                        {tag.name}
-                      </Badge>
-                    ))}
-                  </div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="is_featured"
+                    checked={currentVehicle.is_featured || false}
+                    onChange={(e) => setCurrentVehicle({...currentVehicle, is_featured: e.target.checked})}
+                    className="rounded border-gray-300 text-primary focus:ring-primary"
+                  />
+                  <Label htmlFor="is_featured">Véhicule en vedette</Label>
                 </div>
               </TabsContent>
               
-              <TabsContent value="details" className="space-y-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
+              <TabsContent value="details" className="space-y-4 pt-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="edit-transmission">Transmission</Label>
-                    <Select 
-                      value={currentVehicle.transmission}
-                      onValueChange={(value) => setCurrentVehicle({ ...currentVehicle, transmission: value })}
+                    <Label htmlFor="fuel_type">Type de carburant</Label>
+                    <Select
+                      value={currentVehicle.fuel_type || ''}
+                      onValueChange={(value) => setCurrentVehicle({...currentVehicle, fuel_type: value})}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger id="fuel_type">
                         <SelectValue placeholder="Sélectionner..." />
                       </SelectTrigger>
                       <SelectContent>
-                        {transmissionTypes.map(type => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
+                        <SelectItem value="Essence">Essence</SelectItem>
+                        <SelectItem value="Diesel">Diesel</SelectItem>
+                        <SelectItem value="Hybride">Hybride</SelectItem>
+                        <SelectItem value="Électrique">Électrique</SelectItem>
+                        <SelectItem value="GPL">GPL</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="edit-doors">Nombre de portes</Label>
+                    <Label htmlFor="transmission">Transmission</Label>
+                    <Select
+                      value={currentVehicle.transmission || ''}
+                      onValueChange={(value) => setCurrentVehicle({...currentVehicle, transmission: value})}
+                    >
+                      <SelectTrigger id="transmission">
+                        <SelectValue placeholder="Sélectionner..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Manuelle">Manuelle</SelectItem>
+                        <SelectItem value="Automatique">Automatique</SelectItem>
+                        <SelectItem value="Semi-automatique">Semi-automatique</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="doors">Nombre de portes</Label>
                     <Input
-                      id="edit-doors"
+                      id="doors"
                       type="number"
                       value={currentVehicle.doors || ''}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, doors: parseInt(e.target.value) })}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, doors: parseInt(e.target.value)})}
                     />
                   </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="edit-exterior_color">Couleur extérieure</Label>
+                    <Label htmlFor="engine">Moteur</Label>
                     <Input
-                      id="edit-exterior_color"
-                      value={currentVehicle.exterior_color || ''}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, exterior_color: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-interior_color">Couleur intérieure</Label>
-                    <Input
-                      id="edit-interior_color"
-                      value={currentVehicle.interior_color || ''}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, interior_color: e.target.value })}
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="edit-engine">Moteur</Label>
-                    <Input
-                      id="edit-engine"
+                      id="engine"
                       value={currentVehicle.engine || ''}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, engine: e.target.value })}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, engine: e.target.value})}
                     />
                   </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="edit-power">Puissance (ch)</Label>
+                    <Label htmlFor="exterior_color">Couleur extérieure</Label>
                     <Input
-                      id="edit-power"
-                      type="number"
-                      value={currentVehicle.power || ''}
-                      onChange={(e) => setCurrentVehicle({ ...currentVehicle, power: parseInt(e.target.value) })}
+                      id="exterior_color"
+                      value={currentVehicle.exterior_color || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, exterior_color: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="interior_color">Couleur intérieure</Label>
+                    <Input
+                      id="interior_color"
+                      value={currentVehicle.interior_color || ''}
+                      onChange={(e) => setCurrentVehicle({...currentVehicle, interior_color: e.target.value})}
                     />
                   </div>
                 </div>
               </TabsContent>
               
-              <TabsContent value="features" className="space-y-4 py-4">
+              <TabsContent value="media" className="space-y-4 pt-4">
                 <div className="space-y-2">
-                  <Label>Équipements</Label>
-                  <div className="border rounded-md p-4 space-y-2">
-                    {(currentVehicle.features || []).map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Input
-                          value={feature}
-                          onChange={(e) => handleUpdateFeature(index, e.target.value)}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleRemoveFeature(index)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleAddFeature}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Ajouter un équipement
-                    </Button>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="images" className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="edit-image_url">URL de l'image principale</Label>
+                  <Label htmlFor="image_url">URL de l'image principale</Label>
                   <Input
-                    id="edit-image_url"
+                    id="image_url"
                     value={currentVehicle.image_url || ''}
-                    onChange={(e) => setCurrentVehicle({ ...currentVehicle, image_url: e.target.value })}
+                    onChange={(e) => setCurrentVehicle({...currentVehicle, image_url: e.target.value})}
                   />
                   {currentVehicle.image_url && (
-                    <div className="mt-2 rounded-md overflow-hidden h-40 bg-gray-100 flex items-center justify-center">
+                    <div className="mt-2 border rounded-md overflow-hidden h-40 bg-gray-100">
                       <img
                         src={currentVehicle.image_url}
                         alt="Aperçu"
-                        className="h-full w-full object-cover"
+                        className="w-full h-full object-contain"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x200?text=Image+Invalid';
+                          (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Image+Invalide';
                         }}
                       />
                     </div>
                   )}
                 </div>
                 
-                <div className="space-y-2">
-                  <Label>Images additionnelles (URLs séparées par des virgules)</Label>
-                  <Textarea
-                    value={(currentVehicle.additional_images || []).join(', ')}
-                    onChange={(e) => setCurrentVehicle({ 
-                      ...currentVehicle, 
-                      additional_images: e.target.value.split(',').map(url => url.trim()).filter(Boolean)
-                    })}
-                    rows={3}
-                  />
-                </div>
+                {/* Additional images would go here in a more complex implementation */}
               </TabsContent>
             </Tabs>
           )}
           
-          <DialogFooter className="mt-6">
-            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Annuler
             </Button>
-            <Button onClick={handleEditVehicle}>
-              <Save className="h-4 w-4 mr-2" />
-              Enregistrer les modifications
+            <Button onClick={handleSave}>
+              {currentVehicle?.id ? 'Enregistrer' : 'Ajouter'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Manage Tags Dialog */}
+      <Dialog open={isTagDialogOpen} onOpenChange={setIsTagDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Gérer les tags</DialogTitle>
+            <DialogDescription>
+              Ajoutez ou supprimez des tags pour organiser vos véhicules.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Nouveau tag..."
+                value={newTagName}
+                onChange={(e) => setNewTagName(e.target.value)}
+              />
+              <Button onClick={handleAddTag}>Ajouter</Button>
+            </div>
+            
+            <div className="border rounded-lg overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nom</TableHead>
+                    <TableHead className="w-16"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tags.map((tag) => (
+                    <TableRow key={tag.id}>
+                      <TableCell>{tag.name}</TableCell>
+                      <TableCell>
+                        {/* In a more complete implementation, you would add a delete tag feature here */}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {tags.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={2} className="text-center text-gray-500">
+                        Aucun tag disponible
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button onClick={() => setIsTagDialogOpen(false)}>
+              Fermer
             </Button>
           </DialogFooter>
         </DialogContent>

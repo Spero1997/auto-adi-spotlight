@@ -1,5 +1,7 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { ImportedVehicle } from '../types/vehicle';
+import { Tag } from '../types/tag';
 
 // Vehicle Management
 export const fetchVehiclesFromSupabase = async () => {
@@ -339,7 +341,7 @@ export const updateDailyStats = async (stats: any) => {
 };
 
 // Tags Management
-export const fetchTags = async () => {
+export const fetchTags = async (): Promise<Tag[]> => {
   const { data, error } = await supabase
     .from('tags')
     .select('*')
@@ -353,7 +355,7 @@ export const fetchTags = async () => {
   return data || [];
 };
 
-export const addTag = async (name: string) => {
+export const addTag = async (name: string): Promise<Tag> => {
   const { data, error } = await supabase
     .from('tags')
     .insert({ name })
@@ -367,7 +369,7 @@ export const addTag = async (name: string) => {
   return data?.[0];
 };
 
-export const fetchVehicleTags = async (vehicleId: string) => {
+export const fetchVehicleTags = async (vehicleId: string): Promise<Tag[]> => {
   const { data, error } = await supabase
     .from('vehicle_tags')
     .select('tags(*)')
@@ -379,7 +381,8 @@ export const fetchVehicleTags = async (vehicleId: string) => {
   }
   
   // Transform the data structure to return an array of Tag objects
-  return data.map(item => item.tags) || [];
+  const tags: Tag[] = data.map(item => item.tags as Tag);
+  return tags || [];
 };
 
 export const addVehicleTag = async (vehicleId: string, tagId: string) => {
