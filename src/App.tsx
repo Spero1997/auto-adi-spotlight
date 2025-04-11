@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Index from './pages/Index';
 import Vehicules from './pages/VehiculesOccasion';
@@ -18,6 +19,7 @@ import Cookies from './pages/Cookies';
 import CGV from './pages/CGV';
 import Conditions from './pages/Conditions';
 import Chatbot from './components/Chatbot';
+import { type ImportedVehicle } from './utils/types/vehicle';
 
 window.addVehicleFromAssistant = (
   brand: string,
@@ -36,7 +38,7 @@ window.addVehicleFromAssistant = (
   catalogType: 'standard' | 'featured' = 'standard'
 ): boolean => {
   try {
-    import('./utils/vehicleImportService').then(({ addImportedVehicle, ImportedVehicle }) => {
+    import('./utils/vehicleImportService').then(({ addVehicle }) => {
       const vehicle: ImportedVehicle = {
         id: `vehicle-${catalogType}-${Date.now()}-${brand.toLowerCase()}-${model.toLowerCase().replace(/\s+/g, '-')}`,
         brand,
@@ -56,7 +58,7 @@ window.addVehicleFromAssistant = (
       };
       
       console.log(`Ajout du véhicule ${brand} ${model} via l'API window`);
-      addImportedVehicle(vehicle, catalogType);
+      addVehicle(vehicle, catalogType);
     });
     
     return true;

@@ -1,6 +1,7 @@
 
 import { ImportedVehicle } from '../types/vehicle';
 import { getImportedVehicles, saveImportedVehicles } from './vehicleStorageService';
+import { validateImageUrl } from '../vehicleImportService';
 
 /**
  * Resets all catalogs to their default empty state
@@ -34,11 +35,21 @@ export const resetCatalog = (catalogType: 'standard' | 'featured' | 'all' = 'all
 /**
  * Adds a vehicle to the specified catalog
  */
-export const addVehicle = (
+export const addVehicle = async (
   vehicle: ImportedVehicle, 
   catalogType: 'standard' | 'featured' = 'standard'
-): boolean => {
+): Promise<boolean> => {
   try {
+    // Vérifier l'image avant d'ajouter le véhicule
+    const isImageValid = await validateImageUrl(vehicle.image);
+    
+    if (!isImageValid) {
+      console.error(`L'image ${vehicle.image} n'est pas valide ou accessible`);
+      // On ajoute quand même le véhicule mais on le signale
+    } else {
+      console.log(`L'image ${vehicle.image} a été validée avec succès`);
+    }
+    
     const vehicles = getImportedVehicles(catalogType);
     console.log(`Ajout/Mise à jour du véhicule ${vehicle.brand} ${vehicle.model} (${vehicle.id}) au catalogue ${catalogType}`);
     
