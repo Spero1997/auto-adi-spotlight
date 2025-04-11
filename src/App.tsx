@@ -1,3 +1,5 @@
+
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -31,6 +33,13 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminPayments from './pages/admin/AdminPayments';
 import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminFeatured from './pages/admin/AdminFeatured';
+
+// Simple loading indicator component
+const LoadingIndicator = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+);
 
 const App = () => {
   return (
