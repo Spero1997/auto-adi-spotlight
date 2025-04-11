@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { addImportedVehicle } from "@/utils/vehicleImportService";
+import { addVehicleToSupabase } from "@/utils/services/vehicleService";
 
 // Types pour notre contexte
 type Feature = string;
@@ -167,7 +168,36 @@ export const VehicleFormProvider = ({ children }: { children: ReactNode }) => {
       features: formState.features.filter(f => f.trim() !== ''),
     };
 
+    // Ajouter le véhicule au localStorage
     const success = await addImportedVehicle(newVehicle);
+    
+    // Ajouter également le véhicule à Supabase
+    try {
+      const vehicleForSupabase = {
+        brand: formState.brand,
+        model: formState.model,
+        year: parseInt(formState.year),
+        mileage: parseInt(formState.mileage),
+        fuel_type: formState.fuelType,
+        transmission: formState.transmission || 'Non spécifié',
+        price: parseInt(formState.price),
+        description: formState.description || '',
+        image_url: formState.image || '',
+        additional_images: filteredAdditionalImages.length > 0 ? filteredAdditionalImages : [],
+        exterior_color: formState.exteriorColor || 'Non spécifié',
+        interior_color: formState.interiorColor || 'Non spécifié',
+        engine: formState.engine || '',
+        doors: formState.doors ? parseInt(formState.doors) : null,
+        features: formState.features.filter(f => f.trim() !== ''),
+        is_featured: false
+      };
+      
+      await addVehicleToSupabase(vehicleForSupabase);
+      console.log("Véhicule ajouté à Supabase avec succès");
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du véhicule à Supabase:", error);
+      // Nous continuons même en cas d'erreur avec Supabase pour ne pas bloquer l'utilisateur
+    }
 
     if (success) {
       resetForm();
