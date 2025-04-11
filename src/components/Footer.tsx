@@ -147,7 +147,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-brand-blue text-white pt-16">
+    <footer className="bg-brand-blue text-white pt-16 mt-auto">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo and description */}

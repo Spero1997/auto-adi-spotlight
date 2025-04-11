@@ -10,7 +10,7 @@ interface LegalPageLayoutProps {
 
 const LegalPageLayout = ({ title, children }: LegalPageLayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-grow py-12">
         <div className="container mx-auto px-4">
