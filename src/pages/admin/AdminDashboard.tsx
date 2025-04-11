@@ -275,7 +275,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="flex flex-col items-end">
                       <p className="font-bold">{parseFloat(payment.amount).toLocaleString('fr-FR')} €</p>
-                      <Badge variant={payment.status === 'completed' ? 'success' : 'warning'}>
+                      <Badge variant={payment.status === 'completed' ? 'default' : 'outline'}>
                         {payment.status === 'completed' ? 'Payé' : 'En attente'}
                       </Badge>
                     </div>

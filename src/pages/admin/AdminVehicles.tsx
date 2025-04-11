@@ -743,7 +743,7 @@ const AdminVehicles = () => {
           </div>
         ) : filteredVehicles.length === 0 ? (
           <div className="text-center p-8 border rounded-lg bg-gray-50">
-            <CarFront className="h-12 w-12 mx-auto text-gray-400" />
+            <Car className="h-12 w-12 mx-auto text-gray-400" />
             <h3 className="mt-2 text-lg font-medium">Aucun véhicule trouvé</h3>
             <p className="mt-1 text-gray-500">
               Ajoutez des véhicules ou modifiez vos filtres pour voir des résultats.
