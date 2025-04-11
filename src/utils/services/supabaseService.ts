@@ -381,11 +381,19 @@ export const fetchVehicleTags = async (vehicleId: string): Promise<Tag[]> => {
   }
   
   // Transform the data structure to return an array of Tag objects
-  // Each item in data has a 'tags' property that contains the tag object
-  const tags: Tag[] = data.map(item => ({
-    id: item.tags.id,
-    name: item.tags.name
-  }));
+  // Each item in data is an object with a 'tags' property containing the tag object
+  const tags: Tag[] = data.map(item => {
+    // Ensure that 'tags' exists and has the expected properties
+    if (item && item.tags && typeof item.tags === 'object') {
+      return {
+        id: item.tags.id,
+        name: item.tags.name
+      };
+    }
+    // Provide a fallback to avoid runtime errors
+    console.warn('Unexpected tag format:', item);
+    return { id: '', name: '' };
+  });
   
   return tags || [];
 };
