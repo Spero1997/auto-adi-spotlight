@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,8 +10,10 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { ModeToggle } from '@/components/ModeToggle';
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 const AdminSettings = () => {
+  const { language, setLanguage } = useLanguage();
   const [settings, setSettings] = useState({
     businessName: 'Auto ADI',
     email: 'contact@auto-adi.fr',
@@ -25,6 +27,22 @@ const AdminSettings = () => {
     maintenanceMode: false,
   });
 
+  // Load saved settings from localStorage on component mount
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('adminSettings');
+    if (savedSettings) {
+      setSettings(JSON.parse(savedSettings));
+    }
+
+    // Set language from language context if available
+    if (language) {
+      setSettings(prev => ({
+        ...prev,
+        language: language.toLowerCase()
+      }));
+    }
+  }, [language]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSettings({ ...settings, [name]: value });
@@ -35,10 +53,52 @@ const AdminSettings = () => {
   };
 
   const handleSelect = (name: string, value: string) => {
+    if (name === 'language') {
+      // Map language codes to the Language type expected by the context
+      const languageMap: Record<string, Language> = {
+        'fr': 'FR',
+        'en': 'EN',
+        'es': 'ES',
+        'it': 'IT',
+        'pt': 'PT',
+        'ro': 'RO',
+        'de': 'DE',
+        'nl': 'NL',
+        'pl': 'PL',
+        'ru': 'RU',
+      };
+      
+      // Update the language in the language context
+      if (languageMap[value]) {
+        setLanguage(languageMap[value]);
+      }
+    }
+
     setSettings({ ...settings, [name]: value });
   };
 
   const handleSave = () => {
+    // Save settings to localStorage
+    localStorage.setItem('adminSettings', JSON.stringify(settings));
+    
+    // Update language in the context
+    const languageMap: Record<string, Language> = {
+      'fr': 'FR',
+      'en': 'EN',
+      'es': 'ES',
+      'it': 'IT',
+      'pt': 'PT',
+      'ro': 'RO',
+      'de': 'DE',
+      'nl': 'NL',
+      'pl': 'PL',
+      'ru': 'RU',
+    };
+
+    if (languageMap[settings.language]) {
+      setLanguage(languageMap[settings.language]);
+    }
+    
     toast.success('Paramètres sauvegardés avec succès');
   };
 
@@ -137,7 +197,13 @@ const AdminSettings = () => {
                         <SelectItem value="fr">Français</SelectItem>
                         <SelectItem value="en">Anglais</SelectItem>
                         <SelectItem value="es">Espagnol</SelectItem>
+                        <SelectItem value="it">Italien</SelectItem>
+                        <SelectItem value="pt">Portugais</SelectItem>
+                        <SelectItem value="ro">Roumain</SelectItem>
                         <SelectItem value="de">Allemand</SelectItem>
+                        <SelectItem value="nl">Néerlandais</SelectItem>
+                        <SelectItem value="pl">Polonais</SelectItem>
+                        <SelectItem value="ru">Russe</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -154,6 +220,11 @@ const AdminSettings = () => {
                       <SelectContent>
                         <SelectItem value="Europe/Paris">Europe/Paris</SelectItem>
                         <SelectItem value="Europe/London">Europe/London</SelectItem>
+                        <SelectItem value="Europe/Rome">Europe/Rome</SelectItem>
+                        <SelectItem value="Europe/Madrid">Europe/Madrid</SelectItem>
+                        <SelectItem value="Europe/Berlin">Europe/Berlin</SelectItem>
+                        <SelectItem value="Europe/Brussels">Europe/Brussels</SelectItem>
+                        <SelectItem value="Europe/Lisbon">Europe/Lisbon</SelectItem>
                         <SelectItem value="America/New_York">America/New_York</SelectItem>
                         <SelectItem value="Asia/Tokyo">Asia/Tokyo</SelectItem>
                       </SelectContent>
