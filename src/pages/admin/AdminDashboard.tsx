@@ -1,160 +1,67 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Car, Tag, Users, CreditCard } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Car, DollarSign, Users, ShoppingCart } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
+
+const data = [
+  { name: 'Jan', value: 12 },
+  { name: 'Fév', value: 19 },
+  { name: 'Mar', value: 15 },
+  { name: 'Avr', value: 25 },
+  { name: 'Mai', value: 32 },
+  { name: 'Juin', value: 28 },
+  { name: 'Juil', value: 42 },
+];
 
 const AdminDashboard = () => {
-  const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
-  const [vehicleStats, setVehicleStats] = useState({
-    totalVehicles: 0,
-    avgPrice: 0,
-    totalValue: 0,
-    byBrand: [] as {name: string, count: number}[]
-  });
-
-  useEffect(() => {
-    loadVehicles();
-    
-    window.addEventListener('vehiclesUpdated', loadVehicles);
-    return () => {
-      window.removeEventListener('vehiclesUpdated', loadVehicles);
-    };
-  }, []);
-
-  const loadVehicles = () => {
-    try {
-      const importedVehicles = getImportedVehicles();
-      setVehicles(importedVehicles);
-      calculateStats(importedVehicles);
-    } catch (error) {
-      console.error("Error loading vehicles:", error);
-    }
-  };
-
-  const calculateStats = (vehicles: ImportedVehicle[]) => {
-    // Calculate total value and average price
-    const totalValue = vehicles.reduce((acc, vehicle) => acc + (vehicle.price || 0), 0);
-    const avgPrice = vehicles.length > 0 ? totalValue / vehicles.length : 0;
-    
-    // Calculate vehicles by brand
-    const brandCounts: Record<string, number> = {};
-    vehicles.forEach(vehicle => {
-      if (vehicle.brand) {
-        brandCounts[vehicle.brand] = (brandCounts[vehicle.brand] || 0) + 1;
-      }
-    });
-    
-    const byBrand = Object.entries(brandCounts)
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
-    
-    setVehicleStats({
-      totalVehicles: vehicles.length,
-      avgPrice,
-      totalValue,
-      byBrand
-    });
-  };
-
-  // Mock data for demonstration
-  const visitData = [
-    { name: 'Lun', visits: 540 },
-    { name: 'Mar', visits: 620 },
-    { name: 'Mer', visits: 700 },
-    { name: 'Jeu', visits: 680 },
-    { name: 'Ven', visits: 750 },
-    { name: 'Sam', visits: 890 },
-    { name: 'Dim', visits: 820 },
-  ];
+  const { user } = useAuth();
 
   return (
     <>
       <Helmet>
         <title>Tableau de bord | Administration</title>
       </Helmet>
-
+      
       <div className="p-6">
-        <h1 className="text-3xl font-bold mb-6">Tableau de bord</h1>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-1">Tableau de bord</h1>
+            <p className="text-gray-500">Bienvenue, {user?.email}</p>
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Total Véhicules</p>
-                  <h3 className="text-2xl font-bold mt-1">{vehicleStats.totalVehicles}</h3>
-                </div>
-                <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Car className="h-6 w-6 text-blue-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Prix Moyen</p>
-                  <h3 className="text-2xl font-bold mt-1">{vehicleStats.avgPrice.toLocaleString('fr-FR')} €</h3>
-                </div>
-                <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <Tag className="h-6 w-6 text-green-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Valeur Totale</p>
-                  <h3 className="text-2xl font-bold mt-1">{vehicleStats.totalValue.toLocaleString('fr-FR')} €</h3>
-                </div>
-                <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 text-purple-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Visiteurs</p>
-                  <h3 className="text-2xl font-bold mt-1">4,210</h3>
-                </div>
-                <div className="h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <Users className="h-6 w-6 text-orange-600" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatCard icon={<Car />} title="Véhicules" value="28" description="Total des véhicules" />
+          <StatCard icon={<ShoppingCart />} title="Commandes" value="12" description="En attente" />
+          <StatCard icon={<Users />} title="Utilisateurs" value="159" description="Total des utilisateurs" />
+          <StatCard icon={<DollarSign />} title="Revenus" value="€42,500" description="Ce mois-ci" />
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Véhicules par marque</CardTitle>
+              <CardTitle>Ventes mensuelles</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={vehicleStats.byBrand}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                    data={data}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="count" fill="#3b82f6" />
+                    <Bar dataKey="value" fill="#3b82f6" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -163,29 +70,83 @@ const AdminDashboard = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>Visites du site</CardTitle>
+              <CardTitle>Activité récente</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={visitData}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="visits" fill="#10b981" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <div className="space-y-4">
+                <ActivityItem 
+                  title="Nouveau véhicule ajouté" 
+                  description="Renault Clio 2018 - Diesel"
+                  time="Il y a 32 minutes"
+                />
+                <ActivityItem 
+                  title="Réservation enregistrée" 
+                  description="Jean Dupont - Peugeot 208"
+                  time="Il y a 2 heures"
+                />
+                <ActivityItem 
+                  title="Témoignage approuvé" 
+                  description="Marie L. - ⭐⭐⭐⭐⭐"
+                  time="Il y a 3 heures"
+                />
+                <ActivityItem 
+                  title="Paiement reçu" 
+                  description="Acompte - Citroën C3"
+                  time="Il y a 5 heures"
+                />
+                <ActivityItem 
+                  title="Mise à jour des prix" 
+                  description="5 véhicules mis à jour"
+                  time="Il y a 1 jour"
+                />
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
     </>
+  );
+};
+
+const StatCard = ({ icon, title, value, description }: { 
+  icon: React.ReactNode; 
+  title: string; 
+  value: string; 
+  description: string 
+}) => {
+  return (
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex items-center space-x-4">
+          <div className="bg-blue-100 p-3 rounded-full">
+            {React.cloneElement(icon as React.ReactElement, { className: "h-6 w-6 text-blue-600" })}
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-500">{title}</p>
+            <h3 className="text-2xl font-bold">{value}</h3>
+            <p className="text-xs text-gray-500">{description}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const ActivityItem = ({ title, description, time }: { 
+  title: string; 
+  description: string; 
+  time: string 
+}) => {
+  return (
+    <div className="flex items-start">
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium">{title}</p>
+        <p className="text-sm text-gray-500">{description}</p>
+      </div>
+      <div className="ml-4 flex-shrink-0">
+        <p className="text-xs text-gray-500">{time}</p>
+      </div>
+    </div>
   );
 };
 

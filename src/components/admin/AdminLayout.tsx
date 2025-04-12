@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Car, Users, CreditCard, Tag, BarChart2, Award, Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -8,10 +8,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import AuthGuard from './AuthGuard';
+import { useAuth } from '@/hooks/use-auth';
 
 const AdminLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const navigation = [
     { name: 'Tableau de bord', href: '/admin', icon: LayoutDashboard },
@@ -43,7 +46,7 @@ const AdminLayout = () => {
     });
     
     // Redirect to login
-    window.location.href = '/admin/login';
+    navigate('/admin/login');
   };
 
   return (

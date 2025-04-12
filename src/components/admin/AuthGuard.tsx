@@ -1,40 +1,36 @@
 
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/hooks/use-auth';
+import { Loader2 } from 'lucide-react';
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { user, loading } = useAuth();
+  const location = useLocation();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data } = await supabase.auth.getSession();
-      setIsAuthenticated(!!data.session);
-    };
+    // Set ready state after initial auth check
+    if (!loading) {
+      setIsReady(true);
+    }
+  }, [loading]);
 
-    checkAuth();
-
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-    });
-
-    return () => {
-      data.subscription.unsubscribe();
-    };
-  }, []);
-
-  // Show nothing while checking authentication
-  if (isAuthenticated === null) {
+  // Show loading state while checking authentication
+  if (loading || !isReady) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-gray-500" />
+          <p className="text-gray-500">Chargement de l'administration...</p>
+        </div>
       </div>
     );
   }
 
   // Redirect to login if not authenticated
-  if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
+  if (!user) {
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
   // Render children if authenticated

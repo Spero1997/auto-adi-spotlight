@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,24 +8,26 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
+
+  // Get the intended destination from the location state or default to /admin
+  const from = location.state?.from?.pathname || '/admin';
 
   useEffect(() => {
-    // Check if already logged in
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        navigate('/admin');
-      }
-    };
-    
-    checkSession();
-  }, [navigate]);
+    // Redirect if already logged in
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, from]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +45,7 @@ const AdminLogin = () => {
       
       if (data.user) {
         toast.success('Connexion réussie');
-        navigate('/admin');
+        navigate(from, { replace: true });
       }
     } catch (error: any) {
       toast.error(error.message || 'Erreur de connexion');
@@ -102,7 +104,12 @@ const AdminLogin = () => {
                 className="w-full" 
                 disabled={loading}
               >
-                {loading ? 'Connexion en cours...' : 'Se connecter'}
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Connexion en cours...
+                  </span>
+                ) : 'Se connecter'}
               </Button>
             </CardFooter>
           </form>
