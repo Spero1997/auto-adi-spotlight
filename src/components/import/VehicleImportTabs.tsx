@@ -10,10 +10,10 @@ type VehicleImportTabsProps = {
 };
 
 const VehicleImportTabs = ({ triggerUpdate }: VehicleImportTabsProps) => {
-  const [activeTab, setActiveTab] = useState("assistant");
+  const [activeTab, setActiveTab] = useState("add");
   
   return (
-    <Tabs defaultValue="assistant" className="w-full" onValueChange={(value) => setActiveTab(value)}>
+    <Tabs defaultValue="add" className="w-full" onValueChange={(value) => setActiveTab(value)}>
       <TabsList className="grid w-full grid-cols-3 mb-8">
         <TabsTrigger value="assistant">Assistant IA</TabsTrigger>
         <TabsTrigger value="add">Ajout manuel</TabsTrigger>

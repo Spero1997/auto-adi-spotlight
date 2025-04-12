@@ -6,9 +6,28 @@ import Footer from '@/components/Footer';
 import { useVehicleLoader } from '@/hooks/useVehicleLoader';
 import VehicleQuickAdd from '@/components/import/VehicleQuickAdd';
 import VehicleImportTabs from '@/components/import/VehicleImportTabs';
+import { useAuth } from '@/hooks/use-auth';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useEffect } from 'react';
 
 const VehicleImport = () => {
   const { vehiclesLoaded, triggerUpdate } = useVehicleLoader();
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+  
+  // Rediriger si l'utilisateur n'est pas authentifié
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Vous devez être connecté pour accéder à cette page");
+      navigate("/admin/login");
+    }
+  }, [user, loading, navigate]);
+  
+  // Si le chargement est en cours ou l'utilisateur n'est pas connecté, ne rien afficher
+  if (loading || !user) {
+    return null;
+  }
   
   return (
     <>
