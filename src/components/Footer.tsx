@@ -143,158 +143,159 @@ const Footer = () => {
       IT: "Siamo disponibili solo su Facebook e WhatsApp",
       PT: "Estamos disponíveis apenas no Facebook e WhatsApp",
       RO: "Suntem disponibili doar pe Facebook și WhatsApp"
+    },
+    facebookPage: {
+      FR: "Page Facebook",
+      EN: "Facebook Page",
+      ES: "Página de Facebook",
+      IT: "Pagina Facebook",
+      PT: "Página do Facebook",
+      RO: "Pagina Facebook"
     }
   };
 
   return (
-    <footer className="bg-brand-blue text-white pt-16 mt-auto">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Logo and description */}
-          <div className="space-y-4">
-            <Link to="/">
-              <img 
-                src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
-                alt="Auto Adi" 
-                className="h-12"
-              />
-            </Link>
-            <p className="text-gray-100">
-              {translate('companyDescription', translations.companyDescription)}
-            </p>
-            <p className="text-gray-100 font-semibold">
-              {translate('contactAvailability', translations.contactAvailability)}
-            </p>
-            <div className="flex space-x-4">
+    <footer className="bg-brand-blue text-white">
+      <div className="container mx-auto p-6">
+        {/* Logo and company description */}
+        <div className="mb-8">
+          <Link to="/">
+            <img 
+              src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
+              alt="Auto Adi" 
+              className="h-16 mb-4"
+            />
+          </Link>
+          <p className="text-gray-100 mb-4">
+            {translate('companyDescription', translations.companyDescription)}
+          </p>
+          <p className="text-gray-100 font-semibold mb-4">
+            {translate('contactAvailability', translations.contactAvailability)}
+          </p>
+          <div className="flex space-x-4 mb-8">
+            <a 
+              href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white hover:text-gray-300 transition-colors"
+              aria-label="Facebook"
+            >
+              <Facebook size={24} className="text-white" />
+            </a>
+            <a 
+              href="https://wa.me/393761753341" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white hover:text-gray-300 transition-colors"
+              aria-label="WhatsApp"
+            >
+              <MessageCircle size={24} className="text-white" />
+            </a>
+          </div>
+        </div>
+
+        {/* Quick links */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold mb-4">{translate('quickLinks', translations.quickLinks)}</h3>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/vehicules/neufs" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('newVehicles', translations.newVehicles)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/vehicules/occasion" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('usedVehicles', translations.usedVehicles)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/services" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('services', translations.services)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/financement" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('financing', translations.financing)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/rachat" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('vehicleBuyback', translations.vehicleBuyback)}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Legal links */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold mb-4">{translate('legalInfo', translations.legalInfo)}</h3>
+          <ul className="space-y-2">
+            <li>
+              <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('legalNotice', translations.legalNotice)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('privacyPolicy', translations.privacyPolicy)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('cookieManagement', translations.cookieManagement)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('termsAndConditions', translations.termsAndConditions)}
+              </Link>
+            </li>
+            <li>
+              <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors block">
+                {translate('saleConditions', translations.saleConditions)}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Contact info */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold mb-4">{translate('contact', translations.contact)}</h3>
+          <ul className="space-y-3">
+            <li className="flex items-center">
+              <Phone className="h-5 w-5 mr-3 text-brand-orange" />
+              <span className="text-gray-100">‪+39 376 175 3341‬</span>
+            </li>
+            <li className="flex items-center">
+              <MessageCircle className="h-5 w-5 mr-3 text-brand-orange" />
+              <span className="text-gray-100">WhatsApp: ‪+39 376 175 3341‬</span>
+            </li>
+            <li className="flex items-center">
+              <Mail className="h-5 w-5 mr-3 text-brand-orange" />
+              <span className="text-gray-100">serviceautoadi@gmail.com</span>
+            </li>
+            <li className="flex items-center">
+              <MapPin className="h-5 w-5 mr-3 text-brand-orange" />
+              <span className="text-gray-100">
+                Borgo Ognissanti, 142r 50123 Firenze FI Italie
+              </span>
+            </li>
+            <li className="flex items-center">
+              <Facebook className="h-5 w-5 mr-3 text-brand-orange" />
               <a 
                 href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-100 hover:text-gray-300 transition-colors"
-                aria-label="Facebook"
               >
-                <Facebook size={20} />
+                {translate('facebookPage', translations.facebookPage)}
               </a>
-              <a 
-                href="https://wa.me/393761753341" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-100 hover:text-gray-300 transition-colors"
-                aria-label="WhatsApp"
-              >
-                <MessageCircle size={20} />
-              </a>
-            </div>
-          </div>
-
-          {/* Quick links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">{translate('quickLinks', translations.quickLinks)}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/vehicules/neufs" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('newVehicles', translations.newVehicles)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/vehicules/occasion" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('usedVehicles', translations.usedVehicles)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('services', translations.services)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/financement" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('financing', translations.financing)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/rachat" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('vehicleBuyback', translations.vehicleBuyback)}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Legal links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">{translate('legalInfo', translations.legalInfo)}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('legalNotice', translations.legalNotice)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('privacyPolicy', translations.privacyPolicy)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('cookieManagement', translations.cookieManagement)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('termsAndConditions', translations.termsAndConditions)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors">
-                  {translate('saleConditions', translations.saleConditions)}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">{translate('contact', translations.contact)}</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Phone className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
-                <span className="text-gray-100">‪+39 376 175 3341‬</span>
-              </li>
-              <li className="flex items-start">
-                <MessageCircle className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
-                <span className="text-gray-100">WhatsApp: ‪+39 376 175 3341‬</span>
-              </li>
-              <li className="flex items-start">
-                <Mail className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
-                <span className="text-gray-100">serviceautoadi@gmail.com</span>
-              </li>
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
-                <span className="text-gray-100">
-                  Borgo Ognissanti, 142r 50123 Firenze FI Italie
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Facebook className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
-                <a 
-                  href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-gray-100 hover:text-gray-300 transition-colors"
-                >
-                  {language === 'FR' ? 'Page Facebook' : 
-                   language === 'EN' ? 'Facebook Page' :
-                   language === 'ES' ? 'Página de Facebook' :
-                   language === 'IT' ? 'Pagina Facebook' :
-                   language === 'PT' ? 'Página do Facebook' :
-                   'Pagina Facebook'}
-                </a>
-              </li>
-            </ul>
-          </div>
+            </li>
+          </ul>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-blue-700 mt-12 py-8 text-center">
+        {/* Copyright */}
+        <div className="border-t border-blue-700 pt-6 text-center">
           <p className="text-gray-100 text-sm">
             {translate('copyright', translations.copyright)}
           </p>
