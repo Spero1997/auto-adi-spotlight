@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -494,8 +495,11 @@ const Index = () => {
         </script>
       </Helmet>
       
-      <main>
-        <HeroCarousel />
+      <main className="flex flex-col w-full">
+        {/* Carrousel pleine largeur */}
+        <div className="w-full full-width-container">
+          <HeroCarousel />
+        </div>
         
         <div className="container mx-auto px-4 mt-16">
           <h1 className="text-4xl font-bold text-center mb-8">
