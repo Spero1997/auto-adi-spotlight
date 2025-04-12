@@ -168,7 +168,7 @@ export const VehicleFormProvider = ({ children }: { children: ReactNode }) => {
       doors: formState.doors ? parseInt(formState.doors) : undefined,
       engine: formState.engine,
       features: formState.features.filter(f => f.trim() !== ''),
-      catalogType: 'standard' // Toujours ajouter au catalogue standard
+      catalogType: 'standard' as const // Spécifier explicitement le type comme "standard" | "featured"
     };
 
     try {
