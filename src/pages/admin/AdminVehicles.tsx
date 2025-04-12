@@ -112,7 +112,7 @@ const AdminVehicles: React.FC = () => {
   };
 
   const handleAddNewVehicle = () => {
-    // Rediriger vers la page d'ajout de véhicule au lieu d'ouvrir la boîte de dialogue
+    // Rediriger vers la page d'importation de véhicule
     navigate('/vehicule/import');
   };
 
