@@ -1,318 +1,96 @@
 
-import { getImportedVehicles as getVehiclesFromStorage, saveImportedVehicles as saveVehiclesToStorage } from './services/vehicleStorageService';
-import { validateImageUrl as validateImageService, cleanImageUrl as cleanImageService } from './services/imageValidationService';
-import { ImportedVehicle } from './types/vehicle';
+// This file is now a facade that re-exports all vehicle-related functionality
+// from the new modular files, to maintain backwards compatibility
 
-/**
- * Validates an image URL by attempting to load it
- */
+// Export types
+export type { ImportedVehicle } from './types/vehicle';
+
+// Re-export constants
+export {
+  STORAGE_KEY,
+  FEATURED_STORAGE_KEY,
+  CATALOG_ID_KEY,
+  FEATURED_CATALOG_ID_KEY,
+  defaultVehicles
+} from './constants/vehicleStorage';
+
+// Re-export catalog URL services
+export {
+  generateShareableUrl,
+  getCatalogIdFromUrl
+} from './services/catalogService';
+
+// Re-export storage services
+export {
+  getImportedVehicles,
+  saveImportedVehicles
+} from './services/vehicleStorageService';
+
+// Explicitly import the functions we need
+import { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs } from './services/vehicleCatalogService';
+import { getImportedVehicles, saveImportedVehicles } from './services/vehicleStorageService';
+
+// Re-export catalog management services directly
+export { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs };
+
+// Import extraction service
+import { extractVehiclesFromUrl } from './services/vehicleExtractionService';
+
+// Re-export extraction service
+export { extractVehiclesFromUrl };
+
+// Define aliases for backward compatibility
+export const addImportedVehicle = addVehicle;
+export const deleteImportedVehicle = deleteVehicle;
+
+// Ajout d'une fonction pour vérifier la validité d'une URL d'image
 export const validateImageUrl = (url: string): Promise<boolean> => {
-  return validateImageService(url);
+  return new Promise((resolve) => {
+    // Si c'est une URL relative qui commence par /lovable-uploads/
+    if (url.startsWith('/lovable-uploads/')) {
+      // On considère que c'est valide car c'est une image uploadée via Lovable
+      resolve(true);
+      return;
+    }
+    
+    // Pour les autres URLs, on vérifie si l'image est accessible
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
 };
 
-/**
- * Fonction pour nettoyer l'URL d'une image
- */
-export const cleanImageUrl = (url: string): string => {
-  return cleanImageService(url);
-};
-
-/**
- * Réinitialise le catalogue spécifié
- */
-export const resetCatalog = (catalogType: string = 'all') => {
-  if (catalogType === 'all' || catalogType === 'standard') {
-    console.log("Réinitialisation du catalogue standard");
-    localStorage.removeItem('catalog_id');
-    localStorage.removeItem('imported_vehicles');
-  }
-  
-  if (catalogType === 'all' || catalogType === 'featured') {
-    console.log("Réinitialisation du catalogue vedette");
-    localStorage.removeItem('featured_catalog_id');
-    localStorage.removeItem('featured_vehicles');
-  }
-  
-  // Déclencher un événement pour informer l'application du changement
-  window.dispatchEvent(new CustomEvent('catalogChanged', { 
-    detail: { catalogType: 'all' } 
-  }));
-  
-  // Forcer un rechargement des véhicules
-  setTimeout(() => {
-    window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-      detail: { catalogType: 'all' } 
-    }));
-  }, 100);
-};
-
-/**
- * Récupère les véhicules importés d'un catalogue
- */
-export const getImportedVehicles = (catalogType: 'standard' | 'featured' = 'standard'): ImportedVehicle[] => {
-  return getVehiclesFromStorage(catalogType);
-};
-
-/**
- * Enregistre les véhicules importés dans un catalogue
- */
-export const saveImportedVehicles = (vehicles: ImportedVehicle[], catalogType: 'standard' | 'featured' = 'standard'): boolean => {
-  return saveVehiclesToStorage(vehicles, catalogType);
-};
-
-/**
- * Supprime un véhicule importé
- */
-export const deleteImportedVehicle = (id: string): boolean => {
+// Fonction pour mettre à jour l'image de l'Audi Q2
+export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType: 'standard' | 'featured' = 'standard') => {
   try {
-    const standardVehicles = getImportedVehicles('standard');
-    const standardFiltered = standardVehicles.filter(v => v.id !== id);
-    
-    const featuredVehicles = getImportedVehicles('featured');
-    const featuredFiltered = featuredVehicles.filter(v => v.id !== id);
-    
-    let success = true;
-    
-    // Si des véhicules ont été trouvés et supprimés dans le catalogue standard
-    if (standardVehicles.length !== standardFiltered.length) {
-      success = saveImportedVehicles(standardFiltered, 'standard') && success;
-    }
-    
-    // Si des véhicules ont été trouvés et supprimés dans le catalogue vedette
-    if (featuredVehicles.length !== featuredFiltered.length) {
-      success = saveImportedVehicles(featuredFiltered, 'featured') && success;
-    }
-    
-    return success;
-  } catch (error) {
-    console.error("Erreur lors de la suppression du véhicule:", error);
-    return false;
-  }
-};
-
-/**
- * Ajoute un véhicule au catalogue spécifié
- */
-export const addVehicle = async (vehicle: ImportedVehicle, catalogType: 'standard' | 'featured' = 'standard'): Promise<boolean> => {
-  try {
-    // Vérifier l'image avant d'ajouter le véhicule
-    if (vehicle.image) {
-      const isImageValid = await validateImageUrl(vehicle.image);
-      
-      if (!isImageValid) {
-        console.error(`L'image ${vehicle.image} n'est pas valide ou accessible`);
-      } else {
-        console.log(`L'image ${vehicle.image} a été validée avec succès`);
-      }
-    }
-    
+    // Utilisation des fonctions importées explicitement
     const vehicles = getImportedVehicles(catalogType);
-    console.log(`Ajout/Mise à jour du véhicule ${vehicle.brand} ${vehicle.model} (${vehicle.id}) au catalogue ${catalogType}`);
     
-    // Check if a vehicle with this ID already exists
-    const existingVehicleIndex = vehicles.findIndex(v => v.id === vehicle.id);
+    const vehicleIndex = vehicles.findIndex(v => v.id === vehicleId || 
+      (v.brand === 'Audi' && v.model.includes('Q2 Ultra Sport') && v.year === 2018));
     
-    if (existingVehicleIndex >= 0) {
-      // Update existing vehicle
-      console.log(`Mise à jour du véhicule existant à l'index ${existingVehicleIndex}`);
-      vehicles[existingVehicleIndex] = vehicle;
-    } else {
-      // Add new vehicle
-      console.log(`Ajout d'un nouveau véhicule au catalogue (total avant ajout: ${vehicles.length})`);
-      vehicles.push(vehicle);
-    }
-    
-    // Assurez-vous que catalogType est correctement défini
-    if (!vehicle.catalogType) {
-      vehicle.catalogType = catalogType;
-    }
-    
-    const success = saveImportedVehicles(vehicles, catalogType);
-    
-    if (success) {
-      console.log(`Catalogue ${catalogType} sauvegardé avec ${vehicles.length} véhicules`);
+    if (vehicleIndex !== -1) {
+      // Mettre à jour l'image
+      vehicles[vehicleIndex].image = newImageUrl;
       
-      // Déclencher un événement pour informer l'application du changement
-      console.log(`Déclenchement de l'événement vehiclesUpdated pour le catalogue ${catalogType}`);
+      // Sauvegarder les modifications
+      saveImportedVehicles(vehicles, catalogType);
+      
+      console.log(`Image de ${vehicles[vehicleIndex].brand} ${vehicles[vehicleIndex].model} mise à jour avec succès.`);
+      
+      // Déclencher un événement pour rafraîchir l'affichage
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
         detail: { catalogType } 
       }));
       
-      // Forcer un rechargement global après un court délai
-      setTimeout(() => {
-        console.log('Déclenchement d\'un événement vehiclesUpdated global pour assurer la mise à jour');
-        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-          detail: { catalogType: 'all' } 
-        }));
-      }, 100);
-    }
-    
-    return success;
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du véhicule:", error);
-    return false;
-  }
-};
-
-/**
- * Ajoute un véhicule importé au catalogue spécifié
- */
-export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType: 'standard' | 'featured' = 'standard'): boolean => {
-  try {
-    // Cloner le véhicule pour éviter des problèmes avec des références
-    const vehicleToAdd = { ...vehicle };
-    
-    // S'assurer que le véhicule a un ID
-    if (!vehicleToAdd.id) {
-      vehicleToAdd.id = `vehicle-${catalogType}-${Date.now()}-${vehicleToAdd.brand.toLowerCase()}-${vehicleToAdd.model.toLowerCase().replace(/\s+/g, '-')}`;
-    }
-    
-    // S'assurer que le catalogType est défini
-    vehicleToAdd.catalogType = catalogType;
-    
-    // Ajouter un marquage "featured" si c'est le catalogue vedette
-    if (catalogType === 'featured') {
-      vehicleToAdd.featured = true;
-    }
-    
-    const vehicles = getImportedVehicles(catalogType);
-    
-    // Vérifier si un véhicule avec cet ID existe déjà
-    const existingIndex = vehicles.findIndex(v => v.id === vehicleToAdd.id);
-    
-    if (existingIndex >= 0) {
-      vehicles[existingIndex] = vehicleToAdd;
+      return true;
     } else {
-      vehicles.push(vehicleToAdd);
-    }
-    
-    const success = saveImportedVehicles(vehicles, catalogType);
-    
-    if (success) {
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType } 
-      }));
-    }
-    
-    return success;
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du véhicule importé:", error);
-    return false;
-  }
-};
-
-/**
- * Extrait des véhicules depuis une URL
- */
-export const extractVehiclesFromUrl = async (url: string, catalogType: 'standard' | 'featured' = 'standard'): Promise<ImportedVehicle[]> => {
-  console.log(`Extraction de véhicules depuis l'URL: ${url}`);
-  
-  try {
-    // Simulation d'extraction de véhicules - dans un vrai cas, on ferait un appel API ou un scraping
-    const vehicles: ImportedVehicle[] = [
-      {
-        id: `vehicle-${catalogType}-${Date.now()}-demo-1`,
-        brand: 'Demo',
-        model: 'Véhicule 1',
-        year: 2023,
-        mileage: 0,
-        price: 25000,
-        fuelType: 'Essence',
-        image: 'https://via.placeholder.com/400x300?text=Demo+Vehicle+1',
-        catalogType
-      },
-      {
-        id: `vehicle-${catalogType}-${Date.now()}-demo-2`,
-        brand: 'Demo',
-        model: 'Véhicule 2',
-        year: 2022,
-        mileage: 15000,
-        price: 18000,
-        fuelType: 'Diesel',
-        image: 'https://via.placeholder.com/400x300?text=Demo+Vehicle+2',
-        catalogType
-      }
-    ];
-    
-    // Ajouter les véhicules au catalogue
-    vehicles.forEach(vehicle => {
-      addImportedVehicle(vehicle, catalogType);
-    });
-    
-    return vehicles;
-  } catch (error) {
-    console.error("Erreur lors de l'extraction des véhicules:", error);
-    return [];
-  }
-};
-
-/**
- * Génère une URL partageable pour le catalogue
- */
-export const generateShareableUrl = (catalogType: 'standard' | 'featured' = 'standard'): string => {
-  try {
-    const baseUrl = window.location.origin;
-    const path = catalogType === 'featured' ? '/vehicules/vedette' : '/vehicules';
-    const catalogId = `catalog-${Date.now()}`;
-    
-    // Stocker l'ID du catalogue dans le localStorage
-    if (catalogType === 'featured') {
-      localStorage.setItem('featured_catalog_id', catalogId);
-    } else {
-      localStorage.setItem('catalog_id', catalogId);
-    }
-    
-    return `${path}?catalog=${catalogId}`;
-  } catch (error) {
-    console.error("Erreur lors de la génération de l'URL partageable:", error);
-    return '/vehicules';
-  }
-};
-
-/**
- * Récupère l'ID du catalogue depuis l'URL
- */
-export const getCatalogIdFromUrl = (): string | null => {
-  try {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('catalog');
-  } catch (error) {
-    console.error("Erreur lors de la récupération de l'ID du catalogue depuis l'URL:", error);
-    return null;
-  }
-};
-
-/**
- * Met à jour l'image d'un véhicule
- */
-export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType: 'standard' | 'featured' = 'standard'): boolean => {
-  try {
-    const vehicles = getImportedVehicles(catalogType);
-    const vehicleIndex = vehicles.findIndex(v => v.id === vehicleId);
-    
-    if (vehicleIndex === -1) {
-      console.error(`Véhicule avec ID ${vehicleId} non trouvé dans le catalogue ${catalogType}`);
+      console.warn(`Véhicule avec ID ${vehicleId} non trouvé dans le catalogue ${catalogType}.`);
       return false;
     }
-    
-    // Mettre à jour l'image
-    vehicles[vehicleIndex].image = newImageUrl;
-    
-    // Sauvegarder les modifications
-    const success = saveImportedVehicles(vehicles, catalogType);
-    
-    if (success) {
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType } 
-      }));
-    }
-    
-    return success;
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l'image du véhicule:", error);
     return false;
   }
 };
-
-// Exporter le type ImportedVehicle
-export type { ImportedVehicle };

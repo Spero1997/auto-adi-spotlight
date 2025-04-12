@@ -1,8 +1,7 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Define the Language type
-export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO' | 'DE' | 'NL' | 'PL' | 'RU';
+export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
 
 // Define the context type
 type LanguageContextType = {
@@ -35,10 +34,6 @@ const detectBrowserLanguage = (): Language => {
     'IT': 'IT', // Italian
     'PT': 'PT', // Portuguese
     'RO': 'RO', // Romanian
-    'DE': 'DE', // German
-    'NL': 'NL', // Dutch
-    'PL': 'PL', // Polish
-    'RU': 'RU', // Russian
   };
   
   // Country code mapping for specific regions
@@ -51,16 +46,12 @@ const detectBrowserLanguage = (): Language => {
     'ES': 'ES', // Spain
     'MX': 'ES', // Mexico
     'IT': 'IT', // Italy
-    'DE': 'DE', // Germany
-    'NL': 'NL', // Netherlands
-    'PL': 'PL', // Poland
-    'RU': 'RU', // Russia
-    'PT': 'PT', // Portugal
-    'BR': 'PT', // Brazil
   };
   
-  // First check if we have a specific country mapping
+  // Try to get country code from the full language string
   const countryCode = browserLang.split('-')[1]?.toUpperCase();
+  
+  // First check if we have a specific country mapping
   if (countryCode && countryMap[countryCode]) {
     return countryMap[countryCode];
   }
@@ -82,7 +73,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // If no preference is found, detect browser language
   useEffect(() => {
     const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO', 'DE', 'NL', 'PL', 'RU'].includes(savedLanguage)) {
+    if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
       setLanguageState(savedLanguage as Language);
     } else {
       // Auto-detect language based on browser settings

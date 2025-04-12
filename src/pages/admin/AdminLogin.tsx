@@ -1,130 +1,154 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
-import { useAuth } from '@/hooks/use-auth';
 
 const AdminLogin = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { user } = useAuth();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
-  // Get the intended destination from the location state or default to /admin
-  const from = location.state?.from?.pathname || '/admin';
-
+  // Check if user is already logged in
   useEffect(() => {
-    // Redirect if already logged in
-    if (user) {
-      console.log("User already logged in, redirecting to", from);
-      navigate(from, { replace: true });
-    }
-  }, [user, navigate, from]);
+    const checkAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      
+      if (data.session) {
+        // User is already logged in, redirect to admin dashboard
+        navigate('/admin');
+      }
+      
+      setIsChecking(false);
+    };
+    
+    checkAuth();
+  }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    
+    if (!email || !password) {
+      setErrorMessage('Veuillez remplir tous les champs');
+      return;
+    }
+    
+    setIsLoading(true);
+    setErrorMessage('');
     
     try {
-      console.log("Attempting login with:", email);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
       
       if (error) {
-        throw error;
-      }
-      
-      if (data.user) {
-        console.log("Login successful, redirecting to", from);
+        setErrorMessage(error.message);
+        toast.error('Erreur de connexion');
+      } else if (data.user) {
         toast.success('Connexion réussie');
-        navigate(from, { replace: true });
+        navigate('/admin');
       }
-    } catch (error: any) {
-      console.error('Error logging in:', error);
-      
-      // More user-friendly error messages
-      if (error.message.includes("Invalid login")) {
-        toast.error('Email ou mot de passe incorrect');
-      } else if (error.message.includes("network")) {
-        toast.error('Problème de connexion réseau');
-      } else {
-        toast.error(error.message || 'Erreur de connexion');
-      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setErrorMessage('Une erreur est survenue lors de la connexion');
+      toast.error('Erreur de connexion');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
+
+  if (isChecking) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      </div>
+    );
+  }
 
   return (
     <>
       <Helmet>
-        <title>Login Administrateur | Auto ADI</title>
+        <title>Connexion | Admin Auto ADI</title>
       </Helmet>
       
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <Card className="w-full max-w-md">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold">Administration</CardTitle>
-            <CardDescription>
-              Connectez-vous à votre compte administrateur
-            </CardDescription>
-          </CardHeader>
-          
-          <form onSubmit={handleLogin}>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="admin@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <div className="w-full max-w-md px-4">
+          <Card>
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-bold text-center">Auto ADI</CardTitle>
+              <CardDescription className="text-center">
+                Connectez-vous pour accéder au panneau d'administration
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent>
+              {errorMessage && (
+                <Alert variant="destructive" className="mb-4">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Erreur</AlertTitle>
+                  <AlertDescription>{errorMessage}</AlertDescription>
+                </Alert>
+              )}
               
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Mot de passe</Label>
+              <form onSubmit={handleLogin}>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="exemple@autoadi.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="password">Mot de passe</Label>
+                    </div>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
+                    />
+                  </div>
+                  
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={isLoading}
+                  >
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Connexion
+                  </Button>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
+              </form>
             </CardContent>
             
-            <CardFooter>
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Connexion en cours...
-                  </span>
-                ) : 'Se connecter'}
-              </Button>
+            <CardFooter className="flex flex-col">
+              <div className="text-center text-sm text-gray-500 mt-4">
+                <p>
+                  Admin Panel - Auto ADI
+                </p>
+              </div>
             </CardFooter>
-          </form>
-        </Card>
+          </Card>
+        </div>
       </div>
     </>
   );

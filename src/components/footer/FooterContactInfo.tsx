@@ -11,10 +11,6 @@ type ContactInfoTranslations = {
     IT: string;
     PT: string;
     RO: string;
-    DE: string;
-    NL: string;
-    PL: string;
-    RU: string;
   };
 };
 
@@ -28,11 +24,7 @@ const FooterContactInfo = () => {
       ES: "Contacto",
       IT: "Contatto",
       PT: "Contato",
-      RO: "Contact",
-      DE: "Kontakt",
-      NL: "Contact",
-      PL: "Kontakt",
-      RU: "Контакт"
+      RO: "Contact"
     },
     facebookPage: {
       FR: "Page Facebook",
@@ -40,11 +32,7 @@ const FooterContactInfo = () => {
       ES: "Página de Facebook",
       IT: "Pagina Facebook",
       PT: "Página do Facebook",
-      RO: "Pagina Facebook",
-      DE: "Facebook-Seite",
-      NL: "Facebook-pagina",
-      PL: "Strona Facebook",
-      RU: "Страница Facebook"
+      RO: "Pagina Facebook"
     }
   };
 

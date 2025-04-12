@@ -22,11 +22,7 @@ const Hero = () => {
       ES: "Encuentre el coche perfecto para usted",
       IT: "Trova l'auto perfetta per te",
       PT: "Encontre o carro perfeito para você",
-      RO: "Găsiți mașina perfectă pentru dvs.",
-      DE: "Finden Sie das perfekte Auto für Sie",
-      NL: "Vind de perfecte auto voor u",
-      PL: "Znajdź idealny samochód dla siebie",
-      RU: "Найдите идеальный автомобиль для себя"
+      RO: "Găsiți mașina perfectă pentru dvs."
     },
     heroDescription: {
       FR: "Des milliers de véhicules d'occasion vérifiés et garantis",
@@ -34,11 +30,7 @@ const Hero = () => {
       ES: "Miles de vehículos usados verificados y garantizados",
       IT: "Migliaia di veicoli usati verificati e garantiti",
       PT: "Milhares de veículos usados verificados e garantidos",
-      RO: "Mii de vehicule second-hand verificate și garantate",
-      DE: "Tausende geprüfte und garantierte Gebrauchtwagen",
-      NL: "Duizenden geverifieerde en gegarandeerde gebruikte voertuigen",
-      PL: "Tysiące zweryfikowanych i gwarantowanych używanych pojazdów",
-      RU: "Тысячи проверенных и гарантированных подержанных автомобилей"
+      RO: "Mii de vehicule second-hand verificate și garantate"
     },
     usedVehicles: {
       FR: "Véhicules d'occasion",
@@ -46,11 +38,7 @@ const Hero = () => {
       ES: "Vehículos usados",
       IT: "Veicoli usati",
       PT: "Veículos usados",
-      RO: "Vehicule second-hand",
-      DE: "Gebrauchtwagen",
-      NL: "Gebruikte voertuigen",
-      PL: "Pojazdy używane",
-      RU: "Подержанные автомобили"
+      RO: "Vehicule second-hand"
     },
     quickSearch: {
       FR: "Recherche rapide",
@@ -58,11 +46,7 @@ const Hero = () => {
       ES: "Búsqueda rápida",
       IT: "Ricerca rapida",
       PT: "Pesquisa rápida",
-      RO: "Căutare rapidă",
-      DE: "Schnellsuche",
-      NL: "Snel zoeken",
-      PL: "Szybkie wyszukiwanie",
-      RU: "Быстрый поиск"
+      RO: "Căutare rapidă"
     },
     brand: {
       FR: "Marque",
@@ -70,11 +54,7 @@ const Hero = () => {
       ES: "Marca",
       IT: "Marca",
       PT: "Marca",
-      RO: "Marcă",
-      DE: "Marke",
-      NL: "Merk",
-      PL: "Marka",
-      RU: "Марка"
+      RO: "Marcă"
     },
     model: {
       FR: "Modèle",
@@ -82,11 +62,7 @@ const Hero = () => {
       ES: "Modelo",
       IT: "Modello",
       PT: "Modelo",
-      RO: "Model",
-      DE: "Modell",
-      NL: "Model",
-      PL: "Model",
-      RU: "Модель"
+      RO: "Model"
     },
     maxBudget: {
       FR: "Budget max",
@@ -94,11 +70,7 @@ const Hero = () => {
       ES: "Presupuesto máx",
       IT: "Budget massimo",
       PT: "Orçamento máx",
-      RO: "Buget maxim",
-      DE: "Max. Budget",
-      NL: "Max. budget",
-      PL: "Maks. budżet",
-      RU: "Макс. бюджет"
+      RO: "Buget maxim"
     },
     fuel: {
       FR: "Énergie",
@@ -106,11 +78,7 @@ const Hero = () => {
       ES: "Combustible",
       IT: "Carburante",
       PT: "Combustível",
-      RO: "Combustibil",
-      DE: "Kraftstoff",
-      NL: "Brandstof",
-      PL: "Paliwo",
-      RU: "Топливо"
+      RO: "Combustibil"
     },
     search: {
       FR: "Rechercher",
@@ -118,11 +86,7 @@ const Hero = () => {
       ES: "Buscar",
       IT: "Cerca",
       PT: "Pesquisar",
-      RO: "Căutare",
-      DE: "Suchen",
-      NL: "Zoeken",
-      PL: "Szukaj",
-      RU: "Поиск"
+      RO: "Căutare"
     },
     features: {
       performance: {
@@ -131,11 +95,7 @@ const Hero = () => {
         ES: "Rendimiento",
         IT: "Prestazioni",
         PT: "Desempenho",
-        RO: "Performanță",
-        DE: "Leistung",
-        NL: "Prestaties",
-        PL: "Wydajność",
-        RU: "Производительность"
+        RO: "Performanță"
       },
       safety: {
         FR: "Sécurité",
@@ -143,11 +103,7 @@ const Hero = () => {
         ES: "Seguridad",
         IT: "Sicurezza",
         PT: "Segurança",
-        RO: "Siguranță",
-        DE: "Sicherheit",
-        NL: "Veiligheid",
-        PL: "Bezpieczeństwo",
-        RU: "Безопасность"
+        RO: "Siguranță"
       },
       warranty: {
         FR: "Garantie",
@@ -155,11 +111,7 @@ const Hero = () => {
         ES: "Garantía",
         IT: "Garanzia",
         PT: "Garantia",
-        RO: "Garanție",
-        DE: "Garantie",
-        NL: "Garantie",
-        PL: "Gwarancja",
-        RU: "Гарантия"
+        RO: "Garanție"
       },
       quality: {
         FR: "Qualité",
@@ -167,11 +119,7 @@ const Hero = () => {
         ES: "Calidad",
         IT: "Qualità",
         PT: "Qualidade",
-        RO: "Calitate",
-        DE: "Qualität",
-        NL: "Kwaliteit",
-        PL: "Jakość",
-        RU: "Качество"
+        RO: "Calitate"
       }
     }
   };

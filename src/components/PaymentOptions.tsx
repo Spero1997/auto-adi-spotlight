@@ -56,11 +56,7 @@ const PaymentOptions = ({
       ES: "Método de pago",
       IT: "Metodo di pagamento",
       PT: "Método de pagamento",
-      RO: "Metodă de plată",
-      DE: "Zahlungsmethode",
-      NL: "Betaalmethode",
-      PL: "Metoda płatności",
-      RU: "Способ оплаты"
+      RO: "Metodă de plată"
     },
     creditCard: {
       FR: "Carte bancaire (actuellement indisponible)",
@@ -68,11 +64,7 @@ const PaymentOptions = ({
       ES: "Tarjeta de crédito (actualmente no disponible)",
       IT: "Carta di credito (attualmente non disponibile)",
       PT: "Cartão de crédito (atualmente indisponível)",
-      RO: "Card de credit (momentan indisponibil)",
-      DE: "Kreditkarte (derzeit nicht verfügbar)",
-      NL: "Creditcard (momenteel niet beschikbaar)",
-      PL: "Karta kredytowa (obecnie niedostępna)",
-      RU: "Кредитная карта (в настоящее время недоступна)"
+      RO: "Card de credit (momentan indisponibil)"
     },
     bankTransfer: {
       FR: "Virement bancaire",
@@ -80,11 +72,7 @@ const PaymentOptions = ({
       ES: "Transferencia bancaria",
       IT: "Bonifico bancario",
       PT: "Transferência bancária",
-      RO: "Transfer bancar",
-      DE: "Banküberweisung",
-      NL: "Bankoverschrijving",
-      PL: "Przelew bankowy",
-      RU: "Банковский перевод"
+      RO: "Transfer bancar"
     },
     rechargeCard: {
       FR: "Coupon de recharge",
@@ -92,11 +80,7 @@ const PaymentOptions = ({
       ES: "Cupón de recarga",
       IT: "Buono di ricarica",
       PT: "Cupom de recarga",
-      RO: "Cupon de reîncărcare",
-      DE: "Aufladegutschein",
-      NL: "Herlaadcoupon",
-      PL: "Kupon doładowujący",
-      RU: "Купон для пополнения"
+      RO: "Cupon de reîncărcare"
     },
     selectPaymentMethod: {
       FR: "Sélectionnez un mode de paiement",
@@ -104,11 +88,7 @@ const PaymentOptions = ({
       ES: "Seleccione un método de pago",
       IT: "Seleziona un metodo di pagamento",
       PT: "Selecione um método de pagamento",
-      RO: "Selectați o metodă de plată",
-      DE: "Wählen Sie eine Zahlungsmethode",
-      NL: "Selecteer een betaalmethode",
-      PL: "Wybierz metodę płatności",
-      RU: "Выберите способ оплаты"
+      RO: "Selectați o metodă de plată"
     },
     bankDetails: {
       FR: "Coordonnées bancaires",
@@ -116,11 +96,7 @@ const PaymentOptions = ({
       ES: "Datos bancarios",
       IT: "Coordinate bancarie",
       PT: "Detalhes bancários",
-      RO: "Detalii bancare",
-      DE: "Bankverbindung",
-      NL: "Bankgegevens",
-      PL: "Dane bankowe",
-      RU: "Банковские реквизиты"
+      RO: "Detalii bancare"
     },
     beneficiary: {
       FR: "Bénéficiaire",
@@ -128,11 +104,7 @@ const PaymentOptions = ({
       ES: "Beneficiario",
       IT: "Beneficiario",
       PT: "Beneficiário",
-      RO: "Beneficiar",
-      DE: "Begünstigter",
-      NL: "Begunstigde",
-      PL: "Beneficjent",
-      RU: "Получатель"
+      RO: "Beneficiar"
     },
     iban: {
       FR: "IBAN",
@@ -140,11 +112,7 @@ const PaymentOptions = ({
       ES: "IBAN",
       IT: "IBAN",
       PT: "IBAN",
-      RO: "IBAN",
-      DE: "IBAN",
-      NL: "IBAN",
-      PL: "IBAN",
-      RU: "IBAN"
+      RO: "IBAN"
     },
     swift: {
       FR: "SWIFT/BIC",
@@ -152,11 +120,7 @@ const PaymentOptions = ({
       ES: "SWIFT/BIC",
       IT: "SWIFT/BIC",
       PT: "SWIFT/BIC",
-      RO: "SWIFT/BIC",
-      DE: "SWIFT/BIC",
-      NL: "SWIFT/BIC",
-      PL: "SWIFT/BIC",
-      RU: "SWIFT/BIC"
+      RO: "SWIFT/BIC"
     },
     bank: {
       FR: "Banque",
@@ -164,11 +128,7 @@ const PaymentOptions = ({
       ES: "Banco",
       IT: "Banca",
       PT: "Banco",
-      RO: "Bancă",
-      DE: "Bank",
-      NL: "Bank",
-      PL: "Bank",
-      RU: "Банк"
+      RO: "Bancă"
     },
     address: {
       FR: "Adresse",
@@ -176,11 +136,7 @@ const PaymentOptions = ({
       ES: "Dirección",
       IT: "Indirizzo",
       PT: "Endereço",
-      RO: "Adresă",
-      DE: "Adresse",
-      NL: "Adres",
-      PL: "Adres",
-      RU: "Адрес"
+      RO: "Adresă"
     },
     reference: {
       FR: "Référence",
@@ -188,11 +144,7 @@ const PaymentOptions = ({
       ES: "Referencia",
       IT: "Riferimento",
       PT: "Referência",
-      RO: "Referință",
-      DE: "Referenz",
-      NL: "Referentie",
-      PL: "Odniesienie",
-      RU: "Ссылка"
+      RO: "Referință"
     },
     amount: {
       FR: "Montant",
@@ -200,11 +152,7 @@ const PaymentOptions = ({
       ES: "Monto",
       IT: "Importo",
       PT: "Montante",
-      RO: "Sumă",
-      DE: "Betrag",
-      NL: "Bedrag",
-      PL: "Kwota",
-      RU: "Сумма"
+      RO: "Sumă"
     },
     deposit: {
       FR: "Acompte (20%)",
@@ -212,11 +160,7 @@ const PaymentOptions = ({
       ES: "Depósito (20%)",
       IT: "Acconto (20%)",
       PT: "Entrada (20%)",
-      RO: "Avans (20%)",
-      DE: "Anzahlung (20%)",
-      NL: "Aanbetaling (20%)",
-      PL: "Zaliczka (20%)",
-      RU: "Депозит (20%)"
+      RO: "Avans (20%)"
     },
     couponType: {
       FR: "Type de coupon",
@@ -224,11 +168,7 @@ const PaymentOptions = ({
       ES: "Tipo de cupón",
       IT: "Tipo di buono",
       PT: "Tipo de cupom",
-      RO: "Tip de cupon",
-      DE: "Gutscheintyp",
-      NL: "Coupontype",
-      PL: "Typ kuponu",
-      RU: "Тип купона"
+      RO: "Tip de cupon"
     },
     transcash: {
       FR: "Transcash",
@@ -236,11 +176,7 @@ const PaymentOptions = ({
       ES: "Transcash",
       IT: "Transcash",
       PT: "Transcash",
-      RO: "Transcash",
-      DE: "Transcash",
-      NL: "Transcash",
-      PL: "Transcash",
-      RU: "Transcash"
+      RO: "Transcash"
     },
     pcs: {
       FR: "PCS",
@@ -248,11 +184,7 @@ const PaymentOptions = ({
       ES: "PCS",
       IT: "PCS",
       PT: "PCS",
-      RO: "PCS",
-      DE: "PCS",
-      NL: "PCS",
-      PL: "PCS",
-      RU: "PCS"
+      RO: "PCS"
     },
     neosurf: {
       FR: "Neosurf",
@@ -260,11 +192,7 @@ const PaymentOptions = ({
       ES: "Neosurf",
       IT: "Neosurf",
       PT: "Neosurf",
-      RO: "Neosurf",
-      DE: "Neosurf",
-      NL: "Neosurf",
-      PL: "Neosurf",
-      RU: "Neosurf"
+      RO: "Neosurf"
     },
     amazonCard: {
       FR: "Carte Amazon",
@@ -272,11 +200,7 @@ const PaymentOptions = ({
       ES: "Tarjeta Amazon",
       IT: "Carta Amazon",
       PT: "Cartão Amazon",
-      RO: "Card Amazon",
-      DE: "Amazon-Karte",
-      NL: "Amazon-kaart",
-      PL: "Karta Amazon",
-      RU: "Карта Amazon"
+      RO: "Card Amazon"
     },
     couponCode: {
       FR: "Code du coupon",
@@ -284,11 +208,7 @@ const PaymentOptions = ({
       ES: "Código del cupón",
       IT: "Codice del buono",
       PT: "Código do cupom",
-      RO: "Cod cupon",
-      DE: "Gutscheincode",
-      NL: "Couponcode",
-      PL: "Kod kuponu",
-      RU: "Код купона"
+      RO: "Cod cupon"
     },
     uploadProof: {
       FR: "Télécharger une preuve de paiement",
@@ -296,11 +216,7 @@ const PaymentOptions = ({
       ES: "Subir comprobante de pago",
       IT: "Caricare prova di pagamento",
       PT: "Carregar comprovativo de pagamento",
-      RO: "Încărcați dovada plății",
-      DE: "Zahlungsnachweis hochladen",
-      NL: "Upload betalingsbewijs",
-      PL: "Prześlij dowód wpłaty",
-      RU: "Загрузить подтверждение оплаты"
+      RO: "Încărcați dovada plății"
     },
     paymentProofRequired: {
       FR: "Une preuve de paiement est requise pour finaliser votre commande",
@@ -308,11 +224,7 @@ const PaymentOptions = ({
       ES: "Se requiere un comprobante de pago para finalizar su pedido",
       IT: "È richiesta una prova di pagamento per finalizzare l'ordine",
       PT: "É necessário um comprovativo de pagamento para finalizar a sua encomenda",
-      RO: "Este necesară o dovadă de plată pentru a finaliza comanda",
-      DE: "Für den Abschluss Ihrer Bestellung ist ein Zahlungsnachweis erforderlich",
-      NL: "Een betalingsbewijs is vereist om je bestelling af te ronden",
-      PL: "Do finalizacji zamówienia wymagany jest dowód wpłaty",
-      RU: "Для завершения заказа требуется подтверждение оплаты"
+      RO: "Este necesară o dovadă de plată pentru a finaliza comanda"
     },
     dragFiles: {
       FR: "Glissez-déposez vos fichiers ici ou",
@@ -320,11 +232,7 @@ const PaymentOptions = ({
       ES: "Arrastre y suelte sus archivos aquí o",
       IT: "Trascina e rilascia i tuoi file qui o",
       PT: "Arraste e solte os seus ficheiros aqui ou",
-      RO: "Trageți și plasați fișierele dvs. aici sau",
-      DE: "Ziehen Sie Ihre Dateien hierher oder",
-      NL: "Sleep je bestanden hierheen of",
-      PL: "Przeciągnij i upuść pliki tutaj lub",
-      RU: "Перетащите файлы сюда или"
+      RO: "Trageți și plasați fișierele dvs. aici sau"
     },
     browseFiles: {
       FR: "parcourir les fichiers",
@@ -332,11 +240,7 @@ const PaymentOptions = ({
       ES: "explorar archivos",
       IT: "sfoglia i file",
       PT: "procurar ficheiros",
-      RO: "răsfoiți fișierele",
-      DE: "Dateien durchsuchen",
-      NL: "blader door bestanden",
-      PL: "przeglądaj pliki",
-      RU: "просмотр файлов"
+      RO: "răsfoiți fișierele"
     },
     fileTypes: {
       FR: "PDF, JPEG, PNG (Max 10 Mo)",
@@ -344,11 +248,7 @@ const PaymentOptions = ({
       ES: "PDF, JPEG, PNG (Máx 10 MB)",
       IT: "PDF, JPEG, PNG (Max 10 MB)",
       PT: "PDF, JPEG, PNG (Máx 10 MB)",
-      RO: "PDF, JPEG, PNG (Max 10 MB)",
-      DE: "PDF, JPEG, PNG (Max. 10 MB)",
-      NL: "PDF, JPEG, PNG (Max 10 MB)",
-      PL: "PDF, JPEG, PNG (Maks. 10 MB)",
-      RU: "PDF, JPEG, PNG (Макс. 10 МБ)"
+      RO: "PDF, JPEG, PNG (Max 10 MB)"
     },
     fileSelected: {
       FR: "Fichier sélectionné",
@@ -356,11 +256,7 @@ const PaymentOptions = ({
       ES: "Archivo seleccionado",
       IT: "File selezionato",
       PT: "Ficheiro selecionado",
-      RO: "Fișier selectat",
-      DE: "Datei ausgewählt",
-      NL: "Bestand geselecteerd",
-      PL: "Wybrano plik",
-      RU: "Файл выбран"
+      RO: "Fișier selectat"
     },
     removeFile: {
       FR: "Supprimer",
@@ -368,11 +264,7 @@ const PaymentOptions = ({
       ES: "Eliminar",
       IT: "Rimuovere",
       PT: "Remover",
-      RO: "Elimină",
-      DE: "Entfernen",
-      NL: "Verwijderen",
-      PL: "Usuń",
-      RU: "Удалить"
+      RO: "Elimină"
     },
     unavailable: {
       FR: "Indisponible temporairement",
@@ -380,11 +272,7 @@ const PaymentOptions = ({
       ES: "Temporalmente no disponible",
       IT: "Temporaneamente non disponibile",
       PT: "Temporariamente indisponível",
-      RO: "Temporar indisponibil",
-      DE: "Vorübergehend nicht verfügbar",
-      NL: "Tijdelijk niet beschikbaar",
-      PL: "Tymczasowo niedostępne",
-      RU: "Временно недоступно"
+      RO: "Temporar indisponibil"
     }
   };
 

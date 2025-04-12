@@ -24,7 +24,7 @@ const VehicleNotFound = ({ vehicleId, onRefresh }: VehicleNotFoundProps) => {
       )}
       
       <div className="flex flex-col sm:flex-row gap-3">
-        <Link to="/vehicules" className="flex-1">
+        <Link to="/vehicules/occasion" className="flex-1">
           <Button className="w-full">
             <ChevronLeft className="mr-2 h-4 w-4" />
             Retour aux véhicules

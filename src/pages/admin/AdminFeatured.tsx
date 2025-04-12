@@ -1,133 +1,140 @@
 
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { resetCatalog } from '@/utils/vehicleImportService';
-import { toast } from 'sonner';
-import { Trash2, RefreshCw } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/hooks/use-toast';
+import { 
+  updateVehicleInSupabase, 
+  fetchVehiclesFromSupabase 
+} from '@/utils/services/supabaseService';
+import { Label } from '@/components/ui/label';
+import { Star, Award, AlertCircle } from 'lucide-react';
+import { ImportedVehicle } from '@/utils/types/vehicle';
 
 const AdminFeatured = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
-  const handleResetFeaturedCatalog = () => {
-    setIsLoading(true);
-    try {
-      resetCatalog('featured');
-      toast.success("Le catalogue des véhicules en vedette a été vidé avec succès");
-    } catch (error) {
-      console.error("Erreur lors de la réinitialisation du catalogue vedette:", error);
-      toast.error("Erreur lors de la réinitialisation du catalogue vedette");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    const loadVehicles = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchVehiclesFromSupabase();
+        setVehicles(data);
+      } catch (error) {
+        console.error('Error loading vehicles:', error);
+        toast({
+          title: 'Erreur',
+          description: 'Impossible de charger les véhicules',
+          variant: 'destructive',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleResetStandardCatalog = () => {
-    setIsLoading(true);
-    try {
-      resetCatalog('standard');
-      toast.success("Le catalogue standard des véhicules a été vidé avec succès");
-    } catch (error) {
-      console.error("Erreur lors de la réinitialisation du catalogue standard:", error);
-      toast.error("Erreur lors de la réinitialisation du catalogue standard");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    loadVehicles();
+  }, [toast]);
 
-  const handleResetAllCatalogs = () => {
-    setIsLoading(true);
+  const handleToggleFeatured = async (vehicle: any, featured: boolean) => {
     try {
-      resetCatalog('all');
-      toast.success("Tous les catalogues de véhicules ont été vidés avec succès");
+      await updateVehicleInSupabase(vehicle.id, {
+        is_featured: featured
+      });
+      
+      setVehicles(prev => 
+        prev.map(v => v.id === vehicle.id ? { ...v, featured } : v)
+      );
+      
+      toast({
+        title: 'Mise à jour réussie',
+        description: `Le véhicule ${vehicle.brand} ${vehicle.model} a été ${featured ? 'ajouté aux' : 'retiré des'} véhicules en vedette`,
+      });
     } catch (error) {
-      console.error("Erreur lors de la réinitialisation des catalogues:", error);
-      toast.error("Erreur lors de la réinitialisation des catalogues");
-    } finally {
-      setIsLoading(false);
+      console.error('Error toggling featured status:', error);
+      toast({
+        title: 'Erreur',
+        description: 'Impossible de mettre à jour le statut du véhicule',
+        variant: 'destructive',
+      });
     }
   };
 
   return (
     <>
       <Helmet>
-        <title>Véhicules en vedette | Administration</title>
+        <title>Véhicules en Vedette | Administration</title>
       </Helmet>
-      
+
       <div className="p-6">
-        <h1 className="text-3xl font-bold mb-6">Gestion des véhicules en vedette</h1>
+        <h1 className="text-3xl font-bold mb-6">Gestion des Véhicules en Vedette</h1>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Réinitialiser les catalogues</CardTitle>
-              <CardDescription>
-                Supprimez tous les véhicules des catalogues. Cette action est irréversible.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Alert variant="destructive" className="mb-4">
-                <AlertTitle>Attention</AlertTitle>
-                <AlertDescription>
-                  La réinitialisation d'un catalogue supprimera définitivement tous les véhicules qu'il contient.
-                </AlertDescription>
-              </Alert>
-              
-              <div className="flex flex-col space-y-2">
-                <Button 
-                  variant="destructive" 
-                  onClick={handleResetFeaturedCatalog}
-                  disabled={isLoading}
-                  className="w-full"
-                >
-                  {isLoading ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Trash2 className="h-4 w-4 mr-2" />}
-                  Vider le catalogue vedette
-                </Button>
-                
-                <Button 
-                  variant="destructive" 
-                  onClick={handleResetStandardCatalog}
-                  disabled={isLoading}
-                  className="w-full"
-                >
-                  {isLoading ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Trash2 className="h-4 w-4 mr-2" />}
-                  Vider le catalogue standard
-                </Button>
-                
-                <Button 
-                  variant="destructive" 
-                  onClick={handleResetAllCatalogs}
-                  disabled={isLoading}
-                  className="w-full"
-                >
-                  {isLoading ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Trash2 className="h-4 w-4 mr-2" />}
-                  Vider tous les catalogues
-                </Button>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Award className="mr-2 h-5 w-5 text-yellow-500" />
+              Véhicules en Vedette
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="flex justify-center my-8">
+                <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
               </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Gérer les catalogues</CardTitle>
-              <CardDescription>
-                Accédez à l'interface de gestion des véhicules pour éditer ou ajouter des véhicules.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                onClick={() => navigate('/gestion-vehicules')}
-                className="w-full"
-              >
-                Aller à la gestion des véhicules
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+            ) : vehicles.length === 0 ? (
+              <div className="text-center py-8">
+                <AlertCircle className="mx-auto h-12 w-12 text-gray-400" />
+                <p className="mt-2 text-lg font-medium">Aucun véhicule trouvé</p>
+                <p className="text-gray-500">
+                  Ajoutez des véhicules pour les mettre en vedette sur la page d'accueil
+                </p>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Véhicule</TableHead>
+                    <TableHead>Prix</TableHead>
+                    <TableHead>En vedette</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {vehicles.map((vehicle) => (
+                    <TableRow key={vehicle.id}>
+                      <TableCell className="font-medium">
+                        {vehicle.brand} {vehicle.model} ({vehicle.year})
+                      </TableCell>
+                      <TableCell>{vehicle.price.toLocaleString('fr-FR')} €</TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id={`featured-${vehicle.id}`}
+                            checked={vehicle.featured || false}
+                            onCheckedChange={(checked) => handleToggleFeatured(vehicle, checked)}
+                          />
+                          <Label htmlFor={`featured-${vehicle.id}`}>
+                            {vehicle.featured ? (
+                              <span className="flex items-center text-yellow-600">
+                                <Star className="h-4 w-4 mr-1 fill-yellow-500 text-yellow-500" />
+                                En vedette
+                              </span>
+                            ) : (
+                              "Standard"
+                            )}
+                          </Label>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </>
   );

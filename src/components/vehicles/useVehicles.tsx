@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { type ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
 import { fetchVehiclesFromSupabase } from '@/utils/services/vehicleService';
 
 interface SearchFilters {
@@ -23,7 +23,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     try {
       const catalogType = featuredOnly ? 'featured' : 'standard';
       // Récupérer l'ID du catalogue à partir de l'URL si disponible
-      const catalogId = getCatalogIdFromUrl();
+      const catalogId = getCatalogIdFromUrl(catalogType);
       
       console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
       
@@ -175,6 +175,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     vehicles: filteredVehicles(),
     loading,
     error,
-    refresh: loadVehicles
+    refresh: loadVehicles // Exposer la fonction de rechargement
   };
 };

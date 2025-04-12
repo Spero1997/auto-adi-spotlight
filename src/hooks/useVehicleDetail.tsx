@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { type ImportedVehicle, getImportedVehicles, updateVehicleImage } from '@/utils/vehicleImportService';
+import { ImportedVehicle, getImportedVehicles, updateVehicleImage } from '@/utils/vehicleImportService';
 
 export const useVehicleDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,7 +35,8 @@ export const useVehicleDetail = () => {
       
       if (!foundVehicle) {
         // If still not found, check all vehicles with more flexible matching
-        console.log("Recherche plus flexible pour l'ID:", id);
+        vehicles = getImportedVehicles();
+        console.log("Véhicules chargés de tous les catalogues:", vehicles.length);
         
         foundVehicle = vehicles.find(v => 
           v.id === id || 
@@ -72,8 +73,7 @@ export const useVehicleDetail = () => {
   
   const updateImage = useCallback((newImageUrl: string) => {
     if (vehicle) {
-      const catalogType = vehicle.catalogType || 'standard';
-      const success = updateVehicleImage(vehicle.id, newImageUrl, catalogType as 'standard' | 'featured');
+      const success = updateVehicleImage(vehicle.id, newImageUrl, vehicle.catalogType);
       if (success) {
         setVehicle(prev => prev ? { ...prev, image: newImageUrl } : null);
         toast.success("Image du véhicule mise à jour");

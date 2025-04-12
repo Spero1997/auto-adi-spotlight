@@ -11,10 +11,6 @@ type SocialMediaTranslations = {
     IT: string;
     PT: string;
     RO: string;
-    DE: string;
-    NL: string;
-    PL: string;
-    RU: string;
   };
 };
 
@@ -28,11 +24,7 @@ const FooterSocialMedia = () => {
       ES: "Únase a nosotros en las redes sociales",
       IT: "Unisciti a noi sui social media",
       PT: "Junte-se a nós nas redes sociais",
-      RO: "Alăturați-vă nouă pe rețelele sociale",
-      DE: "Folgen Sie uns auf sozialen Medien",
-      NL: "Volg ons op sociale media",
-      PL: "Dołącz do nas w mediach społecznościowych",
-      RU: "Присоединяйтесь к нам в социальных сетях"
+      RO: "Alăturați-vă nouă pe rețelele sociale"
     },
     contactAvailability: {
       FR: "Nous sommes disponibles uniquement sur Facebook et WhatsApp",
@@ -40,11 +32,7 @@ const FooterSocialMedia = () => {
       ES: "Estamos disponibles solo en Facebook y WhatsApp",
       IT: "Siamo disponibili solo su Facebook e WhatsApp",
       PT: "Estamos disponíveis apenas no Facebook e WhatsApp",
-      RO: "Suntem disponibili doar pe Facebook și WhatsApp",
-      DE: "Wir sind nur auf Facebook und WhatsApp verfügbar",
-      NL: "We zijn alleen beschikbaar op Facebook en WhatsApp",
-      PL: "Jesteśmy dostępni tylko na Facebooku i WhatsAppie",
-      RU: "Мы доступны только в Facebook и WhatsApp"
+      RO: "Suntem disponibili doar pe Facebook și WhatsApp"
     },
     facebookPage: {
       FR: "Page Facebook",
@@ -52,11 +40,7 @@ const FooterSocialMedia = () => {
       ES: "Página de Facebook",
       IT: "Pagina Facebook",
       PT: "Página do Facebook",
-      RO: "Pagina Facebook",
-      DE: "Facebook-Seite",
-      NL: "Facebook-pagina",
-      PL: "Strona Facebook",
-      RU: "Страница Facebook"
+      RO: "Pagina Facebook"
     }
   };
 

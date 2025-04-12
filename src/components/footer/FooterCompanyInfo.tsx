@@ -12,10 +12,6 @@ type CompanyInfoTranslations = {
     IT: string;
     PT: string;
     RO: string;
-    DE: string;
-    NL: string;
-    PL: string;
-    RU: string;
   };
 };
 
@@ -29,11 +25,7 @@ const FooterCompanyInfo = () => {
       ES: "Auto Adi, su socio de confianza para la compra de vehículos nuevos y usados en Europa.",
       IT: "Auto Adi, il tuo partner di fiducia per l'acquisto di veicoli nuovi e usati in Europa.",
       PT: "Auto Adi, o seu parceiro de confiança para a compra de veículos novos e usados na Europa.",
-      RO: "Auto Adi, partenerul dvs. de încredere pentru achiziționarea de vehicule noi și second-hand în Europa.",
-      DE: "Auto Adi, Ihr vertrauenswürdiger Partner für den Kauf von Neu- und Gebrauchtwagen in Europa.",
-      NL: "Auto Adi, uw betrouwbare partner voor de aankoop van nieuwe en gebruikte voertuigen in Europa.",
-      PL: "Auto Adi, Twój zaufany partner w zakupie nowych i używanych pojazdów w Europie.",
-      RU: "Auto Adi, ваш надежный партнер по покупке новых и подержанных автомобилей в Европе."
+      RO: "Auto Adi, partenerul dvs. de încredere pentru achiziționarea de vehicule noi și second-hand în Europa."
     }
   };
 

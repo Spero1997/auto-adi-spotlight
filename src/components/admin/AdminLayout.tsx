@@ -1,19 +1,17 @@
 
 import React from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Car, Users, CreditCard, Tag, BarChart2, Award, Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import AuthGuard from './AuthGuard';
-import { useAuth } from '@/hooks/use-auth';
 
 const AdminLayout = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user } = useAuth();
+  const { toast } = useToast();
 
   const navigation = [
     { name: 'Tableau de bord', href: '/admin', icon: LayoutDashboard },
@@ -27,23 +25,25 @@ const AdminLayout = () => {
   ];
 
   const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        toast.error('Erreur de déconnexion: ' + error.message);
-        console.error('Error signing out:', error);
-        return;
-      }
-      
-      toast.success('Déconnexion réussie');
-      
-      // Redirect to login
-      navigate('/admin/login');
-    } catch (e) {
-      console.error('Unexpected error during sign out:', e);
-      toast.error('Une erreur inattendue est survenue');
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      toast({
+        title: 'Erreur de déconnexion',
+        description: error.message,
+        variant: 'destructive',
+      });
+      console.error('Error signing out:', error);
+      return;
     }
+    
+    toast({
+      title: 'Déconnexion réussie',
+      description: 'Vous avez été déconnecté avec succès',
+    });
+    
+    // Redirect to login
+    window.location.href = '/admin/login';
   };
 
   return (

@@ -1,317 +1,278 @@
+import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { Language, useLanguage } from '@/contexts/LanguageContext';
 
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { useLanguage } from '@/contexts/LanguageContext';
-
-type Testimonial = {
-  id: number;
-  name: string;
-  role: string;
-  content: {
-    FR: string;
-    EN: string;
-    ES: string;
-    IT: string;
-    PT: string;
-    RO: string;
-    DE: string;
-    NL: string;
-    PL: string;
-    RU: string;
-  };
-  rating: number;
-  location: {
-    FR: string;
-    EN: string;
-    ES: string;
-    IT: string;
-    PT: string;
-    RO: string;
-    DE: string;
-    NL: string;
-    PL: string;
-    RU: string;
-  };
-  date: string;
-};
-
-const testimonials: Testimonial[] = [
+const testimonials = [
   {
     id: 1,
-    name: "Jean Dupont",
-    role: "Client",
-    content: {
-      FR: "J'ai acheté ma voiture chez Auto Adi et je suis très satisfait. Le processus a été simple, le prix était compétitif, et la voiture est exactement ce que je cherchais. Le service client était exceptionnel.",
-      EN: "I bought my car from Auto Adi and I'm very satisfied. The process was simple, the price was competitive, and the car is exactly what I was looking for. Customer service was exceptional.",
-      ES: "Compré mi auto en Auto Adi y estoy muy satisfecho. El proceso fue simple, el precio fue competitivo, y el auto es exactamente lo que estaba buscando. El servicio al cliente fue excepcional.",
-      IT: "Ho acquistato la mia auto da Auto Adi e sono molto soddisfatto. Il processo è stato semplice, il prezzo era competitivo e l'auto è esattamente ciò che stavo cercando. Il servizio clienti è stato eccezionale.",
-      PT: "Comprei o meu carro na Auto Adi e estou muito satisfeito. O processo foi simples, o preço foi competitivo e o carro é exatamente o que eu estava procurando. O atendimento ao cliente foi excepcional.",
-      RO: "Mi-am cumpărat mașina de la Auto Adi și sunt foarte mulțumit. Procesul a fost simplu, prețul a fost competitiv, iar mașina este exact ceea ce căutam. Serviciul pentru clienți a fost excepțional.",
-      DE: "Ich habe mein Auto bei Auto Adi gekauft und bin sehr zufrieden. Der Prozess war einfach, der Preis war wettbewerbsfähig und das Auto ist genau das, was ich gesucht habe. Der Kundenservice war außergewöhnlich.",
-      NL: "Ik heb mijn auto bij Auto Adi gekocht en ben erg tevreden. Het proces was eenvoudig, de prijs was concurrerend en de auto is precies wat ik zocht. De klantenservice was uitzonderlijk.",
-      PL: "Kupiłem samochód w Auto Adi i jestem bardzo zadowolony. Proces był prosty, cena była konkurencyjna, a samochód jest dokładnie tym, czego szukałem. Obsługa klienta była wyjątkowa.",
-      RU: "Я купил свою машину в Auto Adi и очень доволен. Процесс был простым, цена была конкурентоспособной, а автомобиль - именно то, что я искал. Обслуживание клиентов было исключительным."
-    },
+    name: "Sophie Martin",
+    position: "Directrice marketing",
+    message: "J'ai acheté ma nouvelle Peugeot 3008 chez Auto Adi et je suis ravie du service. Le personnel était incroyablement serviable et professionnel. Je recommande vivement!",
     rating: 5,
-    location: {
-      FR: "Paris, France",
-      EN: "Paris, France",
-      ES: "París, Francia",
-      IT: "Parigi, Francia",
-      PT: "Paris, França",
-      RO: "Paris, Franța",
-      DE: "Paris, Frankreich",
-      NL: "Parijs, Frankrijk",
-      PL: "Paryż, Francja",
-      RU: "Париж, Франция"
-    },
-    date: "15/02/2024"
+    avatar: "https://randomuser.me/api/portraits/women/12.jpg",
+    language: "Français"
   },
   {
     id: 2,
-    name: "Maria Rossi",
-    role: "Client",
-    content: {
-      FR: "Le service de financement d'Auto Adi m'a permis d'acheter la voiture de mes rêves sans stress financier. Les taux étaient excellents et le processus transparent. Je recommande vivement !",
-      EN: "Auto Adi's financing service allowed me to buy the car of my dreams without financial stress. The rates were excellent and the process transparent. I highly recommend!",
-      ES: "El servicio de financiamiento de Auto Adi me permitió comprar el auto de mis sueños sin estrés financiero. Las tasas eran excelentes y el proceso transparente. ¡Lo recomiendo encarecidamente!",
-      IT: "Il servizio di finanziamento di Auto Adi mi ha permesso di acquistare l'auto dei miei sogni senza stress finanziario. I tassi erano eccellenti e il processo trasparente. Consiglio vivamente!",
-      PT: "O serviço de financiamento da Auto Adi permitiu-me comprar o carro dos meus sonhos sem stress financeiro. As taxas eram excelentes e o processo transparente. Recomendo vivamente!",
-      RO: "Serviciul de finanțare Auto Adi mi-a permis să cumpăr mașina visurilor mele fără stres financiar. Ratele au fost excelente și procesul transparent. Recomand cu căldură!",
-      DE: "Der Finanzierungsservice von Auto Adi ermöglichte es mir, das Auto meiner Träume ohne finanziellen Stress zu kaufen. Die Zinssätze waren ausgezeichnet und der Prozess transparent. Ich empfehle es sehr!",
-      NL: "De financieringsservice van Auto Adi stelde me in staat om de auto van mijn dromen te kopen zonder financiële stress. De tarieven waren uitstekend en het proces transparant. Ik raad het ten zeerste aan!",
-      PL: "Usługa finansowania Auto Adi pozwoliła mi kupić samochód moich marzeń bez stresu finansowego. Stawki były doskonałe, a proces przejrzysty. Gorąco polecam!",
-      RU: "Услуга финансирования Auto Adi позволила мне купить автомобиль моей мечты без финансового стресса. Ставки были отличными, а процесс прозрачным. Я настоятельно рекомендую!"
-    },
+    name: "Thomas Dubois",
+    position: "Ingénieur",
+    message: "Service clientèle exceptionnel! J'ai trouvé exactement la voiture que je cherchais à un prix très raisonnable. Le processus de financement était simple et rapide.",
     rating: 5,
-    location: {
-      FR: "Milan, Italie",
-      EN: "Milan, Italy",
-      ES: "Milán, Italia",
-      IT: "Milano, Italia",
-      PT: "Milão, Itália",
-      RO: "Milano, Italia",
-      DE: "Mailand, Italien",
-      NL: "Milaan, Italië",
-      PL: "Mediolan, Włochy",
-      RU: "Милан, Италия"
-    },
-    date: "03/01/2024"
+    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    language: "Français"
   },
   {
     id: 3,
-    name: "Thomas Schmidt",
-    role: "Client",
-    content: {
-      FR: "J'ai repris ma voiture chez Auto Adi et j'ai obtenu un prix bien supérieur à ce que d'autres concessionnaires m'avaient proposé. Le processus a été simple et rapide. Je suis très satisfait de leur service.",
-      EN: "I traded in my car at Auto Adi and got a price much higher than what other dealers had offered me. The process was simple and quick. I am very satisfied with their service.",
-      ES: "Cambié mi auto en Auto Adi y conseguí un precio mucho más alto de lo que otros concesionarios me habían ofrecido. El proceso fue simple y rápido. Estoy muy satisfecho con su servicio.",
-      IT: "Ho permutato la mia auto presso Auto Adi e ho ottenuto un prezzo molto più alto rispetto a quello offerto da altri concessionari. Il processo è stato semplice e veloce. Sono molto soddisfatto del loro servizio.",
-      PT: "Troquei o meu carro na Auto Adi e consegui um preço muito superior ao que outros concessionários me tinham oferecido. O processo foi simples e rápido. Estou muito satisfeito com o serviço deles.",
-      RO: "Mi-am dat mașina la schimb la Auto Adi și am obținut un preț mult mai mare decât ceea ce îmi oferiseră alți dealeri. Procesul a fost simplu și rapid. Sunt foarte mulțumit de serviciul lor.",
-      DE: "Ich habe mein Auto bei Auto Adi eingetauscht und einen viel höheren Preis bekommen als andere Händler mir angeboten hatten. Der Prozess war einfach und schnell. Ich bin mit ihrem Service sehr zufrieden.",
-      NL: "Ik heb mijn auto ingeruild bij Auto Adi en kreeg een veel hogere prijs dan wat andere dealers mij hadden aangeboden. Het proces was eenvoudig en snel. Ik ben zeer tevreden over hun service.",
-      PL: "Wymieniłem swój samochód w Auto Adi i otrzymałem cenę znacznie wyższą niż ta, którą zaoferowali mi inni dealerzy. Proces był prosty i szybki. Jestem bardzo zadowolony z ich usług.",
-      RU: "Я обменял свою машину в Auto Adi и получил цену намного выше, чем предлагали другие дилеры. Процесс был простым и быстрым. Я очень доволен их обслуживанием."
-    },
-    rating: 5,
-    location: {
-      FR: "Berlin, Allemagne",
-      EN: "Berlin, Germany",
-      ES: "Berlín, Alemania",
-      IT: "Berlino, Germania",
-      PT: "Berlim, Alemanha",
-      RO: "Berlin, Germania",
-      DE: "Berlin, Deutschland",
-      NL: "Berlijn, Duitsland",
-      PL: "Berlin, Niemcy",
-      RU: "Берлин, Германия"
-    },
-    date: "20/12/2023"
+    name: "Julie Petit",
+    position: "Enseignante",
+    message: "Auto Adi a rendu l'achat de ma première voiture si facile! Le personnel m'a aidée à choisir un véhicule qui correspond parfaitement à mon budget et à mes besoins.",
+    rating: 4,
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    language: "Français"
   },
   {
     id: 4,
-    name: "Ana Petrescu",
-    role: "Client",
-    content: {
-      FR: "Excellente expérience d'achat avec Auto Adi. La voiture était en parfait état, exactement comme décrite. Le service après-vente est impeccable. Je n'hésiterai pas à revenir pour mon prochain achat.",
-      EN: "Excellent buying experience with Auto Adi. The car was in perfect condition, exactly as described. The after-sales service is impeccable. I won't hesitate to come back for my next purchase.",
-      ES: "Excelente experiencia de compra con Auto Adi. El auto estaba en perfectas condiciones, exactamente como se describió. El servicio postventa es impecable. No dudaré en volver para mi próxima compra.",
-      IT: "Eccellente esperienza di acquisto con Auto Adi. L'auto era in perfette condizioni, esattamente come descritto. Il servizio post-vendita è impeccabile. Non esiterò a tornare per il mio prossimo acquisto.",
-      PT: "Excelente experiência de compra com a Auto Adi. O carro estava em perfeitas condições, exatamente como descrito. O serviço pós-venda é impecável. Não hesitarei em voltar para a minha próxima compra.",
-      RO: "Experiență excelentă de cumpărare cu Auto Adi. Mașina era în stare perfectă, exact așa cum a fost descrisă. Serviciul post-vânzare este impecabil. Nu voi ezita să revin pentru următoarea achiziție.",
-      DE: "Ausgezeichnetes Kauferlebnis mit Auto Adi. Das Auto war in einwandfreiem Zustand, genau wie beschrieben. Der Kundendienst ist einwandfrei. Ich werde nicht zögern, für meinen nächsten Kauf zurückzukommen.",
-      NL: "Uitstekende koopervaring bij Auto Adi. De auto was in perfecte staat, precies zoals beschreven. De after-sales service is onberispelijk. Ik zal niet aarzelen om terug te komen voor mijn volgende aankoop.",
-      PL: "Doskonałe doświadczenie zakupowe z Auto Adi. Samochód był w idealnym stanie, dokładnie tak jak opisano. Obsługa posprzedażowa jest nienaganna. Nie zawaham się wrócić po następny zakup.",
-      RU: "Отличный опыт покупки в Auto Adi. Автомобиль был в отличном состоянии, точно как описано. Послепродажное обслуживание безупречно. Я без колебаний вернусь за следующей покупкой."
-    },
+    name: "Marc Lambert",
+    position: "Chef d'entreprise",
+    message: "Excellente sélection de véhicules haut de gamme. Je suis très satisfait de mon Audi A5 et du service personnalisé que j'ai reçu. Je reviendrai certainement pour mon prochain achat.",
     rating: 5,
-    location: {
-      FR: "Bucarest, Roumanie",
-      EN: "Bucharest, Romania",
-      ES: "Bucarest, Rumania",
-      IT: "Bucarest, Romania",
-      PT: "Bucareste, Roménia",
-      RO: "București, România",
-      DE: "Bukarest, Rumänien",
-      NL: "Boekarest, Roemenië",
-      PL: "Bukareszt, Rumunia",
-      RU: "Бухарест, Румыния"
-    },
-    date: "05/11/2023"
+    avatar: "https://randomuser.me/api/portraits/men/46.jpg",
+    language: "Français"
+  },
+  {
+    id: 5,
+    name: "Marco Rossi",
+    position: "Architetto",
+    message: "Ho comprato la mia BMW Serie 5 da Auto Adi e sono rimasto colpito dalla qualità del servizio. Il team è professionale e attento alle esigenze del cliente. Tornerò sicuramente!",
+    rating: 5,
+    avatar: "/lovable-uploads/f589fba6-8301-4717-8c66-976c7c7bbcd7.png",
+    language: "Italien"
+  },
+  {
+    id: 6,
+    name: "Robert Miller",
+    position: "Truck Driver",
+    message: "I found my Volkswagen Touareg at Auto Adi while traveling through France. Despite the language barrier, they made the process incredibly smooth. Excellent service!",
+    rating: 5,
+    avatar: "/lovable-uploads/99e4c269-15bf-4ced-8ed9-f4c03f6f1378.png",
+    language: "Anglais"
+  },
+  {
+    id: 7,
+    name: "Carlos Mendoza",
+    position: "Ejecutivo de ventas",
+    message: "¡Excelente experiencia! Compré un Renault Captur y estoy muy satisfecho con la calidad y el precio. El equipo de Auto Adi fue muy atento y transparente durante todo el proceso.",
+    rating: 4,
+    avatar: "/lovable-uploads/39a66c8b-f5a7-452c-b7a1-ea5713f7a059.png",
+    language: "Espagnol"
+  },
+  {
+    id: 8,
+    name: "Maria Silva",
+    position: "Enfermeira",
+    message: "Encontrei o carro perfeito para minha família na Auto Adi. O Citroën C4 tem sido uma excelente escolha e o preço estava dentro do meu orçamento. Atendimento cinco estrelas!",
+    rating: 5,
+    avatar: "/lovable-uploads/0dd80e06-e79c-4aee-98e3-92fdad89a399.png",
+    language: "Portugais"
+  },
+  {
+    id: 9,
+    name: "Francesca Bianchi",
+    position: "Insegnante",
+    message: "Ho visitato Auto Adi durante la mia vacanza in Francia e sono rimasta impressionata dalla vasta gamma di veicoli. Ho acquistato una Peugeot 208 a un prezzo incredibile!",
+    rating: 5,
+    avatar: "/lovable-uploads/0467d19e-0099-458b-ad02-3a728b8c0048.png",
+    language: "Italien"
+  },
+  {
+    id: 10,
+    name: "Heinrich Weber",
+    position: "Ingenieur",
+    message: "Ich habe meinen Mercedes bei Auto Adi gekauft und bin sehr zufrieden mit dem Service. Das Team war äußerst hilfsbereit und hat mir einen fantastischen Preis angeboten.",
+    rating: 5,
+    avatar: "/lovable-uploads/53e6dee5-6e5b-48db-85d6-065a7bdc8435.png",
+    language: "Allemand"
+  },
+  {
+    id: 11,
+    name: "José Rodriguez",
+    position: "Empresario",
+    message: "Auto Adi ofrece una selección impresionante de vehículos de alta gama. El personal fue muy profesional y me ayudó a encontrar exactamente lo que buscaba. ¡Muy recomendable!",
+    rating: 5,
+    avatar: "/lovable-uploads/52ca535e-08c4-44c4-b40e-2610809981e8.png",
+    language: "Espagnol"
+  },
+  {
+    id: 12,
+    name: "Pedro Costa",
+    position: "Gerente de projeto",
+    message: "Comprei meu Renault Megane na Auto Adi e fiquei impressionado com o processo simples e transparente. A equipe foi extremamente prestativa e consegui um ótimo negócio.",
+    rating: 4,
+    avatar: "/lovable-uploads/c16ba104-bd7b-4103-8664-8e744b0ac0e2.png",
+    language: "Portugais"
+  },
+  {
+    id: 13,
+    name: "Elizabeth Turner",
+    position: "Office Manager",
+    message: "I was visiting France and needed a reliable dealership. Auto Adi exceeded my expectations with their English-speaking staff and exceptional service. I highly recommend them!",
+    rating: 5,
+    avatar: "/lovable-uploads/3bad6300-9dea-486e-b0cd-a6c2784c35c1.png",
+    language: "Anglais"
+  },
+  {
+    id: 14,
+    name: "Giovanni Ricci",
+    position: "Consulente finanziario",
+    message: "Servizio eccellente e prezzi competitivi. Ho acquistato una Citroën C3 per mia figlia e siamo entrambi molto soddisfatti. Il personale di Auto Adi è stato fantastico!",
+    rating: 5,
+    avatar: "/lovable-uploads/6148daec-b490-4c80-a5c6-634990c2ecd1.png",
+    language: "Italien"
   }
 ];
 
 const TestimonialSection = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const { language, translate } = useLanguage();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState<'left' | 'right' | null>(null);
+  const { language } = useLanguage();
 
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+  const nextTestimonial = () => {
+    setDirection('right');
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
   };
 
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
+  const prevTestimonial = () => {
+    setDirection('left');
+    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
-  const sectionTitle = {
-    FR: "Ce que nos clients disent",
-    EN: "What our customers say",
-    ES: "Lo que dicen nuestros clientes",
-    IT: "Cosa dicono i nostri clienti",
-    PT: "O que dizem os nossos clientes",
-    RO: "Ce spun clienții noștri",
-    DE: "Was unsere Kunden sagen",
-    NL: "Wat onze klanten zeggen",
-    PL: "Co mówią nasi klienci",
-    RU: "Что говорят наши клиенты"
+  const translations: Record<string, Record<Language, string>> = {
+    'title': {
+      'FR': 'Ce que disent nos clients',
+      'EN': 'What our customers say',
+      'ES': 'Lo que dicen nuestros clientes',
+      'IT': 'Cosa dicono i nostri clienti',
+      'PT': 'O que nossos clientes dizem',
+      'RO': 'Ce spun clienții noștri'
+    },
+    'subtitle': {
+      'FR': 'Découvrez les témoignages de nos clients satisfaits qui ont trouvé leur bonheur chez Auto Adi.',
+      'EN': 'Discover testimonials from our satisfied customers who found their happiness at Auto Adi.',
+      'ES': 'Descubra testimonios de nuestros clientes satisfechos que encontraron su felicidad en Auto Adi.',
+      'IT': 'Scopri le testimonianze dei nostri clienti soddisfatti che hanno trovato la loro felicità presso Auto Adi.',
+      'PT': 'Descubra depoimentos de nossos clientes satisfeitos que encontraram sua felicidade na Auto Adi.',
+      'RO': 'Descoperiți mărturiile clienților noștri mulțumiți care și-au găsit fericirea la Auto Adi.'
+    },
+    'prevButton': {
+      'FR': 'Témoignage précédent',
+      'EN': 'Previous testimonial',
+      'ES': 'Testimonio anterior',
+      'IT': 'Testimonianza precedente',
+      'PT': 'Depoimento anterior',
+      'RO': 'Mărturia anterioară'
+    },
+    'nextButton': {
+      'FR': 'Témoignage suivant',
+      'EN': 'Next testimonial',
+      'ES': 'Siguiente testimonio',
+      'IT': 'Prossima testimonianza',
+      'PT': 'Próximo depoimento',
+      'RO': 'Următoarea mărturie'
+    }
   };
 
-  const sectionSubtitle = {
-    FR: "Des avis authentiques de clients satisfaits",
-    EN: "Authentic reviews from satisfied customers",
-    ES: "Opiniones auténticas de clientes satisfechos",
-    IT: "Recensioni autentiche di clienti soddisfatti",
-    PT: "Avaliações autênticas de clientes satisfeitos",
-    RO: "Recenzii autentice de la clienți mulțumiți",
-    DE: "Authentische Bewertungen von zufriedenen Kunden",
-    NL: "Authentieke beoordelingen van tevreden klanten",
-    PL: "Autentyczne recenzje od zadowolonych klientów",
-    RU: "Подлинные отзывы от довольных клиентов"
+  const getTranslation = (key: string) => {
+    return translations[key]?.[language] || translations[key]?.['FR'] || key;
   };
 
-  const viewAllText = {
-    FR: "Voir tous les avis",
-    EN: "View all reviews",
-    ES: "Ver todas las opiniones",
-    IT: "Visualizza tutte le recensioni",
-    PT: "Ver todas as avaliações",
-    RO: "Vezi toate recenziile",
-    DE: "Alle Bewertungen anzeigen",
-    NL: "Bekijk alle beoordelingen",
-    PL: "Zobacz wszystkie recenzje",
-    RU: "Посмотреть все отзывы"
-  };
-
-  const clientText = {
-    FR: "Client",
-    EN: "Customer",
-    ES: "Cliente",
-    IT: "Cliente",
-    PT: "Cliente",
-    RO: "Client",
-    DE: "Kunde",
-    NL: "Klant",
-    PL: "Klient",
-    RU: "Клиент"
-  };
-  
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {translate('testimonialTitle', sectionTitle)}
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            {translate('testimonialSubtitle', sectionSubtitle)}
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{getTranslation('title')}</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            {getTranslation('subtitle')}
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {testimonials.map((testimonial, index) => (
-            <Card key={testimonial.id} className={`overflow-hidden shadow-md transition-shadow hover:shadow-lg ${currentIndex === index ? 'ring-2 ring-brand-blue' : ''}`}>
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="font-semibold text-lg">{testimonial.name}</h3>
-                    <p className="text-gray-500 text-sm">{translate('client', clientText)}</p>
-                  </div>
-                  <Quote className="text-brand-blue h-6 w-6 flex-shrink-0" />
-                </div>
-                
-                <p className="text-gray-700 mb-4 line-clamp-4">
-                  {testimonial.content[language]}
-                </p>
-                
-                <div className="mt-auto">
-                  <div className="flex space-x-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${i < testimonial.rating ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'}`}
-                      />
-                    ))}
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-xs text-gray-500">
-                    <span>{testimonial.location[language]}</span>
-                    <span>{testimonial.date}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        
-        <div className="flex justify-center space-x-4 mb-8">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={goToPrevious}
-            className="rounded-full"
+
+        <div className="relative max-w-4xl mx-auto px-8">
+          <button 
+            onClick={prevTestimonial} 
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 hover:bg-gray-100"
+            aria-label={getTranslation('prevButton')}
           >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+            <ChevronLeft className="h-6 w-6 text-gray-600" />
+          </button>
           
-          {testimonials.map((_, index) => (
-            <Button
-              key={index}
-              variant="ghost"
-              size="sm"
-              onClick={() => setCurrentIndex(index)}
-              className={`rounded-full w-8 h-8 p-0 ${currentIndex === index ? 'bg-brand-blue text-white' : 'text-gray-400'}`}
+          <button 
+            onClick={nextTestimonial} 
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 hover:bg-gray-100"
+            aria-label={getTranslation('nextButton')}
+          >
+            <ChevronRight className="h-6 w-6 text-gray-600" />
+          </button>
+
+          <div className="bg-white p-8 rounded-lg shadow-lg overflow-hidden">
+            <div 
+              className={`flex flex-col items-center text-center transition-opacity duration-300 ${
+                direction ? 'animate-slide-in' : ''
+              }`}
+              onAnimationEnd={() => setDirection(null)}
             >
-              {index + 1}
-            </Button>
-          ))}
-          
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={goToNext}
-            className="rounded-full"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        <div className="text-center">
-          <Button variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white transition-colors">
-            {translate('viewAllReviews', viewAllText)}
-          </Button>
+              <div className="mb-4">
+                <span className="inline-block px-3 py-1 bg-brand-blue text-white rounded-full text-sm">
+                  {testimonials[activeIndex].language}
+                </span>
+              </div>
+
+              <div className="mb-6">
+                <img 
+                  src={testimonials[activeIndex].avatar} 
+                  alt={testimonials[activeIndex].name} 
+                  className="w-24 h-24 rounded-full object-cover border-4 border-brand-blue"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder.svg"; // Fallback to placeholder if image fails to load
+                  }}
+                />
+              </div>
+              
+              <div className="flex mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star 
+                    key={i} 
+                    fill={i < testimonials[activeIndex].rating ? "#FF9752" : "none"} 
+                    className={`h-5 w-5 ${i < testimonials[activeIndex].rating ? "text-brand-orange" : "text-gray-300"}`} 
+                  />
+                ))}
+              </div>
+              
+              <blockquote className="text-xl italic text-gray-700 mb-6">
+                "{testimonials[activeIndex].message}"
+              </blockquote>
+              
+              <div className="text-gray-900 font-semibold">
+                {testimonials[activeIndex].name}
+              </div>
+              
+              <div className="text-gray-600">
+                {testimonials[activeIndex].position}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-center mt-8 space-x-2 flex-wrap">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                className={`w-3 h-3 rounded-full mb-2 ${
+                  index === activeIndex ? 'bg-brand-blue' : 'bg-gray-300'
+                }`}
+                aria-label={`${getTranslation('nextButton')} ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,4 @@
 
-// Only updating the translation objects
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -47,11 +46,7 @@ const Index = () => {
       ES: "Auto Adi - Concesionario de coches económicos | Compra de coches nuevos y usados en Florencia, Italia",
       IT: "Auto Adi - Concessionario auto economico | Acquisto auto nuove e usate a Firenze, Italia",
       PT: "Auto Adi - Concessionário de automóveis acessível | Carros novos e usados em Florença, Itália",
-      RO: "Auto Adi - Dealer auto la prețuri accesibile | Mașini noi și second-hand în Florența, Italia",
-      DE: "Auto Adi - Günstiger Autohändler | Neue und gebrauchte Autos in Florenz, Italien",
-      NL: "Auto Adi - Betaalbare autodealer | Nieuwe en gebruikte auto's in Florence, Italië",
-      PL: "Auto Adi - Przystępny cenowo dealer samochodowy | Nowe i używane samochody we Florencji, Włochy",
-      RU: "Auto Adi - Доступный автодилер | Новые и подержанные автомобили во Флоренции, Италия"
+      RO: "Auto Adi - Dealer auto la prețuri accesibile | Mașini noi și second-hand în Florența, Italia"
     },
     pageDescription: {
       FR: "Auto Adi, votre concessionnaire automobile de confiance pour l'achat de véhicules neufs et d'occasion à Florence. Financement auto taux 0%, reprise véhicule gratuite et garanties exceptionnelles.",
@@ -59,11 +54,7 @@ const Index = () => {
       ES: "Auto Adi, su concesionario de confianza para la compra de vehículos nuevos y usados en Florencia. Financiación al 0%, recompra gratuita y garantías excepcionales.",
       IT: "Auto Adi, il tuo concessionario di fiducia per l'acquisto di veicoli nuovi e usati a Firenze. Finanziamento auto 0%, ripresa gratuita del veicolo e garanzie eccezionali.",
       PT: "Auto Adi, seu concessionário de confiança para a compra de veículos novos e usados em Florença. Financiamento automóvel 0%, retoma gratuita de veículos e garantias excepcionais.",
-      RO: "Auto Adi, dealerul dvs. auto de încredere pentru achiziționarea de vehicule noi și second-hand în Florența. Finanțare auto 0%, preluare gratuită a vehiculelor și garanții excepționale.",
-      DE: "Auto Adi, Ihr vertrauenswürdiger Autohändler für den Kauf von Neu- und Gebrauchtwagen in Florenz. 0% Autofinanzierung, kostenlose Fahrzeuginzahlungnahme und außergewöhnliche Garantien.",
-      NL: "Auto Adi, uw vertrouwde autodealer voor het kopen van nieuwe en gebruikte voertuigen in Florence. 0% autofinanciering, gratis inruil van voertuigen en uitzonderlijke garanties.",
-      PL: "Auto Adi, Twój zaufany dealer samochodowy do zakupu nowych i używanych pojazdów we Florencji. Finansowanie samochodu 0%, bezpłatny odkup pojazdu i wyjątkowe gwarancje.",
-      RU: "Auto Adi, ваш надежный автодилер для покупки новых и подержанных автомобилей во Флоренции. Автофинансирование 0%, бесплатный обмен автомобилей и исключительные гарантии."
+      RO: "Auto Adi, dealerul dvs. auto de încredere pentru achiziționarea de vehicule noi și second-hand în Florența. Finanțare auto 0%, preluare gratuită a vehiculelor și garanții excepționale."
     },
   };
 
