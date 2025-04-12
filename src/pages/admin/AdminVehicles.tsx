@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
+import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, addVehicle } from '@/utils/vehicleImportService';
 
 // UI Components
 import VehicleTable from '@/components/admin/vehicles/VehicleTable';
@@ -19,9 +18,7 @@ const AdminVehicles: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState<ImportedVehicle | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
-  const [newImageUrl, setNewImageUrl] = useState('');
-  const navigate = useNavigate();
-
+  
   useEffect(() => {
     loadVehicles();
     
@@ -48,6 +45,29 @@ const AdminVehicles: React.FC = () => {
     setSearchTerm(value);
   };
 
+  const handleAddNewVehicle = () => {
+    // Créer un nouveau véhicule vide plutôt que de rediriger
+    const newVehicle: ImportedVehicle = {
+      id: `vehicle-standard-${Date.now()}`,
+      brand: '',
+      model: '',
+      year: new Date().getFullYear(),
+      mileage: 0,
+      price: 0,
+      fuelType: 'Essence',
+      transmission: 'Manuelle',
+      exteriorColor: '',
+      interiorColor: '',
+      image: '',
+      description: '',
+      features: [],
+      catalogType: 'standard'
+    };
+    
+    setCurrentVehicle(newVehicle);
+    setIsEditDialogOpen(true);
+  };
+
   const handleEditClick = (vehicle: ImportedVehicle) => {
     setCurrentVehicle({ 
       ...vehicle,
@@ -60,14 +80,26 @@ const AdminVehicles: React.FC = () => {
     if (!vehicle) return;
 
     try {
-      const updatedVehicles = vehicles.map(v => 
-        v.id === vehicle.id ? vehicle : v
-      );
+      // Si c'est un nouveau véhicule (sans ID existant dans la liste)
+      const isNewVehicle = !vehicles.some(v => v.id === vehicle.id);
       
-      saveImportedVehicles(updatedVehicles);
-      setVehicles(updatedVehicles);
+      if (isNewVehicle) {
+        // Ajouter un nouveau véhicule
+        addVehicle(vehicle, 'standard');
+        setVehicles([...vehicles, vehicle]);
+        toast.success(`${vehicle.brand} ${vehicle.model} ajouté avec succès`);
+      } else {
+        // Mettre à jour un véhicule existant
+        const updatedVehicles = vehicles.map(v => 
+          v.id === vehicle.id ? vehicle : v
+        );
+        
+        saveImportedVehicles(updatedVehicles);
+        setVehicles(updatedVehicles);
+        toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
+      }
+      
       setIsEditDialogOpen(false);
-      toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
     } catch (error) {
       console.error("Error saving vehicle:", error);
       toast.error("Erreur lors de la sauvegarde du véhicule");
@@ -93,11 +125,6 @@ const AdminVehicles: React.FC = () => {
       setIsDeleteDialogOpen(false);
       setVehicleToDelete(null);
     }
-  };
-
-  const handleAddNewVehicle = () => {
-    // Rediriger vers la page d'importation de véhicule
-    navigate('/vehicule/import');
   };
 
   return (
