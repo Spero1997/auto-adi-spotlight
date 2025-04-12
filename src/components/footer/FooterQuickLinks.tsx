@@ -70,8 +70,8 @@ const FooterQuickLinks = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-4 text-left">{translate('quickLinks', translations.quickLinks)}</h3>
-      <ul className="space-y-2 text-left">
+      <h3 className="text-lg font-semibold mb-2 text-left">{translate('quickLinks', translations.quickLinks)}</h3>
+      <ul className="space-y-1 text-left text-sm md:text-base">
         <li>
           <Link to="/vehicules/neufs" className="text-gray-200 hover:text-brand-orange transition-colors block">
             {translate('newVehicles', translations.newVehicles)}

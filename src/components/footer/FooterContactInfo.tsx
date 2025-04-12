@@ -38,28 +38,28 @@ const FooterContactInfo = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-4 text-left">{translate('contact', translations.contact)}</h3>
-      <ul className="space-y-3 text-left">
+      <h3 className="text-lg font-semibold mb-2 text-left">{translate('contact', translations.contact)}</h3>
+      <ul className="space-y-2 text-left text-sm md:text-base">
         <li className="flex items-center">
-          <Phone className="h-5 w-5 mr-3 text-brand-orange" />
+          <Phone className="h-4 w-4 mr-2 text-brand-orange" />
           <span className="text-gray-200">‪+39 376 175 3341‬</span>
         </li>
         <li className="flex items-center">
-          <MessageCircle className="h-5 w-5 mr-3 text-brand-orange" />
+          <MessageCircle className="h-4 w-4 mr-2 text-brand-orange" />
           <span className="text-gray-200">WhatsApp: ‪+39 376 175 3341‬</span>
         </li>
         <li className="flex items-center">
-          <Mail className="h-5 w-5 mr-3 text-brand-orange" />
+          <Mail className="h-4 w-4 mr-2 text-brand-orange" />
           <span className="text-gray-200">serviceautoadi@gmail.com</span>
         </li>
         <li className="flex items-start">
-          <MapPin className="h-5 w-5 mr-3 text-brand-orange mt-1" />
-          <span className="text-gray-200">
+          <MapPin className="h-4 w-4 mr-2 text-brand-orange mt-1" />
+          <span className="text-gray-200 text-sm">
             Borgo Ognissanti, 142r 50123 Firenze FI Italie
           </span>
         </li>
         <li className="flex items-center">
-          <Facebook className="h-5 w-5 mr-3 text-brand-orange" />
+          <Facebook className="h-4 w-4 mr-2 text-brand-orange" />
           <a 
             href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
             target="_blank" 

@@ -70,29 +70,29 @@ const FooterLegalLinks = () => {
   };
 
   return (
-    <div className="mb-6">
-      <h3 className="text-xl font-semibold mb-4 text-center">
+    <div className="mb-3">
+      <h3 className="text-lg font-semibold mb-2 text-center">
         {translate('legalInfo', translations.legalInfo)}
       </h3>
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
-        <Link to="/mentions-legales" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
-          <Shield className="h-4 w-4 mr-2 text-brand-orange" />
+      <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+        <Link to="/mentions-legales" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-2 py-1 bg-white/10 rounded-md backdrop-blur-sm text-sm">
+          <Shield className="h-3 w-3 mr-1 text-brand-orange" />
           {translate('legalNotice', translations.legalNotice)}
         </Link>
-        <Link to="/politique-confidentialite" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
-          <Shield className="h-4 w-4 mr-2 text-brand-orange" />
+        <Link to="/politique-confidentialite" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-2 py-1 bg-white/10 rounded-md backdrop-blur-sm text-sm">
+          <Shield className="h-3 w-3 mr-1 text-brand-orange" />
           {translate('privacyPolicy', translations.privacyPolicy)}
         </Link>
-        <Link to="/cookies" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
-          <Settings className="h-4 w-4 mr-2 text-brand-orange" />
+        <Link to="/cookies" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-2 py-1 bg-white/10 rounded-md backdrop-blur-sm text-sm">
+          <Settings className="h-3 w-3 mr-1 text-brand-orange" />
           {translate('cookieManagement', translations.cookieManagement)}
         </Link>
-        <Link to="/cgv" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
-          <FileText className="h-4 w-4 mr-2 text-brand-orange" />
+        <Link to="/cgv" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-2 py-1 bg-white/10 rounded-md backdrop-blur-sm text-sm">
+          <FileText className="h-3 w-3 mr-1 text-brand-orange" />
           {translate('termsAndConditions', translations.termsAndConditions)}
         </Link>
-        <Link to="/conditions" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
-          <FileText className="h-4 w-4 mr-2 text-brand-orange" />
+        <Link to="/conditions" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-2 py-1 bg-white/10 rounded-md backdrop-blur-sm text-sm">
+          <FileText className="h-3 w-3 mr-1 text-brand-orange" />
           {translate('saleConditions', translations.saleConditions)}
         </Link>
       </div>
