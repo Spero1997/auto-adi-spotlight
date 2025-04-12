@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Phone, Mail, MapPin, Shield, FileText, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Separator } from '@/components/ui/separator';
 
 const Footer = () => {
   const { language, translate } = useLanguage();
@@ -178,153 +179,148 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-brand-blue text-white">
-      <div className="container mx-auto p-6">
-        {/* Logo and company description */}
-        <div className="mb-8">
-          <Link to="/">
-            <img 
-              src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
-              alt="Auto Adi" 
-              className="h-16 mb-4"
-            />
-          </Link>
-          <p className="text-gray-100 mb-4">
-            {translate('companyDescription', translations.companyDescription)}
-          </p>
-          <p className="text-gray-100 font-semibold mb-4">
-            {translate('contactAvailability', translations.contactAvailability)}
-          </p>
-          <div className="flex space-x-4 mb-8">
-            <a 
-              href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-300 transition-colors"
-              aria-label="Facebook"
-            >
-              <Facebook size={24} className="text-white" />
-            </a>
-            <a 
-              href="https://wa.me/393761753341" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-300 transition-colors"
-              aria-label="WhatsApp"
-            >
-              <MessageCircle size={24} className="text-white" />
-            </a>
-          </div>
-        </div>
-
-        {/* Quick links */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4">{translate('quickLinks', translations.quickLinks)}</h3>
-          <ul className="space-y-2">
-            <li>
-              <Link to="/vehicules/neufs" className="text-gray-100 hover:text-gray-300 transition-colors block">
-                {translate('newVehicles', translations.newVehicles)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/vehicules/occasion" className="text-gray-100 hover:text-gray-300 transition-colors block">
-                {translate('usedVehicles', translations.usedVehicles)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/services" className="text-gray-100 hover:text-gray-300 transition-colors block">
-                {translate('services', translations.services)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/financement" className="text-gray-100 hover:text-gray-300 transition-colors block">
-                {translate('financing', translations.financing)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/rachat" className="text-gray-100 hover:text-gray-300 transition-colors block">
-                {translate('vehicleBuyback', translations.vehicleBuyback)}
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Legal links */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4">{translate('legalInfo', translations.legalInfo)}</h3>
-          <ul className="space-y-2">
-            <li>
-              <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
-                <Shield className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('legalNotice', translations.legalNotice)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
-                <Shield className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('privacyPolicy', translations.privacyPolicy)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
-                <Settings className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('cookieManagement', translations.cookieManagement)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
-                <FileText className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('termsAndConditions', translations.termsAndConditions)}
-              </Link>
-            </li>
-            <li>
-              <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
-                <FileText className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('saleConditions', translations.saleConditions)}
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Contact info */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-4">{translate('contact', translations.contact)}</h3>
-          <ul className="space-y-3">
-            <li className="flex items-center">
-              <Phone className="h-5 w-5 mr-3 text-brand-orange" />
-              <span className="text-gray-100">‪+39 376 175 3341‬</span>
-            </li>
-            <li className="flex items-center">
-              <MessageCircle className="h-5 w-5 mr-3 text-brand-orange" />
-              <span className="text-gray-100">WhatsApp: ‪+39 376 175 3341‬</span>
-            </li>
-            <li className="flex items-center">
-              <Mail className="h-5 w-5 mr-3 text-brand-orange" />
-              <span className="text-gray-100">serviceautoadi@gmail.com</span>
-            </li>
-            <li className="flex items-center">
-              <MapPin className="h-5 w-5 mr-3 text-brand-orange" />
-              <span className="text-gray-100">
-                Borgo Ognissanti, 142r 50123 Firenze FI Italie
-              </span>
-            </li>
-            <li className="flex items-center">
-              <Facebook className="h-5 w-5 mr-3 text-brand-orange" />
+    <footer className="bg-gradient-to-r from-brand-extraDarkBlue to-brand-blue text-white">
+      <div className="container mx-auto py-16">
+        {/* Top Section - Logo, Description, Social */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          {/* Company Info */}
+          <div className="md:col-span-2">
+            <Link to="/" className="block mb-6">
+              <img 
+                src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
+                alt="Auto Adi" 
+                className="h-20 mb-4"
+              />
+            </Link>
+            <p className="text-gray-200 mb-6 text-left max-w-md">
+              {translate('companyDescription', translations.companyDescription)}
+            </p>
+            <p className="text-gray-200 font-semibold mb-6 text-left">
+              {translate('contactAvailability', translations.contactAvailability)}
+            </p>
+            <div className="flex space-x-6 mb-8">
               <a 
                 href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-100 hover:text-gray-300 transition-colors"
+                className="bg-white/10 p-3 rounded-full hover:bg-brand-orange hover:text-white transition-all duration-300"
+                aria-label="Facebook"
               >
-                {translate('facebookPage', translations.facebookPage)}
+                <Facebook size={24} className="text-white" />
               </a>
-            </li>
-          </ul>
+              <a 
+                href="https://wa.me/393761753341" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-white/10 p-3 rounded-full hover:bg-brand-orange hover:text-white transition-all duration-300"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={24} className="text-white" />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-semibold mb-6 text-left">{translate('quickLinks', translations.quickLinks)}</h3>
+            <ul className="space-y-3 text-left">
+              <li>
+                <Link to="/vehicules/neufs" className="text-gray-200 hover:text-brand-orange transition-colors block">
+                  {translate('newVehicles', translations.newVehicles)}
+                </Link>
+              </li>
+              <li>
+                <Link to="/vehicules/occasion" className="text-gray-200 hover:text-brand-orange transition-colors block">
+                  {translate('usedVehicles', translations.usedVehicles)}
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="text-gray-200 hover:text-brand-orange transition-colors block">
+                  {translate('services', translations.services)}
+                </Link>
+              </li>
+              <li>
+                <Link to="/financement" className="text-gray-200 hover:text-brand-orange transition-colors block">
+                  {translate('financing', translations.financing)}
+                </Link>
+              </li>
+              <li>
+                <Link to="/rachat" className="text-gray-200 hover:text-brand-orange transition-colors block">
+                  {translate('vehicleBuyback', translations.vehicleBuyback)}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-xl font-semibold mb-6 text-left">{translate('contact', translations.contact)}</h3>
+            <ul className="space-y-4 text-left">
+              <li className="flex items-center">
+                <Phone className="h-5 w-5 mr-3 text-brand-orange" />
+                <span className="text-gray-200">‪+39 376 175 3341‬</span>
+              </li>
+              <li className="flex items-center">
+                <MessageCircle className="h-5 w-5 mr-3 text-brand-orange" />
+                <span className="text-gray-200">WhatsApp: ‪+39 376 175 3341‬</span>
+              </li>
+              <li className="flex items-center">
+                <Mail className="h-5 w-5 mr-3 text-brand-orange" />
+                <span className="text-gray-200">serviceautoadi@gmail.com</span>
+              </li>
+              <li className="flex items-start">
+                <MapPin className="h-5 w-5 mr-3 text-brand-orange mt-1" />
+                <span className="text-gray-200">
+                  Borgo Ognissanti, 142r 50123 Firenze FI Italie
+                </span>
+              </li>
+              <li className="flex items-center">
+                <Facebook className="h-5 w-5 mr-3 text-brand-orange" />
+                <a 
+                  href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-200 hover:text-brand-orange transition-colors"
+                >
+                  {translate('facebookPage', translations.facebookPage)}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <Separator className="bg-white/20 my-8" />
+
+        {/* Legal links - Rearranged in a single row */}
+        <div className="mb-10">
+          <h3 className="text-xl font-semibold mb-6 text-center">{translate('legalInfo', translations.legalInfo)}</h3>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+            <Link to="/mentions-legales" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+              <Shield className="h-4 w-4 mr-2 text-brand-orange" />
+              {translate('legalNotice', translations.legalNotice)}
+            </Link>
+            <Link to="/politique-confidentialite" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+              <Shield className="h-4 w-4 mr-2 text-brand-orange" />
+              {translate('privacyPolicy', translations.privacyPolicy)}
+            </Link>
+            <Link to="/cookies" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+              <Settings className="h-4 w-4 mr-2 text-brand-orange" />
+              {translate('cookieManagement', translations.cookieManagement)}
+            </Link>
+            <Link to="/cgv" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+              <FileText className="h-4 w-4 mr-2 text-brand-orange" />
+              {translate('termsAndConditions', translations.termsAndConditions)}
+            </Link>
+            <Link to="/conditions" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+              <FileText className="h-4 w-4 mr-2 text-brand-orange" />
+              {translate('saleConditions', translations.saleConditions)}
+            </Link>
+          </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-blue-700 pt-6 text-center">
-          <p className="text-gray-100 text-sm">
+        <div className="text-center">
+          <p className="text-gray-300 text-sm">
             {translate('copyright', translations.copyright)}
           </p>
         </div>
