@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OrdersBackupComponent from '@/components/OrdersBackup';
 import { useToast } from '@/hooks/use-toast';
@@ -32,6 +33,7 @@ const OrdersBackup = () => {
   if (!initialized) {
     return (
       <div className="min-h-screen flex flex-col">
+        <Header />
         <main className="flex-grow flex items-center justify-center">
           <p>Chargement...</p>
         </main>
@@ -42,6 +44,8 @@ const OrdersBackup = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Header />
+      
       <main className="flex-grow">
         <OrdersBackupComponent />
       </main>
