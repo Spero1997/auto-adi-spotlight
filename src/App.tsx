@@ -21,7 +21,7 @@ import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
 
 import { useEffect } from 'react';
-import { addToyotaCHR, updateVehicleImage, addRenaultScenic, addKiaSorento } from './utils/vehicleImportService';
+import { addToyotaCHR, updateVehicleImage, addRenaultScenic, addKiaSorento, removeDuplicateVehicles } from './utils/vehicleImportService';
 
 // Admin Dashboard
 import AdminLayout from './components/admin/AdminLayout';
@@ -37,6 +37,12 @@ import AdminFeatured from './pages/admin/AdminFeatured';
 
 function App() {
   useEffect(() => {
+    // Nettoyer les véhicules en double au chargement de l'application
+    const duplicatesRemoved = removeDuplicateVehicles();
+    if (duplicatesRemoved > 0) {
+      console.log(`${duplicatesRemoved} véhicules en double ont été supprimés du catalogue standard`);
+    }
+    
     // Ajouter le Toyota C-HR au catalogue au chargement de l'application
     const toyotaCHRAdded = addToyotaCHR();
     if (toyotaCHRAdded) {

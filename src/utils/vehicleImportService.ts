@@ -1,4 +1,3 @@
-
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -363,5 +362,55 @@ Garantie 24 mois`,
   } catch (error) {
     console.error('Erreur lors de l\'ajout du Kia Sorento 1.6 T-GDI Hybride rechargeable:', error);
     return false;
+  }
+};
+
+// Function to remove duplicate vehicles from the catalog
+export const removeDuplicateVehicles = (catalogType: 'standard' | 'featured' = 'standard'): number => {
+  try {
+    const vehicles = getImportedVehicles(catalogType);
+    
+    console.log(`Recherche de doublons parmi ${vehicles.length} véhicules dans le catalogue ${catalogType}...`);
+    
+    // Create a map to identify unique vehicles based on brand, model, and year
+    const uniqueVehicleMap = new Map();
+    const uniqueVehicles = [];
+    const duplicates = [];
+    
+    for (const vehicle of vehicles) {
+      // Create a unique key for each vehicle based on brand, model, and year
+      const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
+      
+      if (!uniqueVehicleMap.has(key)) {
+        // This is the first occurrence of this vehicle
+        uniqueVehicleMap.set(key, vehicle);
+        uniqueVehicles.push(vehicle);
+      } else {
+        // This is a duplicate
+        duplicates.push(vehicle);
+        console.log(`Doublon trouvé: ${vehicle.brand} ${vehicle.model} ${vehicle.year} (ID: ${vehicle.id})`);
+      }
+    }
+    
+    console.log(`${duplicates.length} doublons trouvés.`);
+    
+    if (duplicates.length > 0) {
+      // Save the unique vehicles back to the catalog
+      saveImportedVehicles(uniqueVehicles, catalogType);
+      
+      console.log(`Catalogue nettoyé: ${uniqueVehicles.length} véhicules uniques conservés.`);
+      
+      // Trigger events to refresh the catalog
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType } 
+      }));
+      
+      window.dispatchEvent(new CustomEvent('catalogChanged'));
+    }
+    
+    return duplicates.length;
+  } catch (error) {
+    console.error('Erreur lors de la suppression des doublons:', error);
+    return 0;
   }
 };
