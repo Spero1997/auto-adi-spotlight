@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, RefreshCw, Plus } from 'lucide-react';
+import { useAuth } from '@/hooks/use-auth';
 
 interface VehicleNotFoundProps {
   vehicleId?: string;
@@ -12,6 +13,8 @@ interface VehicleNotFoundProps {
 
 const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: VehicleNotFoundProps) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
   
   const handleAddVehicle = () => {
     navigate('/vehicules/import');
@@ -36,7 +39,8 @@ const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: Vehic
         <>
           <h1 className="text-2xl font-bold text-blue-600 mb-4">Aucun véhicule trouvé</h1>
           <p className="text-gray-600 mb-6">
-            Aucun véhicule n'a encore été ajouté à votre catalogue. Commencez par ajouter votre premier véhicule !
+            Aucun véhicule n'a encore été ajouté à votre catalogue.
+            {isAuthenticated && " Commencez par ajouter votre premier véhicule !"}
           </p>
         </>
       )}
@@ -60,7 +64,7 @@ const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: Vehic
           </Button>
         )}
         
-        {!isSearchContext && (
+        {isAuthenticated && !isSearchContext && (
           <Button 
             variant="outline" 
             className="flex-1 flex items-center justify-center gap-2"

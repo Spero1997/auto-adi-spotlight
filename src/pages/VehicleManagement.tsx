@@ -7,13 +7,30 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import CatalogShare from "@/components/CatalogShare";
+import { useAuth } from "@/hooks/use-auth";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const VehicleManagement = () => {
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+  
+  // Rediriger si l'utilisateur n'est pas authentifié
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Vous devez être connecté pour accéder à cette page");
+      navigate("/admin/login");
+    }
+  }, [user, loading, navigate]);
   
   const handleAddVehicle = () => {
     navigate('/vehicules/import');
   };
+  
+  // Si le chargement est en cours ou l'utilisateur n'est pas connecté, ne rien afficher
+  if (loading || !user) {
+    return null;
+  }
   
   return (
     <>

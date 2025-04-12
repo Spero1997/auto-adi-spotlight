@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import VehicleList from './vehicles/VehicleList';
 import { useVehicles } from './vehicles/useVehicles';
+import { useAuth } from '@/hooks/use-auth';
 
 interface SearchFilters {
   brand?: string;
@@ -22,6 +23,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const navigate = useNavigate();
   const [refreshKey, setRefreshKey] = useState(Date.now());
   const { vehicles, loading, error, refresh } = useVehicles(searchFilters, featuredOnly, refreshKey);
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
 
   // Événement pour les mises à jour de véhicules
   useEffect(() => {
@@ -84,7 +87,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
             Actualiser
           </Button>
           
-          {vehicles.length === 0 && !isSearchContext && (
+          {isAuthenticated && vehicles.length === 0 && !isSearchContext && (
             <Button size="sm" onClick={handleAddVehicle} className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
               Ajouter un véhicule
@@ -99,7 +102,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         error={error}
         emptyMessage={getEmptyMessage()}
         isSearchContext={isSearchContext}
-        onAddVehicle={handleAddVehicle}
+        onAddVehicle={isAuthenticated ? handleAddVehicle : undefined}
         key={refreshKey}
       />
     </div>

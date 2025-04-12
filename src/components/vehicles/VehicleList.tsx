@@ -6,6 +6,7 @@ import { ImportedVehicle } from '@/utils/vehicleImportService';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import EmptyState from '../EmptyState';
+import { useAuth } from '@/hooks/use-auth';
 
 interface VehicleListProps {
   vehicles: ImportedVehicle[];
@@ -24,6 +25,9 @@ const VehicleList = ({
   isSearchContext = true,
   onAddVehicle
 }: VehicleListProps) => {
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
+  
   if (loading) {
     return <p className="text-center">Chargement des véhicules...</p>;
   }
@@ -44,15 +48,16 @@ const VehicleList = ({
         </div>
       );
     } else {
-      // Affiche un message pour ajouter un véhicule si le catalogue est vide
+      // Affiche un message pour ajouter un véhicule si le catalogue est vide (seulement pour les utilisateurs authentifiés)
       return (
         <div className="text-center my-12">
           <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
             <h1 className="text-2xl font-bold text-blue-600 mb-4">Commencez votre catalogue</h1>
             <p className="text-gray-600 mb-6">
-              Aucun véhicule n'a encore été ajouté à votre catalogue. Commencez par ajouter votre premier véhicule !
+              Aucun véhicule n'a encore été ajouté à votre catalogue.
+              {isAuthenticated && " Commencez par ajouter votre premier véhicule !"}
             </p>
-            {onAddVehicle ? (
+            {isAuthenticated && onAddVehicle ? (
               <Button 
                 onClick={onAddVehicle}
                 className="w-full flex items-center justify-center gap-2"
@@ -60,14 +65,14 @@ const VehicleList = ({
                 <Plus className="h-4 w-4" />
                 Ajouter un véhicule
               </Button>
-            ) : (
+            ) : isAuthenticated ? (
               <Link to="/vehicules/import" className="w-full">
                 <Button className="w-full flex items-center justify-center gap-2">
                   <Plus className="h-4 w-4" />
                   Ajouter un véhicule
                 </Button>
               </Link>
-            )}
+            ) : null}
           </div>
         </div>
       );
