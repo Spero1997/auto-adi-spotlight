@@ -1,12 +1,22 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation, Link } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import CallToAction from '@/components/CallToAction';
-import VehicleCard from '@/components/VehicleCard';
+import VehicleCard from '@/components/vehicles/VehicleCard';
 import { Button } from '@/components/ui/button';
-import { Filter, X, ChevronDown, ChevronUp, Search } from 'lucide-react';
+import { 
+  Filter, 
+  X, 
+  ChevronDown, 
+  ChevronUp, 
+  Search, 
+  Car, 
+  RefreshCw, 
+  ArrowRight 
+} from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -20,6 +30,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from '@/components/ui/tabs';
 import { 
   Select, 
   SelectContent, 
@@ -31,10 +47,63 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { toast } from 'sonner';
 import EmptyState from '@/components/EmptyState';
-import { getVehiclesByType, getImportedVehicles } from '@/utils/vehicleImportService';
+import { 
+  getImportedVehicles, 
+  getCatalogIdFromUrl 
+} from '@/utils/vehicleImportService';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { ImportedVehicle } from '@/utils/types/vehicle';
+import FeaturedCars from '@/components/FeaturedCars';
+import CatalogShare from '@/components/CatalogShare';
+
+// Define the missing constants
+const MIN_PRICE = 1000;
+const MAX_PRICE = 100000;
+
+// Define the car brands and fuel types arrays
+const carBrands = [
+  'Audi', 'BMW', 'Citroën', 'Dacia', 'Fiat', 'Ford', 'Honda', 'Hyundai', 'Kia',
+  'Mazda', 'Mercedes', 'Mini', 'Nissan', 'Opel', 'Peugeot', 'Renault', 'Seat',
+  'Skoda', 'Toyota', 'Volkswagen', 'Volvo'
+];
+
+const fuelTypes = ['Essence', 'Diesel', 'Hybride', 'Électrique', 'GPL'];
+
+// Helper function for the schema
+const generateVehicleListingSchema = (vehicles: ImportedVehicle[]) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": vehicles.slice(0, 10).map((vehicle, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Car",
+        "name": `${vehicle.brand} ${vehicle.model} ${vehicle.year}`,
+        "description": vehicle.description || `${vehicle.brand} ${vehicle.model} ${vehicle.year} d'occasion à ${vehicle.price}€`,
+        "offers": {
+          "@type": "Offer",
+          "price": vehicle.price,
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock"
+        },
+        "image": vehicle.image,
+        "vehicleEngine": vehicle.engine || vehicle.fuelType,
+        "mileageFromOdometer": {
+          "@type": "QuantitativeValue",
+          "value": vehicle.mileage,
+          "unitCode": "KMT"
+        },
+        "modelDate": vehicle.year
+      }
+    }))
+  };
+};
 
 const VehiculesOccasion = () => {
   const { language, translate } = useLanguage();
@@ -111,6 +180,30 @@ const VehiculesOccasion = () => {
       NL: "Filters resetten",
       PL: "Resetuj filtry",
       RU: "Сбросить фильтры"
+    },
+    loadingCatalog: {
+      FR: "Chargement du catalogue en cours...",
+      EN: "Loading catalog...",
+      ES: "Cargando catálogo...",
+      IT: "Caricamento catalogo...",
+      PT: "Carregando catálogo...",
+      RO: "Se încarcă catalogul...",
+      DE: "Katalog wird geladen...",
+      NL: "Catalogus laden...",
+      PL: "Ładowanie katalogu...",
+      RU: "Загрузка каталога..."
+    },
+    catalogActive: {
+      FR: "Catalogue actif",
+      EN: "Active catalog",
+      ES: "Catálogo activo",
+      IT: "Catalogo attivo",
+      PT: "Catálogo ativo",
+      RO: "Catalog activ",
+      DE: "Aktiver Katalog",
+      NL: "Actieve catalogus",
+      PL: "Aktywny katalog",
+      RU: "Активный каталог"
     }
   };
 
