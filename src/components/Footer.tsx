@@ -256,41 +256,31 @@ const Footer = () => {
             <li>
               <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <Shield className="h-4 w-4 mr-2 text-brand-orange" />
-                <span>{translate('security', translations.security)}</span>
-                <span className="ml-2">-</span>
-                <span className="ml-2">{translate('legalNotice', translations.legalNotice)}</span>
+                {translate('legalNotice', translations.legalNotice)}
               </Link>
             </li>
             <li>
               <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <Shield className="h-4 w-4 mr-2 text-brand-orange" />
-                <span>{translate('security', translations.security)}</span>
-                <span className="ml-2">-</span>
-                <span className="ml-2">{translate('privacyPolicy', translations.privacyPolicy)}</span>
+                {translate('privacyPolicy', translations.privacyPolicy)}
               </Link>
             </li>
             <li>
               <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <Settings className="h-4 w-4 mr-2 text-brand-orange" />
-                <span>{translate('settings', translations.settings)}</span>
-                <span className="ml-2">-</span>
-                <span className="ml-2">{translate('cookieManagement', translations.cookieManagement)}</span>
+                {translate('cookieManagement', translations.cookieManagement)}
               </Link>
             </li>
             <li>
               <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <FileText className="h-4 w-4 mr-2 text-brand-orange" />
-                <span>{translate('documents', translations.documents)}</span>
-                <span className="ml-2">-</span>
-                <span className="ml-2">{translate('termsAndConditions', translations.termsAndConditions)}</span>
+                {translate('termsAndConditions', translations.termsAndConditions)}
               </Link>
             </li>
             <li>
               <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <FileText className="h-4 w-4 mr-2 text-brand-orange" />
-                <span>{translate('documents', translations.documents)}</span>
-                <span className="ml-2">-</span>
-                <span className="ml-2">{translate('saleConditions', translations.saleConditions)}</span>
+                {translate('saleConditions', translations.saleConditions)}
               </Link>
             </li>
           </ul>
