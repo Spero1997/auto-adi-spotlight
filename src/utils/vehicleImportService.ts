@@ -1,4 +1,3 @@
-
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -58,4 +57,37 @@ export const validateImageUrl = (url: string): Promise<boolean> => {
     img.onerror = () => resolve(false);
     img.src = url;
   });
+};
+
+// Ajoutez ou modifiez cette fonction pour mettre à jour l'image de l'Audi Q2
+export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType: 'standard' | 'featured' = 'standard') => {
+  try {
+    const vehicles = getImportedVehicles(catalogType);
+    
+    const vehicleIndex = vehicles.findIndex(v => v.id === vehicleId || 
+      (v.brand === 'Audi' && v.model.includes('Q2 Ultra Sport') && v.year === 2018));
+    
+    if (vehicleIndex !== -1) {
+      // Mettre à jour l'image
+      vehicles[vehicleIndex].image = newImageUrl;
+      
+      // Sauvegarder les modifications
+      saveImportedVehicles(vehicles, catalogType);
+      
+      console.log(`Image de ${vehicles[vehicleIndex].brand} ${vehicles[vehicleIndex].model} mise à jour avec succès.`);
+      
+      // Déclencher un événement pour rafraîchir l'affichage
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType } 
+      }));
+      
+      return true;
+    } else {
+      console.warn(`Véhicule avec ID ${vehicleId} non trouvé dans le catalogue ${catalogType}.`);
+      return false;
+    }
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'image du véhicule:", error);
+    return false;
+  }
 };

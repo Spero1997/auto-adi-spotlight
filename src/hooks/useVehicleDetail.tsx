@@ -1,8 +1,8 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ImportedVehicle, getImportedVehicles } from '@/utils/vehicleImportService';
+import { ImportedVehicle, getImportedVehicles, updateVehicleImage } from '@/utils/vehicleImportService';
 
 export const useVehicleDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,12 +10,14 @@ export const useVehicleDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   
-  useEffect(() => {
+  const fetchVehicle = useCallback(() => {
     if (!id) {
       setNotFound(true);
       setIsLoading(false);
       return;
     }
+    
+    setIsLoading(true);
     
     try {
       // First try to find the vehicle in the featured catalog
@@ -51,6 +53,7 @@ export const useVehicleDetail = () => {
         console.log("ID du véhicule:", foundVehicle.id);
         console.log("URL de l'image:", foundVehicle.image);
         setVehicle(foundVehicle);
+        setNotFound(false);
       } else {
         console.error("Véhicule non trouvé avec l'ID:", id);
         setNotFound(true);
@@ -64,5 +67,27 @@ export const useVehicleDetail = () => {
     }
   }, [id]);
   
-  return { vehicle, isLoading, notFound };
+  useEffect(() => {
+    fetchVehicle();
+  }, [fetchVehicle]);
+  
+  const updateImage = useCallback((newImageUrl: string) => {
+    if (vehicle) {
+      const success = updateVehicleImage(vehicle.id, newImageUrl, vehicle.catalogType);
+      if (success) {
+        setVehicle(prev => prev ? { ...prev, image: newImageUrl } : null);
+        toast.success("Image du véhicule mise à jour");
+      } else {
+        toast.error("Erreur lors de la mise à jour de l'image");
+      }
+    }
+  }, [vehicle]);
+  
+  return { 
+    vehicle, 
+    isLoading, 
+    notFound, 
+    refreshVehicle: fetchVehicle,
+    updateImage 
+  };
 };

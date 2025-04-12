@@ -208,7 +208,7 @@ Nos services inclus :
         transmission: 'Automatique',
         exteriorColor: 'Bleu',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/e48430e0-9c0b-4c80-83a9-f7e586bd9a71.png',
+        image: '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png',
         fbLink: '',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande

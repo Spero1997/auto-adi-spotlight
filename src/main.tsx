@@ -194,7 +194,7 @@ Nos services inclus :
         transmission: 'Automatique',
         exteriorColor: 'Bleu',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/e48430e0-9c0b-4c80-83a9-f7e586bd9a71.png',
+        image: '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png',
         fbLink: '',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -222,6 +222,22 @@ Nos services inclus :
       addVehicle(audiQ2, 'standard');
       console.log('Audi Q2 Ultra Sport ajoutée automatiquement au catalogue!');
       vehiclesUpdated = true;
+    } else {
+      // Si elle existe déjà, mettre à jour son image
+      const existingAudiQ2 = vehicles.find(v => 
+        (v.id === audiQ2Id) || 
+        (v.brand === 'Audi' && 
+        v.model.includes('Q2 Ultra Sport') && 
+        v.year === 2018)
+      );
+      
+      if (existingAudiQ2) {
+        existingAudiQ2.image = '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png';
+        console.log("Mise à jour de l'image de l'Audi Q2 avec:", existingAudiQ2.image);
+        saveImportedVehicles(vehicles, 'standard');
+        console.log("Image de l'Audi Q2 Ultra Sport mise à jour dans le catalogue!");
+        vehiclesUpdated = true;
+      }
     }
     
     // Si des véhicules ont été ajoutés, on déclenche l'événement une seule fois
