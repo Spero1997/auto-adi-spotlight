@@ -15,9 +15,9 @@ const LegalPageLayout = ({ title, children }: LegalPageLayoutProps) => {
       <Header />
       <main className="flex-grow py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-            <h1 className="text-3xl font-bold mb-4 text-brand-blueContrast">{title}</h1>
-            <Separator className="mb-8 bg-brand-orange/20" />
+          <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-md">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4 text-brand-blueContrast">{title}</h1>
+            <Separator className="mb-6 sm:mb-8 bg-brand-orange/30" />
             <div className="prose prose-lg max-w-none">
               {children}
             </div>
