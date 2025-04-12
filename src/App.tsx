@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -56,14 +55,6 @@ function App() {
     const scenicAdded = addRenaultScenic();
     if (scenicAdded) {
       console.log("Renault Scenic 1.5DCI 7-SETER BOSE-EDITION ajouté au catalogue avec succès au démarrage de l'application");
-      
-      // Mettre à jour l'image principale et les images additionnelles du Renault Scenic
-      const scenicId = document.location.pathname.includes("renault-scenic") 
-        ? document.location.pathname.split('/').pop() 
-        : "renault-scenic-bose-edition";
-      
-      // Mettre à jour l'image principale
-      updateVehicleImage(scenicId, '/lovable-uploads/0bc7bda5-9e89-432d-871a-6a00b74a0759.png', 'standard');
       
       // Forcer la mise à jour des véhicules affichés
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
