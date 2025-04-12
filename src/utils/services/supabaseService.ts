@@ -7,7 +7,7 @@ import { Tag } from '../types/tag';
 // Re-export vehicle-related functions
 export {
   fetchVehiclesFromSupabase,
-  syncLocalVehiclesToSupabase,
+  migrateLocalVehiclesToSupabase,
   addVehicleToSupabase,
   updateVehicleInSupabase,
   deleteVehicleFromSupabase

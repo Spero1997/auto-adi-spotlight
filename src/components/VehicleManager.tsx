@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,7 @@ import {
 } from '@/utils/services/vehicleService';
 
 const VehicleManager = () => {
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
   const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingVehicle, setEditingVehicle] = useState<ImportedVehicle | null>(null);
@@ -53,7 +52,6 @@ const VehicleManager = () => {
       
       const supabaseVehicles = await fetchVehiclesFromSupabase();
       
-      // Transformer les véhicules Supabase au format ImportedVehicle
       const transformedVehicles = supabaseVehicles.map(v => ({
         id: v.id,
         brand: v.brand,
@@ -84,7 +82,7 @@ const VehicleManager = () => {
       setVehicles(transformedVehicles);
       
       if (transformedVehicles.length === 0) {
-        toast({
+        uiToast({
           title: "Catalogue vide",
           description: "Aucun véhicule trouvé dans Supabase.",
           variant: "default"
@@ -92,7 +90,7 @@ const VehicleManager = () => {
       }
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
-      toast({
+      uiToast({
         title: "Erreur de chargement",
         description: "Impossible de charger les véhicules depuis Supabase. Veuillez rafraîchir la page.",
         variant: "destructive"
@@ -104,7 +102,6 @@ const VehicleManager = () => {
 
   const handleSave = async (vehicle: ImportedVehicle) => {
     try {
-      // Préparer les données pour Supabase
       const vehicleForSupabase = {
         brand: vehicle.brand,
         model: vehicle.model,
@@ -124,22 +121,20 @@ const VehicleManager = () => {
         is_featured: vehicle.featured || false
       };
       
-      // Mettre à jour dans Supabase
       await updateVehicleInSupabase(vehicle.id, vehicleForSupabase);
       
-      // Recharger les véhicules pour obtenir les données à jour
       await loadVehicles();
       
       setEditingVehicle(null);
       setIsDialogOpen(false);
       
-      toast({
+      uiToast({
         title: "Véhicule modifié",
         description: `${vehicle.brand} ${vehicle.model} a été mis à jour avec succès.`,
       });
     } catch (error) {
       console.error("Erreur lors de la sauvegarde:", error);
-      toast({
+      uiToast({
         title: "Erreur",
         description: "Impossible de sauvegarder les modifications dans Supabase.",
         variant: "destructive"
@@ -149,19 +144,17 @@ const VehicleManager = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      // Supprimer de Supabase
       await deleteVehicleFromSupabase(id);
       
-      // Mettre à jour l'interface
       setVehicles(vehicles.filter(v => v.id !== id));
       
-      toast({
+      uiToast({
         title: "Véhicule supprimé",
         description: "Le véhicule a été supprimé avec succès de Supabase.",
       });
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      toast({
+      uiToast({
         title: "Erreur",
         description: "Impossible de supprimer le véhicule de Supabase.",
         variant: "destructive"
@@ -178,26 +171,28 @@ const VehicleManager = () => {
     try {
       setIsMigrateDialogOpen(false);
       
-      // Afficher un toast de chargement
-      toast.loading("Migration des véhicules en cours...");
-      
-      // Effectuer la migration
-      const result = await migrateLocalVehiclesToSupabase();
-      
-      // Recharger les véhicules si la migration a réussi
-      if (result.migrated > 0) {
-        await loadVehicles();
-        toast.success(`${result.migrated} véhicules ont été migrés avec succès.`);
-      } else {
-        toast.info("Aucun véhicule n'a été trouvé dans le localStorage à migrer.");
-      }
-      
-      if (result.errors > 0) {
-        toast.error(`${result.errors} erreurs se sont produites pendant la migration.`);
-      }
+      toast.promise(
+        migrateLocalVehiclesToSupabase(),
+        {
+          loading: "Migration des véhicules en cours...",
+          success: (result) => {
+            if (result.migrated > 0) {
+              loadVehicles();
+              return `${result.migrated} véhicules ont été migrés avec succès.`;
+            } else {
+              return "Aucun véhicule n'a été trouvé dans le localStorage à migrer.";
+            }
+          },
+          error: "Une erreur s'est produite lors de la migration des véhicules."
+        }
+      );
     } catch (error) {
       console.error("Erreur lors de la migration:", error);
-      toast.error("Une erreur s'est produite lors de la migration des véhicules.");
+      uiToast({
+        title: "Erreur",
+        description: "Une erreur s'est produite lors de la migration des véhicules.",
+        variant: "destructive"
+      });
     }
   };
 

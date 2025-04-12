@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { ImportedVehicle } from '../types/vehicle';
 import { toast } from 'sonner';
@@ -221,14 +220,11 @@ export const migrateLocalVehiclesToSupabase = async () => {
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
         detail: { catalogType: 'all' } 
       }));
-      
-      toast.success(`${migrated} véhicules ont été migrés vers Supabase`);
     }
     
     return { migrated, errors };
   } catch (error) {
     console.error('Erreur lors de la migration des véhicules:', error);
-    toast.error('Erreur lors de la migration des véhicules');
     throw error;
   }
 };
