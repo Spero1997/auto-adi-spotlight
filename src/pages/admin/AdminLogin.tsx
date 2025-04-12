@@ -25,6 +25,7 @@ const AdminLogin = () => {
   useEffect(() => {
     // Redirect if already logged in
     if (user) {
+      console.log("User already logged in, redirecting to", from);
       navigate(from, { replace: true });
     }
   }, [user, navigate, from]);
@@ -34,6 +35,7 @@ const AdminLogin = () => {
     setLoading(true);
     
     try {
+      console.log("Attempting login with:", email);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -44,12 +46,21 @@ const AdminLogin = () => {
       }
       
       if (data.user) {
+        console.log("Login successful, redirecting to", from);
         toast.success('Connexion réussie');
         navigate(from, { replace: true });
       }
     } catch (error: any) {
-      toast.error(error.message || 'Erreur de connexion');
       console.error('Error logging in:', error);
+      
+      // More user-friendly error messages
+      if (error.message.includes("Invalid login")) {
+        toast.error('Email ou mot de passe incorrect');
+      } else if (error.message.includes("network")) {
+        toast.error('Problème de connexion réseau');
+      } else {
+        toast.error(error.message || 'Erreur de connexion');
+      }
     } finally {
       setLoading(false);
     }

@@ -5,7 +5,7 @@ import { LayoutDashboard, Car, Users, CreditCard, Tag, BarChart2, Award, Setting
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import AuthGuard from './AuthGuard';
 import { useAuth } from '@/hooks/use-auth';
@@ -13,7 +13,6 @@ import { useAuth } from '@/hooks/use-auth';
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { user } = useAuth();
 
   const navigation = [
@@ -28,25 +27,23 @@ const AdminLayout = () => {
   ];
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    
-    if (error) {
-      toast({
-        title: 'Erreur de déconnexion',
-        description: error.message,
-        variant: 'destructive',
-      });
-      console.error('Error signing out:', error);
-      return;
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        toast.error('Erreur de déconnexion: ' + error.message);
+        console.error('Error signing out:', error);
+        return;
+      }
+      
+      toast.success('Déconnexion réussie');
+      
+      // Redirect to login
+      navigate('/admin/login');
+    } catch (e) {
+      console.error('Unexpected error during sign out:', e);
+      toast.error('Une erreur inattendue est survenue');
     }
-    
-    toast({
-      title: 'Déconnexion réussie',
-      description: 'Vous avez été déconnecté avec succès',
-    });
-    
-    // Redirect to login
-    navigate('/admin/login');
   };
 
   return (

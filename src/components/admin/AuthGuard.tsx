@@ -12,7 +12,12 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Set ready state after initial auth check
     if (!loading) {
-      setIsReady(true);
+      // Add a small delay to ensure auth state is fully processed
+      const timer = setTimeout(() => {
+        setIsReady(true);
+      }, 500);
+      
+      return () => clearTimeout(timer);
     }
   }, [loading]);
 
