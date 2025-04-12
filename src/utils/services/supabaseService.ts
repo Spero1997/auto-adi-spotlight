@@ -10,7 +10,8 @@ export {
   migrateLocalVehiclesToSupabase,
   addVehicleToSupabase,
   updateVehicleInSupabase,
-  deleteVehicleFromSupabase
+  deleteVehicleFromSupabase,
+  toggleFeaturedStatusInSupabase
 } from './vehicleService';
 
 // Re-export testimonial-related functions
