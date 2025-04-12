@@ -22,9 +22,15 @@ const AdminVehicles: React.FC = () => {
   useEffect(() => {
     loadVehicles();
     
-    window.addEventListener('vehiclesUpdated', loadVehicles);
+    // Ajouter un écouteur d'événement pour les mises à jour des véhicules
+    const handleVehiclesUpdated = () => {
+      console.log("Événement vehiclesUpdated capturé dans AdminVehicles");
+      loadVehicles();
+    };
+    
+    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     return () => {
-      window.removeEventListener('vehiclesUpdated', loadVehicles);
+      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
     };
   }, []);
 
@@ -32,6 +38,7 @@ const AdminVehicles: React.FC = () => {
     try {
       setIsLoading(true);
       const importedVehicles = getImportedVehicles();
+      console.log("Véhicules chargés:", importedVehicles.length);
       setVehicles(importedVehicles);
     } catch (error) {
       console.error("Error loading vehicles:", error);
@@ -86,9 +93,20 @@ const AdminVehicles: React.FC = () => {
       
       if (isNewVehicle) {
         // Ajouter un nouveau véhicule
-        addVehicle(vehicle, 'standard');
-        setVehicles([...vehicles, vehicle]);
-        toast.success(`${vehicle.brand} ${vehicle.model} ajouté avec succès`);
+        const success = addVehicle(vehicle, 'standard');
+        
+        if (success) {
+          // Mettre à jour l'état local immédiatement
+          setVehicles(prevVehicles => [...prevVehicles, vehicle]);
+          toast.success(`${vehicle.brand} ${vehicle.model} ajouté avec succès`);
+          
+          // Forcer un rechargement des véhicules après un court délai
+          setTimeout(() => {
+            loadVehicles();
+          }, 300);
+        } else {
+          toast.error("Erreur lors de l'ajout du véhicule");
+        }
       } else {
         // Mettre à jour un véhicule existant
         const updatedVehicles = vehicles.map(v => 
@@ -98,6 +116,16 @@ const AdminVehicles: React.FC = () => {
         saveImportedVehicles(updatedVehicles);
         setVehicles(updatedVehicles);
         toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
+        
+        // Forcer un rechargement après un court délai pour s'assurer que les modifications sont bien prises en compte
+        setTimeout(() => {
+          loadVehicles();
+          
+          // Déclencher explicitement l'événement de mise à jour
+          window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+            detail: { catalogType: 'standard' } 
+          }));
+        }, 300);
       }
       
       setIsEditDialogOpen(false);
@@ -119,6 +147,9 @@ const AdminVehicles: React.FC = () => {
       deleteImportedVehicle(vehicleToDelete);
       setVehicles(vehicles.filter(v => v.id !== vehicleToDelete));
       toast.success("Véhicule supprimé avec succès");
+      
+      // Forcer un rechargement des véhicules
+      setTimeout(loadVehicles, 300);
     } catch (error) {
       console.error("Error deleting vehicle:", error);
       toast.error("Erreur lors de la suppression du véhicule");
