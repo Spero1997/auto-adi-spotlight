@@ -31,11 +31,9 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     };
 
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    window.addEventListener('storage', handleVehiclesUpdated);
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
-      window.removeEventListener('storage', handleVehiclesUpdated);
     };
   }, [refresh]);
 

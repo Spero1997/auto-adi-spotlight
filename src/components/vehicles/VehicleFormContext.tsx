@@ -1,13 +1,12 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { addImportedVehicle } from "@/utils/vehicleImportService";
 import { addVehicleToSupabase } from "@/utils/services/vehicleService";
 import { useNavigate } from 'react-router-dom';
 import { VehicleFormState, VehicleFormContextType, initialFormState } from '@/utils/types/vehicleForm';
 import { useFormArrays } from '@/hooks/useFormArrays';
 import { validateVehicleForm } from '@/utils/validation/vehicleFormValidation';
-import { prepareVehicleData, prepareVehicleForSupabase } from '@/utils/vehicles/vehicleDataPreparation';
+import { prepareVehicleForSupabase } from '@/utils/vehicles/vehicleDataPreparation';
 
 // Create the context
 const VehicleFormContext = createContext<VehicleFormContextType | undefined>(undefined);
@@ -54,24 +53,15 @@ export const VehicleFormProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    // Prepare data for submission
-    const newVehicle = prepareVehicleData(formState);
-
     try {
-      // Add vehicle to localStorage
-      const success = await addImportedVehicle(newVehicle);
+      // Préparer les données pour Supabase
+      const vehicleForSupabase = prepareVehicleForSupabase(formState);
       
-      if (success) {
-        // Also try to add to Supabase, but don't block if there's an error
-        try {
-          const vehicleForSupabase = prepareVehicleForSupabase(formState);
-          
-          await addVehicleToSupabase(vehicleForSupabase);
-          console.log("Véhicule ajouté à Supabase avec succès");
-        } catch (error) {
-          console.error("Erreur lors de l'ajout du véhicule à Supabase:", error);
-          // Continue even if there's an error with Supabase
-        }
+      // Ajouter directement à Supabase
+      const addedVehicle = await addVehicleToSupabase(vehicleForSupabase);
+      
+      if (addedVehicle) {
+        console.log("Véhicule ajouté à Supabase avec succès:", addedVehicle);
         
         // Reset the form
         resetForm();
@@ -103,7 +93,7 @@ export const VehicleFormProvider = ({ children }: { children: ReactNode }) => {
       console.error("Erreur lors de l'ajout du véhicule:", error);
       toast({
         title: "Erreur",
-        description: "Une erreur s'est produite lors de l'ajout du véhicule.",
+        description: "Une erreur s'est produite lors de l'ajout du véhicule à Supabase.",
         variant: "destructive",
       });
     }

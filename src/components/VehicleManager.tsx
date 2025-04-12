@@ -5,14 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, Trash2, Edit, Search, Plus, Save, X, RefreshCw } from 'lucide-react';
+import { AlertCircle, Trash2, Edit, Search, Plus, Save, X, RefreshCw, Upload } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, getCatalogIdFromUrl, resetCatalog } from '@/utils/vehicleImportService';
+import { ImportedVehicle, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
+import { 
+  fetchVehiclesFromSupabase, 
+  updateVehicleInSupabase, 
+  deleteVehicleFromSupabase,
+  migrateLocalVehiclesToSupabase 
+} from '@/utils/services/vehicleService';
 
 const VehicleManager = () => {
   const { toast } = useToast();
@@ -21,6 +27,7 @@ const VehicleManager = () => {
   const [editingVehicle, setEditingVehicle] = useState<ImportedVehicle | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+  const [isMigrateDialogOpen, setIsMigrateDialogOpen] = useState(false);
   const [sortBy, setSortBy] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [isLoading, setIsLoading] = useState(true);
@@ -39,26 +46,47 @@ const VehicleManager = () => {
     };
   }, []);
 
-  const loadVehicles = () => {
+  const loadVehicles = async () => {
     try {
       setIsLoading(true);
-      console.log("Chargement des véhicules...");
-      const catalogId = getCatalogIdFromUrl();
-      console.log(`Catalogue actuel: ${catalogId || 'local'}`);
+      console.log("Chargement des véhicules depuis Supabase...");
       
-      const importedVehicles = getImportedVehicles();
-      console.log(`${importedVehicles.length} véhicules chargés`);
+      const supabaseVehicles = await fetchVehiclesFromSupabase();
       
-      importedVehicles.forEach((vehicle, index) => {
+      // Transformer les véhicules Supabase au format ImportedVehicle
+      const transformedVehicles = supabaseVehicles.map(v => ({
+        id: v.id,
+        brand: v.brand,
+        model: v.model,
+        year: v.year,
+        mileage: v.mileage,
+        fuelType: v.fuel_type,
+        transmission: v.transmission,
+        price: v.price,
+        description: v.description,
+        image: v.image_url,
+        images: v.additional_images,
+        exteriorColor: v.exterior_color,
+        interiorColor: v.interior_color,
+        engine: v.engine,
+        doors: v.doors,
+        features: v.features,
+        featured: v.is_featured,
+        catalogType: v.is_featured ? 'featured' : 'standard'
+      })) as ImportedVehicle[];
+      
+      console.log(`${transformedVehicles.length} véhicules chargés depuis Supabase`);
+      
+      transformedVehicles.forEach((vehicle, index) => {
         console.log(`Véhicule ${index + 1}: ${vehicle.brand} ${vehicle.model}, Image: ${vehicle.image || 'Aucune image'}`);
       });
       
-      setVehicles(importedVehicles);
+      setVehicles(transformedVehicles);
       
-      if (importedVehicles.length === 0) {
+      if (transformedVehicles.length === 0) {
         toast({
           title: "Catalogue vide",
-          description: "Aucun véhicule trouvé dans ce catalogue.",
+          description: "Aucun véhicule trouvé dans Supabase.",
           variant: "default"
         });
       }
@@ -66,7 +94,7 @@ const VehicleManager = () => {
       console.error("Erreur lors du chargement des véhicules:", error);
       toast({
         title: "Erreur de chargement",
-        description: "Impossible de charger les véhicules. Veuillez rafraîchir la page.",
+        description: "Impossible de charger les véhicules depuis Supabase. Veuillez rafraîchir la page.",
         variant: "destructive"
       });
     } finally {
@@ -74,14 +102,34 @@ const VehicleManager = () => {
     }
   };
 
-  const handleSave = (vehicle: ImportedVehicle) => {
+  const handleSave = async (vehicle: ImportedVehicle) => {
     try {
-      const updatedVehicles = vehicles.map(v => 
-        v.id === vehicle.id ? vehicle : v
-      );
+      // Préparer les données pour Supabase
+      const vehicleForSupabase = {
+        brand: vehicle.brand,
+        model: vehicle.model,
+        year: vehicle.year,
+        mileage: vehicle.mileage,
+        fuel_type: vehicle.fuelType,
+        transmission: vehicle.transmission || 'Non spécifié',
+        price: vehicle.price,
+        description: vehicle.description || '',
+        image_url: vehicle.image || '',
+        additional_images: vehicle.images || [],
+        exterior_color: vehicle.exteriorColor || 'Non spécifié',
+        interior_color: vehicle.interiorColor || 'Non spécifié',
+        engine: vehicle.engine || '',
+        doors: vehicle.doors || null,
+        features: vehicle.features || [],
+        is_featured: vehicle.featured || false
+      };
       
-      saveImportedVehicles(updatedVehicles);
-      setVehicles(updatedVehicles);
+      // Mettre à jour dans Supabase
+      await updateVehicleInSupabase(vehicle.id, vehicleForSupabase);
+      
+      // Recharger les véhicules pour obtenir les données à jour
+      await loadVehicles();
+      
       setEditingVehicle(null);
       setIsDialogOpen(false);
       
@@ -93,26 +141,29 @@ const VehicleManager = () => {
       console.error("Erreur lors de la sauvegarde:", error);
       toast({
         title: "Erreur",
-        description: "Impossible de sauvegarder les modifications.",
+        description: "Impossible de sauvegarder les modifications dans Supabase.",
         variant: "destructive"
       });
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     try {
-      deleteImportedVehicle(id);
+      // Supprimer de Supabase
+      await deleteVehicleFromSupabase(id);
+      
+      // Mettre à jour l'interface
       setVehicles(vehicles.filter(v => v.id !== id));
       
       toast({
         title: "Véhicule supprimé",
-        description: "Le véhicule a été supprimé avec succès.",
+        description: "Le véhicule a été supprimé avec succès de Supabase.",
       });
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
       toast({
         title: "Erreur",
-        description: "Impossible de supprimer le véhicule.",
+        description: "Impossible de supprimer le véhicule de Supabase.",
         variant: "destructive"
       });
     }
@@ -123,25 +174,30 @@ const VehicleManager = () => {
     setIsDialogOpen(true);
   };
 
-  const handleResetCatalog = () => {
+  const handleMigrateFromLocalStorage = async () => {
     try {
-      // Réinitialiser le catalogue
-      resetCatalog();
-      // Recharger les véhicules
-      setVehicles([]);
-      setIsResetDialogOpen(false);
+      setIsMigrateDialogOpen(false);
       
-      toast({
-        title: "Catalogue réinitialisé",
-        description: "Le catalogue a été vidé avec succès. Vous pouvez maintenant ajouter de nouveaux véhicules.",
-      });
+      // Afficher un toast de chargement
+      toast.loading("Migration des véhicules en cours...");
+      
+      // Effectuer la migration
+      const result = await migrateLocalVehiclesToSupabase();
+      
+      // Recharger les véhicules si la migration a réussi
+      if (result.migrated > 0) {
+        await loadVehicles();
+        toast.success(`${result.migrated} véhicules ont été migrés avec succès.`);
+      } else {
+        toast.info("Aucun véhicule n'a été trouvé dans le localStorage à migrer.");
+      }
+      
+      if (result.errors > 0) {
+        toast.error(`${result.errors} erreurs se sont produites pendant la migration.`);
+      }
     } catch (error) {
-      console.error("Erreur lors de la réinitialisation du catalogue:", error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de réinitialiser le catalogue.",
-        variant: "destructive"
-      });
+      console.error("Erreur lors de la migration:", error);
+      toast.error("Une erreur s'est produite lors de la migration des véhicules.");
     }
   };
 
@@ -209,26 +265,34 @@ const VehicleManager = () => {
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">Gestion des véhicules</h1>
           
-          <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="destructive" className="mt-2 md:mt-0">
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Réinitialiser le catalogue
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Réinitialiser le catalogue</DialogTitle>
-                <DialogDescription>
-                  Êtes-vous sûr de vouloir réinitialiser le catalogue ? Cette action supprimera tous les véhicules et créera un nouveau catalogue vide.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter className="mt-4">
-                <Button variant="outline" onClick={() => setIsResetDialogOpen(false)}>Annuler</Button>
-                <Button variant="destructive" onClick={handleResetCatalog}>Réinitialiser</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
+            <Dialog open={isMigrateDialogOpen} onOpenChange={setIsMigrateDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Migrer du localStorage
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Migrer les véhicules du localStorage</DialogTitle>
+                  <DialogDescription>
+                    Voulez-vous migrer tous les véhicules stockés localement vers Supabase? 
+                    Cette action ne supprimera pas les données locales.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="mt-4">
+                  <Button variant="outline" onClick={() => setIsMigrateDialogOpen(false)}>Annuler</Button>
+                  <Button onClick={handleMigrateFromLocalStorage}>Migrer</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            
+            <Button variant="outline" onClick={loadVehicles}>
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Actualiser
+            </Button>
+          </div>
         </div>
         
         {isLoading ? (
@@ -243,7 +307,7 @@ const VehicleManager = () => {
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Aucun véhicule trouvé</AlertTitle>
             <AlertDescription>
-              Aucun véhicule n'a été importé. Utilisez l'outil d'importation pour ajouter des véhicules.
+              Aucun véhicule n'a été trouvé dans Supabase. Utilisez l'outil d'importation pour ajouter des véhicules ou migrez les véhicules du localStorage.
             </AlertDescription>
           </Alert>
         ) : (
