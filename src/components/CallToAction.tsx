@@ -14,7 +14,11 @@ const CallToAction = () => {
       ES: "¿Necesita ayuda con su proyecto de automóvil?",
       IT: "Hai bisogno di aiuto per il tuo progetto automobilistico?",
       PT: "Precisa de ajuda com o seu projeto automóvel?",
-      RO: "Aveți nevoie de ajutor pentru proiectul dvs. auto?"
+      RO: "Aveți nevoie de ajutor pentru proiectul dvs. auto?",
+      DE: "Benötigen Sie Hilfe bei Ihrem Autoprojekt?",
+      NL: "Hulp nodig bij uw autoproject?",
+      PL: "Potrzebujesz pomocy przy projekcie samochodu?",
+      RU: "Нужна помощь с автомобильным проектом?"
     },
     advisorsAvailable: {
       FR: "Nos conseillers sont à votre disposition pour vous aider à trouver le véhicule de vos rêves. Achetez en ligne ou contactez-nous pour toute question.",
@@ -22,7 +26,11 @@ const CallToAction = () => {
       ES: "Nuestros asesores están a su disposición para ayudarle a encontrar el vehículo de sus sueños. Compre en línea o contáctenos para cualquier pregunta.",
       IT: "I nostri consulenti sono a tua disposizione per aiutarti a trovare il veicolo dei tuoi sogni. Acquista online o contattaci per qualsiasi domanda.",
       PT: "Os nossos consultores estão à sua disposição para o ajudar a encontrar o veículo dos seus sonhos. Compre online ou contacte-nos para qualquer pergunta.",
-      RO: "Consilierii noștri sunt la dispoziția dvs. pentru a vă ajuta să găsiți vehiculul visurilor dvs. Cumpărați online sau contactați-ne pentru orice întrebare."
+      RO: "Consilierii noștri sunt la dispoziția dvs. pentru a vă ajuta să găsiți vehiculul visurilor dvs. Cumpărați online sau contactați-ne pentru orice întrebare.",
+      DE: "Unsere Berater stehen Ihnen zur Verfügung, um Ihnen zu helfen, das Fahrzeug Ihrer Träume zu finden. Kaufen Sie online oder kontaktieren Sie uns bei Fragen.",
+      NL: "Onze adviseurs staan tot uw beschikking om u te helpen het voertuig van uw dromen te vinden. Koop online of neem contact met ons op voor vragen.",
+      PL: "Nasi doradcy są do Twojej dyspozycji, aby pomóc Ci znaleźć wymarzony pojazd. Kupuj online lub skontaktuj się z nami w razie pytań.",
+      RU: "Наши консультанты к вашим услугам, чтобы помочь вам найти автомобиль вашей мечты. Покупайте онлайн или свяжитесь с нами по любым вопросам."
     },
     contactUs: {
       FR: "Nous contacter",
@@ -30,7 +38,11 @@ const CallToAction = () => {
       ES: "Contáctenos",
       IT: "Contattaci",
       PT: "Contacte-nos",
-      RO: "Contactați-ne"
+      RO: "Contactați-ne",
+      DE: "Kontaktieren Sie uns",
+      NL: "Neem contact met ons op",
+      PL: "Skontaktuj się z nami",
+      RU: "Свяжитесь с нами"
     },
     buyOnline: {
       FR: "Acheter en ligne",
@@ -38,7 +50,11 @@ const CallToAction = () => {
       ES: "Comprar en línea",
       IT: "Acquista online",
       PT: "Comprar online",
-      RO: "Cumpără online"
+      RO: "Cumpără online",
+      DE: "Online kaufen",
+      NL: "Online kopen",
+      PL: "Kup online",
+      RU: "Купить онлайн"
     },
     hoursAvailable: {
       FR: "Lun-Sam: 9h00-19h00",
@@ -46,7 +62,11 @@ const CallToAction = () => {
       ES: "Lun-Sáb: 9h00-19h00",
       IT: "Lun-Sab: 9:00-19:00",
       PT: "Seg-Sáb: 9h00-19h00",
-      RO: "Lun-Sâm: 9:00-19:00"
+      RO: "Lun-Sâm: 9:00-19:00",
+      DE: "Mo-Sa: 9:00-19:00",
+      NL: "Ma-Za: 9:00-19:00",
+      PL: "Pon-Sob: 9:00-19:00",
+      RU: "Пн-Сб: 9:00-19:00"
     },
     socialMediaInfo: {
       FR: "Disponible sur Facebook et WhatsApp",
@@ -54,7 +74,11 @@ const CallToAction = () => {
       ES: "Disponible en Facebook y WhatsApp",
       IT: "Disponibile su Facebook e WhatsApp",
       PT: "Disponível no Facebook e WhatsApp",
-      RO: "Disponibil pe Facebook și WhatsApp"
+      RO: "Disponibil pe Facebook și WhatsApp",
+      DE: "Verfügbar auf Facebook und WhatsApp",
+      NL: "Beschikbaar op Facebook en WhatsApp",
+      PL: "Dostępny na Facebooku i WhatsAppie",
+      RU: "Доступно на Facebook и WhatsApp"
     }
   };
 

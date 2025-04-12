@@ -10,6 +10,10 @@ type CopyrightTranslations = {
     IT: string;
     PT: string;
     RO: string;
+    DE: string;
+    NL: string;
+    PL: string;
+    RU: string;
   };
 };
 
@@ -23,7 +27,11 @@ const FooterCopyright = () => {
       ES: "© 2002 Auto Adi. N° de identificación: 827 514 860. Todos los derechos reservados.",
       IT: "© 2002 Auto Adi. N° di identificazione: 827 514 860. Tutti i diritti riservati.",
       PT: "© 2002 Auto Adi. N° de identificação: 827 514 860. Todos os direitos reservados.",
-      RO: "© 2002 Auto Adi. Număr de identificare: 827 514 860. Toate drepturile rezervate."
+      RO: "© 2002 Auto Adi. Număr de identificare: 827 514 860. Toate drepturile rezervate.",
+      DE: "© 2002 Auto Adi. Identifikationsnummer: 827 514 860. Alle Rechte vorbehalten.",
+      NL: "© 2002 Auto Adi. Identificatienummer: 827 514 860. Alle rechten voorbehouden.",
+      PL: "© 2002 Auto Adi. Numer identyfikacyjny: 827 514 860. Wszelkie prawa zastrzeżone.",
+      RU: "© 2002 Auto Adi. Идентификационный номер: 827 514 860. Все права защищены."
     }
   };
 

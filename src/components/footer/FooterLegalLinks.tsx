@@ -12,6 +12,10 @@ type LegalLinksTranslations = {
     IT: string;
     PT: string;
     RO: string;
+    DE: string;
+    NL: string;
+    PL: string;
+    RU: string;
   };
 };
 
@@ -25,7 +29,11 @@ const FooterLegalLinks = () => {
       ES: "Información legal",
       IT: "Informazioni legali",
       PT: "Informações legais",
-      RO: "Informații legale"
+      RO: "Informații legale",
+      DE: "Rechtliche Informationen",
+      NL: "Juridische informatie",
+      PL: "Informacje prawne",
+      RU: "Юридическая информация"
     },
     legalNotice: {
       FR: "Mentions légales",
@@ -33,7 +41,11 @@ const FooterLegalLinks = () => {
       ES: "Avisos legales",
       IT: "Note legali",
       PT: "Avisos legais",
-      RO: "Mențiuni legale"
+      RO: "Mențiuni legale",
+      DE: "Rechtliche Hinweise",
+      NL: "Juridische vermeldingen",
+      PL: "Informacje prawne",
+      RU: "Правовое уведомление"
     },
     privacyPolicy: {
       FR: "Politique de confidentialité",
@@ -41,7 +53,11 @@ const FooterLegalLinks = () => {
       ES: "Política de privacidad",
       IT: "Politica sulla privacy",
       PT: "Política de privacidade",
-      RO: "Politica de confidențialitate"
+      RO: "Politica de confidențialitate",
+      DE: "Datenschutzrichtlinie",
+      NL: "Privacybeleid",
+      PL: "Polityka prywatności",
+      RU: "Политика конфиденциальности"
     },
     cookieManagement: {
       FR: "Gestion des cookies",
@@ -49,7 +65,11 @@ const FooterLegalLinks = () => {
       ES: "Gestión de cookies",
       IT: "Gestione dei cookie",
       PT: "Gestão de cookies",
-      RO: "Gestionarea cookie-urilor"
+      RO: "Gestionarea cookie-urilor",
+      DE: "Cookie-Verwaltung",
+      NL: "Cookie-beheer",
+      PL: "Zarządzanie plikami cookie",
+      RU: "Управление файлами cookie"
     },
     termsAndConditions: {
       FR: "CGV",
@@ -57,7 +77,11 @@ const FooterLegalLinks = () => {
       ES: "Términos y condiciones",
       IT: "Termini e condizioni",
       PT: "Termos e condições",
-      RO: "Termeni și condiții"
+      RO: "Termeni și condiții",
+      DE: "Allgemeine Geschäftsbedingungen",
+      NL: "Algemene voorwaarden",
+      PL: "Warunki korzystania",
+      RU: "Условия использования"
     },
     saleConditions: {
       FR: "Conditions de vente",
@@ -65,7 +89,11 @@ const FooterLegalLinks = () => {
       ES: "Condiciones de venta",
       IT: "Condizioni di vendita",
       PT: "Condições de venda",
-      RO: "Condiții de vânzare"
+      RO: "Condiții de vânzare",
+      DE: "Verkaufsbedingungen",
+      NL: "Verkoopvoorwaarden",
+      PL: "Warunki sprzedaży",
+      RU: "Условия продажи"
     }
   };
 

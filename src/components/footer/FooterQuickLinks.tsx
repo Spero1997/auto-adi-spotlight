@@ -11,6 +11,10 @@ type QuickLinksTranslations = {
     IT: string;
     PT: string;
     RO: string;
+    DE: string;
+    NL: string;
+    PL: string;
+    RU: string;
   };
 };
 
@@ -24,7 +28,11 @@ const FooterQuickLinks = () => {
       ES: "Enlaces rápidos",
       IT: "Link rapidi",
       PT: "Links rápidos",
-      RO: "Linkuri rapide"
+      RO: "Linkuri rapide",
+      DE: "Schnelllinks",
+      NL: "Snelle links",
+      PL: "Szybkie linki",
+      RU: "Быстрые ссылки"
     },
     newVehicles: {
       FR: "Véhicules neufs",
@@ -32,7 +40,11 @@ const FooterQuickLinks = () => {
       ES: "Vehículos nuevos",
       IT: "Veicoli nuovi",
       PT: "Veículos novos",
-      RO: "Vehicule noi"
+      RO: "Vehicule noi",
+      DE: "Neufahrzeuge",
+      NL: "Nieuwe voertuigen",
+      PL: "Nowe pojazdy",
+      RU: "Новые автомобили"
     },
     usedVehicles: {
       FR: "Véhicules d'occasion",
@@ -40,7 +52,11 @@ const FooterQuickLinks = () => {
       ES: "Vehículos usados",
       IT: "Veicoli usati",
       PT: "Veículos usados",
-      RO: "Vehicule second-hand"
+      RO: "Vehicule second-hand",
+      DE: "Gebrauchtwagen",
+      NL: "Gebruikte voertuigen",
+      PL: "Pojazdy używane",
+      RU: "Подержанные автомобили"
     },
     services: {
       FR: "Services",
@@ -48,7 +64,11 @@ const FooterQuickLinks = () => {
       ES: "Servicios",
       IT: "Servizi",
       PT: "Serviços",
-      RO: "Servicii"
+      RO: "Servicii",
+      DE: "Dienstleistungen",
+      NL: "Diensten",
+      PL: "Usługi",
+      RU: "Услуги"
     },
     financing: {
       FR: "Financement",
@@ -56,7 +76,11 @@ const FooterQuickLinks = () => {
       ES: "Financiación",
       IT: "Finanziamento",
       PT: "Financiamento",
-      RO: "Finanțare"
+      RO: "Finanțare",
+      DE: "Finanzierung",
+      NL: "Financiering",
+      PL: "Finansowanie",
+      RU: "Финансирование"
     },
     vehicleBuyback: {
       FR: "Rachat de votre véhicule",
@@ -64,7 +88,11 @@ const FooterQuickLinks = () => {
       ES: "Recompra de su vehículo",
       IT: "Riacquisto del veicolo",
       PT: "Recompra do seu veículo",
-      RO: "Răscumpărarea vehiculului"
+      RO: "Răscumpărarea vehiculului",
+      DE: "Fahrzeugrückkauf",
+      NL: "Terugkoop van uw voertuig",
+      PL: "Odkup pojazdu",
+      RU: "Выкуп автомобиля"
     }
   };
 
