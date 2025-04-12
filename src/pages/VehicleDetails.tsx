@@ -82,6 +82,7 @@ const VehicleDetails = () => {
                   <div className="space-y-4">
                     <VehicleImageGallery 
                       image={vehicle.image} 
+                      images={vehicle.images}
                       brand={vehicle.brand} 
                       model={vehicle.model} 
                     />

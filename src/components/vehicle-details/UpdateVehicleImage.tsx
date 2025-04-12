@@ -23,8 +23,8 @@ const UpdateVehicleImage = ({
   const handleUpdateImage = () => {
     setIsUpdating(true);
     
-    // Utiliser la nouvelle image Toyota C-HR bleue
-    const newImageUrl = '/lovable-uploads/3a09b1ff-510f-4248-97b3-89ccc312f68e.png';
+    // Utiliser la nouvelle image Toyota C-HR bleue téléchargée
+    const newImageUrl = '/lovable-uploads/a2e4d2f0-6ecf-4bb3-a88d-d89e102afe99.png';
     
     updateImage(newImageUrl);
     

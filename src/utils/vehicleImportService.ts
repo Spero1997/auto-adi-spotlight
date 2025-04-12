@@ -1,4 +1,3 @@
-
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -78,7 +77,7 @@ export const addToyotaCHR = () => {
       transmission: 'Automatique',
       exteriorColor: 'Bleu',
       interiorColor: 'Noir',
-      image: '/lovable-uploads/3a09b1ff-510f-4248-97b3-89ccc312f68e.png', // Image principale mise à jour
+      image: '/lovable-uploads/a2e4d2f0-6ecf-4bb3-a88d-d89e102afe99.png', // Image principale mise à jour
       images: [
         '/lovable-uploads/4a7d0135-15bc-4d67-8593-95afa2898553.png',
         '/lovable-uploads/a148b039-46ad-4622-a3ec-a299bc1de8e4.png',
@@ -151,13 +150,14 @@ wa.me/393761753341`,
   }
 };
 
-// Fonction pour mettre à jour l'image de l'Audi Q2
+// Fonction pour mettre à jour l'image d'un véhicule
 export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType: 'standard' | 'featured' = 'standard') => {
   try {
     // Utilisation des fonctions importées explicitement
     const vehicles = getImportedVehicles(catalogType);
     
     const vehicleIndex = vehicles.findIndex(v => v.id === vehicleId || 
+      (v.brand === 'Toyota' && v.model.includes('C-HR') && v.year === 2022) ||
       (v.brand === 'Audi' && v.model.includes('Q2 Ultra Sport') && v.year === 2018));
     
     if (vehicleIndex !== -1) {

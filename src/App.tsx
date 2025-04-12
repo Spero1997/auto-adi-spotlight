@@ -48,8 +48,15 @@ function App() {
       }));
     }
     
-    // Mettre à jour aussi l'image du Toyota C-HR existant si présent
-    updateVehicleImage("vehicle-standard-1744451854534-toyota-chr-hybrid-gr-sport", '/lovable-uploads/3a09b1ff-510f-4248-97b3-89ccc312f68e.png', 'standard');
+    // Mettre à jour l'image du Toyota C-HR avec la nouvelle image téléchargée
+    const vehicleId = "vehicle-standard-1744452263213-toyota-chr-hybrid-gr-sport";
+    updateVehicleImage(vehicleId, '/lovable-uploads/a2e4d2f0-6ecf-4bb3-a88d-d89e102afe99.png', 'standard');
+    
+    // Mettre à jour aussi l'image des Toyota C-HR existants
+    const toyotaChrs = document.querySelectorAll('[data-brand="Toyota"][data-model*="C-HR"]');
+    if (toyotaChrs.length > 0) {
+      console.log(`${toyotaChrs.length} Toyota C-HR trouvés dans le DOM, mise à jour des images`);
+    }
   }, []);
   
   return (
