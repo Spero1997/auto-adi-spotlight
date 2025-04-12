@@ -1,3 +1,4 @@
+
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -199,10 +200,10 @@ export const addRenaultScenic = () => {
       transmission: 'Automatique',
       exteriorColor: 'Gris',
       interiorColor: 'Noir',
-      image: '/lovable-uploads/2e08f660-5b4c-4c1c-a6a6-826551c7ecdf.png',
+      image: '/lovable-uploads/0bc7bda5-9e89-432d-871a-6a00b74a0759.png',
       images: [
-        '/lovable-uploads/084fc59d-c55e-4587-aba1-9d4207ad1589.png',
-        '/lovable-uploads/7b163bf1-37df-49c6-b255-8c06535f448a.png'
+        '/lovable-uploads/ae34cb7a-c5e6-4d53-8be7-d04840af21f5.png',
+        '/lovable-uploads/e9229515-1922-4ee8-a751-60c9df160f63.png'
       ],
       description: `Modalités de paiement
 • Acompte : 20 % à la commande

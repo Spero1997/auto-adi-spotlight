@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -20,7 +20,7 @@ import VehicleNotFound from '@/components/vehicle-details/VehicleNotFound';
 
 const VehicleDetails = () => {
   // Custom hooks for data fetching and order handling
-  const { vehicle, isLoading, notFound, updateImage } = useVehicleDetail();
+  const { vehicle, isLoading, notFound, updateImage, refreshVehicle } = useVehicleDetail();
   const { 
     showPaymentForm,
     handleBuyClick,
@@ -31,10 +31,22 @@ const VehicleDetails = () => {
     setShowPaymentForm
   } = useVehicleOrder(vehicle);
   
+  // Rafraîchir les données du véhicule au chargement initial
+  useEffect(() => {
+    refreshVehicle();
+  }, [refreshVehicle]);
+  
   // Ajoutons un console.log pour vérifier les données du véhicule
   if (vehicle) {
     console.log("Détails du véhicule: ", vehicle);
     console.log("Images additionnelles: ", vehicle.images);
+    
+    // Vérifier si c'est le Renault Scenic pour s'assurer que les images sont correctes
+    if (vehicle.brand === 'Renault' && vehicle.model.includes('Scenic')) {
+      console.log("C'est bien la Renault Scenic, vérifions les images:");
+      console.log("Image principale:", vehicle.image);
+      console.log("Images additionnelles:", vehicle.images);
+    }
   }
   
   if (isLoading) {
