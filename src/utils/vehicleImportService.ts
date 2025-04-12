@@ -1,8 +1,11 @@
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
+// Import type first so we can use it in this file
+import { ImportedVehicle } from './types/vehicle';
+
 // Export types
-export type { ImportedVehicle } from './types/vehicle';
+export type { ImportedVehicle };
 
 // Re-export constants
 export {
