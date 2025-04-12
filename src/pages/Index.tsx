@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
-import QuickSearch from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import Benefits from '@/components/Benefits';
 import TestimonialSection from '@/components/TestimonialSection';
@@ -503,9 +502,6 @@ const Index = () => {
               ? "Concessionnaire Auto Pas Cher - Achat Voiture Occasion" 
               : "Affordable Car Dealer - Used Car Sales"}
           </h1>
-          <div className="mt-12 quick-search-container">
-            <QuickSearch />
-          </div>
         </div>
         
         <ConditionsHighlight />
@@ -535,29 +531,4 @@ const Index = () => {
           </div>
         ) : null}
         
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">
-              {language === 'FR' 
-                ? "Financement Auto Taux 0% et Reprise Véhicule Gratuite" 
-                : "0% Auto Financing and Free Vehicle Trade-in"}
-            </h2>
-            <p className="text-lg text-center max-w-3xl mx-auto mb-12 text-gray-700">
-              {language === 'FR' 
-                ? "Chez Auto Adi, nous proposons des solutions de financement avantageuses et une reprise de votre ancien véhicule sans frais supplémentaires." 
-                : "At Auto Adi, we offer advantageous financing solutions and we'll take your old vehicle with no additional fees."}
-            </p>
-          </div>
-        </section>
-        
-        <Benefits />
-        <div id="testimonials">
-          <TestimonialSection />
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
-};
-
-export default Index;
+        <section
