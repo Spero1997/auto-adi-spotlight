@@ -20,22 +20,12 @@ const VehicleImageGallery = ({ image, images, brand, model }: VehicleImageGaller
     setCurrentImage(image);
     
     // Créer un tableau de toutes les images (principale + additionnelles)
-    const imageArray: string[] = [];
-    
-    // D'abord ajouter l'image principale si elle existe
-    if (image && image.trim() !== '') {
-      imageArray.push(image);
+    const imageArray = [image];
+    if (images && images.length > 0) {
+      imageArray.push(...images);
     }
-    
-    // Puis ajouter les images additionnelles valides
-    if (images && Array.isArray(images)) {
-      const validAdditionalImages = images.filter(img => img && img.trim() !== '');
-      imageArray.push(...validAdditionalImages);
-    }
-    
-    console.log(`VehicleImageGallery: ${brand} ${model} - ${imageArray.length} images au total`);
     setAllImages(imageArray);
-  }, [image, images, brand, model]);
+  }, [image, images]);
 
   const handleThumbnailClick = (img: string) => {
     setCurrentImage(img);

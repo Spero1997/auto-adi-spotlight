@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ImportedVehicle, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
 import { fetchVehiclesFromSupabase } from '@/utils/services/vehicleService';
 
 interface SearchFilters {
@@ -11,7 +11,7 @@ interface SearchFilters {
   fuelType?: string;
 }
 
-export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false, refreshKey?: number) => {
+export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false) => {
   const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,14 +25,20 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false,
       // Récupérer l'ID du catalogue à partir de l'URL si disponible
       const catalogId = getCatalogIdFromUrl(catalogType);
       
-      console.log(`useVehicles: Chargement des véhicules depuis Supabase, catalogType=${catalogType}, ID=${catalogId || 'local'}, refreshKey=${refreshKey || 'none'}`);
+      console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
       
-      // Charger les véhicules directement depuis Supabase
+      let loadedVehicles: ImportedVehicle[] = [];
+      
+      // 1. D'abord, chargeons les véhicules depuis le localStorage
+      const importedVehicles = getImportedVehicles(catalogType);
+      loadedVehicles = [...importedVehicles];
+      
+      // 2. Ensuite, essayons de charger les véhicules depuis Supabase
       try {
         const supabaseVehicles = await fetchVehiclesFromSupabase();
         
         // Transformer les véhicules Supabase au format ImportedVehicle
-        const transformedVehicles = supabaseVehicles.map(v => ({
+        const transformedSupabaseVehicles = supabaseVehicles.map(v => ({
           id: v.id,
           brand: v.brand,
           model: v.model,
@@ -54,32 +60,49 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false,
         })) as ImportedVehicle[];
         
         // Si on ne cherche que les véhicules vedettes, filtrer les résultats
-        const filteredVehicles = featuredOnly 
-          ? transformedVehicles.filter(v => v.featured) 
-          : transformedVehicles;
+        const filteredSupabaseVehicles = featuredOnly 
+          ? transformedSupabaseVehicles.filter(v => v.featured) 
+          : transformedSupabaseVehicles;
         
-        // Trier les véhicules par année (du plus récent au plus ancien)
-        filteredVehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
+        // Combiner les véhicules du localStorage et de Supabase
+        // Utiliser un Map pour éviter les doublons basés sur l'ID
+        const vehicleMap = new Map();
         
-        // Log individual vehicles to help with debugging
-        filteredVehicles.forEach((vehicle, index) => {
-          console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Année: ${vehicle.year}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
+        // D'abord ajouter les véhicules du localStorage
+        loadedVehicles.forEach(v => vehicleMap.set(v.id, v));
+        
+        // Ensuite ajouter ou mettre à jour avec les véhicules de Supabase
+        filteredSupabaseVehicles.forEach(v => {
+          if (!vehicleMap.has(v.id)) {
+            vehicleMap.set(v.id, v);
+          }
         });
         
-        setVehicles(filteredVehicles);
-        console.log(`useVehicles: ${filteredVehicles.length} véhicules chargés depuis Supabase`);
+        // Convertir le Map en tableau
+        loadedVehicles = Array.from(vehicleMap.values());
+        
+        console.log(`useVehicles: ${loadedVehicles.length} véhicules chargés (local + Supabase)`);
       } catch (supabaseError) {
         console.error("Erreur lors du chargement des véhicules depuis Supabase:", supabaseError);
-        setError("Échec du chargement des véhicules depuis Supabase.");
-        setVehicles([]);
+        console.log("Continuons avec les véhicules du localStorage uniquement");
       }
+      
+      // Trier les véhicules par année (du plus récent au plus ancien)
+      loadedVehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
+      
+      // Log individual vehicles to help with debugging
+      loadedVehicles.forEach((vehicle, index) => {
+        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Année: ${vehicle.year}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
+      });
+      
+      setVehicles(loadedVehicles);
     } catch (e) {
       setError("Échec du chargement des véhicules.");
       console.error("Erreur lors du chargement des véhicules:", e);
     } finally {
       setLoading(false);
     }
-  }, [featuredOnly, refreshKey]); // Add refreshKey to dependencies
+  }, [featuredOnly]);
 
   useEffect(() => {
     // Chargement initial des véhicules
@@ -113,14 +136,14 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false,
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     window.addEventListener('catalogChanged', handleCatalogChanged);
     
-    // Recharger les véhicules quand l'URL change ou le refreshKey change
+    // Recharger les véhicules quand l'URL change
     loadVehicles();
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
       window.removeEventListener('catalogChanged', handleCatalogChanged);
     };
-  }, [featuredOnly, location.search, loadVehicles, refreshKey]); // Add refreshKey to dependencies
+  }, [featuredOnly, location.search, loadVehicles]);
 
   // Fonction pour filtrer les véhicules selon les critères de recherche
   const filteredVehicles = () => {

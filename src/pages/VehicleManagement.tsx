@@ -4,34 +4,11 @@ import VehicleManager from "@/components/VehicleManager";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Plus } from "lucide-react";
 import CatalogShare from "@/components/CatalogShare";
-import { useAuth } from "@/hooks/use-auth";
-import { useEffect } from "react";
-import { toast } from "sonner";
 
 const VehicleManagement = () => {
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
-  
-  // Rediriger si l'utilisateur n'est pas authentifié
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Vous devez être connecté pour accéder à cette page");
-      navigate("/admin/login");
-    }
-  }, [user, loading, navigate]);
-  
-  const handleAddVehicle = () => {
-    navigate('/vehicules/import');
-  };
-  
-  // Si le chargement est en cours ou l'utilisateur n'est pas connecté, ne rien afficher
-  if (loading || !user) {
-    return null;
-  }
-  
   return (
     <>
       <Helmet>
@@ -50,10 +27,12 @@ const VehicleManagement = () => {
               <div className="flex gap-3 flex-wrap">
                 <CatalogShare />
                 
-                <Button className="flex items-center gap-2" onClick={handleAddVehicle}>
-                  <Plus className="h-4 w-4" />
-                  Ajouter un véhicule
-                </Button>
+                <Link to="/vehicule/import">
+                  <Button className="flex items-center gap-2">
+                    <Plus className="h-4 w-4" />
+                    Ajouter un véhicule
+                  </Button>
+                </Link>
               </div>
             </div>
             

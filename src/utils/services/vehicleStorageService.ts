@@ -27,15 +27,7 @@ export const getImportedVehicles = (catalogType: 'standard' | 'featured' = 'stan
         console.warn(`${parsedVehicles.length - validVehicles.length} véhicules invalides ont été filtrés.`);
       }
       
-      // Assurons-nous que tous les véhicules ont un tableau images, même s'il est vide
-      const vehiclesWithImages = validVehicles.map((vehicle: ImportedVehicle) => {
-        if (!vehicle.images) {
-          return { ...vehicle, images: [] };
-        }
-        return vehicle;
-      });
-      
-      return vehiclesWithImages;
+      return validVehicles;
     } else {
       console.log(`Aucun véhicule trouvé dans ${storageKey}, retour tableau vide`);
       return [];
@@ -69,22 +61,14 @@ export const saveImportedVehicles = (
       console.warn(`${vehicles.length - validVehicles.length} véhicules invalides ont été filtrés avant la sauvegarde.`);
     }
     
-    // S'assurer que le tableau images existe pour chaque véhicule
-    const vehiclesWithImages = validVehicles.map(vehicle => {
-      if (!vehicle.images) {
-        return { ...vehicle, images: [] };
-      }
-      return vehicle;
-    });
-    
-    localStorage.setItem(storageKey, JSON.stringify(vehiclesWithImages));
-    console.log(`${vehiclesWithImages.length} véhicules enregistrés dans ${storageKey}`);
+    localStorage.setItem(storageKey, JSON.stringify(validVehicles));
+    console.log(`${validVehicles.length} véhicules enregistrés dans ${storageKey}`);
     
     // Vérification de la sauvegarde
     try {
       const verifData = localStorage.getItem(storageKey);
       const verifVehicles = verifData ? JSON.parse(verifData) : [];
-      if (verifVehicles.length !== vehiclesWithImages.length) {
+      if (verifVehicles.length !== validVehicles.length) {
         console.error('Problème de vérification de sauvegarde: nombre de véhicules différent');
         return false;
       }
@@ -92,13 +76,7 @@ export const saveImportedVehicles = (
       
       // Déclencher un événement pour informer l'application de la mise à jour
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType, timestamp: Date.now() } 
-      }));
-      
-      // Forcer la mise à jour du localStorage pour les autres onglets
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: storageKey,
-        newValue: JSON.stringify(vehiclesWithImages)
+        detail: { catalogType } 
       }));
       
       return true;
@@ -109,20 +87,5 @@ export const saveImportedVehicles = (
   } catch (error) {
     console.error(`Erreur lors de l'enregistrement des véhicules dans ${catalogType}:`, error);
     return false;
-  }
-};
-
-// Ajouter une fonction pour récupérer directement un véhicule par son ID
-export const getVehicleById = (
-  id: string, 
-  catalogType: 'standard' | 'featured' = 'standard'
-): ImportedVehicle | null => {
-  try {
-    const vehicles = getImportedVehicles(catalogType);
-    const vehicle = vehicles.find(v => v.id === id);
-    return vehicle || null;
-  } catch (error) {
-    console.error(`Erreur lors de la récupération du véhicule ${id}:`, error);
-    return null;
   }
 };

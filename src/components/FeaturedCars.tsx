@@ -1,12 +1,9 @@
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Car, RefreshCw, Plus } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { Car, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 import VehicleList from './vehicles/VehicleList';
 import { useVehicles } from './vehicles/useVehicles';
-import { useAuth } from '@/hooks/use-auth';
 
 interface SearchFilters {
   brand?: string;
@@ -20,30 +17,9 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   featuredOnly?: boolean;
 }) => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [refreshKey, setRefreshKey] = useState(Date.now());
-  const { vehicles, loading, error, refresh } = useVehicles(searchFilters, featuredOnly, refreshKey);
-  const { user } = useAuth();
-  const isAuthenticated = !!user;
+  const { vehicles, loading, error, refresh } = useVehicles(searchFilters, featuredOnly);
 
-  useEffect(() => {
-    const handleVehiclesUpdated = () => {
-      console.log("FeaturedCars: Événement vehiclesUpdated détecté");
-      setRefreshKey(Date.now());
-      refresh();
-    };
-
-    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    
-    return () => {
-      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    };
-  }, [refresh]);
-
-  const handleAddVehicle = () => {
-    navigate('/vehicules/import');
-  };
-
+  // Déterminer le titre approprié en fonction des filtres et du type de catalogue
   const getTitle = () => {
     if (searchFilters && (searchFilters.brand || searchFilters.model || searchFilters.maxPrice || searchFilters.fuelType)) {
       return "Résultats de votre recherche";
@@ -51,22 +27,17 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     return featuredOnly ? "Nos véhicules vedettes" : "Nos véhicules d'occasion";
   };
 
+  // Message à afficher quand aucun véhicule n'est trouvé
   const getEmptyMessage = () => {
-    if (isSearchContext) {
-      return "Aucun véhicule ne correspond à vos critères de recherche.";
-    }
     return featuredOnly 
       ? "Aucun véhicule n'a encore été ajouté au catalogue vedette." 
-      : "Aucun véhicule n'est disponible dans ce catalogue.";
+      : "Aucun véhicule ne correspond à vos critères de recherche.";
   };
 
+  // Fonction pour forcer le rechargement des véhicules
   const handleRefresh = () => {
-    toast.info("Actualisation du catalogue...");
-    setRefreshKey(Date.now());
     refresh();
   };
-
-  const isSearchContext = searchParams.size > 0 || !!searchFilters;
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -75,19 +46,10 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
           {getTitle()}
         </h2>
         
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={handleRefresh} className="flex items-center gap-2">
-            <RefreshCw className="h-4 w-4" />
-            Actualiser
-          </Button>
-          
-          {isAuthenticated && (
-            <Button size="sm" onClick={handleAddVehicle} className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Ajouter un véhicule
-            </Button>
-          )}
-        </div>
+        <Button variant="outline" size="sm" onClick={handleRefresh} className="flex items-center gap-2">
+          <RefreshCw className="h-4 w-4" />
+          Actualiser
+        </Button>
       </div>
 
       <VehicleList 
@@ -95,9 +57,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         loading={loading}
         error={error}
         emptyMessage={getEmptyMessage()}
-        isSearchContext={isSearchContext}
-        onAddVehicle={isAuthenticated ? handleAddVehicle : undefined}
-        key={refreshKey}
       />
     </div>
   );

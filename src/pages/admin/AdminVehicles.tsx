@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
+import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, addVehicle } from '@/utils/vehicleImportService';
 
 // UI Components
 import VehicleTable from '@/components/admin/vehicles/VehicleTable';
@@ -19,21 +18,20 @@ const AdminVehicles: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState<ImportedVehicle | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
-  const [newImageUrl, setNewImageUrl] = useState('');
-  const navigate = useNavigate();
+  
+  useEffect(() => {
+    loadVehicles();
+    
+    window.addEventListener('vehiclesUpdated', loadVehicles);
+    return () => {
+      window.removeEventListener('vehiclesUpdated', loadVehicles);
+    };
+  }, []);
 
-  const loadVehicles = useCallback(() => {
+  const loadVehicles = () => {
     try {
       setIsLoading(true);
       const importedVehicles = getImportedVehicles();
-      console.log("AdminVehicles: Chargement de", importedVehicles.length, "véhicules");
-      
-      // Log pour vérifier les images de chaque véhicule
-      importedVehicles.forEach((v, i) => {
-        console.log(`Véhicule ${i+1}: ${v.brand} ${v.model}, Images:`, 
-          v.images ? v.images.length : 0, "images additionnelles");
-      });
-      
       setVehicles(importedVehicles);
     } catch (error) {
       console.error("Error loading vehicles:", error);
@@ -41,39 +39,41 @@ const AdminVehicles: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    loadVehicles();
-    
-    const handleVehiclesUpdated = () => {
-      console.log("AdminVehicles: Événement vehiclesUpdated détecté");
-      loadVehicles();
-    };
-    
-    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    window.addEventListener('storage', handleVehiclesUpdated);
-    
-    return () => {
-      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
-      window.removeEventListener('storage', handleVehiclesUpdated);
-    };
-  }, [loadVehicles]);
+  };
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
   };
 
-  const handleEditClick = (vehicle: ImportedVehicle) => {
-    console.log("Edition du véhicule:", vehicle.id, "Images:", vehicle.images?.length || 0);
-    
-    // Assurons-nous que le véhicule a un tableau d'images
-    const vehicleWithImages = { 
-      ...vehicle,
-      images: vehicle.images || []
+  const handleAddNewVehicle = () => {
+    // Créer un nouveau véhicule vide plutôt que de rediriger
+    const newVehicle: ImportedVehicle = {
+      id: `vehicle-standard-${Date.now()}`,
+      brand: '',
+      model: '',
+      year: new Date().getFullYear(),
+      mileage: 0,
+      price: 0,
+      fuelType: 'Essence',
+      transmission: 'Manuelle',
+      exteriorColor: '',
+      interiorColor: '',
+      image: '',
+      description: '',
+      features: [],
+      images: [],
+      catalogType: 'standard'
     };
     
-    setCurrentVehicle(vehicleWithImages);
+    setCurrentVehicle(newVehicle);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleEditClick = (vehicle: ImportedVehicle) => {
+    setCurrentVehicle({ 
+      ...vehicle,
+      images: vehicle.images || [] // S'assurer que images est toujours un tableau
+    });
     setIsEditDialogOpen(true);
   };
 
@@ -81,26 +81,26 @@ const AdminVehicles: React.FC = () => {
     if (!vehicle) return;
 
     try {
-      console.log("Enregistrement du véhicule:", vehicle.id, "Images:", vehicle.images?.length || 0);
+      // Si c'est un nouveau véhicule (sans ID existant dans la liste)
+      const isNewVehicle = !vehicles.some(v => v.id === vehicle.id);
       
-      const updatedVehicles = vehicles.map(v => 
-        v.id === vehicle.id ? vehicle : v
-      );
-      
-      const success = saveImportedVehicles(updatedVehicles);
-      
-      if (success) {
-        setVehicles(updatedVehicles);
-        setIsEditDialogOpen(false);
-        toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
-        
-        // Forcer un nouvel événement de mise à jour
-        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-          detail: { catalogType: 'standard', timestamp: Date.now() } 
-        }));
+      if (isNewVehicle) {
+        // Ajouter un nouveau véhicule
+        addVehicle(vehicle, 'standard');
+        setVehicles([...vehicles, vehicle]);
+        toast.success(`${vehicle.brand} ${vehicle.model} ajouté avec succès`);
       } else {
-        toast.error("Erreur lors de la sauvegarde");
+        // Mettre à jour un véhicule existant
+        const updatedVehicles = vehicles.map(v => 
+          v.id === vehicle.id ? vehicle : v
+        );
+        
+        saveImportedVehicles(updatedVehicles);
+        setVehicles(updatedVehicles);
+        toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
       }
+      
+      setIsEditDialogOpen(false);
     } catch (error) {
       console.error("Error saving vehicle:", error);
       toast.error("Erreur lors de la sauvegarde du véhicule");
@@ -119,11 +119,6 @@ const AdminVehicles: React.FC = () => {
       deleteImportedVehicle(vehicleToDelete);
       setVehicles(vehicles.filter(v => v.id !== vehicleToDelete));
       toast.success("Véhicule supprimé avec succès");
-      
-      // Forcer un nouvel événement de mise à jour
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'standard', timestamp: Date.now() } 
-      }));
     } catch (error) {
       console.error("Error deleting vehicle:", error);
       toast.error("Erreur lors de la suppression du véhicule");
@@ -131,11 +126,6 @@ const AdminVehicles: React.FC = () => {
       setIsDeleteDialogOpen(false);
       setVehicleToDelete(null);
     }
-  };
-
-  const handleAddNewVehicle = () => {
-    // Rediriger vers la page d'importation de véhicule
-    navigate('/vehicule/import');
   };
 
   return (
