@@ -1,15 +1,7 @@
-
 #root {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-}
-
-/* Ajout d'une couleur de fond bleue plus foncée pour la version desktop */
-@media (min-width: 768px) {
-  body {
-    background-color: rgba(6, 78, 162, 0.05);
-  }
 }
 
 /* Make sure the whole app is responsive with proper padding */
@@ -142,6 +134,24 @@ p {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
+}
+
+/* Suppression des marges pour le contenu full-width */
+main > div:first-child {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Garantir que le carousel prend toute la largeur */
+.carousel, .carousel-content {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
 }
 
 .logo {

@@ -30,29 +30,30 @@ const Index = () => {
       {/* Data initialization component */}
       <VehicleInitializer />
       
-      <main>
-        {/* Hero section with carousel */}
+      <main className="w-full">
+        {/* Hero section with carousel - full width */}
         <HeroCarousel />
         
-        {/* Main heading already in HomeHeader */}
-        
-        {/* Highlight our conditions */}
-        <ConditionsHighlight />
-        
-        {/* Featured vehicles section */}
-        <div className="mt-10" id="featured-cars">
-          <FeaturedCars featuredOnly={true} />
+        {/* Wrap rest of content in container */}
+        <div className="container mx-auto px-4">
+          {/* Highlight our conditions */}
+          <ConditionsHighlight />
+          
+          {/* Featured vehicles section */}
+          <div className="mt-10" id="featured-cars">
+            <FeaturedCars featuredOnly={true} />
+          </div>
+          
+          {/* View all vehicles button */}
+          <ViewAllCarsButton />
+          
+          {/* Search results section (only shown when search parameters exist) */}
+          <SearchResults searchFilters={searchFilters} />
+          
+          {/* Testimonials and benefits */}
+          <TestimonialSection />
+          <Benefits />
         </div>
-        
-        {/* View all vehicles button */}
-        <ViewAllCarsButton />
-        
-        {/* Search results section (only shown when search parameters exist) */}
-        <SearchResults searchFilters={searchFilters} />
-        
-        {/* Testimonials and benefits */}
-        <TestimonialSection />
-        <Benefits />
       </main>
       
       <Footer />
