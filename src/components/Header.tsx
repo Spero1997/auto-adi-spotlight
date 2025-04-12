@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
@@ -205,11 +204,17 @@ const Header = () => {
                   {translate('vehicles', menuTranslations.vehicles)} <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/occasion')}>
+              <DropdownMenuContent className="bg-[#33C3F0]/10 border border-[#33C3F0]/30 rounded-md shadow-md">
+                <DropdownMenuItem 
+                  onSelect={() => handleNavigation('/vehicules/occasion')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   {translate('usedVehicles', menuTranslations.usedVehicles)}
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/utilitaires')}>
+                <DropdownMenuItem 
+                  onSelect={() => handleNavigation('/vehicules/utilitaires')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   {translate('commercialVehicles', menuTranslations.commercialVehicles)}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -259,23 +264,41 @@ const Header = () => {
                   <Globe className="h-4 w-4 mr-1" /> {languageFlags[language]} {language}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => handleLanguageChange('FR')}>
+              <DropdownMenuContent align="end" className="bg-[#33C3F0]/10 border border-[#33C3F0]/30 rounded-md shadow-md">
+                <DropdownMenuItem 
+                  onSelect={() => handleLanguageChange('FR')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   🇫🇷 Français
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('EN')}>
+                <DropdownMenuItem 
+                  onSelect={() => handleLanguageChange('EN')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   🇬🇧 English
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('ES')}>
+                <DropdownMenuItem 
+                  onSelect={() => handleLanguageChange('ES')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   🇪🇸 Español
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('IT')}>
+                <DropdownMenuItem 
+                  onSelect={() => handleLanguageChange('IT')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   🇮🇹 Italiano
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('PT')}>
+                <DropdownMenuItem 
+                  onSelect={() => handleLanguageChange('PT')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   🇵🇹 Português
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleLanguageChange('RO')}>
+                <DropdownMenuItem 
+                  onSelect={() => handleLanguageChange('RO')}
+                  className="hover:bg-[#33C3F0]/20 focus:bg-[#33C3F0]/20 rounded-sm my-1 mx-1"
+                >
                   🇷🇴 Română
                 </DropdownMenuItem>
               </DropdownMenuContent>
