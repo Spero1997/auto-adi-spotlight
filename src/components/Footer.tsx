@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Phone, Mail, MapPin, Shield, FileText, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -151,6 +150,30 @@ const Footer = () => {
       IT: "Pagina Facebook",
       PT: "Página do Facebook",
       RO: "Pagina Facebook"
+    },
+    security: {
+      FR: "Sécurité",
+      EN: "Security",
+      ES: "Seguridad",
+      IT: "Sicurezza",
+      PT: "Segurança",
+      RO: "Securitate"
+    },
+    documents: {
+      FR: "Documents",
+      EN: "Documents",
+      ES: "Documentos",
+      IT: "Documenti",
+      PT: "Documentos",
+      RO: "Documente"
+    },
+    settings: {
+      FR: "Paramètres",
+      EN: "Settings",
+      ES: "Configuración",
+      IT: "Impostazioni",
+      PT: "Configurações",
+      RO: "Setări"
     }
   };
 
@@ -233,31 +256,41 @@ const Footer = () => {
             <li>
               <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <Shield className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('legalNotice', translations.legalNotice)}
+                <span>{translate('security', translations.security)}</span>
+                <span className="ml-2">-</span>
+                <span className="ml-2">{translate('legalNotice', translations.legalNotice)}</span>
               </Link>
             </li>
             <li>
               <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <Shield className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('privacyPolicy', translations.privacyPolicy)}
+                <span>{translate('security', translations.security)}</span>
+                <span className="ml-2">-</span>
+                <span className="ml-2">{translate('privacyPolicy', translations.privacyPolicy)}</span>
               </Link>
             </li>
             <li>
               <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <Settings className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('cookieManagement', translations.cookieManagement)}
+                <span>{translate('settings', translations.settings)}</span>
+                <span className="ml-2">-</span>
+                <span className="ml-2">{translate('cookieManagement', translations.cookieManagement)}</span>
               </Link>
             </li>
             <li>
               <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <FileText className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('termsAndConditions', translations.termsAndConditions)}
+                <span>{translate('documents', translations.documents)}</span>
+                <span className="ml-2">-</span>
+                <span className="ml-2">{translate('termsAndConditions', translations.termsAndConditions)}</span>
               </Link>
             </li>
             <li>
               <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
                 <FileText className="h-4 w-4 mr-2 text-brand-orange" />
-                {translate('saleConditions', translations.saleConditions)}
+                <span>{translate('documents', translations.documents)}</span>
+                <span className="ml-2">-</span>
+                <span className="ml-2">{translate('saleConditions', translations.saleConditions)}</span>
               </Link>
             </li>
           </ul>
