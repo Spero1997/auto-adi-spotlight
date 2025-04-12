@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -22,7 +23,6 @@ const Header = () => {
     { name: 'A Propos', href: '/a-propos' },
     { name: 'Services', href: '/services' },
     { name: 'Contact', href: '/contact' },
-    { name: 'Admin', href: '/admin' },
   ];
 
   const handleSignOut = async () => {
