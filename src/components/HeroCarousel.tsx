@@ -70,13 +70,13 @@ const HeroCarousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
+    <div className="relative w-full h-screen max-h-[100vh] overflow-hidden">
       {/* Logo en superposition */}
       <div className="absolute top-6 left-6 z-20">
         <img 
           src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
           alt="Auto Adi" 
-          className="h-12"
+          className="h-10 sm:h-12"
         />
       </div>
 
@@ -212,18 +212,18 @@ const HeroCarousel = () => {
                   {/* Conteneur avec fond coloré semi-transparent, positionné sur le côté */}
                   <div className={`
                     ${index % 2 === 0 ? 'bg-brand-blue/90' : 'bg-brand-orange/90'} 
-                    max-w-md mx-6 p-5 sm:p-6 md:p-7 rounded-lg shadow-lg backdrop-blur-sm
+                    max-w-xs sm:max-w-sm md:max-w-md mx-4 sm:mx-6 p-5 sm:p-6 md:p-7 rounded-lg shadow-lg backdrop-blur-sm
                     transform transition-all duration-500 ease-in-out
-                    ${index % 2 === 0 ? 'ml-auto mr-10 md:mr-20' : 'ml-10 md:ml-20'}
+                    ${index % 2 === 0 ? 'ml-auto mr-4 sm:mr-6 md:mr-10 lg:mr-20' : 'ml-4 sm:ml-6 md:ml-10 lg:ml-20'}
                   `}>
-                    <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white text-shadow">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 text-white text-shadow">
                       {index === 0 && "BMW M2 - Élégance et Performance"}
                       {index === 1 && "Mercedes AMG GT - Puissance Allemande"}
                       {index === 2 && "Mercedes AMG GT - Luxe à Monaco"}
                       {index === 3 && "BMW M5 - Confort et Sportivité"}
                       {index === 4 && "Trouvez la voiture parfaite pour vous"}
                     </h2>
-                    <p className="text-base md:text-lg text-white mb-4 font-medium">
+                    <p className="text-sm sm:text-base md:text-lg text-white mb-2 sm:mb-4 font-medium">
                       {index === 0 && "Une sportive compacte pour les amateurs de sensations"}
                       {index === 1 && "Un bijou de technologie pour les passionnés"}
                       {index === 2 && "Le prestige sur la Côte d'Azur"}
@@ -232,9 +232,9 @@ const HeroCarousel = () => {
                     </p>
                     
                     {index === 4 && (
-                      <div className="flex mt-4">
+                      <div className="flex mt-2 sm:mt-4">
                         <Link to="/vehicules/occasion">
-                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-4 py-2 rounded-md font-semibold text-base shadow-md">
+                          <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-3 sm:px-4 py-1.5 sm:py-2 rounded-md font-semibold text-sm sm:text-base shadow-md">
                             Véhicules d'occasion
                           </Button>
                         </Link>
@@ -246,12 +246,12 @@ const HeroCarousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 z-10 bg-white/90 hover:bg-white shadow-md" />
-        <CarouselNext className="absolute right-4 z-10 bg-white/90 hover:bg-white shadow-md" />
+        <CarouselPrevious className="absolute left-2 sm:left-4 z-10 bg-white/90 hover:bg-white shadow-md" />
+        <CarouselNext className="absolute right-2 sm:right-4 z-10 bg-white/90 hover:bg-white shadow-md" />
       </Carousel>
 
       {/* Indicateurs de pagination améliorés */}
-      <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+      <div className="absolute bottom-20 sm:bottom-24 md:bottom-32 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {carImages.map((_, index) => (
           <button
             key={index}
@@ -261,7 +261,7 @@ const HeroCarousel = () => {
                 carouselApi.scrollTo(index);
               }
             }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            className={`w-2 sm:w-3 h-2 sm:h-3 rounded-full transition-all duration-300 ${
               activeIndex === index ? "bg-white scale-125 shadow-lg" : "bg-white/70"
             }`}
             aria-label={`Voir l'image ${index + 1}`}
