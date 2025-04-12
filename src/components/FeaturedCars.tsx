@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Car, RefreshCw, Plus } from 'lucide-react';
@@ -26,7 +25,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const { user } = useAuth();
   const isAuthenticated = !!user;
 
-  // Événement pour les mises à jour de véhicules
   useEffect(() => {
     const handleVehiclesUpdated = () => {
       console.log("FeaturedCars: Événement vehiclesUpdated détecté");
@@ -41,12 +39,10 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     };
   }, [refresh]);
 
-  // Fonction pour rediriger vers la page d'ajout de véhicule
   const handleAddVehicle = () => {
     navigate('/vehicules/import');
   };
 
-  // Déterminer le titre approprié en fonction des filtres et du type de catalogue
   const getTitle = () => {
     if (searchFilters && (searchFilters.brand || searchFilters.model || searchFilters.maxPrice || searchFilters.fuelType)) {
       return "Résultats de votre recherche";
@@ -54,7 +50,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     return featuredOnly ? "Nos véhicules vedettes" : "Nos véhicules d'occasion";
   };
 
-  // Message à afficher quand aucun véhicule n'est trouvé
   const getEmptyMessage = () => {
     if (isSearchContext) {
       return "Aucun véhicule ne correspond à vos critères de recherche.";
@@ -64,14 +59,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       : "Aucun véhicule n'a encore été ajouté au catalogue.";
   };
 
-  // Fonction pour forcer le rechargement des véhicules
   const handleRefresh = () => {
     toast.info("Actualisation du catalogue...");
     setRefreshKey(Date.now());
     refresh();
   };
 
-  // Déterminer si nous sommes dans un contexte de recherche ou d'affichage initial
   const isSearchContext = searchParams.size > 0 || !!searchFilters;
 
   return (
@@ -87,7 +80,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
             Actualiser
           </Button>
           
-          {isAuthenticated && vehicles.length === 0 && !isSearchContext && (
+          {isAuthenticated && (
             <Button size="sm" onClick={handleAddVehicle} className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
               Ajouter un véhicule

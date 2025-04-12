@@ -57,7 +57,7 @@ const VehicleList = ({
               Aucun véhicule n'a encore été ajouté à votre catalogue.
               {isAuthenticated && " Commencez par ajouter votre premier véhicule !"}
             </p>
-            {isAuthenticated && onAddVehicle ? (
+            {isAuthenticated && onAddVehicle && (
               <Button 
                 onClick={onAddVehicle}
                 className="w-full flex items-center justify-center gap-2"
@@ -65,14 +65,7 @@ const VehicleList = ({
                 <Plus className="h-4 w-4" />
                 Ajouter un véhicule
               </Button>
-            ) : isAuthenticated ? (
-              <Link to="/vehicules/import" className="w-full">
-                <Button className="w-full flex items-center justify-center gap-2">
-                  <Plus className="h-4 w-4" />
-                  Ajouter un véhicule
-                </Button>
-              </Link>
-            ) : null}
+            )}
           </div>
         </div>
       );
