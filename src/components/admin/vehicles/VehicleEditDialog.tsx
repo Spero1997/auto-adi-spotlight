@@ -25,8 +25,6 @@ const VehicleEditDialog: React.FC<VehicleEditDialogProps> = ({
   setCurrentVehicle,
   onSave,
 }) => {
-  const [newImageUrl, setNewImageUrl] = useState('');
-
   const getFuelTypeOptions = () => [
     { value: 'Essence', label: 'Essence' },
     { value: 'Diesel', label: 'Diesel' },
@@ -40,29 +38,6 @@ const VehicleEditDialog: React.FC<VehicleEditDialogProps> = ({
     { value: 'Automatique', label: 'Automatique' },
     { value: 'Semi-automatique', label: 'Semi-automatique' }
   ];
-
-  const handleAddImage = () => {
-    if (!currentVehicle || !newImageUrl.trim()) return;
-
-    const currentImages = currentVehicle.images || [];
-    setCurrentVehicle({
-      ...currentVehicle,
-      images: [...currentImages, newImageUrl]
-    });
-    setNewImageUrl('');
-  };
-
-  const handleRemoveImage = (index: number) => {
-    if (!currentVehicle || !currentVehicle.images) return;
-
-    const updatedImages = [...currentVehicle.images];
-    updatedImages.splice(index, 1);
-    
-    setCurrentVehicle({
-      ...currentVehicle,
-      images: updatedImages
-    });
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -249,13 +224,15 @@ const VehicleEditDialog: React.FC<VehicleEditDialogProps> = ({
                 <div className="flex gap-2 mb-2">
                   <Input
                     placeholder="URL de l'image..."
-                    value={newImageUrl}
-                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    value={''}
+                    onChange={(e) => {
+                      // This will be handled by the parent component
+                    }}
                     className="flex-1"
                   />
                   <Button 
                     type="button" 
-                    onClick={handleAddImage}
+                    onClick={() => {}}
                     variant="secondary"
                   >
                     <Plus className="h-4 w-4 mr-1" />
@@ -279,7 +256,9 @@ const VehicleEditDialog: React.FC<VehicleEditDialogProps> = ({
                           variant="destructive"
                           size="icon"
                           className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={() => handleRemoveImage(index)}
+                          onClick={() => {
+                            // This will be handled by the parent component
+                          }}
                         >
                           <X className="h-4 w-4" />
                         </Button>

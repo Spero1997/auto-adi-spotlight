@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle, addVehicle } from '@/utils/vehicleImportService';
+import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
 
 // UI Components
 import VehicleTable from '@/components/admin/vehicles/VehicleTable';
@@ -18,46 +19,22 @@ const AdminVehicles: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState<ImportedVehicle | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
-  const [forceRefresh, setForceRefresh] = useState(0); // État pour forcer un rafraîchissement
-  
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const navigate = useNavigate();
+
   useEffect(() => {
     loadVehicles();
     
-    // Ajouter un écouteur d'événement pour les mises à jour des véhicules
-    const handleVehiclesUpdated = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      console.log("Événement vehiclesUpdated capturé dans AdminVehicles", customEvent.detail);
-      loadVehicles();
-    };
-    
-    const handleStorageChange = (e: StorageEvent) => {
-      // Réagir aux changements dans localStorage
-      if (e.key === 'imported_vehicles' || e.key === 'featured_vehicles') {
-        console.log(`AdminVehicles: Changement détecté dans localStorage pour ${e.key}`);
-        loadVehicles();
-      }
-    };
-    
-    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    window.addEventListener('storage', handleStorageChange);
-    
+    window.addEventListener('vehiclesUpdated', loadVehicles);
     return () => {
-      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('vehiclesUpdated', loadVehicles);
     };
-  }, [forceRefresh]); // Ajouter forceRefresh comme dépendance
+  }, []);
 
   const loadVehicles = () => {
     try {
       setIsLoading(true);
       const importedVehicles = getImportedVehicles();
-      console.log("Véhicules chargés:", importedVehicles.length);
-      
-      // Log des véhicules chargés
-      importedVehicles.forEach((vehicle, index) => {
-        console.log(`Véhicule ${index+1} dans AdminVehicles: ${vehicle.brand} ${vehicle.model}, ID: ${vehicle.id}`);
-      });
-      
       setVehicles(importedVehicles);
     } catch (error) {
       console.error("Error loading vehicles:", error);
@@ -67,43 +44,14 @@ const AdminVehicles: React.FC = () => {
     }
   };
 
-  const forceRefreshVehicles = () => {
-    console.log("Forçage du rafraîchissement des véhicules dans AdminVehicles");
-    setForceRefresh(prev => prev + 1);
-  };
-
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
-  };
-
-  const handleAddNewVehicle = () => {
-    // Créer un nouveau véhicule vide plutôt que de rediriger
-    const newVehicle: ImportedVehicle = {
-      id: `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
-      brand: '',
-      model: '',
-      year: new Date().getFullYear(),
-      mileage: 0,
-      price: 0,
-      fuelType: 'Essence',
-      transmission: 'Manuelle',
-      exteriorColor: '',
-      interiorColor: '',
-      image: '',
-      description: '',
-      features: [],
-      images: [],
-      catalogType: 'standard'
-    };
-    
-    setCurrentVehicle(newVehicle);
-    setIsEditDialogOpen(true);
   };
 
   const handleEditClick = (vehicle: ImportedVehicle) => {
     setCurrentVehicle({ 
       ...vehicle,
-      images: vehicle.images || [] // S'assurer que images est toujours un tableau
+      images: vehicle.images || [] // Ensure images is always an array
     });
     setIsEditDialogOpen(true);
   };
@@ -112,61 +60,14 @@ const AdminVehicles: React.FC = () => {
     if (!vehicle) return;
 
     try {
-      // Si c'est un nouveau véhicule (sans ID existant dans la liste)
-      const isNewVehicle = !vehicles.some(v => v.id === vehicle.id);
+      const updatedVehicles = vehicles.map(v => 
+        v.id === vehicle.id ? vehicle : v
+      );
       
-      if (isNewVehicle) {
-        // Ajouter un nouveau véhicule avec un ID unique et un timestamp
-        vehicle.id = `vehicle-standard-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-        const success = addVehicle(vehicle, 'standard');
-        
-        if (success) {
-          // Mettre à jour l'état local immédiatement
-          setVehicles(prevVehicles => [...prevVehicles, vehicle]);
-          toast.success(`${vehicle.brand} ${vehicle.model} ajouté avec succès`);
-          
-          // Notifier explicitement que les véhicules ont été mis à jour
-          window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-            detail: { catalogType: 'standard', action: 'add', vehicleId: vehicle.id, timestamp: Date.now() } 
-          }));
-          
-          // Forcer un rechargement complet après un court délai
-          setTimeout(() => {
-            forceRefreshVehicles();
-            loadVehicles();
-          }, 300);
-        } else {
-          toast.error("Erreur lors de l'ajout du véhicule");
-        }
-      } else {
-        // Mettre à jour un véhicule existant
-        const updatedVehicles = vehicles.map(v => 
-          v.id === vehicle.id ? vehicle : v
-        );
-        
-        const success = saveImportedVehicles(updatedVehicles);
-        
-        if (success) {
-          setVehicles(updatedVehicles);
-          toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
-          
-          // Notifier explicitement que les véhicules ont été mis à jour
-          window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-            detail: { catalogType: 'standard', action: 'update', vehicleId: vehicle.id, timestamp: Date.now() } 
-          }));
-          
-          // Forcer un rechargement complet après un court délai
-          setTimeout(() => {
-            forceRefreshVehicles();
-            loadVehicles();
-          }, 300);
-        } else {
-          toast.error("Erreur lors de la mise à jour du véhicule");
-        }
-      }
-      
+      saveImportedVehicles(updatedVehicles);
+      setVehicles(updatedVehicles);
       setIsEditDialogOpen(false);
-      setCurrentVehicle(null);
+      toast.success(`${vehicle.brand} ${vehicle.model} mis à jour avec succès`);
     } catch (error) {
       console.error("Error saving vehicle:", error);
       toast.error("Erreur lors de la sauvegarde du véhicule");
@@ -182,25 +83,9 @@ const AdminVehicles: React.FC = () => {
     if (!vehicleToDelete) return;
     
     try {
-      const success = deleteImportedVehicle(vehicleToDelete);
-      
-      if (success) {
-        setVehicles(vehicles.filter(v => v.id !== vehicleToDelete));
-        toast.success("Véhicule supprimé avec succès");
-        
-        // Notifier explicitement que les véhicules ont été mis à jour
-        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-          detail: { catalogType: 'standard', action: 'delete', vehicleId: vehicleToDelete, timestamp: Date.now() } 
-        }));
-        
-        // Forcer un rechargement complet après un court délai
-        setTimeout(() => {
-          forceRefreshVehicles();
-          loadVehicles();
-        }, 300);
-      } else {
-        toast.error("Erreur lors de la suppression du véhicule");
-      }
+      deleteImportedVehicle(vehicleToDelete);
+      setVehicles(vehicles.filter(v => v.id !== vehicleToDelete));
+      toast.success("Véhicule supprimé avec succès");
     } catch (error) {
       console.error("Error deleting vehicle:", error);
       toast.error("Erreur lors de la suppression du véhicule");
@@ -208,6 +93,11 @@ const AdminVehicles: React.FC = () => {
       setIsDeleteDialogOpen(false);
       setVehicleToDelete(null);
     }
+  };
+
+  const handleAddNewVehicle = () => {
+    // Rediriger vers la page d'importation de véhicule
+    navigate('/vehicule/import');
   };
 
   return (

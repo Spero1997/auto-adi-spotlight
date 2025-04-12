@@ -15,7 +15,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
   const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [refreshTrigger, setRefreshTrigger] = useState(0); // État pour forcer un rafraîchissement
   const location = useLocation();
 
   const loadVehicles = useCallback(async () => {
@@ -103,13 +102,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     } finally {
       setLoading(false);
     }
-  }, [featuredOnly, refreshTrigger]); // Ajout de refreshTrigger dans les dépendances
-
-  // Fonction pour forcer un rafraîchissement
-  const refresh = useCallback(() => {
-    console.log('useVehicles: Rafraîchissement forcé des véhicules');
-    setRefreshTrigger(prev => prev + 1);
-  }, []);
+  }, [featuredOnly]);
 
   useEffect(() => {
     // Chargement initial des véhicules
@@ -118,9 +111,8 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     const handleVehiclesUpdated = (event: Event) => {
       const customEvent = event as CustomEvent;
       const catalogType = customEvent.detail?.catalogType;
-      const timestamp = customEvent.detail?.timestamp;
       
-      console.log(`useVehicles: Event vehiclesUpdated reçu, catalogType=${catalogType}, timestamp=${timestamp}`);
+      console.log(`useVehicles: Event vehiclesUpdated reçu, catalogType=${catalogType}`);
       
       // On recharge les véhicules si:
       // - catalogType n'est pas défini (pour compatibilité)
@@ -132,38 +124,29 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
           (catalogType === 'featured' && featuredOnly) || 
           catalogType === 'all') {
         console.log('useVehicles: Rechargement des véhicules suite à vehiclesUpdated');
-        refresh(); // Utiliser refresh au lieu de loadVehicles directement
+        loadVehicles();
       }
     };
     
     const handleCatalogChanged = () => {
       console.log('useVehicles: Event catalogChanged reçu, rechargement des véhicules');
-      refresh(); // Utiliser refresh au lieu de loadVehicles directement
-    };
-    
-    const handleStorageChange = (e: StorageEvent) => {
-      // Réagir aux changements dans localStorage
-      if (e.key === 'imported_vehicles' || e.key === 'featured_vehicles') {
-        console.log(`useVehicles: Changement détecté dans localStorage pour ${e.key}`);
-        refresh();
-      }
+      loadVehicles();
     };
     
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     window.addEventListener('catalogChanged', handleCatalogChanged);
-    window.addEventListener('storage', handleStorageChange);
     
     // Recharger les véhicules quand l'URL change
+    loadVehicles();
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
       window.removeEventListener('catalogChanged', handleCatalogChanged);
-      window.removeEventListener('storage', handleStorageChange);
     };
-  }, [featuredOnly, location.search, loadVehicles, refresh]);
+  }, [featuredOnly, location.search, loadVehicles]);
 
   // Fonction pour filtrer les véhicules selon les critères de recherche
-  const filteredVehicles = useCallback(() => {
+  const filteredVehicles = () => {
     let filtered = [...vehicles];
     
     // Debug log to see what vehicles we're working with
@@ -186,12 +169,12 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     
     console.log(`Filtrage: ${filtered.length} véhicules après filtre`);
     return filtered;
-  }, [vehicles, searchFilters]);
+  };
 
   return {
     vehicles: filteredVehicles(),
     loading,
     error,
-    refresh // Exposer la fonction de rafraîchissement
+    refresh: loadVehicles // Exposer la fonction de rechargement
   };
 };

@@ -36,7 +36,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   // Fonction pour forcer le rechargement des véhicules
   const handleRefresh = () => {
-    console.log('FeaturedCars: Rafraîchissement forcé des véhicules');
     refresh();
   };
 
