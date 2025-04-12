@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 import AiVehicleAdder from '@/components/AiVehicleAdder';
-import { getImportedVehicles, addVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
+import { getImportedVehicles, addVehicle, ImportedVehicle, addToyotaCHR } from '@/utils/vehicleImportService';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
@@ -237,7 +237,9 @@ Nos services inclus :
       addVehicle(audiQ2, 'standard');
       console.log('Audi Q2 Ultra Sport ajoutée avec succès au catalogue!');
       
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
     } catch (error) {
       console.error('Erreur lors de l\'ajout de l\'Audi Q2 Ultra Sport:', error);
       console.error('Erreur lors de l\'ajout du véhicule');
@@ -317,6 +319,15 @@ Garantie 24 mois`,
       console.error('Erreur lors de l\'ajout de l\'Audi A4 35 TFSI Sport:', error);
       toast.error('Erreur lors de l\'ajout du véhicule');
       return false;
+    }
+  };
+  
+  const addToyotaCHRGRSport = () => {
+    const success = addToyotaCHR();
+    if (success) {
+      toast.success('Toyota C-HR 1.8i Hybride GR Sport ajouté avec succès!');
+    } else {
+      toast.error('Erreur lors de l\'ajout du Toyota C-HR');
     }
   };
   
@@ -522,6 +533,19 @@ Garantie 24 mois`,
         console.log("L'Audi A4 35 TFSI Sport est présente dans le catalogue", audiA4);
       }
       
+      const toyotaCHR = vehicles.find(v => 
+        v.brand === "Toyota" && 
+        v.model.includes("C-HR") && 
+        v.year === 2022
+      );
+      
+      if (!toyotaCHR) {
+        console.log("Ajout automatique du Toyota C-HR 1.8i Hybride GR Sport au catalogue");
+        addToyotaCHR();
+      } else {
+        console.log("Le Toyota C-HR 1.8i Hybride GR Sport est présent dans le catalogue", toyotaCHR);
+      }
+      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -585,6 +609,13 @@ Garantie 24 mois`,
               className="bg-red-800 hover:bg-red-900 text-white"
             >
               Ajouter l'Audi A4 35 TFSI Sport
+            </Button>
+            
+            <Button 
+              onClick={addToyotaCHRGRSport}
+              className="bg-sky-600 hover:bg-sky-700 text-white"
+            >
+              Ajouter le Toyota C-HR 1.8i Hybride GR Sport
             </Button>
           </div>
           

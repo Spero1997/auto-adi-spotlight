@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -20,6 +19,9 @@ import VehicleManagement from './pages/VehicleManagement';
 import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
 
+import { useEffect } from 'react';
+import { addToyotaCHR } from './utils/vehicleImportService';
+
 // Admin Dashboard
 import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -33,6 +35,19 @@ import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminFeatured from './pages/admin/AdminFeatured';
 
 function App() {
+  useEffect(() => {
+    // Ajouter le Toyota C-HR au catalogue au chargement de l'application
+    const toyotaCHRAdded = addToyotaCHR();
+    if (toyotaCHRAdded) {
+      console.log("Toyota C-HR 1.8i Hybride GR Sport ajouté au catalogue avec succès au démarrage de l'application");
+      
+      // Forcer la mise à jour des véhicules affichés
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
+    }
+  }, []);
+  
   return (
     <Router>
       <ScrollToTop />

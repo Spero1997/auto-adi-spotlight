@@ -1,4 +1,3 @@
-
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -59,6 +58,93 @@ export const validateImageUrl = (url: string): Promise<boolean> => {
     img.onerror = () => resolve(false);
     img.src = url;
   });
+};
+
+// Fonction pour ajouter le Toyota C-HR au catalogue
+export const addToyotaCHR = () => {
+  try {
+    const toyotaCHR: ImportedVehicle = {
+      id: `vehicle-standard-${Date.now()}-toyota-chr-hybrid-gr-sport`,
+      brand: 'Toyota',
+      model: 'C-HR 1.8i Hybride GR Sport',
+      year: 2022,
+      mileage: 44000,
+      price: 8000,
+      fuelType: 'Essence',
+      transmission: 'Automatique',
+      exteriorColor: 'Bleu',
+      interiorColor: 'Noir',
+      image: '/lovable-uploads/c68a2932-2e38-4475-acb9-cf43e795a39b.png', // Image principale
+      images: [
+        '/lovable-uploads/4a7d0135-15bc-4d67-8593-95afa2898553.png',
+        '/lovable-uploads/a148b039-46ad-4622-a3ec-a299bc1de8e4.png',
+        '/lovable-uploads/b11a2e4e-48e8-4a7b-a908-f4bf4874c706.png',
+        '/lovable-uploads/69913e1b-9583-451e-841b-0091350a3fba.png',
+        '/lovable-uploads/8f78987f-d770-458f-820e-6298eaad2db1.png',
+        '/lovable-uploads/68704d4d-09dd-42ce-b2f0-974c7764a40f.png'
+      ],
+      description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % de réduction pour tout achat comptant à la commande
+
+Nous nous occupons de toutes les démarches d'importation jusqu'à la livraison a votre domicile. Délais de livraison 5 jours / Délai de rétractation 14 JOURS (Satisfait ou remboursé)
+Garantie 24 mois
+
+wa.me/393761753341`,
+      features: [
+        'Airbags (frontaux, latéraux, rideaux)',
+        'Ceintures de sécurité (avec prétensionneurs)',
+        'Système ABS (Anti-blocage des freins)',
+        'ESP (Correcteur électronique de trajectoire)',
+        'Aide au freinage d\'urgence',
+        'Caméra de recul et capteurs de stationnement',
+        'Aide au maintien de voie',
+        'Détecteur d\'angle mort',
+        'Régulateur et limiteur de vitesse',
+        'Climatisation automatique',
+        'Sièges chauffants',
+        'Rétroviseurs électriques et dégivrants',
+        'Vitres électriques',
+        'Système Keyless (démarrage sans clé)',
+        'Écran tactile avec GPS intégré',
+        'Apple CarPlay & Android Auto',
+        'Bluetooth et USB',
+        'Feux LED',
+        'Essuie-glaces automatiques',
+        'Détecteur automatique de luminosité',
+        'Boîte automatique',
+        'Mode conduite (Eco, Sport)',
+        'Système Start & Stop',
+        'GR Sport Pack',
+        'Jantes alliage sport',
+        'Technologie hybride 122 CH'
+      ],
+      engine: '1.8i Hybride 122 CH',
+      doors: 5,
+      catalogType: 'standard'
+    };
+    
+    const success = addVehicle(toyotaCHR, 'standard');
+    
+    if (success) {
+      console.log('Toyota C-HR 1.8i Hybride GR Sport ajouté avec succès au catalogue!');
+      
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
+      
+      window.dispatchEvent(new CustomEvent('catalogChanged'));
+      
+      return true;
+    } else {
+      console.error('Erreur lors de l\'ajout du Toyota C-HR 1.8i Hybride GR Sport');
+      return false;
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du Toyota C-HR 1.8i Hybride GR Sport:', error);
+    return false;
+  }
 };
 
 // Fonction pour mettre à jour l'image de l'Audi Q2
