@@ -32,11 +32,11 @@ import { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs } f
 // Re-export catalog management services directly
 export { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs };
 
-// Import extraction service
-import { extractVehiclesFromUrl } from './services/vehicleExtractionService';
+// Import extraction service from both possible locations
+import { extractVehiclesFromUrl as extractFromService } from './services/vehicleExtractionService';
 
-// Re-export extraction service
-export { extractVehiclesFromUrl };
+// Re-export the extraction service
+export const extractVehiclesFromUrl = extractFromService;
 
 // Define aliases for backward compatibility
 export const addImportedVehicle = addVehicle;
