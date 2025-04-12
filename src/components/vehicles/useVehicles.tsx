@@ -11,7 +11,7 @@ interface SearchFilters {
   fuelType?: string;
 }
 
-export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false) => {
+export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false, refreshKey?: number) => {
   const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
       // Récupérer l'ID du catalogue à partir de l'URL si disponible
       const catalogId = getCatalogIdFromUrl(catalogType);
       
-      console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
+      console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}, refreshKey=${refreshKey || 'none'}`);
       
       let loadedVehicles: ImportedVehicle[] = [];
       
@@ -102,7 +102,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     } finally {
       setLoading(false);
     }
-  }, [featuredOnly]);
+  }, [featuredOnly, refreshKey]); // Add refreshKey to dependencies
 
   useEffect(() => {
     // Chargement initial des véhicules
@@ -136,14 +136,14 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     window.addEventListener('catalogChanged', handleCatalogChanged);
     
-    // Recharger les véhicules quand l'URL change
+    // Recharger les véhicules quand l'URL change ou le refreshKey change
     loadVehicles();
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
       window.removeEventListener('catalogChanged', handleCatalogChanged);
     };
-  }, [featuredOnly, location.search, loadVehicles]);
+  }, [featuredOnly, location.search, loadVehicles, refreshKey]); // Add refreshKey to dependencies
 
   // Fonction pour filtrer les véhicules selon les critères de recherche
   const filteredVehicles = () => {
