@@ -2,291 +2,188 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell, Legend
-} from 'recharts';
-import { fetchDailyStats, fetchVehiclesFromSupabase, fetchPayments } from '@/utils/services/supabaseService';
-import { 
-  Car as CarIcon, 
-  Users, 
-  CreditCard, 
-  TrendingUp, 
-  Activity, 
-  ShoppingCart, 
-  Calendar, 
-  Loader2 
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
+import { Car, Tag, Users, CreditCard } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState({
+  const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
+  const [vehicleStats, setVehicleStats] = useState({
     totalVehicles: 0,
-    vehiclesInStock: 0,
-    soldVehicles: 0,
-    featuredVehicles: 0,
-    totalRevenue: 0,
-    pendingPayments: 0,
-    completedPayments: 0,
-    pageViews: 0,
-    uniqueVisitors: 0
+    avgPrice: 0,
+    totalValue: 0,
+    byBrand: [] as {name: string, count: number}[]
   });
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [vehicleData, setVehicleData] = useState<any[]>([]);
-  const [recentPayments, setRecentPayments] = useState<any[]>([]);
 
   useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch vehicles
-        const vehicles = await fetchVehiclesFromSupabase();
-        
-        // Fetch stats
-        const statsData = await fetchDailyStats(30);
-        
-        // Fetch payments
-        const payments = await fetchPayments();
-        
-        // Process data for summary stats
-        const vehiclesInStock = vehicles.filter(v => v.in_stock).length;
-        const soldVehicles = vehicles.filter(v => v.is_sold).length;
-        const featuredVehicles = vehicles.filter(v => v.is_featured).length;
-        
-        const totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount.toString()), 0);
-        const pendingPayments = payments.filter(p => p.status === 'pending').length;
-        const completedPayments = payments.filter(p => p.status === 'completed').length;
-        
-        // Prepare chart data
-        const dailyStats = statsData.map(day => ({
-          date: new Date(day.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }),
-          views: day.page_views,
-          visitors: day.unique_visitors,
-          sales: day.sales_amount
-        })).reverse();
-        
-        // Prepare vehicle data for pie chart
-        const vehiclesByBrand = vehicles.reduce((acc: Record<string, number>, vehicle) => {
-          acc[vehicle.brand] = (acc[vehicle.brand] || 0) + 1;
-          return acc;
-        }, {});
-        
-        const vehiclePieData = Object.entries(vehiclesByBrand).map(([brand, count]) => ({
-          name: brand,
-          value: count
-        }));
-        
-        // Sort recent payments by date
-        const sortedPayments = [...payments]
-          .sort((a, b) => new Date(b.payment_date).getTime() - new Date(a.payment_date).getTime())
-          .slice(0, 5);
-        
-        // Update state
-        setStats({
-          totalVehicles: vehicles.length,
-          vehiclesInStock,
-          soldVehicles,
-          featuredVehicles,
-          totalRevenue,
-          pendingPayments,
-          completedPayments,
-          pageViews: statsData.reduce((sum, day) => sum + day.page_views, 0),
-          uniqueVisitors: statsData.reduce((sum, day) => sum + day.unique_visitors, 0)
-        });
-        
-        setChartData(dailyStats);
-        setVehicleData(vehiclePieData);
-        setRecentPayments(sortedPayments);
-      } catch (error) {
-        console.error('Error loading dashboard data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    loadVehicles();
     
-    loadData();
+    window.addEventListener('vehiclesUpdated', loadVehicles);
+    return () => {
+      window.removeEventListener('vehiclesUpdated', loadVehicles);
+    };
   }, []);
 
-  const statCards = [
-    {
-      title: 'Total Véhicules',
-      value: stats.totalVehicles,
-      icon: <CarIcon className="h-6 w-6 text-blue-500" />,
-      color: 'blue'
-    },
-    {
-      title: 'En Stock',
-      value: stats.vehiclesInStock,
-      icon: <ShoppingCart className="h-6 w-6 text-green-500" />,
-      color: 'green'
-    },
-    {
-      title: 'Véhicules Vendus',
-      value: stats.soldVehicles,
-      icon: <TrendingUp className="h-6 w-6 text-purple-500" />,
-      color: 'purple'
-    },
-    {
-      title: 'Véhicules en Vedette',
-      value: stats.featuredVehicles,
-      icon: <Activity className="h-6 w-6 text-yellow-500" />,
-      color: 'yellow'
-    },
-    {
-      title: 'Chiffre d\'affaires',
-      value: `${stats.totalRevenue.toLocaleString('fr-FR')} €`,
-      icon: <CreditCard className="h-6 w-6 text-red-500" />,
-      color: 'red'
-    },
-    {
-      title: 'Paiements en Attente',
-      value: stats.pendingPayments,
-      icon: <Calendar className="h-6 w-6 text-orange-500" />,
-      color: 'orange'
-    },
-    {
-      title: 'Paiements Complétés',
-      value: stats.completedPayments,
-      icon: <CreditCard className="h-6 w-6 text-emerald-500" />,
-      color: 'emerald'
-    },
-    {
-      title: 'Visiteurs Uniques',
-      value: stats.uniqueVisitors,
-      icon: <Users className="h-6 w-6 text-indigo-500" />,
-      color: 'indigo'
+  const loadVehicles = () => {
+    try {
+      const importedVehicles = getImportedVehicles();
+      setVehicles(importedVehicles);
+      calculateStats(importedVehicles);
+    } catch (error) {
+      console.error("Error loading vehicles:", error);
     }
+  };
+
+  const calculateStats = (vehicles: ImportedVehicle[]) => {
+    // Calculate total value and average price
+    const totalValue = vehicles.reduce((acc, vehicle) => acc + (vehicle.price || 0), 0);
+    const avgPrice = vehicles.length > 0 ? totalValue / vehicles.length : 0;
+    
+    // Calculate vehicles by brand
+    const brandCounts: Record<string, number> = {};
+    vehicles.forEach(vehicle => {
+      if (vehicle.brand) {
+        brandCounts[vehicle.brand] = (brandCounts[vehicle.brand] || 0) + 1;
+      }
+    });
+    
+    const byBrand = Object.entries(brandCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+    
+    setVehicleStats({
+      totalVehicles: vehicles.length,
+      avgPrice,
+      totalValue,
+      byBrand
+    });
+  };
+
+  // Mock data for demonstration
+  const visitData = [
+    { name: 'Lun', visits: 540 },
+    { name: 'Mar', visits: 620 },
+    { name: 'Mer', visits: 700 },
+    { name: 'Jeu', visits: 680 },
+    { name: 'Ven', visits: 750 },
+    { name: 'Sam', visits: 890 },
+    { name: 'Dim', visits: 820 },
   ];
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#FF6B6B', '#6B66FF'];
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-      </div>
-    );
-  }
 
   return (
     <>
       <Helmet>
-        <title>Tableau de bord | Admin Auto ADI</title>
+        <title>Tableau de bord | Administration</title>
       </Helmet>
-      
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
+
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-6">Tableau de bord</h1>
         
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {statCards.map((stat, index) => (
-            <Card key={index}>
-              <CardContent className="p-6 flex flex-col justify-between h-full">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                  {stat.icon}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Total Véhicules</p>
+                  <h3 className="text-2xl font-bold mt-1">{vehicleStats.totalVehicles}</h3>
                 </div>
-                <p className={`text-2xl font-bold mt-2 text-${stat.color}-600`}>{stat.value}</p>
-              </CardContent>
-            </Card>
-          ))}
+                <div className="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Car className="h-6 w-6 text-blue-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Prix Moyen</p>
+                  <h3 className="text-2xl font-bold mt-1">{vehicleStats.avgPrice.toLocaleString('fr-FR')} €</h3>
+                </div>
+                <div className="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <Tag className="h-6 w-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Valeur Totale</p>
+                  <h3 className="text-2xl font-bold mt-1">{vehicleStats.totalValue.toLocaleString('fr-FR')} €</h3>
+                </div>
+                <div className="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <CreditCard className="h-6 w-6 text-purple-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Visiteurs</p>
+                  <h3 className="text-2xl font-bold mt-1">4,210</h3>
+                </div>
+                <div className="h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-orange-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
         
-        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Activity Chart */}
-          <Card className="col-span-1">
+          <Card>
             <CardHeader>
-              <CardTitle>Activité Récente</CardTitle>
+              <CardTitle>Véhicules par marque</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <BarChart
+                    data={vehicleStats.byBrand}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
-                    <Legend />
-                    <Bar dataKey="views" name="Vues" fill="#3b82f6" />
-                    <Bar dataKey="visitors" name="Visiteurs" fill="#10b981" />
+                    <Bar dataKey="count" fill="#3b82f6" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
           
-          {/* Vehicle Distribution */}
-          <Card className="col-span-1">
+          <Card>
             <CardHeader>
-              <CardTitle>Distribution des Véhicules par Marque</CardTitle>
+              <CardTitle>Visites du site</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="h-80">
                 <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={vehicleData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    >
-                      {vehicleData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
+                  <BarChart
+                    data={visitData}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
                     <Tooltip />
                     <Legend />
-                  </PieChart>
+                    <Bar dataKey="visits" fill="#10b981" />
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
         </div>
-        
-        {/* Recent Activities */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Transactions Récentes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentPayments.length > 0 ? (
-                recentPayments.map((payment, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex flex-col">
-                      <p className="font-medium">{payment.client_name}</p>
-                      <p className="text-sm text-gray-500">{payment.client_email}</p>
-                      <p className="text-xs text-gray-400">
-                        {new Date(payment.payment_date).toLocaleDateString('fr-FR', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end">
-                      <p className="font-bold">{parseFloat(payment.amount).toLocaleString('fr-FR')} €</p>
-                      <Badge variant={payment.status === 'completed' ? 'default' : 'outline'}>
-                        {payment.status === 'completed' ? 'Payé' : 'En attente'}
-                      </Badge>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center py-4 text-gray-500">Aucune transaction récente</p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </>
   );

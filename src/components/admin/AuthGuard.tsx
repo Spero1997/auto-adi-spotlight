@@ -1,51 +1,43 @@
 
-import { useState, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2 } from 'lucide-react';
 
-interface AuthGuardProps {
-  children: React.ReactNode;
-}
-
-const AuthGuard = ({ children }: AuthGuardProps) => {
-  const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
-  const location = useLocation();
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       const { data } = await supabase.auth.getSession();
-      setAuthenticated(!!data.session);
-      setLoading(false);
+      setIsAuthenticated(!!data.session);
     };
 
     checkAuth();
 
-    // Listen for auth changes
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setAuthenticated(!!session);
-      setLoading(false);
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
     });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      data.subscription.unsubscribe();
     };
   }, []);
 
-  if (loading) {
+  // Show nothing while checking authentication
+  if (isAuthenticated === null) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
       </div>
     );
   }
 
-  if (!authenticated) {
-    // Redirect to login
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
   }
 
+  // Render children if authenticated
   return <>{children}</>;
 };
 
