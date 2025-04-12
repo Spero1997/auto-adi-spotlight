@@ -21,22 +21,14 @@ export const useVehicleDetail = () => {
     
     try {
       // First try to find the vehicle in the featured catalog
-      let vehicles = getImportedVehicles('featured');
-      console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
+      let vehicles = getImportedVehicles();
+      console.log("Véhicules chargés du catalogue:", vehicles.length);
       
       let foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
       
       if (!foundVehicle) {
-        // If not found in featured, try the standard catalog
-        vehicles = getImportedVehicles('standard');
-        console.log("Véhicules chargés du catalogue standard:", vehicles.length);
-        foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
-      }
-      
-      if (!foundVehicle) {
         // If still not found, check all vehicles with more flexible matching
-        vehicles = getImportedVehicles();
-        console.log("Véhicules chargés de tous les catalogues:", vehicles.length);
+        console.log("Recherche plus flexible pour l'ID:", id);
         
         foundVehicle = vehicles.find(v => 
           v.id === id || 

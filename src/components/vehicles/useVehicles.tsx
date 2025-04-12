@@ -23,14 +23,14 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     try {
       const catalogType = featuredOnly ? 'featured' : 'standard';
       // Récupérer l'ID du catalogue à partir de l'URL si disponible
-      const catalogId = getCatalogIdFromUrl(catalogType);
+      const catalogId = getCatalogIdFromUrl();
       
       console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
       
       let loadedVehicles: ImportedVehicle[] = [];
       
       // 1. D'abord, chargeons les véhicules depuis le localStorage
-      const importedVehicles = getImportedVehicles(catalogType);
+      const importedVehicles = getImportedVehicles();
       loadedVehicles = [...importedVehicles];
       
       // 2. Ensuite, essayons de charger les véhicules depuis Supabase

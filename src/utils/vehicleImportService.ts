@@ -60,19 +60,19 @@ export const cleanImageUrl = (url: string): string => {
 /**
  * Empty catalog reset function for backward compatibility
  */
-export const resetCatalog = (catalogType?: string) => {
+export const resetCatalog = (_catalogType?: string) => {
   console.log("Cette fonction a été désactivée.");
 };
 
 /**
  * Empty functions for backward compatibility with existing code
  */
-export const getImportedVehicles = (catalogType?: string): ImportedVehicle[] => {
+export const getImportedVehicles = (_catalogType?: string): ImportedVehicle[] => {
   console.log("Cette fonction a été désactivée.");
   return [];
 };
 
-export const saveImportedVehicles = (vehicles: ImportedVehicle[], catalogType?: string): boolean => {
+export const saveImportedVehicles = (vehicles: ImportedVehicle[], _catalogType?: string): boolean => {
   console.log("Cette fonction a été désactivée.");
   return false;
 };
@@ -88,17 +88,17 @@ export const addVehicle = (vehicle: ImportedVehicle, catalogType: string = 'stan
 };
 
 // Adding back missing exported functions and types
-export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType?: string): boolean => {
+export const addImportedVehicle = (vehicle: ImportedVehicle, _catalogType?: string): boolean => {
   console.log("Cette fonction a été désactivée.");
   return false;
 };
 
-export const extractVehiclesFromUrl = async (url: string, catalogType?: string): Promise<ImportedVehicle[]> => {
+export const extractVehiclesFromUrl = async (_url: string, _catalogType?: string): Promise<ImportedVehicle[]> => {
   console.log("Cette fonction a été désactivée.");
   return [];
 };
 
-export const generateShareableUrl = (catalogType?: string): string => {
+export const generateShareableUrl = (_catalogType?: string): string => {
   console.log("Cette fonction a été désactivée.");
   return '';
 };
@@ -108,10 +108,10 @@ export const getCatalogIdFromUrl = (): string | null => {
   return null;
 };
 
-export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType?: string): boolean => {
+export const updateVehicleImage = (_vehicleId: string, _newImageUrl: string, _catalogType?: string): boolean => {
   console.log("Cette fonction a été désactivée.");
   return false;
 };
 
-// Export the type so other files can use it
-export { ImportedVehicle };
+// Export the type properly with 'export type' syntax
+export type { ImportedVehicle };
