@@ -28,6 +28,7 @@ export {
 
 // Explicitly import the functions we need
 import { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs } from './services/vehicleCatalogService';
+import { getImportedVehicles, saveImportedVehicles } from './services/vehicleStorageService';
 
 // Re-export catalog management services directly
 export { addVehicle, deleteVehicle, resetCatalog, moveVehicleBetweenCatalogs };
@@ -60,10 +61,10 @@ export const validateImageUrl = (url: string): Promise<boolean> => {
   });
 };
 
-// Ajoutez ou modifiez cette fonction pour mettre à jour l'image de l'Audi Q2
+// Fonction pour mettre à jour l'image de l'Audi Q2
 export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType: 'standard' | 'featured' = 'standard') => {
   try {
-    // Ici, nous utilisons directement les fonctions importées plus haut
+    // Utilisation des fonctions importées explicitement
     const vehicles = getImportedVehicles(catalogType);
     
     const vehicleIndex = vehicles.findIndex(v => v.id === vehicleId || 

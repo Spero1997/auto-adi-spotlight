@@ -5,13 +5,15 @@ import { ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import { useToast } from '@/hooks/use-toast';
 import { ImportedVehicle } from '@/utils/types/vehicle';
+import UpdateVehicleImage from './UpdateVehicleImage';
 
 interface VehicleMainInfoProps {
   vehicle: ImportedVehicle;
   onBuyClick: () => void;
+  updateImage?: (newImageUrl: string) => void;
 }
 
-const VehicleMainInfo = ({ vehicle, onBuyClick }: VehicleMainInfoProps) => {
+const VehicleMainInfo = ({ vehicle, onBuyClick, updateImage }: VehicleMainInfoProps) => {
   const { toast: shadowToast } = useToast();
   
   const handleShareClick = () => {
@@ -65,6 +67,14 @@ const VehicleMainInfo = ({ vehicle, onBuyClick }: VehicleMainInfoProps) => {
           Partager
         </Button>
       </div>
+      
+      {/* Afficher le bouton d'update uniquement pour l'Audi Q2 Ultra Sport */}
+      {vehicle.brand === 'Audi' && vehicle.model.includes('Q2 Ultra Sport') && updateImage && (
+        <UpdateVehicleImage 
+          vehicleId={vehicle.id} 
+          updateImage={updateImage} 
+        />
+      )}
     </div>
   );
 };

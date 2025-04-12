@@ -20,7 +20,7 @@ import VehicleNotFound from '@/components/vehicle-details/VehicleNotFound';
 
 const VehicleDetails = () => {
   // Custom hooks for data fetching and order handling
-  const { vehicle, isLoading, notFound } = useVehicleDetail();
+  const { vehicle, isLoading, notFound, updateImage } = useVehicleDetail();
   const { 
     showPaymentForm,
     handleBuyClick,
@@ -91,6 +91,7 @@ const VehicleDetails = () => {
                     <VehicleMainInfo 
                       vehicle={vehicle} 
                       onBuyClick={handleBuyClick} 
+                      updateImage={updateImage}
                     />
                     
                     <div className="mt-8">
