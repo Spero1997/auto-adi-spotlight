@@ -76,7 +76,7 @@ export const saveImportedVehicles = (
       
       // Déclencher un événement pour informer l'application de la mise à jour
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType } 
+        detail: { catalogType, timestamp: Date.now() } // Ajout d'un timestamp pour forcer les handlers à reconnaître l'événement comme unique
       }));
       
       return true;
