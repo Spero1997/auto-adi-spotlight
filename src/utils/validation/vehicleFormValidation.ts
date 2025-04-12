@@ -1,9 +1,9 @@
 
 import { VehicleFormState } from "../types/vehicleForm";
 import { ToastAction } from "@/components/ui/toast";
-import { Toast } from "@/hooks/use-toast";
+import { toast as useToast } from "@/hooks/use-toast";
 
-export const validateVehicleForm = (formState: VehicleFormState, toast: (props: Toast) => void): boolean => {
+export const validateVehicleForm = (formState: VehicleFormState, toast: typeof useToast): boolean => {
   if (!formState.brand || !formState.model || !formState.year || !formState.mileage || !formState.fuelType || !formState.price) {
     toast({
       title: "Erreur",

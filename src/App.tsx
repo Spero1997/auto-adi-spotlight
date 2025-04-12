@@ -45,6 +45,7 @@ function App() {
         <Route path="/vehicules" element={<VehiculesOccasion />} />
         <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
         <Route path="/vehicule/:id" element={<VehicleDetails />} />
+        <Route path="/vehicule/:id/:slug" element={<VehicleDetails />} />
         <Route path="/vehicules/import" element={<VehicleImport />} />
         <Route path="/vehicules/gestion" element={<VehicleManagement />} />
         <Route path="/rachat" element={<Rachat />} />
