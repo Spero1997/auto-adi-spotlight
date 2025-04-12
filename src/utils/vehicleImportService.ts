@@ -199,10 +199,10 @@ export const addRenaultScenic = () => {
       transmission: 'Automatique',
       exteriorColor: 'Gris',
       interiorColor: 'Noir',
-      image: '/lovable-uploads/ced41637-89fa-40f2-97fc-8deff8ce4491.png',
+      image: '/lovable-uploads/2e08f660-5b4c-4c1c-a6a6-826551c7ecdf.png',
       images: [
-        '/lovable-uploads/a20f7545-0244-4e18-9b45-d680383cfc15.png',
-        '/lovable-uploads/85661341-189f-492b-b30f-70cabd46db28.png'
+        '/lovable-uploads/084fc59d-c55e-4587-aba1-9d4207ad1589.png',
+        '/lovable-uploads/7b163bf1-37df-49c6-b255-8c06535f448a.png'
       ],
       description: `Modalités de paiement
 • Acompte : 20 % à la commande
