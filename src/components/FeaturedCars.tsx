@@ -1,7 +1,9 @@
 
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Car, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 import VehicleList from './vehicles/VehicleList';
 import { useVehicles } from './vehicles/useVehicles';
 
@@ -17,7 +19,25 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   featuredOnly?: boolean;
 }) => {
   const [searchParams] = useSearchParams();
-  const { vehicles, loading, error, refresh } = useVehicles(searchFilters, featuredOnly);
+  const [refreshKey, setRefreshKey] = useState(Date.now());
+  const { vehicles, loading, error, refresh } = useVehicles(searchFilters, featuredOnly, refreshKey);
+
+  // Événement pour les mises à jour de véhicules
+  useEffect(() => {
+    const handleVehiclesUpdated = () => {
+      console.log("FeaturedCars: Événement vehiclesUpdated détecté");
+      setRefreshKey(Date.now());
+      refresh();
+    };
+
+    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
+    window.addEventListener('storage', handleVehiclesUpdated);
+    
+    return () => {
+      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
+      window.removeEventListener('storage', handleVehiclesUpdated);
+    };
+  }, [refresh]);
 
   // Déterminer le titre approprié en fonction des filtres et du type de catalogue
   const getTitle = () => {
@@ -36,6 +56,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   // Fonction pour forcer le rechargement des véhicules
   const handleRefresh = () => {
+    toast.info("Actualisation du catalogue...");
+    setRefreshKey(Date.now());
     refresh();
   };
 
@@ -57,6 +79,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         loading={loading}
         error={error}
         emptyMessage={getEmptyMessage()}
+        key={refreshKey}
       />
     </div>
   );
