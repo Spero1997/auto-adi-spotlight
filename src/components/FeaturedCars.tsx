@@ -59,6 +59,9 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     refresh();
   };
 
+  // Déterminer si nous sommes dans un contexte de recherche ou d'affichage initial
+  const isSearchContext = searchFilters ? true : false;
+
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="flex justify-between items-center mb-8">
@@ -77,6 +80,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         loading={loading}
         error={error}
         emptyMessage={getEmptyMessage()}
+        isSearchContext={searchParams.size > 0 || !!searchFilters}
         key={refreshKey}
       />
     </div>
