@@ -60,19 +60,19 @@ export const cleanImageUrl = (url: string): string => {
 /**
  * Empty catalog reset function for backward compatibility
  */
-export const resetCatalog = () => {
+export const resetCatalog = (catalogType?: string) => {
   console.log("Cette fonction a été désactivée.");
 };
 
 /**
  * Empty functions for backward compatibility with existing code
  */
-export const getImportedVehicles = (): ImportedVehicle[] => {
+export const getImportedVehicles = (catalogType?: string): ImportedVehicle[] => {
   console.log("Cette fonction a été désactivée.");
   return [];
 };
 
-export const saveImportedVehicles = (vehicles: ImportedVehicle[]): boolean => {
+export const saveImportedVehicles = (vehicles: ImportedVehicle[], catalogType?: string): boolean => {
   console.log("Cette fonction a été désactivée.");
   return false;
 };
@@ -86,3 +86,32 @@ export const addVehicle = (vehicle: ImportedVehicle, catalogType: string = 'stan
   console.log("Cette fonction a été désactivée.");
   return false;
 };
+
+// Adding back missing exported functions and types
+export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType?: string): boolean => {
+  console.log("Cette fonction a été désactivée.");
+  return false;
+};
+
+export const extractVehiclesFromUrl = async (url: string, catalogType?: string): Promise<ImportedVehicle[]> => {
+  console.log("Cette fonction a été désactivée.");
+  return [];
+};
+
+export const generateShareableUrl = (catalogType?: string): string => {
+  console.log("Cette fonction a été désactivée.");
+  return '';
+};
+
+export const getCatalogIdFromUrl = (): string | null => {
+  console.log("Cette fonction a été désactivée.");
+  return null;
+};
+
+export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType?: string): boolean => {
+  console.log("Cette fonction a été désactivée.");
+  return false;
+};
+
+// Export the type so other files can use it
+export { ImportedVehicle };
