@@ -89,9 +89,7 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link to="/admin/login" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200">
-              Admin Login
-            </Link>
+            <div></div>
           )}
 
           <Sheet>
