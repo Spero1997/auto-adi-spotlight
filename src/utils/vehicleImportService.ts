@@ -1,3 +1,4 @@
+
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -62,6 +63,7 @@ export const validateImageUrl = (url: string): Promise<boolean> => {
 // Ajoutez ou modifiez cette fonction pour mettre à jour l'image de l'Audi Q2
 export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catalogType: 'standard' | 'featured' = 'standard') => {
   try {
+    // Ici, nous utilisons directement les fonctions importées plus haut
     const vehicles = getImportedVehicles(catalogType);
     
     const vehicleIndex = vehicles.findIndex(v => v.id === vehicleId || 
