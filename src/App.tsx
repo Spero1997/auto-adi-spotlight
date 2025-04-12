@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -20,7 +21,7 @@ import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
 
 import { useEffect } from 'react';
-import { addToyotaCHR } from './utils/vehicleImportService';
+import { addToyotaCHR, updateVehicleImage } from './utils/vehicleImportService';
 
 // Admin Dashboard
 import AdminLayout from './components/admin/AdminLayout';
@@ -46,6 +47,9 @@ function App() {
         detail: { catalogType: 'standard' } 
       }));
     }
+    
+    // Mettre à jour aussi l'image du Toyota C-HR existant si présent
+    updateVehicleImage("vehicle-standard-1744451854534-toyota-chr-hybrid-gr-sport", '/lovable-uploads/3a09b1ff-510f-4248-97b3-89ccc312f68e.png', 'standard');
   }, []);
   
   return (

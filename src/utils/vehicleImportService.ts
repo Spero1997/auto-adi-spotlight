@@ -1,3 +1,4 @@
+
 // This file is now a facade that re-exports all vehicle-related functionality
 // from the new modular files, to maintain backwards compatibility
 
@@ -77,7 +78,7 @@ export const addToyotaCHR = () => {
       transmission: 'Automatique',
       exteriorColor: 'Bleu',
       interiorColor: 'Noir',
-      image: '/lovable-uploads/c68a2932-2e38-4475-acb9-cf43e795a39b.png', // Image principale
+      image: '/lovable-uploads/3a09b1ff-510f-4248-97b3-89ccc312f68e.png', // Image principale mise à jour
       images: [
         '/lovable-uploads/4a7d0135-15bc-4d67-8593-95afa2898553.png',
         '/lovable-uploads/a148b039-46ad-4622-a3ec-a299bc1de8e4.png',
