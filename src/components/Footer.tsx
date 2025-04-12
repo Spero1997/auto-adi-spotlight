@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Phone, Mail, MapPin, Shield, FileText, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -291,27 +292,27 @@ const Footer = () => {
 
         <Separator className="bg-white/20 my-8" />
 
-        {/* Legal links - Rearranged in a single row */}
+        {/* Legal links - With enhanced styling */}
         <div className="mb-10">
           <h3 className="text-xl font-semibold mb-6 text-center">{translate('legalInfo', translations.legalInfo)}</h3>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
-            <Link to="/mentions-legales" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+            <Link to="/mentions-legales" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
               <Shield className="h-4 w-4 mr-2 text-brand-orange" />
               {translate('legalNotice', translations.legalNotice)}
             </Link>
-            <Link to="/politique-confidentialite" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+            <Link to="/politique-confidentialite" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
               <Shield className="h-4 w-4 mr-2 text-brand-orange" />
               {translate('privacyPolicy', translations.privacyPolicy)}
             </Link>
-            <Link to="/cookies" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+            <Link to="/cookies" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
               <Settings className="h-4 w-4 mr-2 text-brand-orange" />
               {translate('cookieManagement', translations.cookieManagement)}
             </Link>
-            <Link to="/cgv" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+            <Link to="/cgv" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
               <FileText className="h-4 w-4 mr-2 text-brand-orange" />
               {translate('termsAndConditions', translations.termsAndConditions)}
             </Link>
-            <Link to="/conditions" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/5 rounded-md backdrop-blur-sm">
+            <Link to="/conditions" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
               <FileText className="h-4 w-4 mr-2 text-brand-orange" />
               {translate('saleConditions', translations.saleConditions)}
             </Link>
