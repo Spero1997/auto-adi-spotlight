@@ -27,10 +27,10 @@ const VehicleManagement = () => {
               <div className="flex gap-3 flex-wrap">
                 <CatalogShare />
                 
-                <Link to="/vehicules/import">
+                <Link to="/vehicule/import">
                   <Button className="flex items-center gap-2">
                     <Plus className="h-4 w-4" />
-                    Importer des véhicules
+                    Ajouter un véhicule
                   </Button>
                 </Link>
               </div>
