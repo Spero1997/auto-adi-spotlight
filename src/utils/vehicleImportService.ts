@@ -274,3 +274,94 @@ wa.me/393761753341`,
     return false;
   }
 };
+
+// Fonction pour ajouter le Kia Sorento au catalogue
+export const addKiaSorento = () => {
+  try {
+    const kiaSorento: ImportedVehicle = {
+      id: `vehicle-standard-${Date.now()}-kia-sorento-hybrid-rechargeable`,
+      brand: 'Kia',
+      model: 'Sorento 1.6 T-GDI Hybride rechargeable',
+      year: 2021,
+      mileage: 104000,
+      price: 6000,
+      fuelType: 'Essence',
+      transmission: 'Automatique',
+      exteriorColor: 'Bleu',
+      interiorColor: 'Noir',
+      image: '/lovable-uploads/3b4fb48b-ad09-469b-84b9-b8c8c8b99888.png',
+      images: [
+        '/lovable-uploads/e8868948-8b92-4871-b4fb-b6bb393ea221.png',
+        '/lovable-uploads/f385ebfd-67a0-4256-8a98-c43c8723ae8f.png',
+        '/lovable-uploads/757b310b-bd11-4eab-99d0-06814a80623b.png'
+      ],
+      description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % de réduction pour tout achat comptant à la commande
+
+Nous nous occupons de toutes les démarches d'importation jusqu'à la livraison a votre domicile. Délais de livraison 5 jours / Délai de rétractation 14 JOURS (Satisfait ou remboursé)
+Garantie 24 mois`,
+      features: [
+        'Airbags (frontaux, latéraux, rideaux)',
+        'Système ABS (Anti-blocage des freins)',
+        'ESP (Correcteur électronique de trajectoire)',
+        'Aide au freinage d\'urgence',
+        'Caméra de recul et capteurs de stationnement',
+        'Aide au maintien de voie',
+        'Détecteur d\'angle mort',
+        'Régulateur de vitesse adaptatif',
+        
+        'Climatisation automatique bi-zone',
+        'Sièges chauffants et ventilés',
+        'Sièges en cuir premium',
+        'Volant chauffant',
+        'Rétroviseurs électriques et dégivrants',
+        'Vitres électriques',
+        'Toit panoramique',
+        'Système Keyless (démarrage sans clé)',
+        
+        'Double écran tactile 10.25"',
+        'Système de navigation',
+        'Apple CarPlay & Android Auto',
+        'Système audio premium',
+        'Bluetooth et USB',
+        'Recharge par induction pour smartphone',
+        
+        'Phares LED adaptatifs',
+        'Feux diurnes LED',
+        'Essuie-glaces automatiques',
+        'Détecteur automatique de luminosité',
+        
+        'Hayon électrique',
+        'Technologie hybride rechargeable',
+        'Mode de conduite (Eco, Sport, Neige)',
+        'Jantes alliage 19"',
+        'Système Start & Stop'
+      ],
+      engine: '1.6 T-GDI Hybride rechargeable 265 CH',
+      doors: 5,
+      catalogType: 'standard'
+    };
+    
+    const success = addVehicle(kiaSorento, 'standard');
+    
+    if (success) {
+      console.log('Kia Sorento 1.6 T-GDI Hybride rechargeable ajouté avec succès au catalogue!');
+      
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
+      
+      window.dispatchEvent(new CustomEvent('catalogChanged'));
+      
+      return true;
+    } else {
+      console.error('Erreur lors de l\'ajout du Kia Sorento 1.6 T-GDI Hybride rechargeable');
+      return false;
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du Kia Sorento 1.6 T-GDI Hybride rechargeable:', error);
+    return false;
+  }
+};

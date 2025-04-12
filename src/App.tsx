@@ -21,7 +21,7 @@ import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
 
 import { useEffect } from 'react';
-import { addToyotaCHR, updateVehicleImage, addRenaultScenic } from './utils/vehicleImportService';
+import { addToyotaCHR, updateVehicleImage, addRenaultScenic, addKiaSorento } from './utils/vehicleImportService';
 
 // Admin Dashboard
 import AdminLayout from './components/admin/AdminLayout';
@@ -64,6 +64,17 @@ function App() {
       
       // Mettre à jour l'image principale
       updateVehicleImage(scenicId, '/lovable-uploads/0bc7bda5-9e89-432d-871a-6a00b74a0759.png', 'standard');
+      
+      // Forcer la mise à jour des véhicules affichés
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
+    }
+    
+    // Ajouter le Kia Sorento au catalogue
+    const sorentoAdded = addKiaSorento();
+    if (sorentoAdded) {
+      console.log("Kia Sorento 1.6 T-GDI Hybride rechargeable ajouté au catalogue avec succès au démarrage de l'application");
       
       // Forcer la mise à jour des véhicules affichés
       window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
