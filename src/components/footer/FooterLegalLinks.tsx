@@ -70,11 +70,11 @@ const FooterLegalLinks = () => {
   };
 
   return (
-    <div className="mb-10">
-      <h3 className="text-xl font-semibold mb-6 text-center">
+    <div className="mb-6">
+      <h3 className="text-xl font-semibold mb-4 text-center">
         {translate('legalInfo', translations.legalInfo)}
       </h3>
-      <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
         <Link to="/mentions-legales" className="text-gray-200 hover:text-brand-orange transition-colors flex items-center px-3 py-2 bg-white/10 rounded-md backdrop-blur-sm">
           <Shield className="h-4 w-4 mr-2 text-brand-orange" />
           {translate('legalNotice', translations.legalNotice)}

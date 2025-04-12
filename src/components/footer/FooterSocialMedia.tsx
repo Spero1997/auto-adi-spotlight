@@ -46,10 +46,10 @@ const FooterSocialMedia = () => {
 
   return (
     <div>
-      <p className="text-gray-200 font-semibold mb-6 text-left">
+      <p className="text-gray-200 font-semibold mb-4 text-left">
         {translate('contactAvailability', translations.contactAvailability)}
       </p>
-      <div className="flex space-x-6 mb-8">
+      <div className="flex space-x-4 mb-4">
         <a 
           href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
           target="_blank" 
@@ -57,7 +57,7 @@ const FooterSocialMedia = () => {
           className="bg-white/10 p-3 rounded-full hover:bg-brand-orange hover:text-white transition-all duration-300"
           aria-label="Facebook"
         >
-          <Facebook size={24} className="text-white" />
+          <Facebook size={22} className="text-white" />
         </a>
         <a 
           href="https://wa.me/393761753341" 
@@ -66,7 +66,7 @@ const FooterSocialMedia = () => {
           className="bg-white/10 p-3 rounded-full hover:bg-brand-orange hover:text-white transition-all duration-300"
           aria-label="WhatsApp"
         >
-          <MessageCircle size={24} className="text-white" />
+          <MessageCircle size={22} className="text-white" />
         </a>
       </div>
     </div>

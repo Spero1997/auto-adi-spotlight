@@ -38,8 +38,8 @@ const FooterContactInfo = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-semibold mb-6 text-left">{translate('contact', translations.contact)}</h3>
-      <ul className="space-y-4 text-left">
+      <h3 className="text-xl font-semibold mb-4 text-left">{translate('contact', translations.contact)}</h3>
+      <ul className="space-y-3 text-left">
         <li className="flex items-center">
           <Phone className="h-5 w-5 mr-3 text-brand-orange" />
           <span className="text-gray-200">‪+39 376 175 3341‬</span>

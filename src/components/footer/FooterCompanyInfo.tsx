@@ -31,14 +31,14 @@ const FooterCompanyInfo = () => {
 
   return (
     <div className="md:col-span-2">
-      <Link to="/" className="block mb-6">
+      <Link to="/" className="block mb-4">
         <img 
           src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
           alt="Auto Adi" 
-          className="h-20 mb-4"
+          className="h-16 mb-3"
         />
       </Link>
-      <p className="text-gray-200 mb-6 text-left max-w-md">
+      <p className="text-gray-200 mb-4 text-left max-w-md">
         {translate('companyDescription', translations.companyDescription)}
       </p>
       
