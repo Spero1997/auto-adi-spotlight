@@ -61,6 +61,7 @@ const AdminVehicles: React.FC = () => {
       image: '',
       description: '',
       features: [],
+      images: [],
       catalogType: 'standard'
     };
     
@@ -71,7 +72,7 @@ const AdminVehicles: React.FC = () => {
   const handleEditClick = (vehicle: ImportedVehicle) => {
     setCurrentVehicle({ 
       ...vehicle,
-      images: vehicle.images || [] // Ensure images is always an array
+      images: vehicle.images || [] // S'assurer que images est toujours un tableau
     });
     setIsEditDialogOpen(true);
   };
