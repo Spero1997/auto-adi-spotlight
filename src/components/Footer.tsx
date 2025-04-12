@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, MessageCircle, Phone, Mail, MapPin, Shield, FileText, Settings } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Footer = () => {
@@ -231,27 +231,32 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-4">{translate('legalInfo', translations.legalInfo)}</h3>
           <ul className="space-y-2">
             <li>
-              <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors block">
+              <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
+                <Shield className="h-4 w-4 mr-2 text-brand-orange" />
                 {translate('legalNotice', translations.legalNotice)}
               </Link>
             </li>
             <li>
-              <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors block">
+              <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
+                <Shield className="h-4 w-4 mr-2 text-brand-orange" />
                 {translate('privacyPolicy', translations.privacyPolicy)}
               </Link>
             </li>
             <li>
-              <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors block">
+              <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
+                <Settings className="h-4 w-4 mr-2 text-brand-orange" />
                 {translate('cookieManagement', translations.cookieManagement)}
               </Link>
             </li>
             <li>
-              <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors block">
+              <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
+                <FileText className="h-4 w-4 mr-2 text-brand-orange" />
                 {translate('termsAndConditions', translations.termsAndConditions)}
               </Link>
             </li>
             <li>
-              <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors block">
+              <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors block flex items-center">
+                <FileText className="h-4 w-4 mr-2 text-brand-orange" />
                 {translate('saleConditions', translations.saleConditions)}
               </Link>
             </li>
