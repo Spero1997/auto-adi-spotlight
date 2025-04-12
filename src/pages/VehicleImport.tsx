@@ -8,6 +8,7 @@ import VehicleAddForm from '@/components/VehicleAddForm';
 import AiVehicleAdder from '@/components/AiVehicleAdder';
 import { getImportedVehicles, addVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 const VehicleImport = () => {
   const [activeTab, setActiveTab] = useState("assistant");
@@ -296,15 +297,25 @@ Garantie 24 mois`,
         catalogType: 'standard'
       };
       
-      addVehicle(audiA4, 'standard');
-      console.log('Audi A4 35 TFSI Sport ajoutée avec succès au catalogue!');
+      const success = addVehicle(audiA4, 'standard');
       
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
-      
-      return true;
+      if (success) {
+        toast.success('Audi A4 35 TFSI Sport ajoutée avec succès au catalogue!');
+        
+        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+          detail: { catalogType: 'standard' } 
+        }));
+        
+        window.dispatchEvent(new CustomEvent('catalogChanged'));
+        
+        return true;
+      } else {
+        toast.error('Erreur lors de l\'ajout de l\'Audi A4 35 TFSI Sport');
+        return false;
+      }
     } catch (error) {
       console.error('Erreur lors de l\'ajout de l\'Audi A4 35 TFSI Sport:', error);
-      console.error('Erreur lors de l\'ajout du véhicule');
+      toast.error('Erreur lors de l\'ajout du véhicule');
       return false;
     }
   };
