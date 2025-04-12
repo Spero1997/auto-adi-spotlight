@@ -1,4 +1,3 @@
-
 import { ImportedVehicle } from '../types/vehicle';
 import { getImportedVehicles, saveImportedVehicles } from './vehicleStorageService';
 import { validateImageUrl } from '../vehicleImportService';
@@ -20,6 +19,7 @@ export const resetCatalog = (catalogType: 'standard' | 'featured' | 'all' = 'all
   }
   
   // Déclencher un événement pour informer l'application du changement
+  // Sans forcer un rechargement complet de la page
   window.dispatchEvent(new CustomEvent('catalogChanged', { 
     detail: { catalogType: 'all' } 
   }));
@@ -79,14 +79,6 @@ export const addVehicle = async (
     window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
       detail: { catalogType } 
     }));
-    
-    // Forcer un rechargement global après un court délai
-    setTimeout(() => {
-      console.log('Déclenchement d\'un événement vehiclesUpdated global pour assurer la mise à jour');
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'all' } 
-      }));
-    }, 100);
     
     return true;
   } catch (error) {

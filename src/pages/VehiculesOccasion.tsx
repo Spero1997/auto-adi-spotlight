@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -185,21 +186,20 @@ const VehiculesOccasion = () => {
     
     checkCatalogFromUrl();
     
-    const handleCatalogChange = () => {
-      console.log("Événement de changement de catalogue détecté");
-      window.location.reload();
+    // Modification de la gestion des événements pour éviter les rechargements
+    const handleVehiclesUpdated = () => {
+      console.log("Événement de mise à jour des véhicules détecté");
+      const loadedVehicles = getImportedVehicles();
+      setVehicles(loadedVehicles);
+      setIsCatalogLoaded(true);
     };
     
-    window.addEventListener('catalogChanged', handleCatalogChange);
-    window.addEventListener('vehiclesUpdated', () => {
-      setIsCatalogLoaded(true);
-    });
+    window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     
     return () => {
-      window.removeEventListener('catalogChanged', handleCatalogChange);
-      window.removeEventListener('vehiclesUpdated', () => {});
+      window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
     };
-  }, [location.search]);
+  }, []);
   
   const catalogId = getCatalogIdFromUrl();
   

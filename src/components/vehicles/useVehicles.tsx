@@ -90,11 +90,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
       // Trier les véhicules par année (du plus récent au plus ancien)
       loadedVehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
       
-      // Log individual vehicles to help with debugging
-      loadedVehicles.forEach((vehicle, index) => {
-        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Année: ${vehicle.year}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
-      });
-      
       setVehicles(loadedVehicles);
     } catch (e) {
       setError("Échec du chargement des véhicules.");
@@ -128,6 +123,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
       }
     };
     
+    // Remplacer l'événement catalogChanged pour éviter les rechargements de page
     const handleCatalogChanged = () => {
       console.log('useVehicles: Event catalogChanged reçu, rechargement des véhicules');
       loadVehicles();
@@ -136,8 +132,11 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
     window.addEventListener('catalogChanged', handleCatalogChanged);
     
-    // Recharger les véhicules quand l'URL change
-    loadVehicles();
+    // Recharger les véhicules quand l'URL change pour la compatibilité
+    const params = new URLSearchParams(location.search);
+    if (params.has('catalog') || params.has('featured_catalog')) {
+      loadVehicles();
+    }
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
@@ -149,9 +148,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
   const filteredVehicles = () => {
     let filtered = [...vehicles];
     
-    // Debug log to see what vehicles we're working with
-    console.log(`Filtrage: ${filtered.length} véhicules avant filtre`);
-
     if (searchFilters) {
       if (searchFilters.brand) {
         filtered = filtered.filter(v => v.brand?.toLowerCase().includes(searchFilters.brand!.toLowerCase()));
@@ -167,7 +163,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
       }
     }
     
-    console.log(`Filtrage: ${filtered.length} véhicules après filtre`);
     return filtered;
   };
 
@@ -175,6 +170,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     vehicles: filteredVehicles(),
     loading,
     error,
-    refresh: loadVehicles // Exposer la fonction de rechargement
+    refresh: loadVehicles
   };
 };
