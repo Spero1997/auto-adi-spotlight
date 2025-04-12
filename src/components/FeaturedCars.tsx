@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Car, RefreshCw } from 'lucide-react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Car, RefreshCw, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import VehicleList from './vehicles/VehicleList';
@@ -19,6 +19,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   featuredOnly?: boolean;
 }) => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [refreshKey, setRefreshKey] = useState(Date.now());
   const { vehicles, loading, error, refresh } = useVehicles(searchFilters, featuredOnly, refreshKey);
 
@@ -36,6 +37,11 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
     };
   }, [refresh]);
+
+  // Fonction pour rediriger vers la page d'ajout de véhicule
+  const handleAddVehicle = () => {
+    navigate('/vehicules/import');
+  };
 
   // Déterminer le titre approprié en fonction des filtres et du type de catalogue
   const getTitle = () => {
@@ -60,7 +66,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   };
 
   // Déterminer si nous sommes dans un contexte de recherche ou d'affichage initial
-  const isSearchContext = searchFilters ? true : false;
+  const isSearchContext = searchParams.size > 0 || !!searchFilters;
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -69,10 +75,19 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
           {getTitle()}
         </h2>
         
-        <Button variant="outline" size="sm" onClick={handleRefresh} className="flex items-center gap-2">
-          <RefreshCw className="h-4 w-4" />
-          Actualiser
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={handleRefresh} className="flex items-center gap-2">
+            <RefreshCw className="h-4 w-4" />
+            Actualiser
+          </Button>
+          
+          {vehicles.length === 0 && !isSearchContext && (
+            <Button size="sm" onClick={handleAddVehicle} className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Ajouter un véhicule
+            </Button>
+          )}
+        </div>
       </div>
 
       <VehicleList 
@@ -80,7 +95,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         loading={loading}
         error={error}
         emptyMessage={getEmptyMessage()}
-        isSearchContext={searchParams.size > 0 || !!searchFilters}
+        isSearchContext={isSearchContext}
+        onAddVehicle={handleAddVehicle}
         key={refreshKey}
       />
     </div>

@@ -55,7 +55,7 @@ const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: Vehic
         )}
         
         {!isSearchContext && (
-          <Link to="/vehicule/import" className="flex-1">
+          <Link to="/vehicules/import" className="flex-1">
             <Button 
               variant="outline" 
               className="w-full flex items-center justify-center gap-2"
