@@ -39,8 +39,9 @@ const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: Vehic
         <>
           <h1 className="text-2xl font-bold text-blue-600 mb-4">Aucun véhicule trouvé</h1>
           <p className="text-gray-600 mb-6">
-            Aucun véhicule n'a encore été ajouté à votre catalogue.
-            {isAuthenticated && " Commencez par ajouter votre premier véhicule !"}
+            {isAuthenticated 
+              ? "Aucun véhicule n'a encore été ajouté à votre catalogue. Commencez par ajouter votre premier véhicule !"
+              : "Aucun véhicule n'est actuellement disponible dans ce catalogue."}
           </p>
         </>
       )}

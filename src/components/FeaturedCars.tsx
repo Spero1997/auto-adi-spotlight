@@ -57,7 +57,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     }
     return featuredOnly 
       ? "Aucun véhicule n'a encore été ajouté au catalogue vedette." 
-      : "Aucun véhicule n'a encore été ajouté au catalogue.";
+      : "Aucun véhicule n'est disponible dans ce catalogue.";
   };
 
   const handleRefresh = () => {
