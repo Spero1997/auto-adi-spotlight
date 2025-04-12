@@ -62,7 +62,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Búsqueda rápida",
       IT: "Ricerca rapida",
       PT: "Pesquisa rápida",
-      RO: "Căutare rapidă"
+      RO: "Căutare rapidă",
+      DE: "Schnellsuche",
+      NL: "Snelzoeken",
+      PL: "Szybkie wyszukiwanie",
+      RU: "Быстрый поиск"
     },
     brand: {
       FR: "Marque",
@@ -70,7 +74,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Marca",
       IT: "Marca",
       PT: "Marca",
-      RO: "Marcă"
+      RO: "Marcă",
+      DE: "Marke",
+      NL: "Merk",
+      PL: "Marka",
+      RU: "Марка"
     },
     model: {
       FR: "Modèle",
@@ -78,7 +86,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Modelo",
       IT: "Modello",
       PT: "Modelo",
-      RO: "Model"
+      RO: "Model",
+      DE: "Modell",
+      NL: "Model",
+      PL: "Model",
+      RU: "Модель"
     },
     maxBudget: {
       FR: "Budget max",
@@ -86,7 +98,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Presupuesto máx",
       IT: "Budget massimo",
       PT: "Orçamento máx",
-      RO: "Buget maxim"
+      RO: "Buget maxim",
+      DE: "Maximales Budget",
+      NL: "Max budget",
+      PL: "Maksymalny budżet",
+      RU: "Макс. бюджет"
     },
     fuel: {
       FR: "Énergie",
@@ -94,7 +110,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Combustible",
       IT: "Carburante",
       PT: "Combustível",
-      RO: "Combustibil"
+      RO: "Combustibil",
+      DE: "Kraftstoff",
+      NL: "Brandstof",
+      PL: "Paliwo",
+      RU: "Топливо"
     },
     search: {
       FR: "Rechercher",
@@ -102,7 +122,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Buscar",
       IT: "Cerca",
       PT: "Pesquisar",
-      RO: "Căutare"
+      RO: "Căutare",
+      DE: "Suchen",
+      NL: "Zoeken",
+      PL: "Szukaj",
+      RU: "Поиск"
     },
     selectBrandFirst: {
       FR: "Sélectionnez une marque d'abord",
@@ -110,7 +134,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Seleccione una marca primero",
       IT: "Seleziona prima una marca",
       PT: "Selecione uma marca primeiro",
-      RO: "Selectați mai întâi o marcă"
+      RO: "Selectați mai întâi o marcă",
+      DE: "Wählen Sie zuerst eine Marke",
+      NL: "Selecteer eerst een merk",
+      PL: "Najpierw wybierz markę",
+      RU: "Сначала выберите марку"
     },
     petrol: {
       FR: "Essence",
@@ -118,7 +146,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Gasolina",
       IT: "Benzina",
       PT: "Gasolina",
-      RO: "Benzină"
+      RO: "Benzină",
+      DE: "Benzin",
+      NL: "Benzine",
+      PL: "Benzyna",
+      RU: "Бензин"
     },
     diesel: {
       FR: "Diesel",
@@ -126,7 +158,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Diesel",
       IT: "Diesel",
       PT: "Diesel",
-      RO: "Diesel"
+      RO: "Diesel",
+      DE: "Diesel",
+      NL: "Diesel",
+      PL: "Diesel",
+      RU: "Дизель"
     },
     hybrid: {
       FR: "Hybride",
@@ -134,7 +170,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Híbrido",
       IT: "Ibrido",
       PT: "Híbrido",
-      RO: "Hibrid"
+      RO: "Hibrid",
+      DE: "Hybrid",
+      NL: "Hybride",
+      PL: "Hybryda",
+      RU: "Гибрид"
     },
     electric: {
       FR: "Électrique",
@@ -142,7 +182,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Eléctrico",
       IT: "Elettrico",
       PT: "Elétrico",
-      RO: "Electric"
+      RO: "Electric",
+      DE: "Elektrisch",
+      NL: "Elektrisch",
+      PL: "Elektryczny",
+      RU: "Электро"
     },
     searchWarning: {
       FR: "Veuillez sélectionner au moins un critère de recherche",
@@ -150,7 +194,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Por favor, seleccione al menos un criterio de búsqueda",
       IT: "Si prega di selezionare almeno un criterio di ricerca",
       PT: "Por favor, selecione pelo menos um critério de pesquisa",
-      RO: "Vă rugăm să selectați cel puțin un criteriu de căutare"
+      RO: "Vă rugăm să selectați cel puțin un criteriu de căutare",
+      DE: "Bitte wählen Sie mindestens ein Suchkriterium",
+      NL: "Selecteer ten minste één zoekcriterium",
+      PL: "Wybierz co najmniej jedno kryterium wyszukiwania",
+      RU: "Выберите хотя бы один критерий поиска"
     },
     searchStarted: {
       FR: "Recherche lancée",
@@ -158,7 +206,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Búsqueda iniciada",
       IT: "Ricerca avviata",
       PT: "Pesquisa iniciada",
-      RO: "Căutare inițiată"
+      RO: "Căutare inițiată",
+      DE: "Suche gestartet",
+      NL: "Zoekopdracht gestart",
+      PL: "Wyszukiwanie rozpoczęte",
+      RU: "Поиск начат"
     },
     all: {
       FR: "Toutes",
@@ -166,7 +218,11 @@ const QuickSearch = ({ insideHero = false }: QuickSearchProps) => {
       ES: "Todas",
       IT: "Tutte",
       PT: "Todas",
-      RO: "Toate"
+      RO: "Toate",
+      DE: "Alle",
+      NL: "Alle",
+      PL: "Wszystkie",
+      RU: "Все"
     }
   };
 

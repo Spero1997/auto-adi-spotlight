@@ -1,70 +1,120 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import FeaturedCars from '@/components/FeaturedCars';
+import CallToAction from '@/components/CallToAction';
+import VehicleCard from '@/components/VehicleCard';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Slider } from '@/components/ui/slider';
+import { Filter, X, ChevronDown, ChevronUp, Search } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { Car, ArrowRight, Filter, RefreshCw, Share2 } from 'lucide-react';
-import { getCatalogIdFromUrl, getImportedVehicles } from '@/utils/vehicleImportService';
-import { toast } from 'sonner';
-import CatalogShare from '@/components/CatalogShare';
+import { Separator } from '@/components/ui/separator';
+import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
+import EmptyState from '@/components/EmptyState';
+import { getVehiclesByType, getImportedVehicles } from '@/utils/vehicleImportService';
+import { cn } from '@/lib/utils';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ImportedVehicle } from '@/utils/types/vehicle';
-
-const generateVehicleListingSchema = (vehicles: ImportedVehicle[]) => {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": vehicles.map((vehicle, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
-        "@type": "Vehicle",
-        "name": `${vehicle.brand} ${vehicle.model}`,
-        "description": vehicle.description || `${vehicle.brand} ${vehicle.model} ${vehicle.year}, ${vehicle.mileage} km, ${vehicle.fuelType}`,
-        "vehicleModelDate": vehicle.year,
-        "mileageFromOdometer": {
-          "@type": "QuantitativeValue",
-          "value": vehicle.mileage,
-          "unitCode": "KMT"
-        },
-        "fuelType": vehicle.fuelType,
-        "vehicleTransmission": vehicle.transmission,
-        "color": vehicle.exteriorColor,
-        "offers": {
-          "@type": "Offer",
-          "price": vehicle.price,
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        "image": vehicle.image
-      }
-    }))
-  };
-};
-
-const carBrands = [
-  "Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Honda", "Hyundai", 
-  "Kia", "Mercedes", "Nissan", "Opel", "Peugeot", "Renault", "Seat", 
-  "Skoda", "Toyota", "Volkswagen", "Volvo"
-];
-
-const fuelTypes = ["Essence", "Diesel", "Hybride", "Électrique", "GPL"];
-
-const MIN_PRICE = 5000;
-const MAX_PRICE = 50000;
 
 const VehiculesOccasion = () => {
-  const { translate, language } = useLanguage();
+  const { language, translate } = useLanguage();
+  
+  const translations = {
+    pageTitle: {
+      FR: "Véhicules d'occasion à vendre | Auto Adi - Achat voiture occasion pas cher",
+      EN: "Used vehicles for sale | Auto Adi - Buy affordable used cars",
+      ES: "Vehículos usados en venta | Auto Adi - Compre coches usados económicos",
+      IT: "Veicoli usati in vendita | Auto Adi - Acquista auto usate a prezzi accessibili",
+      PT: "Veículos usados à venda | Auto Adi - Compre carros usados acessíveis",
+      RO: "Vehicule second-hand de vânzare | Auto Adi - Cumpărați mașini la prețuri accesibile",
+      DE: "Gebrauchtwagen zu verkaufen | Auto Adi - Kaufen Sie günstige Gebrauchtwagen",
+      NL: "Gebruikte voertuigen te koop | Auto Adi - Koop betaalbare tweedehands auto's",
+      PL: "Używane pojazdy na sprzedaż | Auto Adi - Kup przystępne cenowo używane samochody",
+      RU: "Подержанные автомобили на продажу | Auto Adi - Покупайте доступные подержанные автомобили"
+    },
+    pageDescription: {
+      FR: "Achetez une voiture d'occasion pas chère chez Auto Adi. Grand choix de véhicules d'occasion vérifiés et garantis, financement auto taux 0%, livraison gratuite en Europe.",
+      EN: "Buy an affordable used car from Auto Adi. Large selection of verified and guaranteed used vehicles, 0% auto financing, free delivery in Europe.",
+      ES: "Compre un coche usado económico en Auto Adi. Gran selección de vehículos usados verificados y garantizados, financiación al 0%, entrega gratuita en Europa.",
+      IT: "Acquista un'auto usata economica da Auto Adi. Ampia selezione di veicoli usati verificati e garantiti, finanziamento auto 0%, consegna gratuita in Europa.",
+      PT: "Compre um carro usado acessível na Auto Adi. Grande selecção de veículos usados verificados e garantidos, financiamento automóvel 0%, entrega gratuita na Europa.",
+      RO: "Cumpărați o mașină second-hand la un preț accesibil de la Auto Adi. Selecție largă de vehicule second-hand verificate și garantate, finanțare auto 0%, livrare gratuită în Europa.",
+      DE: "Kaufen Sie einen günstigen Gebrauchtwagen bei Auto Adi. Große Auswahl an geprüften und garantierten Gebrauchtwagen, 0% Autofinanzierung, kostenlose Lieferung in Europa.",
+      NL: "Koop een betaalbare tweedehands auto bij Auto Adi. Grote selectie geverifieerde en gegarandeerde gebruikte voertuigen, 0% autofinanciering, gratis levering in Europa.",
+      PL: "Kup tani używany samochód w Auto Adi. Duży wybór sprawdzonych i gwarantowanych używanych pojazdów, finansowanie samochodu 0%, darmowa dostawa w Europie.",
+      RU: "Купите доступный подержанный автомобиль в Auto Adi. Большой выбор проверенных и гарантированных подержанных автомобилей, автофинансирование 0%, бесплатная доставка по Европе."
+    },
+    usedVehicles: {
+      FR: "Véhicules d'occasion",
+      EN: "Used vehicles",
+      ES: "Vehículos usados",
+      IT: "Veicoli usati",
+      PT: "Veículos usados",
+      RO: "Vehicule second-hand",
+      DE: "Gebrauchtwagen",
+      NL: "Gebruikte voertuigen",
+      PL: "Używane pojazdy",
+      RU: "Подержанные автомобили"
+    },
+    resultsCount: {
+      FR: "Résultats",
+      EN: "Results",
+      ES: "Resultados",
+      IT: "Risultati",
+      PT: "Resultados",
+      RO: "Rezultate",
+      DE: "Ergebnisse",
+      NL: "Resultaten",
+      PL: "Wyniki",
+      RU: "Результаты"
+    },
+    filters: {
+      FR: "Filtres",
+      EN: "Filters",
+      ES: "Filtros",
+      IT: "Filtri",
+      PT: "Filtros",
+      RO: "Filtre",
+      DE: "Filter",
+      NL: "Filters",
+      PL: "Filtry",
+      RU: "Фильтры"
+    },
+    resetFilters: {
+      FR: "Réinitialiser les filtres",
+      EN: "Reset filters",
+      ES: "Reiniciar filtros",
+      IT: "Reimposta filtri",
+      PT: "Repor filtros",
+      RO: "Resetare filtre",
+      DE: "Filter zurücksetzen",
+      NL: "Filters resetten",
+      PL: "Resetuj filtry",
+      RU: "Сбросить фильтры"
+    }
+  };
+
+  // ... keep existing code (component state)
   const [searchParams, setSearchParams] = useSearchParams();
   const [priceRange, setPriceRange] = useState([MIN_PRICE, MAX_PRICE]);
   const [selectedBrand, setSelectedBrand] = useState<string>('');
@@ -85,41 +135,25 @@ const VehiculesOccasion = () => {
   const [filterLeather, setFilterLeather] = useState(false);
   const [filterParkingSensors, setFilterParkingSensors] = useState(false);
   
-  const translations = {
-    pageTitle: {
-      FR: "Véhicules d'occasion de qualité à petit prix | Auto Adi Florence",
-      EN: "Quality used vehicles at low prices | Auto Adi Florence",
-      ES: "Vehículos usados de calidad a precios bajos | Auto Adi Florencia",
-      IT: "Veicoli usati di qualità a prezzi bassi | Auto Adi Firenze",
-      PT: "Veículos usados de qualidade a preços baixos | Auto Adi Florença",
-      RO: "Vehicule second-hand de calitate la prețuri mici | Auto Adi Florența"
-    },
-    pageDescription: {
-      FR: "Découvrez notre sélection de véhicules d'occasion contrôlés et garantis. Financement auto taux 0%, reprise véhicule gratuite. Toutes nos voitures sont inspectées pour vous assurer qualité et fiabilité.",
-      EN: "Discover our selection of inspected and guaranteed used vehicles. 0% auto financing, free vehicle trade-in. All our cars are inspected to ensure quality and reliability.",
-      ES: "Descubra nuestra selección de vehículos usados controlados y garantizados. Financiación auto al 0%, recompra gratuita de vehículos. Todos nuestros coches son inspeccionados para garantizar calidad y fiabilidad.",
-      IT: "Scopri la nostra selezione di veicoli usati controllati e garantiti. Finanziamento auto 0%, ripresa gratuita del veicolo. Tutte le nostre auto sono ispezionate per garantire qualità e affidabilità.",
-      PT: "Descubra a nossa seleção de veículos usados controlados e garantidos. Financiamento automóvel 0%, retoma gratuita de veículos. Todos os nossos carros são inspecionados para garantir qualidade e fiabilidade.",
-      RO: "Descoperiți selecția noastră de vehicule second-hand controlate și garantate. Finanțare auto 0%, preluare gratuită a vehiculelor. Toate mașinile noastre sunt inspectate pentru a vă asigura calitate și fiabilitate."
-    },
-    loadingCatalog: {
-      FR: "Chargement du catalogue partagé...",
-      EN: "Loading shared catalog...",
-      ES: "Cargando catálogo compartido...",
-      IT: "Caricamento del catalogo condiviso...",
-      PT: "Carregando catálogo compartilhado...",
-      RO: "Se încarcă catalogul partajat..."
-    },
-    catalogActive: {
-      FR: "Catalogue partagé actif",
-      EN: "Active shared catalog",
-      ES: "Catálogo compartido activo",
-      IT: "Catalogo condiviso attivo",
-      PT: "Catálogo compartilhado ativo",
-      RO: "Catalog partajat activ"
-    }
+  // ... keep existing code (component functions)
+  const applyFilters = () => {
+    setFiltersApplied(true);
   };
   
+  const resetFilters = () => {
+    setPriceRange([MIN_PRICE, MAX_PRICE]);
+    setSelectedBrand('');
+    setModelSearch('');
+    setSelectedFuelType('');
+    setFilterAirbags(false);
+    setFilterAbs(false);
+    setFilterAC(false);
+    setFilterNavigation(false);
+    setFilterLeather(false);
+    setFilterParkingSensors(false);
+    setFiltersApplied(false);
+  };
+
   useEffect(() => {
     const brandParam = searchParams.get('marque');
     const modelParam = searchParams.get('modele');
@@ -141,24 +175,6 @@ const VehiculesOccasion = () => {
     const loadedVehicles = getImportedVehicles();
     setVehicles(loadedVehicles);
   }, [searchParams]);
-
-  const applyFilters = () => {
-    setFiltersApplied(true);
-  };
-  
-  const resetFilters = () => {
-    setPriceRange([MIN_PRICE, MAX_PRICE]);
-    setSelectedBrand('');
-    setModelSearch('');
-    setSelectedFuelType('');
-    setFilterAirbags(false);
-    setFilterAbs(false);
-    setFilterAC(false);
-    setFilterNavigation(false);
-    setFilterLeather(false);
-    setFilterParkingSensors(false);
-    setFiltersApplied(false);
-  };
 
   useEffect(() => {
     const checkCatalogFromUrl = async () => {

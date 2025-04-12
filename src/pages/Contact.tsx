@@ -47,7 +47,11 @@ const Contact = () => {
       ES: "Contáctenos",
       IT: "Contattaci",
       PT: "Contacte-nos",
-      RO: "Contactați-ne"
+      RO: "Contactați-ne",
+      DE: "Kontaktieren Sie uns",
+      NL: "Neem contact met ons op",
+      PL: "Skontaktuj się z nami",
+      RU: "Свяжитесь с нами"
     },
     teamAvailable: {
       FR: "Notre équipe est à votre disposition pour répondre à toutes vos questions",
@@ -55,7 +59,11 @@ const Contact = () => {
       ES: "Nuestro equipo está disponible para responder a todas sus preguntas",
       IT: "Il nostro team è a disposizione per rispondere a tutte le tue domande",
       PT: "A nossa equipa está disponível para responder a todas as suas perguntas",
-      RO: "Echipa noastră este disponibilă pentru a răspunde la toate întrebările dvs."
+      RO: "Echipa noastră este disponibilă pentru a răspunde la toate întrebările dvs.",
+      DE: "Unser Team steht Ihnen zur Verfügung, um alle Ihre Fragen zu beantworten",
+      NL: "Ons team staat klaar om al uw vragen te beantwoorden",
+      PL: "Nasz zespół jest dostępny, aby odpowiedzieć na wszystkie Twoje pytania",
+      RU: "Наша команда готова ответить на все ваши вопросы"
     },
     contactInfo: {
       FR: "Informations de contact",
@@ -63,7 +71,11 @@ const Contact = () => {
       ES: "Información de contacto",
       IT: "Informazioni di contatto",
       PT: "Informações de contacto",
-      RO: "Informații de contact"
+      RO: "Informații de contact",
+      DE: "Kontaktinformationen",
+      NL: "Contactgegevens",
+      PL: "Informacje kontaktowe",
+      RU: "Контактная информация"
     },
     phoneNumber: {
       FR: "Téléphone",
@@ -71,7 +83,11 @@ const Contact = () => {
       ES: "Teléfono",
       IT: "Telefono",
       PT: "Telefone",
-      RO: "Telefon"
+      RO: "Telefon",
+      DE: "Telefon",
+      NL: "Telefoon",
+      PL: "Telefon",
+      RU: "Телефон"
     },
     availableHours: {
       FR: "Nous sommes disponibles du lundi au samedi",
@@ -79,7 +95,11 @@ const Contact = () => {
       ES: "Estamos disponibles de lunes a sábado",
       IT: "Siamo disponibili dal lunedì al sabato",
       PT: "Estamos disponíveis de segunda a sábado",
-      RO: "Suntem disponibili de luni până sâmbătă"
+      RO: "Suntem disponibili de luni până sâmbătă",
+      DE: "Wir sind von Montag bis Samstag verfügbar",
+      NL: "We zijn beschikbaar van maandag tot zaterdag",
+      PL: "Jesteśmy dostępni od poniedziałku do soboty",
+      RU: "Мы доступны с понедельника по субботу"
     },
     contactViaWhatsApp: {
       FR: "Contactez-nous par WhatsApp",
@@ -87,7 +107,11 @@ const Contact = () => {
       ES: "Contáctenos por WhatsApp",
       IT: "Contattaci tramite WhatsApp",
       PT: "Contacte-nos via WhatsApp",
-      RO: "Contactați-ne prin WhatsApp"
+      RO: "Contactați-ne prin WhatsApp",
+      DE: "Kontaktieren Sie uns über WhatsApp",
+      NL: "Neem contact met ons op via WhatsApp",
+      PL: "Skontaktuj się z nami przez WhatsApp",
+      RU: "Свяжитесь с нами через WhatsApp"
     },
     email: {
       FR: "Email",
@@ -95,7 +119,11 @@ const Contact = () => {
       ES: "Correo electrónico",
       IT: "Email",
       PT: "Email",
-      RO: "Email"
+      RO: "Email",
+      DE: "E-Mail",
+      NL: "E-mail",
+      PL: "E-mail",
+      RU: "Электронная почта"
     },
     guaranteedResponse: {
       FR: "Réponse garantie sous 24h",
@@ -103,7 +131,11 @@ const Contact = () => {
       ES: "Respuesta garantizada en 24h",
       IT: "Risposta garantita entro 24h",
       PT: "Resposta garantida em 24h",
-      RO: "Răspuns garantat în 24 de ore"
+      RO: "Răspuns garantat în 24 de ore",
+      DE: "Antwort innerhalb von 24 Stunden garantiert",
+      NL: "Reactie gegarandeerd binnen 24 uur",
+      PL: "Odpowiedź gwarantowana w ciągu 24h",
+      RU: "Ответ гарантирован в течение 24 часов"
     },
     sendMessage: {
       FR: "Envoyez-nous un message",
@@ -111,7 +143,11 @@ const Contact = () => {
       ES: "Envíenos un mensaje",
       IT: "Inviaci un messaggio",
       PT: "Envie-nos uma mensagem",
-      RO: "Trimiteți-ne un mesaj"
+      RO: "Trimiteți-ne un mesaj",
+      DE: "Schicken Sie uns eine Nachricht",
+      NL: "Stuur ons een bericht",
+      PL: "Wyślij nam wiadomość",
+      RU: "Отправьте нам сообщение"
     },
     messageSent: {
       FR: "Message envoyé avec succès!",
@@ -119,7 +155,11 @@ const Contact = () => {
       ES: "¡Mensaje enviado con éxito!",
       IT: "Messaggio inviato con successo!",
       PT: "Mensagem enviada com sucesso!",
-      RO: "Mesaj trimis cu succes!"
+      RO: "Mesaj trimis cu succes!",
+      DE: "Nachricht erfolgreich gesendet!",
+      NL: "Bericht succesvol verzonden!",
+      PL: "Wiadomość wysłana pomyślnie!",
+      RU: "Сообщение успешно отправлено!"
     },
     thankYou: {
       FR: "Merci pour votre message. Nous vous répondrons dans les plus brefs délais.",
@@ -127,7 +167,11 @@ const Contact = () => {
       ES: "Gracias por su mensaje. Le responderemos lo antes posible.",
       IT: "Grazie per il tuo messaggio. Ti risponderemo il prima possibile.",
       PT: "Obrigado pela sua mensagem. Responderemos o mais rapidamente possível.",
-      RO: "Vă mulțumim pentru mesaj. Vă vom răspunde cât mai curând posibil."
+      RO: "Vă mulțumim pentru mesaj. Vă vom răspunde cât mai curând posibil.",
+      DE: "Vielen Dank für Ihre Nachricht. Wir werden so schnell wie möglich antworten.",
+      NL: "Bedankt voor je bericht. We zullen zo snel mogelijk reageren.",
+      PL: "Dziękujemy za wiadomość. Odpowiemy najszybciej jak to możliwe.",
+      RU: "Спасибо за ваше сообщение. Мы ответим как можно скорее."
     },
     lastName: {
       FR: "Nom",
@@ -135,7 +179,11 @@ const Contact = () => {
       ES: "Apellido",
       IT: "Cognome",
       PT: "Sobrenome",
-      RO: "Nume"
+      RO: "Nume",
+      DE: "Nachname",
+      NL: "Achternaam",
+      PL: "Nazwisko",
+      RU: "Фамилия"
     },
     firstName: {
       FR: "Prénom",
@@ -143,7 +191,11 @@ const Contact = () => {
       ES: "Nombre",
       IT: "Nome",
       PT: "Nome próprio",
-      RO: "Prenume"
+      RO: "Prenume",
+      DE: "Vorname",
+      NL: "Voornaam",
+      PL: "Imię",
+      RU: "Имя"
     },
     phone: {
       FR: "Téléphone",
@@ -151,7 +203,11 @@ const Contact = () => {
       ES: "Teléfono",
       IT: "Telefono",
       PT: "Telefone",
-      RO: "Telefon"
+      RO: "Telefon",
+      DE: "Telefon",
+      NL: "Telefoon",
+      PL: "Telefon",
+      RU: "Телефон"
     },
     subject: {
       FR: "Sujet",
@@ -159,7 +215,11 @@ const Contact = () => {
       ES: "Asunto",
       IT: "Oggetto",
       PT: "Assunto",
-      RO: "Subiect"
+      RO: "Subiect",
+      DE: "Betreff",
+      NL: "Onderwerp",
+      PL: "Temat",
+      RU: "Тема"
     },
     message: {
       FR: "Message",
@@ -167,7 +227,11 @@ const Contact = () => {
       ES: "Mensaje",
       IT: "Messaggio",
       PT: "Mensagem",
-      RO: "Mesaj"
+      RO: "Mesaj",
+      DE: "Nachricht",
+      NL: "Bericht",
+      PL: "Wiadomość",
+      RU: "Сообщение"
     },
     attachments: {
       FR: "Pièces jointes (facultatif)",
@@ -175,7 +239,11 @@ const Contact = () => {
       ES: "Archivos adjuntos (opcional)",
       IT: "Allegati (facoltativo)",
       PT: "Anexos (opcional)",
-      RO: "Atașamente (opțional)"
+      RO: "Atașamente (opțional)",
+      DE: "Anhänge (optional)",
+      NL: "Bijlagen (optioneel)",
+      PL: "Załączniki (opcjonalnie)",
+      RU: "Вложения (опционально)"
     },
     dragAndDrop: {
       FR: "Glissez-déposez vos fichiers ici ou",
@@ -183,7 +251,11 @@ const Contact = () => {
       ES: "Arrastre y suelte sus archivos aquí o",
       IT: "Trascina e rilascia i tuoi file qui o",
       PT: "Arraste e solte os seus ficheiros aqui ou",
-      RO: "Trageți și plasați fișierele dvs. aici sau"
+      RO: "Trageți și plasați fișierele dvs. aici sau",
+      DE: "Ziehen Sie Ihre Dateien hierher oder",
+      NL: "Sleep uw bestanden hierheen of",
+      PL: "Przeciągnij i upuść pliki tutaj lub",
+      RU: "Перетащите файлы сюда или"
     },
     browseFiles: {
       FR: "parcourir les fichiers",
@@ -191,7 +263,11 @@ const Contact = () => {
       ES: "explorar archivos",
       IT: "sfoglia i file",
       PT: "procurar ficheiros",
-      RO: "răsfoiți fișierele"
+      RO: "răsfoiți fișierele",
+      DE: "durchsuchen Sie Dateien",
+      NL: "blader door bestanden",
+      PL: "przeglądaj pliki",
+      RU: "просмотреть файлы"
     },
     maxFileSize: {
       FR: "PDF, JPEG, PNG (Max 10 Mo)",
@@ -199,7 +275,11 @@ const Contact = () => {
       ES: "PDF, JPEG, PNG (Máx 10 MB)",
       IT: "PDF, JPEG, PNG (Max 10 MB)",
       PT: "PDF, JPEG, PNG (Máx 10 MB)",
-      RO: "PDF, JPEG, PNG (Max 10 MB)"
+      RO: "PDF, JPEG, PNG (Max 10 MB)",
+      DE: "PDF, JPEG, PNG (Max 10 MB)",
+      NL: "PDF, JPEG, PNG (Max 10 MB)",
+      PL: "PDF, JPEG, PNG (Maks. 10 MB)",
+      RU: "PDF, JPEG, PNG (Макс. 10 МБ)"
     },
     sending: {
       FR: "Envoi en cours...",
@@ -207,7 +287,11 @@ const Contact = () => {
       ES: "Enviando...",
       IT: "Invio in corso...",
       PT: "A enviar...",
-      RO: "Se trimite..."
+      RO: "Se trimite...",
+      DE: "Wird gesendet...",
+      NL: "Verzenden...",
+      PL: "Wysyłanie...",
+      RU: "Отправка..."
     },
     send: {
       FR: "Envoyer le message",
@@ -215,7 +299,11 @@ const Contact = () => {
       ES: "Enviar mensaje",
       IT: "Invia messaggio",
       PT: "Enviar mensagem",
-      RO: "Trimite mesaj"
+      RO: "Trimite mesaj",
+      DE: "Nachricht senden",
+      NL: "Bericht verzenden",
+      PL: "Wyślij wiadomość",
+      RU: "Отправить сообщение"
     },
     ourDealer: {
       FR: "Notre concession",
@@ -223,7 +311,11 @@ const Contact = () => {
       ES: "Nuestro concesionario",
       IT: "La nostra concessionaria",
       PT: "O nosso concessionário",
-      RO: "Reprezentanța noastră"
+      RO: "Reprezentanța noastră",
+      DE: "Unser Autohaus",
+      NL: "Onze dealerschap",
+      PL: "Nasz salon",
+      RU: "Наш автосалон"
     },
     messageSentToast: {
       FR: "Message envoyé",
@@ -231,7 +323,11 @@ const Contact = () => {
       ES: "Mensaje enviado",
       IT: "Messaggio inviato",
       PT: "Mensagem enviada",
-      RO: "Mesaj trimis"
+      RO: "Mesaj trimis",
+      DE: "Nachricht gesendet",
+      NL: "Bericht verzonden",
+      PL: "Wiadomość wysłana",
+      RU: "Сообщение отправлено"
     },
     willReplyShortly: {
       FR: "Nous vous répondrons dans les plus brefs délais.",
@@ -239,7 +335,11 @@ const Contact = () => {
       ES: "Le responderemos en breve.",
       IT: "Ti risponderemo a breve.",
       PT: "Responderemos em breve.",
-      RO: "Vă vom răspunde în curând."
+      RO: "Vă vom răspunde în curând.",
+      DE: "Wir werden in Kürze antworten.",
+      NL: "We zullen spoedig antwoorden.",
+      PL: "Odpowiemy wkrótce.",
+      RU: "Мы ответим в ближайшее время."
     }
   };
   
