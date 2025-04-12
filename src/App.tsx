@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   createBrowserRouter,
@@ -7,11 +8,9 @@ import {
 import Index from './pages/Index';
 import VehiculesOccasion from './pages/VehiculesOccasion';
 import Contact from './pages/Contact';
-import Page404 from './pages/Page404';
-import VehicleDetail from './pages/VehicleDetail';
+import FeaturedVehicles from './pages/FeaturedVehicles';
 import VehicleImport from './pages/VehicleImport';
 import VehicleManagement from './pages/VehicleManagement';
-import FeaturedVehicles from './pages/FeaturedVehicles';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/vehicule/:id",
-    element: <VehicleDetail />
+    element: <VehicleImport />
   },
   {
     path: "/vehicule/import",
@@ -44,7 +43,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Page404 />
+    element: <Contact />
   }
 ]);
 

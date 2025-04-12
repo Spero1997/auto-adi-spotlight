@@ -175,6 +175,6 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
     vehicles: filteredVehicles(),
     loading,
     error,
-    refresh: loadVehicles // Exposer la fonction de rechargement
+    refresh: loadVehicles
   };
 };
