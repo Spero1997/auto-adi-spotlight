@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -208,7 +209,7 @@ Nos services inclus :
         transmission: 'Automatique',
         exteriorColor: 'Bleu',
         interiorColor: 'Noir',
-        image: '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png',
+        image: '/lovable-uploads/0fd680f2-1f08-45b6-b925-92203e9b1bb1.png',
         fbLink: '',
         description: `Modalités de paiement
 • Acompte : 20 % à la commande
@@ -236,7 +237,9 @@ Nos services inclus :
       addVehicle(audiQ2, 'standard');
       console.log('Audi Q2 Ultra Sport ajoutée avec succès au catalogue!');
       
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
     } catch (error) {
       console.error('Erreur lors de l\'ajout de l\'Audi Q2 Ultra Sport:', error);
       console.error('Erreur lors de l\'ajout du véhicule');
