@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -10,10 +9,10 @@ const Header = () => {
 
   const navigation = [
     { name: 'Accueil', href: '/' },
-    { name: 'Véhicules', href: '/vehicules' },
-    { name: 'A Propos', href: '/a-propos' },
-    { name: 'Services', href: '/services' },
+    { name: 'Véhicules d\'occasion', href: '/vehicules' },
+    { name: 'Véhicules vedettes', href: '/vehicules/vedette' },
     { name: 'Contact', href: '/contact' },
+    { name: 'Gestion', href: '/gestion-vehicules' }
   ];
 
   return (

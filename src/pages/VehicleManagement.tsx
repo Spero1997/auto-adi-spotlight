@@ -5,8 +5,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Star } from "lucide-react";
 import CatalogShare from "@/components/CatalogShare";
+import AddFeaturedVehicle from "@/components/AddFeaturedVehicle";
 
 const VehicleManagement = () => {
   return (
@@ -36,7 +38,23 @@ const VehicleManagement = () => {
               </div>
             </div>
             
-            <VehicleManager />
+            <Tabs defaultValue="vehicles" className="w-full">
+              <TabsList className="mb-6">
+                <TabsTrigger value="vehicles">Gestion des véhicules</TabsTrigger>
+                <TabsTrigger value="featured">
+                  <Star className="h-4 w-4 mr-1" />
+                  Ajouter un véhicule vedette
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="vehicles">
+                <VehicleManager />
+              </TabsContent>
+              
+              <TabsContent value="featured">
+                <AddFeaturedVehicle />
+              </TabsContent>
+            </Tabs>
           </div>
         </main>
         

@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ImportedVehicle, getImportedVehicles, updateVehicleImage } from '@/utils/vehicleImportService';
+import { type ImportedVehicle, getImportedVehicles, updateVehicleImage } from '@/utils/vehicleImportService';
 
 export const useVehicleDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,10 +21,17 @@ export const useVehicleDetail = () => {
     
     try {
       // First try to find the vehicle in the featured catalog
-      let vehicles = getImportedVehicles();
-      console.log("Véhicules chargés du catalogue:", vehicles.length);
+      let vehicles = getImportedVehicles('featured');
+      console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
       
       let foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
+      
+      if (!foundVehicle) {
+        // If not found in featured, try the standard catalog
+        vehicles = getImportedVehicles('standard');
+        console.log("Véhicules chargés du catalogue standard:", vehicles.length);
+        foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
+      }
       
       if (!foundVehicle) {
         // If still not found, check all vehicles with more flexible matching
@@ -65,7 +72,8 @@ export const useVehicleDetail = () => {
   
   const updateImage = useCallback((newImageUrl: string) => {
     if (vehicle) {
-      const success = updateVehicleImage(vehicle.id, newImageUrl, vehicle.catalogType);
+      const catalogType = vehicle.catalogType || 'standard';
+      const success = updateVehicleImage(vehicle.id, newImageUrl, catalogType as 'standard' | 'featured');
       if (success) {
         setVehicle(prev => prev ? { ...prev, image: newImageUrl } : null);
         toast.success("Image du véhicule mise à jour");

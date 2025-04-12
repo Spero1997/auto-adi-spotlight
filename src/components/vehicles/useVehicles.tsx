@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { type ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
 import { fetchVehiclesFromSupabase } from '@/utils/services/vehicleService';
 
 interface SearchFilters {
@@ -30,7 +30,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
       let loadedVehicles: ImportedVehicle[] = [];
       
       // 1. D'abord, chargeons les véhicules depuis le localStorage
-      const importedVehicles = getImportedVehicles();
+      const importedVehicles = getImportedVehicles(catalogType);
       loadedVehicles = [...importedVehicles];
       
       // 2. Ensuite, essayons de charger les véhicules depuis Supabase
