@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Car, Edit, Trash2, Plus, Search } from 'lucide-react';
+import { Car, Edit, Trash2, Plus, Search, X, Image as ImageIcon } from 'lucide-react';
 import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
 
 const AdminVehicles: React.FC = () => {
@@ -22,6 +22,7 @@ const AdminVehicles: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [currentVehicle, setCurrentVehicle] = useState<ImportedVehicle | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
+  const [newImageUrl, setNewImageUrl] = useState('');
 
   useEffect(() => {
     loadVehicles();
@@ -61,7 +62,10 @@ const AdminVehicles: React.FC = () => {
   });
 
   const handleEditClick = (vehicle: ImportedVehicle) => {
-    setCurrentVehicle({ ...vehicle });
+    setCurrentVehicle({ 
+      ...vehicle,
+      images: vehicle.images || [] // Assurez-vous que images est toujours un tableau
+    });
     setIsEditDialogOpen(true);
   };
 
@@ -115,11 +119,35 @@ const AdminVehicles: React.FC = () => {
       fuelType: 'Essence',
       transmission: 'Manuelle',
       image: '',
+      images: [],
       features: []
     };
     
     setCurrentVehicle(newVehicle);
     setIsEditDialogOpen(true);
+  };
+
+  const addImage = () => {
+    if (!currentVehicle || !newImageUrl.trim()) return;
+    
+    const updatedImages = [...(currentVehicle.images || []), newImageUrl];
+    setCurrentVehicle({
+      ...currentVehicle,
+      images: updatedImages
+    });
+    setNewImageUrl('');
+  };
+
+  const removeImage = (index: number) => {
+    if (!currentVehicle || !currentVehicle.images) return;
+    
+    const updatedImages = [...currentVehicle.images];
+    updatedImages.splice(index, 1);
+    
+    setCurrentVehicle({
+      ...currentVehicle,
+      images: updatedImages
+    });
   };
 
   const getFuelTypeOptions = () => [
@@ -400,7 +428,7 @@ const AdminVehicles: React.FC = () => {
               
               <TabsContent value="media" className="space-y-4 pt-4">
                 <div className="space-y-2">
-                  <Label htmlFor="image">URL de l'image</Label>
+                  <Label htmlFor="image">URL de l'image principale</Label>
                   <Input
                     id="image"
                     value={currentVehicle.image || ''}
@@ -417,6 +445,57 @@ const AdminVehicles: React.FC = () => {
                           (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Image+Invalide';
                         }}
                       />
+                    </div>
+                  )}
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Images additionnelles</Label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      placeholder="URL de l'image..."
+                      value={newImageUrl}
+                      onChange={(e) => setNewImageUrl(e.target.value)}
+                      className="flex-1"
+                    />
+                    <Button 
+                      type="button" 
+                      onClick={addImage}
+                      variant="secondary"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Ajouter
+                    </Button>
+                  </div>
+                  
+                  {currentVehicle.images && currentVehicle.images.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                      {currentVehicle.images.map((img, index) => (
+                        <div key={index} className="relative border rounded-md overflow-hidden group">
+                          <img
+                            src={img}
+                            alt={`Image ${index + 1}`}
+                            className="w-full h-32 object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Image+Invalide';
+                            }}
+                          />
+                          <Button
+                            variant="destructive"
+                            size="icon"
+                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={() => removeImage(index)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center border border-dashed rounded-md p-8 mt-4 text-gray-500">
+                      <ImageIcon className="h-12 w-12 text-gray-300 mb-2" />
+                      <p>Aucune image additionnelle</p>
+                      <p className="text-sm">Ajoutez des images en utilisant le champ ci-dessus</p>
                     </div>
                   )}
                 </div>
