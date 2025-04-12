@@ -1,9 +1,13 @@
 
 import React from 'react';
 
-const VehicleLoading = () => {
+interface VehicleLoadingProps {
+  message?: string;
+}
+
+const VehicleLoading = ({ message = "Chargement du véhicule..." }: VehicleLoadingProps) => {
   return (
-    <div className="flex justify-center items-center h-64">
+    <div className="flex flex-col justify-center items-center h-64 gap-4">
       <div 
         className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" 
         role="status"
@@ -12,7 +16,7 @@ const VehicleLoading = () => {
           Chargement...
         </span>
       </div>
-      <p className="ml-2">Chargement du véhicule...</p>
+      <p className="text-gray-600">{message}</p>
     </div>
   );
 };
