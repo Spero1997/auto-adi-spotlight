@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -36,6 +35,17 @@ const VehicleDetails = () => {
     console.log("Détails du véhicule: ", vehicle);
     console.log("Images additionnelles: ", vehicle.images);
   }
+  
+  // Si c'est le Renault Scenic, forçons la mise à jour des images
+  useEffect(() => {
+    if (vehicle && vehicle.brand === 'Renault' && vehicle.model.includes('Scenic')) {
+      console.log("Mise à jour des images du Renault Scenic...");
+      // Mise à jour de l'image principale si nécessaire
+      if (vehicle.image !== '/lovable-uploads/ced41637-89fa-40f2-97fc-8deff8ce4491.png') {
+        updateImage('/lovable-uploads/ced41637-89fa-40f2-97fc-8deff8ce4491.png');
+      }
+    }
+  }, [vehicle, updateImage]);
   
   if (isLoading) {
     return (
