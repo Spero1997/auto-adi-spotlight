@@ -20,64 +20,36 @@ import VehicleManagement from './pages/VehicleManagement';
 import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
 
-// Admin Dashboard
-import AdminLayout from './components/admin/AdminLayout';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminVehicles from './pages/admin/AdminVehicles';
-import AdminTestimonials from './pages/admin/AdminTestimonials';
-import AdminStats from './pages/admin/AdminStats';
-import AdminSettings from './pages/admin/AdminSettings';
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminPayments from './pages/admin/AdminPayments';
-import AdminPromotions from './pages/admin/AdminPromotions';
-import AdminFeatured from './pages/admin/AdminFeatured';
-import { AuthProvider } from './hooks/use-auth';
-
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/a-propos" element={<APropos />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/vehicules" element={<VehiculesOccasion />} />
-          <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
-          <Route path="/vehicule/:id" element={<VehicleDetails />} />
-          <Route path="/vehicule/:id/:slug" element={<VehicleDetails />} />
-          <Route path="/vehicules/import" element={<VehicleImport />} />
-          <Route path="/vehicules/gestion" element={<VehicleManagement />} />
-          <Route path="/rachat" element={<Rachat />} />
-          <Route path="/financement" element={<Financement />} />
-          <Route path="/orders" element={<OrdersBackup />} />
-          
-          {/* Legal pages */}
-          <Route path="/cgv" element={<CGV />} />
-          <Route path="/conditions" element={<Conditions />} />
-          <Route path="/cookies" element={<Cookies />} />
-          <Route path="/mentions-legales" element={<LegalMentions />} />
-          <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-          
-          {/* Admin routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="vehicles" element={<AdminVehicles />} />
-            <Route path="testimonials" element={<AdminTestimonials />} />
-            <Route path="payments" element={<AdminPayments />} />
-            <Route path="promotions" element={<AdminPromotions />} />
-            <Route path="stats" element={<AdminStats />} />
-            <Route path="featured" element={<AdminFeatured />} />
-            <Route path="settings" element={<AdminSettings />} />
-          </Route>
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/a-propos" element={<APropos />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/vehicules" element={<VehiculesOccasion />} />
+        <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
+        <Route path="/vehicule/:id" element={<VehicleDetails />} />
+        <Route path="/vehicule/:id/:slug" element={<VehicleDetails />} />
+        <Route path="/vehicules/import" element={<VehicleImport />} />
+        <Route path="/vehicules/gestion" element={<VehicleManagement />} />
+        <Route path="/rachat" element={<Rachat />} />
+        <Route path="/financement" element={<Financement />} />
+        <Route path="/orders" element={<OrdersBackup />} />
+        
+        {/* Legal pages */}
+        <Route path="/cgv" element={<CGV />} />
+        <Route path="/conditions" element={<Conditions />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/mentions-legales" element={<LegalMentions />} />
+        <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

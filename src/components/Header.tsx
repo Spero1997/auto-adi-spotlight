@@ -4,18 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { ModeToggle } from './ModeToggle';
-import { useAuth } from '@/hooks/use-auth';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Button } from './ui/button';
-import { LogOut } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 
 const Header = () => {
   const location = useLocation();
-  const { session } = useAuth();
-  const { toast } = useToast();
 
   const navigation = [
     { name: 'Accueil', href: '/' },
@@ -24,25 +15,6 @@ const Header = () => {
     { name: 'Services', href: '/services' },
     { name: 'Contact', href: '/contact' },
   ];
-
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    
-    if (error) {
-      toast({
-        title: 'Erreur de déconnexion',
-        description: error.message,
-        variant: 'destructive',
-      });
-      console.error('Error signing out:', error);
-      return;
-    }
-    
-    toast({
-      title: 'Déconnexion réussie',
-      description: 'Vous avez été déconnecté avec succès',
-    });
-  };
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-md sticky top-0 z-50">
@@ -65,32 +37,6 @@ const Header = () => {
 
         <div className="flex items-center space-x-4">
           <ModeToggle />
-          {session ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={session.user.user_metadata?.avatar_url} alt={session.user.email || 'Avatar'} />
-                    <AvatarFallback>{session.user.email?.[0]?.toUpperCase() || '?'}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuItem disabled>
-                  <div className="flex flex-col space-y-1 leading-none">
-                    <span>{session.user.email}</span>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Déconnexion</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <div></div>
-          )}
 
           <Sheet>
             <SheetTrigger className="md:hidden">
