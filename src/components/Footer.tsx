@@ -10,9 +10,9 @@ import FooterCopyright from './footer/FooterCopyright';
 const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-brand-extraDarkBlue to-brand-blue text-white">
-      <div className="container mx-auto py-6">
+      <div className="container mx-auto py-4">
         {/* Top Section - Logo, Description, Social, Links, Contact */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
           {/* Company Info with Social Media */}
           <FooterCompanyInfo />
 
@@ -27,7 +27,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <Separator className="bg-white/20 my-4" />
+        <Separator className="bg-white/20 my-3" />
 
         {/* Legal links */}
         <FooterLegalLinks />

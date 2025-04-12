@@ -28,7 +28,7 @@ const FooterCopyright = () => {
   };
 
   return (
-    <div className="text-center border-t border-white/10 pt-3">
+    <div className="text-center pt-2">
       <p className="text-gray-300 text-sm font-medium py-1 px-3 rounded bg-white/5 inline-block">
         {translate('copyright', translations.copyright)}
       </p>
