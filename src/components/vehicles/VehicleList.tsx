@@ -3,8 +3,9 @@ import React from 'react';
 import { Search, Plus } from 'lucide-react';
 import VehicleCard from './VehicleCard';
 import { ImportedVehicle } from '@/utils/vehicleImportService';
-import VehicleNotFound from '../vehicle-details/VehicleNotFound';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import EmptyState from '../EmptyState';
 
 interface VehicleListProps {
   vehicles: ImportedVehicle[];
@@ -35,13 +36,15 @@ const VehicleList = ({
     if (isSearchContext) {
       return (
         <div className="text-center my-12">
-          <Search className="mx-auto h-10 w-10 text-gray-400 mb-4" />
-          <p className="text-gray-500 text-lg mb-2">Aucun véhicule trouvé.</p>
-          <p className="text-gray-400">{emptyMessage}</p>
+          <EmptyState 
+            title="Aucun véhicule trouvé"
+            description={emptyMessage}
+            icon={<Search className="h-12 w-12 text-gray-400" />}
+          />
         </div>
       );
     } else {
-      // Affiche un bouton pour ajouter un véhicule à la place du composant VehicleNotFound
+      // Affiche un message pour ajouter un véhicule si le catalogue est vide
       return (
         <div className="text-center my-12">
           <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
@@ -49,13 +52,22 @@ const VehicleList = ({
             <p className="text-gray-600 mb-6">
               Aucun véhicule n'a encore été ajouté à votre catalogue. Commencez par ajouter votre premier véhicule !
             </p>
-            <Button 
-              onClick={onAddVehicle}
-              className="w-full flex items-center justify-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Ajouter un véhicule
-            </Button>
+            {onAddVehicle ? (
+              <Button 
+                onClick={onAddVehicle}
+                className="w-full flex items-center justify-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Ajouter un véhicule
+              </Button>
+            ) : (
+              <Link to="/vehicules/import" className="w-full">
+                <Button className="w-full flex items-center justify-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Ajouter un véhicule
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       );

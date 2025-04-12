@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, RefreshCw, Plus } from 'lucide-react';
 
@@ -11,6 +11,12 @@ interface VehicleNotFoundProps {
 }
 
 const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: VehicleNotFoundProps) => {
+  const navigate = useNavigate();
+  
+  const handleAddVehicle = () => {
+    navigate('/vehicules/import');
+  };
+  
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
       {isSearchContext ? (
@@ -55,15 +61,14 @@ const VehicleNotFound = ({ vehicleId, onRefresh, isSearchContext = true }: Vehic
         )}
         
         {!isSearchContext && (
-          <Link to="/vehicules/import" className="flex-1">
-            <Button 
-              variant="outline" 
-              className="w-full flex items-center justify-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Ajouter un véhicule
-            </Button>
-          </Link>
+          <Button 
+            variant="outline" 
+            className="flex-1 flex items-center justify-center gap-2"
+            onClick={handleAddVehicle}
+          >
+            <Plus className="h-4 w-4" />
+            Ajouter un véhicule
+          </Button>
         )}
       </div>
     </div>

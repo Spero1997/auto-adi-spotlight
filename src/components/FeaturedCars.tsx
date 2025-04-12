@@ -53,9 +53,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   // Message à afficher quand aucun véhicule n'est trouvé
   const getEmptyMessage = () => {
+    if (isSearchContext) {
+      return "Aucun véhicule ne correspond à vos critères de recherche.";
+    }
     return featuredOnly 
       ? "Aucun véhicule n'a encore été ajouté au catalogue vedette." 
-      : "Aucun véhicule ne correspond à vos critères de recherche.";
+      : "Aucun véhicule n'a encore été ajouté au catalogue.";
   };
 
   // Fonction pour forcer le rechargement des véhicules

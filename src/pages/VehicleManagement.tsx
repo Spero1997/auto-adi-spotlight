@@ -4,11 +4,17 @@ import VehicleManager from "@/components/VehicleManager";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import CatalogShare from "@/components/CatalogShare";
 
 const VehicleManagement = () => {
+  const navigate = useNavigate();
+  
+  const handleAddVehicle = () => {
+    navigate('/vehicules/import');
+  };
+  
   return (
     <>
       <Helmet>
@@ -27,12 +33,10 @@ const VehicleManagement = () => {
               <div className="flex gap-3 flex-wrap">
                 <CatalogShare />
                 
-                <Link to="/vehicules/import">
-                  <Button className="flex items-center gap-2">
-                    <Plus className="h-4 w-4" />
-                    Ajouter un véhicule
-                  </Button>
-                </Link>
+                <Button className="flex items-center gap-2" onClick={handleAddVehicle}>
+                  <Plus className="h-4 w-4" />
+                  Ajouter un véhicule
+                </Button>
               </div>
             </div>
             
