@@ -394,7 +394,6 @@ const VehiculesOccasion = () => {
                                   Airbags
                                 </label>
                               </div>
-                              
                               <div className="flex items-center space-x-2">
                                 <Checkbox 
                                   id="abs" 
@@ -408,7 +407,6 @@ const VehiculesOccasion = () => {
                                   ABS
                                 </label>
                               </div>
-                              
                               <div className="flex items-center space-x-2">
                                 <Checkbox 
                                   id="ac" 
@@ -422,7 +420,6 @@ const VehiculesOccasion = () => {
                                   Climatisation
                                 </label>
                               </div>
-                              
                               <div className="flex items-center space-x-2">
                                 <Checkbox 
                                   id="navigation" 
@@ -436,7 +433,6 @@ const VehiculesOccasion = () => {
                                   Navigation GPS
                                 </label>
                               </div>
-                              
                               <div className="flex items-center space-x-2">
                                 <Checkbox 
                                   id="leather" 
@@ -450,7 +446,6 @@ const VehiculesOccasion = () => {
                                   Intérieur cuir
                                 </label>
                               </div>
-                              
                               <div className="flex items-center space-x-2">
                                 <Checkbox 
                                   id="parking" 

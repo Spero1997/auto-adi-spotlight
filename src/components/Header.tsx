@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe, FileText } from 'lucide-react';
+import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -101,7 +102,7 @@ const Header = () => {
     'vehicles': {
       'FR': 'Véhicules',
       'EN': 'Vehicles',
-      'ES': 'Vehículos',
+      'ES': 'Veh��culos',
       'IT': 'Veicoli',
       'PT': 'Veículos',
       'RO': 'Vehicule'
@@ -169,54 +170,6 @@ const Header = () => {
       'IT': 'Carrello',
       'PT': 'Carrinho',
       'RO': 'Coș'
-    },
-    'legalInfo': {
-      'FR': 'Informations légales',
-      'EN': 'Legal information',
-      'ES': 'Información legal',
-      'IT': 'Informazioni legali',
-      'PT': 'Informações legais',
-      'RO': 'Informații legale'
-    },
-    'legalNotice': {
-      'FR': 'Mentions légales',
-      'EN': 'Legal notice',
-      'ES': 'Avisos legales',
-      'IT': 'Note legali',
-      'PT': 'Avisos legales',
-      'RO': 'Mențiuni legale'
-    },
-    'privacyPolicy': {
-      'FR': 'Politique de confidentialité',
-      'EN': 'Privacy policy',
-      'ES': 'Política de privacidad',
-      'IT': 'Politica sulla privacy',
-      'PT': 'Política de privacidade',
-      'RO': 'Politica de confidențialitate'
-    },
-    'cookieManagement': {
-      'FR': 'Gestion des cookies',
-      'EN': 'Cookie management',
-      'ES': 'Gestión de cookies',
-      'IT': 'Gestione dei cookie',
-      'PT': 'Gestão de cookies',
-      'RO': 'Gestionarea cookie-urilor'
-    },
-    'termsAndConditions': {
-      'FR': 'CGV',
-      'EN': 'Terms and conditions',
-      'ES': 'Términos y condiciones',
-      'IT': 'Termini e condizioni',
-      'PT': 'Termos e condições',
-      'RO': 'Termeni și condiții'
-    },
-    'saleConditions': {
-      'FR': 'Conditions de vente',
-      'EN': 'Sale conditions',
-      'ES': 'Condiciones de venta',
-      'IT': 'Condizioni di vendita',
-      'PT': 'Condições de venda',
-      'RO': 'Condiții de vânzare'
     }
   };
 
@@ -405,7 +358,7 @@ const Header = () => {
           </Button>
         </div>
 
-        <nav className="p-4 overflow-y-auto max-h-[calc(100vh-64px)]">
+        <nav className="p-4">
           <div className="space-y-1">
             <div>
               <Button
@@ -472,62 +425,6 @@ const Header = () => {
             >
               {translate('about', menuTranslations.about)}
             </Button>
-
-            {/* Legal Information Dropdown */}
-            <div>
-              <Button
-                variant="ghost"
-                className="w-full flex justify-between items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                onClick={() => toggleDropdown('legal-mobile')}
-                aria-expanded={activeDropdown === 'legal-mobile'}
-                aria-haspopup="true"
-              >
-                <span className="flex items-center">
-                  <FileText className="mr-3 h-5 w-5 text-brand-blue" />
-                  {translate('legalInfo', menuTranslations.legalInfo)}
-                </span>
-                <ChevronDown className="h-5 w-5" />
-              </Button>
-              {activeDropdown === 'legal-mobile' && (
-                <div className="pl-10 mt-1 space-y-1">
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavigation('/mentions-legales')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    {translate('legalNotice', menuTranslations.legalNotice)}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavigation('/politique-confidentialite')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    {translate('privacyPolicy', menuTranslations.privacyPolicy)}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavigation('/cookies')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    {translate('cookieManagement', menuTranslations.cookieManagement)}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavigation('/cgv')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    {translate('termsAndConditions', menuTranslations.termsAndConditions)}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavigation('/conditions')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    {translate('saleConditions', menuTranslations.saleConditions)}
-                  </Button>
-                </div>
-              )}
-            </div>
 
             <div>
               <Button

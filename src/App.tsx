@@ -1,5 +1,4 @@
 
-import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Contact from './pages/Contact';
 import Index from './pages/Index';
@@ -20,7 +19,6 @@ import VehicleImport from './pages/VehicleImport';
 import VehicleManagement from './pages/VehicleManagement';
 import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
-import Chatbot from './components/Chatbot';
 
 // Admin Dashboard
 import AdminLayout from './components/admin/AdminLayout';
@@ -34,59 +32,47 @@ import AdminPayments from './pages/admin/AdminPayments';
 import AdminPromotions from './pages/admin/AdminPromotions';
 import AdminFeatured from './pages/admin/AdminFeatured';
 
-// Simple loading indicator component
-const LoadingIndicator = () => (
-  <div className="flex items-center justify-center h-screen">
-    <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-  </div>
-);
-
-const App = () => {
+function App() {
   return (
     <Router>
-      <div className="App">
-        <Suspense fallback={<LoadingIndicator />}>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/a-propos" element={<APropos />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/vehicules" element={<VehiculesOccasion />} />
-            <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
-            <Route path="/vehicule/:id" element={<VehicleDetails />} />
-            <Route path="/vehicules/import" element={<VehicleImport />} />
-            <Route path="/vehicules/gestion" element={<VehicleManagement />} />
-            <Route path="/rachat" element={<Rachat />} />
-            <Route path="/financement" element={<Financement />} />
-            <Route path="/orders" element={<OrdersBackup />} />
-            
-            {/* Legal pages */}
-            <Route path="/cgv" element={<CGV />} />
-            <Route path="/conditions" element={<Conditions />} />
-            <Route path="/cookies" element={<Cookies />} />
-            <Route path="/mentions-legales" element={<LegalMentions />} />
-            <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-            
-            {/* Admin routes */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="vehicles" element={<AdminVehicles />} />
-              <Route path="testimonials" element={<AdminTestimonials />} />
-              <Route path="payments" element={<AdminPayments />} />
-              <Route path="promotions" element={<AdminPromotions />} />
-              <Route path="stats" element={<AdminStats />} />
-              <Route path="featured" element={<AdminFeatured />} />
-              <Route path="settings" element={<AdminSettings />} />
-              <Route path="login" element={<AdminLogin />} />
-            </Route>
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Chatbot />
-        </Suspense>
-      </div>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/a-propos" element={<APropos />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/vehicules" element={<VehiculesOccasion />} />
+        <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
+        <Route path="/vehicule/:id" element={<VehicleDetails />} />
+        <Route path="/vehicules/import" element={<VehicleImport />} />
+        <Route path="/vehicules/gestion" element={<VehicleManagement />} />
+        <Route path="/rachat" element={<Rachat />} />
+        <Route path="/financement" element={<Financement />} />
+        <Route path="/orders" element={<OrdersBackup />} />
+        
+        {/* Legal pages */}
+        <Route path="/cgv" element={<CGV />} />
+        <Route path="/conditions" element={<Conditions />} />
+        <Route path="/cookies" element={<Cookies />} />
+        <Route path="/mentions-legales" element={<LegalMentions />} />
+        <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+        
+        {/* Admin routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="vehicles" element={<AdminVehicles />} />
+          <Route path="testimonials" element={<AdminTestimonials />} />
+          <Route path="payments" element={<AdminPayments />} />
+          <Route path="promotions" element={<AdminPromotions />} />
+          <Route path="stats" element={<AdminStats />} />
+          <Route path="featured" element={<AdminFeatured />} />
+          <Route path="settings" element={<AdminSettings />} />
+          <Route path="login" element={<AdminLogin />} />
+        </Route>
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Router>
   );
 }

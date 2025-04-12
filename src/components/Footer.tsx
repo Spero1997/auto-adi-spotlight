@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 const Footer = () => {
   const { language, translate } = useLanguage();
 
-  // Translations for the footer
+  // Traductions pour le footer
   const translations = {
     companyDescription: {
       FR: "Auto Adi, votre partenaire de confiance pour l'achat de véhicules neufs et d'occasion en Europe.",
@@ -129,12 +129,12 @@ const Footer = () => {
       RO: "© 2002 Auto Adi. Număr de identificare: 827 514 860. Toate drepturile rezervate."
     },
     socialMediaInfo: {
-      FR: "Nous sommes disponibles uniquement sur Facebook et WhatsApp",
-      EN: "We are available only on Facebook and WhatsApp",
-      ES: "Estamos disponibles solo en Facebook y WhatsApp",
-      IT: "Siamo disponibili solo su Facebook e WhatsApp",
-      PT: "Estamos disponíveis apenas no Facebook e WhatsApp",
-      RO: "Suntem disponibili doar pe Facebook și WhatsApp"
+      FR: "Rejoignez-nous sur les réseaux sociaux",
+      EN: "Join us on social media",
+      ES: "Únase a nosotros en las redes sociales",
+      IT: "Unisciti a noi sui social media",
+      PT: "Junte-se a nós nas redes sociais",
+      RO: "Alăturați-vă nouă pe rețelele sociale"
     },
     contactAvailability: {
       FR: "Nous sommes disponibles uniquement sur Facebook et WhatsApp",
@@ -143,117 +143,108 @@ const Footer = () => {
       IT: "Siamo disponibili solo su Facebook e WhatsApp",
       PT: "Estamos disponíveis apenas no Facebook e WhatsApp",
       RO: "Suntem disponibili doar pe Facebook și WhatsApp"
-    },
-    facebookPage: {
-      FR: "Page Facebook",
-      EN: "Facebook Page",
-      ES: "Página de Facebook",
-      IT: "Pagina Facebook",
-      PT: "Página do Facebook",
-      RO: "Pagină de Facebook"
     }
   };
 
   return (
-    <footer className="bg-brand-blue text-white mt-auto">
-      <div className="container mx-auto px-6 py-8">
-        {/* Main content */}
-        <div className="mb-8">
+    <footer className="bg-brand-blue text-white pt-16 mt-auto">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo and description */}
-          <div className="mb-8">
-            <Link to="/" className="inline-block mb-4">
+          <div className="space-y-4">
+            <Link to="/">
               <img 
                 src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
                 alt="Auto Adi" 
                 className="h-12"
               />
             </Link>
-            <p className="text-white text-lg">
+            <p className="text-gray-100">
               {translate('companyDescription', translations.companyDescription)}
             </p>
-            <p className="text-white font-semibold mt-4 mb-6">
+            <p className="text-gray-100 font-semibold">
               {translate('contactAvailability', translations.contactAvailability)}
             </p>
-            <div className="flex space-x-4 mb-8">
+            <div className="flex space-x-4">
               <a 
                 href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-brand-orange transition-colors bg-white/10 p-3 rounded-full"
+                className="text-gray-100 hover:text-gray-300 transition-colors"
                 aria-label="Facebook"
               >
-                <Facebook size={24} />
+                <Facebook size={20} />
               </a>
               <a 
                 href="https://wa.me/393761753341" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-brand-orange transition-colors bg-white/10 p-3 rounded-full"
+                className="text-gray-100 hover:text-gray-300 transition-colors"
                 aria-label="WhatsApp"
               >
-                <MessageCircle size={24} />
+                <MessageCircle size={20} />
               </a>
             </div>
           </div>
 
           {/* Quick links */}
-          <div className="mb-10">
-            <h3 className="text-xl font-bold mb-4">{translate('quickLinks', translations.quickLinks)}</h3>
-            <ul className="space-y-3 text-lg">
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-white">{translate('quickLinks', translations.quickLinks)}</h3>
+            <ul className="space-y-2">
               <li>
-                <Link to="/vehicules/neufs" className="text-white hover:text-brand-orange block">
+                <Link to="/vehicules/neufs" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('newVehicles', translations.newVehicles)}
                 </Link>
               </li>
               <li>
-                <Link to="/vehicules/occasion" className="text-white hover:text-brand-orange block">
+                <Link to="/vehicules/occasion" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('usedVehicles', translations.usedVehicles)}
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="text-white hover:text-brand-orange block">
+                <Link to="/services" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('services', translations.services)}
                 </Link>
               </li>
               <li>
-                <Link to="/financement" className="text-white hover:text-brand-orange block">
+                <Link to="/financement" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('financing', translations.financing)}
                 </Link>
               </li>
               <li>
-                <Link to="/rachat" className="text-white hover:text-brand-orange block">
+                <Link to="/rachat" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('vehicleBuyback', translations.vehicleBuyback)}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Legal information */}
-          <div className="mb-10">
-            <h3 className="text-xl font-bold mb-4">{translate('legalInfo', translations.legalInfo)}</h3>
-            <ul className="space-y-3 text-lg">
+          {/* Legal links */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 text-white">{translate('legalInfo', translations.legalInfo)}</h3>
+            <ul className="space-y-2">
               <li>
-                <Link to="/mentions-legales" className="text-white hover:text-brand-orange block">
+                <Link to="/mentions-legales" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('legalNotice', translations.legalNotice)}
                 </Link>
               </li>
               <li>
-                <Link to="/politique-confidentialite" className="text-white hover:text-brand-orange block">
+                <Link to="/politique-confidentialite" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('privacyPolicy', translations.privacyPolicy)}
                 </Link>
               </li>
               <li>
-                <Link to="/cookies" className="text-white hover:text-brand-orange block">
+                <Link to="/cookies" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('cookieManagement', translations.cookieManagement)}
                 </Link>
               </li>
               <li>
-                <Link to="/cgv" className="text-white hover:text-brand-orange block">
+                <Link to="/cgv" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('termsAndConditions', translations.termsAndConditions)}
                 </Link>
               </li>
               <li>
-                <Link to="/conditions" className="text-white hover:text-brand-orange block">
+                <Link to="/conditions" className="text-gray-100 hover:text-gray-300 transition-colors">
                   {translate('saleConditions', translations.saleConditions)}
                 </Link>
               </li>
@@ -262,44 +253,49 @@ const Footer = () => {
 
           {/* Contact info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">{translate('contact', translations.contact)}</h3>
-            <ul className="space-y-4 text-lg">
-              <li className="flex items-center">
-                <Phone className="h-6 w-6 mr-3 text-brand-orange" />
-                <span className="text-white">‪+39 376 175 3341‬</span>
-              </li>
-              <li className="flex items-center">
-                <MessageCircle className="h-6 w-6 mr-3 text-brand-orange" />
-                <span className="text-white">WhatsApp: ‪+39 376 175 3341‬</span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="h-6 w-6 mr-3 text-brand-orange" />
-                <span className="text-white">serviceautoadi@gmail.com</span>
+            <h3 className="text-lg font-semibold mb-4 text-white">{translate('contact', translations.contact)}</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <Phone className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
+                <span className="text-gray-100">‪+39 376 175 3341‬</span>
               </li>
               <li className="flex items-start">
-                <MapPin className="h-6 w-6 mr-3 text-brand-orange flex-shrink-0 mt-1" />
-                <span className="text-white">
+                <MessageCircle className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
+                <span className="text-gray-100">WhatsApp: ‪+39 376 175 3341‬</span>
+              </li>
+              <li className="flex items-start">
+                <Mail className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
+                <span className="text-gray-100">serviceautoadi@gmail.com</span>
+              </li>
+              <li className="flex items-start">
+                <MapPin className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
+                <span className="text-gray-100">
                   Borgo Ognissanti, 142r 50123 Firenze FI Italie
                 </span>
               </li>
-              <li className="flex items-center">
-                <Facebook className="h-6 w-6 mr-3 text-brand-orange" />
+              <li className="flex items-start">
+                <Facebook className="h-5 w-5 mr-2 text-brand-orange flex-shrink-0" />
                 <a 
                   href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-white hover:text-brand-orange"
+                  className="text-gray-100 hover:text-gray-300 transition-colors"
                 >
-                  {translate('facebookPage', translations.facebookPage)}
+                  {language === 'FR' ? 'Page Facebook' : 
+                   language === 'EN' ? 'Facebook Page' :
+                   language === 'ES' ? 'Página de Facebook' :
+                   language === 'IT' ? 'Pagina Facebook' :
+                   language === 'PT' ? 'Página do Facebook' :
+                   'Pagina Facebook'}
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Copyright section */}
-        <div className="border-t border-blue-700 pt-6 text-center">
-          <p className="text-white">
+        {/* Bottom bar */}
+        <div className="border-t border-blue-700 mt-12 py-8 text-center">
+          <p className="text-gray-100 text-sm">
             {translate('copyright', translations.copyright)}
           </p>
         </div>
