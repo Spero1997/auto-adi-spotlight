@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -531,4 +532,13 @@ const Index = () => {
           </div>
         ) : null}
         
-        <section
+        <TestimonialSection />
+        <Benefits />
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Index;
