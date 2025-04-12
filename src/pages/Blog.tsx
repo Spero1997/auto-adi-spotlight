@@ -2,7 +2,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,8 +25,6 @@ const Blog = () => {
         />
         <link rel="canonical" href="https://autoadi.com/blog" />
       </Helmet>
-
-      <Header />
 
       <main className="min-h-screen py-12 bg-gray-50">
         <div className="container mx-auto px-4 max-w-7xl">

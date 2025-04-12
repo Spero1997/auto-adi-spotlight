@@ -1,7 +1,6 @@
 
 import { Helmet } from "react-helmet";
 import VehicleManager from "@/components/VehicleManager";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -17,8 +16,6 @@ const VehicleManagement = () => {
       </Helmet>
       
       <div className="min-h-screen flex flex-col">
-        <Header />
-        
         <main className="flex-grow">
           <div className="container mx-auto py-6 px-4">
             <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
