@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Car, Edit, Trash2, Plus, Search, X, Image as ImageIcon } from 'lucide-react';
 import { getImportedVehicles, saveImportedVehicles, deleteImportedVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
+import { useNavigate } from 'react-router-dom';
+import EmptyState from '@/components/EmptyState';
 
 const AdminVehicles: React.FC = () => {
   const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
@@ -23,6 +25,7 @@ const AdminVehicles: React.FC = () => {
   const [currentVehicle, setCurrentVehicle] = useState<ImportedVehicle | null>(null);
   const [vehicleToDelete, setVehicleToDelete] = useState<string | null>(null);
   const [newImageUrl, setNewImageUrl] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadVehicles();
@@ -109,22 +112,8 @@ const AdminVehicles: React.FC = () => {
   };
 
   const handleAddNewVehicle = () => {
-    const newVehicle: ImportedVehicle = {
-      id: crypto.randomUUID(),
-      brand: '',
-      model: '',
-      year: new Date().getFullYear(),
-      price: 0,
-      mileage: 0,
-      fuelType: 'Essence',
-      transmission: 'Manuelle',
-      image: '',
-      images: [],
-      features: []
-    };
-    
-    setCurrentVehicle(newVehicle);
-    setIsEditDialogOpen(true);
+    // Rediriger vers la page d'ajout de véhicule au lieu d'ouvrir la boîte de dialogue
+    navigate('/vehicule/import');
   };
 
   const addImage = () => {
@@ -197,15 +186,11 @@ const AdminVehicles: React.FC = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
           </div>
         ) : filteredVehicles.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center h-64">
-              <Car className="h-12 w-12 text-gray-400 mb-4" />
-              <CardTitle className="text-xl mb-2">Aucun véhicule trouvé</CardTitle>
-              <p className="text-gray-500">
-                {searchTerm ? "Aucun résultat pour cette recherche." : "Ajoutez des véhicules pour commencer."}
-              </p>
-            </CardContent>
-          </Card>
+          <EmptyState 
+            title="Aucun véhicule trouvé"
+            description={searchTerm ? "Aucun résultat pour cette recherche." : "Ajoutez des véhicules pour commencer."}
+            icon={<Car className="h-12 w-12 text-gray-400" />}
+          />
         ) : (
           <div className="overflow-x-auto">
             <Table>
