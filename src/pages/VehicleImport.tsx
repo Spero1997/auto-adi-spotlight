@@ -257,7 +257,7 @@ Nos services inclus :
         exteriorColor: 'Noir',
         interiorColor: 'Noir/Beige',
         image: '/lovable-uploads/d1e0c19e-72fd-40a2-a228-b75188a71035.png',
-        additionalImages: [
+        images: [
           '/lovable-uploads/79af1234-d887-4920-8edd-78971e26f636.png',
           '/lovable-uploads/84bf936c-fc4a-4fc9-8da4-696276e861ff.png',
           '/lovable-uploads/3ce46bb8-45d7-412a-9453-5c0a9a493ee1.png',
