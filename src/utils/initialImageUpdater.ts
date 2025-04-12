@@ -3,8 +3,8 @@ import { updateVehicleImage } from './vehicleImportService';
 
 // Fonction pour mettre à jour l'image de l'Audi Q2 au chargement de l'application
 export const updateAudiQ2Image = () => {
-  // URL de l'image téléchargée
-  const newImageUrl = '/lovable-uploads/f1910bf4-1361-4308-b68a-e2b90159423d.png';
+  // URL de la nouvelle image téléchargée
+  const newImageUrl = '/lovable-uploads/495da563-1459-4d21-b284-b231e9820ce3.png';
   
   console.log("Tentative de mise à jour de l'image de l'Audi Q2 Ultra Sport...");
   

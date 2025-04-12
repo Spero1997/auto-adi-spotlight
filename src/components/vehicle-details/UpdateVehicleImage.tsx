@@ -22,6 +22,7 @@ const UpdateVehicleImage = ({
 
   // Array of available images to choose from
   const availableImages = [
+    '/lovable-uploads/495da563-1459-4d21-b284-b231e9820ce3.png', // Nouvelle image Audi Q2 bleue
     '/lovable-uploads/d1e0c19e-72fd-40a2-a228-b75188a71035.png', // Image principale Audi A4
     '/lovable-uploads/79af1234-d887-4920-8edd-78971e26f636.png', // Image additionnelle 1
     '/lovable-uploads/84bf936c-fc4a-4fc9-8da4-696276e861ff.png', // Image additionnelle 2
@@ -29,14 +30,14 @@ const UpdateVehicleImage = ({
     '/lovable-uploads/7c30aba7-14ca-4c5c-a954-6e0ff468b848.png', // Image additionnelle 4
     '/lovable-uploads/7806d902-9d95-4659-b8f1-7b9f0e0b831b.png', // Image additionnelle 5
     '/lovable-uploads/1ee80174-6f50-41c3-9668-5f62b09f1ecc.png', // Image additionnelle 6
-    '/lovable-uploads/f1910bf4-1361-4308-b68a-e2b90159423d.png'  // Image Hyundai
+    '/lovable-uploads/f1910bf4-1361-4308-b68a-e2b90159423d.png'  // Ancienne image Hyundai
   ];
 
   const handleUpdateImage = () => {
     setIsUpdating(true);
     
-    // Utiliser l'image téléchargée (première image Audi A4)
-    const newImageUrl = '/lovable-uploads/d1e0c19e-72fd-40a2-a228-b75188a71035.png';
+    // Utiliser la nouvelle image Audi Q2 bleue
+    const newImageUrl = '/lovable-uploads/495da563-1459-4d21-b284-b231e9820ce3.png';
     
     updateImage(newImageUrl);
     setIsUpdating(false);

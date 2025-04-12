@@ -68,8 +68,8 @@ const VehicleMainInfo = ({ vehicle, onBuyClick, updateImage }: VehicleMainInfoPr
         </Button>
       </div>
       
-      {/* Afficher le bouton d'update uniquement pour l'Audi Q2 Ultra Sport */}
-      {vehicle.brand === 'Audi' && vehicle.model.includes('Q2 Ultra Sport') && updateImage && (
+      {/* Afficher le bouton d'update pour tous les véhicules si updateImage est disponible */}
+      {updateImage && (
         <UpdateVehicleImage 
           vehicleId={vehicle.id} 
           updateImage={updateImage} 
