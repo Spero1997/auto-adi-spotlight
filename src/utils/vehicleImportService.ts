@@ -77,7 +77,7 @@ export const addToyotaCHR = () => {
       transmission: 'Automatique',
       exteriorColor: 'Bleu',
       interiorColor: 'Noir',
-      image: '/lovable-uploads/a2e4d2f0-6ecf-4bb3-a88d-d89e102afe99.png', // Image principale mise à jour
+      image: '/lovable-uploads/a2e4d2f0-6ecf-4bb3-a88d-d89e102afe99.png',
       images: [
         '/lovable-uploads/4a7d0135-15bc-4d67-8593-95afa2898553.png',
         '/lovable-uploads/a148b039-46ad-4622-a3ec-a299bc1de8e4.png',
@@ -181,6 +181,95 @@ export const updateVehicleImage = (vehicleId: string, newImageUrl: string, catal
     }
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l'image du véhicule:", error);
+    return false;
+  }
+};
+
+// Fonction pour ajouter le Renault Scenic au catalogue
+export const addRenaultScenic = () => {
+  try {
+    const renaultScenic: ImportedVehicle = {
+      id: `vehicle-standard-${Date.now()}-renault-scenic-bose-edition`,
+      brand: 'Renault',
+      model: 'Scenic 1.5DCI 7-SETER BOSE-EDITION',
+      year: 2017,
+      mileage: 132000,
+      price: 3000,
+      fuelType: 'Diesel',
+      transmission: 'Automatique',
+      exteriorColor: 'Gris',
+      interiorColor: 'Noir',
+      image: '/lovable-uploads/2e08f660-5b4c-4c1c-a6a6-826551c7ecdf.png',
+      images: [
+        '/lovable-uploads/084fc59d-c55e-4587-aba1-9d4207ad1589.png',
+        '/lovable-uploads/7b163bf1-37df-49c6-b255-8c06535f448a.png'
+      ],
+      description: `Modalités de paiement
+• Acompte : 20 % à la commande
+• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
+• Offre spéciale : -10 % de réduction pour tout achat comptant à la commande
+
+Nous nous occupons de toutes les démarches d'importation jusqu'à la livraison a votre domicile. Délais de livraison 5 jours / Délai de rétractation 14 JOURS (Satisfait ou remboursé)
+Garantie 24 mois
+
+wa.me/393761753341`,
+      features: [
+        'Airbags (frontaux, latéraux, rideaux)',
+        'Ceintures de sécurité (avec prétensionneurs)',
+        'Système ABS (Anti-blocage des freins)',
+        'ESP (Correcteur électronique de trajectoire)',
+        'Aide au freinage d\'urgence',
+        'Caméra de recul et capteurs de stationnement',
+        'Aide au maintien de voie',
+        'Détecteur d\'angle mort',
+        'Régulateur et limiteur de vitesse',
+        
+        'Climatisation automatique',
+        'Sièges chauffants',
+        'Rétroviseurs électriques et dégivrants',
+        'Vitres électriques',
+        'Toit panoramique',
+        'Système Keyless (démarrage sans clé)',
+        
+        'Écran tactile avec GPS intégré',
+        'Apple CarPlay & Android Auto',
+        'Système audio Bose',
+        'Bluetooth et USB',
+        
+        'Feux LED',
+        'Essuie-glaces automatiques',
+        'Détecteur automatique de luminosité',
+        
+        'Rangement modulable (sièges rabattables)',
+        '7 places assises',
+        
+        'Boîte automatique',
+        'Mode conduite (Eco, Sport)',
+        'Système Start & Stop'
+      ],
+      engine: '1.5DCI 110 CH',
+      doors: 5,
+      catalogType: 'standard'
+    };
+    
+    const success = addVehicle(renaultScenic, 'standard');
+    
+    if (success) {
+      console.log('Renault Scenic 1.5DCI 7-SETER BOSE-EDITION ajouté avec succès au catalogue!');
+      
+      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+        detail: { catalogType: 'standard' } 
+      }));
+      
+      window.dispatchEvent(new CustomEvent('catalogChanged'));
+      
+      return true;
+    } else {
+      console.error('Erreur lors de l\'ajout du Renault Scenic 1.5DCI 7-SETER BOSE-EDITION');
+      return false;
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du Renault Scenic 1.5DCI 7-SETER BOSE-EDITION:', error);
     return false;
   }
 };

@@ -31,6 +31,12 @@ const VehicleDetails = () => {
     setShowPaymentForm
   } = useVehicleOrder(vehicle);
   
+  // Ajoutons un console.log pour vérifier les données du véhicule
+  if (vehicle) {
+    console.log("Détails du véhicule: ", vehicle);
+    console.log("Images additionnelles: ", vehicle.images);
+  }
+  
   if (isLoading) {
     return (
       <>
