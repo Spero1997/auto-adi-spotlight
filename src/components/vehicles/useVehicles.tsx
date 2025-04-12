@@ -87,9 +87,12 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
         console.log("Continuons avec les véhicules du localStorage uniquement");
       }
       
+      // Trier les véhicules par année (du plus récent au plus ancien)
+      loadedVehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
+      
       // Log individual vehicles to help with debugging
       loadedVehicles.forEach((vehicle, index) => {
-        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
+        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Année: ${vehicle.year}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
       });
       
       setVehicles(loadedVehicles);
