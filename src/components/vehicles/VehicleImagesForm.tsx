@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useVehicleForm } from './VehicleFormContext';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Plus, X, Image } from 'lucide-react';
+import { Plus, X, Image, Upload } from 'lucide-react';
 import { Card } from "@/components/ui/card";
+import UpdateVehicleImage from '../vehicle-details/UpdateVehicleImage';
 
 const VehicleImagesForm = () => {
   const { 
@@ -15,6 +16,17 @@ const VehicleImagesForm = () => {
     removeImage, 
     updateImage 
   } = useVehicleForm();
+  
+  const [showUploadOptions, setShowUploadOptions] = useState(false);
+
+  const handleUpdateMainImage = (newUrl: string) => {
+    updateField('image', newUrl);
+  };
+
+  const handleUpdateAdditionalImages = (updatedImages: string[]) => {
+    // Remplacer le tableau d'images additionnelles
+    updateField('additionalImages', updatedImages);
+  };
 
   return (
     <div className="space-y-6">
@@ -43,6 +55,24 @@ const VehicleImagesForm = () => {
               }}
             />
           </div>
+        )}
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowUploadOptions(!showUploadOptions)}
+          className="mt-2 text-sm"
+        >
+          {showUploadOptions ? 'Masquer les options d\'upload' : 'Afficher les options d\'upload'}
+        </Button>
+        
+        {showUploadOptions && (
+          <UpdateVehicleImage 
+            vehicleId="new-vehicle" 
+            updateImage={handleUpdateMainImage}
+            additionalImages={formState.additionalImages}
+            updateAdditionalImages={handleUpdateAdditionalImages}
+          />
         )}
       </div>
       
