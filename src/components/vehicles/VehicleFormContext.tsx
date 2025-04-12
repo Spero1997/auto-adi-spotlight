@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { addImportedVehicle } from "@/utils/vehicleImportService";
 import { addVehicleToSupabase } from "@/utils/services/vehicleService";
+import { useNavigate } from 'react-router-dom';
 
 // Types pour notre contexte
 type Feature = string;
@@ -77,6 +78,7 @@ export const useVehicleForm = () => {
 export const VehicleFormProvider = ({ children }: { children: ReactNode }) => {
   const [formState, setFormState] = useState<VehicleFormState>(initialFormState);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Fonction pour mettre à jour un champ spécifique
   const updateField = <K extends keyof VehicleFormState>(
@@ -166,46 +168,70 @@ export const VehicleFormProvider = ({ children }: { children: ReactNode }) => {
       doors: formState.doors ? parseInt(formState.doors) : undefined,
       engine: formState.engine,
       features: formState.features.filter(f => f.trim() !== ''),
+      catalogType: 'standard' // Toujours ajouter au catalogue standard
     };
 
-    // Ajouter le véhicule au localStorage
-    const success = await addImportedVehicle(newVehicle);
-    
-    // Ajouter également le véhicule à Supabase
     try {
-      const vehicleForSupabase = {
-        brand: formState.brand,
-        model: formState.model,
-        year: parseInt(formState.year),
-        mileage: parseInt(formState.mileage),
-        fuel_type: formState.fuelType,
-        transmission: formState.transmission || 'Non spécifié',
-        price: parseInt(formState.price),
-        description: formState.description || '',
-        image_url: formState.image || '',
-        additional_images: filteredAdditionalImages.length > 0 ? filteredAdditionalImages : [],
-        exterior_color: formState.exteriorColor || 'Non spécifié',
-        interior_color: formState.interiorColor || 'Non spécifié',
-        engine: formState.engine || '',
-        doors: formState.doors ? parseInt(formState.doors) : null,
-        features: formState.features.filter(f => f.trim() !== ''),
-        is_featured: false
-      };
+      // Ajouter le véhicule au localStorage
+      const success = await addImportedVehicle(newVehicle);
       
-      await addVehicleToSupabase(vehicleForSupabase);
-      console.log("Véhicule ajouté à Supabase avec succès");
+      if (success) {
+        // Également essayer d'ajouter à Supabase, mais ne pas bloquer en cas d'erreur
+        try {
+          const vehicleForSupabase = {
+            brand: formState.brand,
+            model: formState.model,
+            year: parseInt(formState.year),
+            mileage: parseInt(formState.mileage),
+            fuel_type: formState.fuelType,
+            transmission: formState.transmission || 'Non spécifié',
+            price: parseInt(formState.price),
+            description: formState.description || '',
+            image_url: formState.image || '',
+            additional_images: filteredAdditionalImages.length > 0 ? filteredAdditionalImages : [],
+            exterior_color: formState.exteriorColor || 'Non spécifié',
+            interior_color: formState.interiorColor || 'Non spécifié',
+            engine: formState.engine || '',
+            doors: formState.doors ? parseInt(formState.doors) : null,
+            features: formState.features.filter(f => f.trim() !== ''),
+            is_featured: false
+          };
+          
+          await addVehicleToSupabase(vehicleForSupabase);
+          console.log("Véhicule ajouté à Supabase avec succès");
+        } catch (error) {
+          console.error("Erreur lors de l'ajout du véhicule à Supabase:", error);
+          // Nous continuons même en cas d'erreur avec Supabase
+        }
+        
+        // Réinitialiser le formulaire
+        resetForm();
+        
+        // Notification de succès
+        toast({
+          title: "Succès",
+          description: `${formState.brand} ${formState.model} a été ajouté avec succès.`,
+        });
+        
+        // Forcer une mise à jour des véhicules affichés
+        console.log("Déclenchement de l'événement vehiclesUpdated");
+        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
+          detail: { catalogType: 'standard' } 
+        }));
+        
+        // Rediriger vers la page des véhicules après un court délai pour voir le nouveau véhicule
+        setTimeout(() => {
+          navigate('/vehicules');
+        }, 1500);
+      } else {
+        toast({
+          title: "Erreur",
+          description: "Une erreur s'est produite lors de l'ajout du véhicule.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
-      console.error("Erreur lors de l'ajout du véhicule à Supabase:", error);
-      // Nous continuons même en cas d'erreur avec Supabase pour ne pas bloquer l'utilisateur
-    }
-
-    if (success) {
-      resetForm();
-      toast({
-        title: "Succès",
-        description: `${formState.brand} ${formState.model} a été ajouté avec succès.`,
-      });
-    } else {
+      console.error("Erreur lors de l'ajout du véhicule:", error);
       toast({
         title: "Erreur",
         description: "Une erreur s'est produite lors de l'ajout du véhicule.",
