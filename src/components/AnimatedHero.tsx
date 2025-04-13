@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import QuickSearch from '@/components/QuickSearch';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import logoURL from '@/assets/auto-adi-monaco-logo.png';
+// Replace the import with a direct reference to the public image
+// import logoURL from '@/assets/auto-adi-monaco-logo.png';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -34,6 +35,9 @@ const AnimatedHero = () => {
   const { translate } = useLanguage();
   const isMobile = useIsMobile();
   const [scrolled, setScrolled] = useState(false);
+  
+  // Use a logo from the public folder
+  const logoURL = "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png";
 
   // Détecter le défilement pour modifier le style du header
   useEffect(() => {

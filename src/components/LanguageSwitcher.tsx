@@ -21,7 +21,7 @@ const LanguageSwitcher = () => {
           key={lang.code}
           variant={language === lang.code ? "default" : "ghost"}
           size="sm"
-          onClick={() => setLanguage(lang.code)}
+          onClick={() => setLanguage(lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO")}
           className={`text-xs px-2 py-1 ${
             language === lang.code 
               ? "bg-brand-orange hover:bg-brand-darkOrange text-white" 
