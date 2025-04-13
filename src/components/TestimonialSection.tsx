@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import { Language } from '@/components/Header';
+import { Language } from '@/contexts/LanguageContext';
 
 const testimonials = [
   {
@@ -137,7 +136,6 @@ const TestimonialSection = () => {
   const [direction, setDirection] = useState<'left' | 'right' | null>(null);
   const [currentLanguage, setCurrentLanguage] = useState<Language>('FR');
 
-  // Load language preference from localStorage
   useEffect(() => {
     const savedLanguage = localStorage.getItem('preferredLanguage');
     if (savedLanguage && ['FR', 'EN', 'ES', 'IT', 'PT', 'RO'].includes(savedLanguage)) {
@@ -155,7 +153,6 @@ const TestimonialSection = () => {
     setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
-  // Translations for the testimonial section
   const translations: Record<string, Record<Language, string>> = {
     'title': {
       'FR': 'Ce que disent nos clients',
@@ -206,7 +203,6 @@ const TestimonialSection = () => {
         </div>
 
         <div className="relative max-w-4xl mx-auto px-8">
-          {/* Navigation buttons */}
           <button 
             onClick={prevTestimonial} 
             className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full w-10 h-10 flex items-center justify-center shadow-md z-10 hover:bg-gray-100"
@@ -223,7 +219,6 @@ const TestimonialSection = () => {
             <ChevronRight className="h-6 w-6 text-gray-600" />
           </button>
 
-          {/* Testimonial card */}
           <div className="bg-white p-8 rounded-lg shadow-lg overflow-hidden">
             <div 
               className={`flex flex-col items-center text-center transition-opacity duration-300 ${
@@ -273,7 +268,6 @@ const TestimonialSection = () => {
             </div>
           </div>
 
-          {/* Dots indicator */}
           <div className="flex justify-center mt-8 space-x-2 flex-wrap">
             {testimonials.map((_, index) => (
               <button

@@ -70,7 +70,6 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
     
     toast({
-      title: languageNames[lang],
       description: messages[lang],
     });
   };
