@@ -20,7 +20,7 @@ import OrdersBackup from './pages/OrdersBackup';
 import ScrollToTop from './components/ScrollToTop';
 
 import { useEffect } from 'react';
-import { addToyotaCHR, updateVehicleImage, addRenaultScenic, addKiaSorento } from './utils/vehicleImportService';
+import { resetCatalog } from './utils/vehicleImportService';
 
 // Admin Dashboard
 import AdminLayout from './components/admin/AdminLayout';
@@ -36,48 +36,9 @@ import AdminFeatured from './pages/admin/AdminFeatured';
 
 function App() {
   useEffect(() => {
-    // Ajouter le Toyota C-HR au catalogue au chargement de l'application
-    const toyotaCHRAdded = addToyotaCHR();
-    if (toyotaCHRAdded) {
-      console.log("Toyota C-HR 1.8i Hybride GR Sport ajouté au catalogue avec succès au démarrage de l'application");
-      
-      // Forcer la mise à jour des véhicules affichés
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'standard' } 
-      }));
-    }
-    
-    // Mettre à jour l'image du Toyota C-HR avec la nouvelle image téléchargée
-    const vehicleId = "vehicle-standard-1744452263213-toyota-chr-hybrid-gr-sport";
-    updateVehicleImage(vehicleId, '/lovable-uploads/a2e4d2f0-6ecf-4bb3-a88d-d89e102afe99.png', 'standard');
-    
-    // Ajouter le Renault Scenic au catalogue
-    const scenicAdded = addRenaultScenic();
-    if (scenicAdded) {
-      console.log("Renault Scenic 1.5DCI 7-SETER BOSE-EDITION ajouté au catalogue avec succès au démarrage de l'application");
-      
-      // Forcer la mise à jour des véhicules affichés
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'standard' } 
-      }));
-    }
-    
-    // Ajouter le Kia Sorento au catalogue
-    const sorentoAdded = addKiaSorento();
-    if (sorentoAdded) {
-      console.log("Kia Sorento 1.6 T-GDI Hybride rechargeable ajouté au catalogue avec succès au démarrage de l'application");
-      
-      // Forcer la mise à jour des véhicules affichés
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'standard' } 
-      }));
-    }
-    
-    // Mettre à jour aussi l'image des Toyota C-HR existants
-    const toyotaChrs = document.querySelectorAll('[data-brand="Toyota"][data-model*="C-HR"]');
-    if (toyotaChrs.length > 0) {
-      console.log(`${toyotaChrs.length} Toyota C-HR trouvés dans le DOM, mise à jour des images`);
-    }
+    // Réinitialiser les catalogues au démarrage de l'application
+    resetCatalog('all');
+    console.log("Catalogues réinitialisés au démarrage de l'application");
   }, []);
   
   return (

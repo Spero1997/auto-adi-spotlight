@@ -1,4 +1,3 @@
-
 import { ImportedVehicle } from '../types/vehicle';
 import { getImportedVehicles, saveImportedVehicles } from './vehicleStorageService';
 import { validateImageUrl } from '../vehicleImportService';
@@ -30,6 +29,15 @@ export const resetCatalog = (catalogType: 'standard' | 'featured' | 'all' = 'all
       detail: { catalogType: 'all' } 
     }));
   }, 100);
+  
+  // Notification pour indiquer que les catalogues ont été réinitialisés
+  if (typeof window.toast === 'function') {
+    window.toast({
+      title: 'Catalogues réinitialisés',
+      description: 'Les catalogues ont été vidés avec succès.',
+      variant: 'default'
+    });
+  }
 };
 
 /**
