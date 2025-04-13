@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
@@ -29,12 +29,21 @@ const NotFound = () => {
             Nous sommes désolés, mais la page que vous recherchez n'existe pas.
           </p>
           
-          <Link to="/">
-            <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors px-6 py-3 text-lg">
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Retour à l'accueil
-            </Button>
-          </Link>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link to="/">
+              <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors px-6 py-3 text-lg">
+                <ArrowLeft className="h-5 w-5 mr-2" />
+                Retour à l'accueil
+              </Button>
+            </Link>
+            
+            <Link to="/services">
+              <Button variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10 px-6 py-3 text-lg">
+                <Search className="h-5 w-5 mr-2" />
+                Voir nos services
+              </Button>
+            </Link>
+          </div>
 
           <div className="mt-16">
             <img 

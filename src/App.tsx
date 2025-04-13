@@ -25,6 +25,9 @@ import VehicleDetails from "./pages/VehicleDetails";
 import { useEffect } from "react";
 import { getCatalogIdFromUrl } from "./utils/vehicleImportService";
 import AnimatedHero from "./components/AnimatedHero";
+import Garantie from "./pages/Garantie";
+import Livraison from "./pages/Livraison";
+import ServicePremium from "./pages/ServicePremium";
 
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -61,6 +64,11 @@ const App = () => {
                 <Route path="/rachat" element={<Rachat />} />
                 <Route path="/a-propos" element={<APropos />} />
                 <Route path="/contact" element={<Contact />} />
+                
+                {/* Nouvelles routes pour les pages de services spécialisés */}
+                <Route path="/garantie" element={<Garantie />} />
+                <Route path="/livraison" element={<Livraison />} />
+                <Route path="/service-premium" element={<ServicePremium />} />
                 
                 <Route path="/orders-backup" element={<OrdersBackup />} />
                 
