@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -47,7 +46,7 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-    const translations = {
+  const translations = {
     language: {
       FR: "Langue",
       EN: "Language",
@@ -61,20 +60,19 @@ const Header = () => {
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full', // Ajout de w-full
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full',
         isScrolled
           ? 'bg-white shadow-md py-2'
           : 'bg-transparent py-4'
       )}
     >
-      <div className="container mx-auto px-4 w-full"> {/* Ajout de w-full */}
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 w-full">
+        <div className="flex items-center justify-between w-full">
           <Link to="/" className="flex items-center">
             <Logo className={cn('h-10 w-auto', isScrolled ? 'text-blue-600' : 'text-white')} />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1 w-full justify-between">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -243,7 +241,6 @@ const Header = () => {
             </DropdownMenu>
           </div>
           
-          {/* Mobile menu button */}
           <button
             onClick={toggleMenu}
             className="lg:hidden p-2 focus:outline-none"
@@ -258,7 +255,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -268,8 +264,6 @@ const Header = () => {
             className="lg:hidden bg-white shadow-lg overflow-hidden"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
-              
-
               <div className="space-y-2">
                 <div className="font-medium text-gray-800">Véhicules</div>
                 <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
@@ -320,4 +314,3 @@ const Header = () => {
 };
 
 export default Header;
-
