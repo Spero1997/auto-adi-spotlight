@@ -17,6 +17,7 @@ import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
+  const [initialized, setInitialized] = useState(false);
 
   // Effet pour appliquer les filtres de recherche depuis l'URL
   useEffect(() => {
@@ -36,6 +37,8 @@ const VehiculesOccasion = () => {
 
   // Effet pour garantir que tous les véhicules sont visibles sur toutes les plateformes
   useEffect(() => {
+    if (initialized) return;
+    
     // Forces de garantir que tous les véhicules sont visibles
     console.log("VehiculesOccasion: Initialisation - Préparation pour affichage complet");
     
@@ -59,7 +62,16 @@ const VehiculesOccasion = () => {
     window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'all' } }));
     
     console.log("VehiculesOccasion: Initialisation terminée - tous les véhicules devraient être visibles");
-  }, []);
+    setInitialized(true);
+    
+    // Force update in 1 second in case the first update was missed
+    setTimeout(() => {
+      console.log("VehiculesOccasion: Forçage d'un second rechargement des véhicules");
+      addPorscheCayenne(); // Re-update Porsche Cayenne specifically
+      window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'all' } }));
+    }, 1000);
+    
+  }, [initialized]);
 
   // Fonction pour mettre à jour les filtres de recherche
   function handleSearchFilters(filters: SearchFilters) {

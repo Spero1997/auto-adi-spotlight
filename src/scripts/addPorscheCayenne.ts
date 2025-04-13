@@ -16,7 +16,10 @@ export const addPorscheCayenne = () => {
     // Si le véhicule existe déjà, le supprimer d'abord pour le mettre à jour
     if (porscheExists) {
       console.log("Porsche Cayenne Turbo PAW déjà présente dans le catalogue vedette - suppression pour mise à jour");
-      deleteImportedVehicle(porscheExists.id, 'featured');
+      const deleteSuccess = deleteImportedVehicle(porscheExists.id, 'featured');
+      if (!deleteSuccess) {
+        console.error("Échec de la suppression de la Porsche Cayenne Turbo PAW avant mise à jour");
+      }
     }
     
     // Créer le véhicule avec le nouveau lien Facebook
@@ -54,6 +57,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     
     if (success) {
       console.log("Porsche Cayenne Turbo PAW ajoutée/mise à jour dans le catalogue vedette avec succès");
+      console.log("Nouveau lien Facebook:", porscheCayenne.fbLink);
       toast.success("Porsche Cayenne Turbo PAW mise à jour dans le catalogue vedette avec succès");
       
       // Déclencher un événement pour forcer la mise à jour de l'affichage

@@ -26,12 +26,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   useEffect(() => {
     loadVehicles();
     
-    const handleVehiclesUpdated = (event: Event) => {
+    const handleVehiclesUpdated = () => {
       console.log("Événement vehiclesUpdated détecté, rechargement des véhicules");
       loadVehicles();
     };
     
-    const handleCatalogChanged = (event: Event) => {
+    const handleCatalogChanged = () => {
       console.log("Événement catalogChanged détecté, rechargement des véhicules");
       loadVehicles();
     };
@@ -92,7 +92,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         // Log des véhicules pour vérification détaillée
         console.log("Liste complète des véhicules chargés:");
         importedVehicles.forEach((v, index) => {
-          console.log(`${index + 1}. ${v.brand} ${v.model} (ID: ${v.id})`);
+          console.log(`${index + 1}. ${v.brand} ${v.model} (ID: ${v.id}, FB Link: ${v.fbLink || 'none'})`);
         });
       }
       
@@ -131,6 +131,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   // Même méthode pour ouvrir le lien Facebook, peu importe la plateforme
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
+    console.log("Ouverture du lien Facebook:", url);
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
@@ -189,7 +190,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                       aria-label="Voir sur Facebook"
                     >
                       <LinkIcon className="h-4 w-4 mr-1" />
-                      Voir sur Facebook
+                      Voir sur Facebook {vehicle.brand === "Porsche" && "(MAJ)"} 
                     </button>
                   )}
                   
