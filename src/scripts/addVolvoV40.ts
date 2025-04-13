@@ -34,7 +34,7 @@ export const addVolvoV40 = () => {
     interiorColor: 'Noir',
     doors: 5,
     engine: 'D2 115ch',
-    image: '/lovable-uploads/9d49d39c-ef6c-4f74-a302-3f7c8a2d031c.png',
+    image: '/lovable-uploads/f5593454-45bf-457b-948f-dc913b26c8e1.png',
     description: `Modalités de paiement :
 • Acompte : 20 % à la commande
 • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)

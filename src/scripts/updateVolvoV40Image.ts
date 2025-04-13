@@ -19,8 +19,11 @@ export const updateVolvoV40Image = () => {
   if (volvoIndex !== -1) {
     console.log('Volvo V40 trouvée, mise à jour de l\'image...');
     
+    // Utiliser la nouvelle image téléchargée
+    const newImageUrl = '/lovable-uploads/f5593454-45bf-457b-948f-dc913b26c8e1.png';
+    
     // Vérification si l'image est déjà la bonne
-    if (vehicles[volvoIndex].image === '/lovable-uploads/9d49d39c-ef6c-4f74-a302-3f7c8a2d031c.png') {
+    if (vehicles[volvoIndex].image === newImageUrl) {
       console.log('L\'image de la Volvo V40 est déjà à jour');
       return false;
     }
@@ -28,7 +31,7 @@ export const updateVolvoV40Image = () => {
     const updatedVehicles = [...vehicles];
     updatedVehicles[volvoIndex] = {
       ...updatedVehicles[volvoIndex],
-      image: '/lovable-uploads/9d49d39c-ef6c-4f74-a302-3f7c8a2d031c.png'
+      image: newImageUrl
     };
     
     saveImportedVehicles(updatedVehicles);
