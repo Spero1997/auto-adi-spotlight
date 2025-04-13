@@ -1,5 +1,4 @@
 
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getFinancingTranslations } from '@/components/financing/FinancingTranslations';
@@ -16,9 +15,7 @@ const Financement = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow">
+      <main className="flex-grow pt-24">
         {/* Hero Section */}
         <FinancingHero translations={translations} />
 

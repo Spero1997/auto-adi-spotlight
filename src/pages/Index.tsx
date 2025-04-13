@@ -1,7 +1,5 @@
-
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Benefits from '@/components/Benefits';
 import FeaturedCars from '@/components/FeaturedCars';
@@ -148,13 +146,7 @@ const Index = () => {
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
-        {/* Le Header standard est maintenant masqué sur la page d'accueil puisque nous utilisons AnimatedHero à la place */}
-        <div className="hidden">
-          <Header />
-        </div>
-        
         <main className="flex-grow">
-          {/* AnimatedHero est ajouté directement dans App.tsx, pas besoin de l'ajouter ici */}
           <Benefits />
           <FeaturedCars featuredOnly={true} />
           

@@ -1,5 +1,4 @@
 
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/livraison/HeroSection';
 import ServiceDescription from '@/components/livraison/ServiceDescription';
@@ -11,9 +10,7 @@ import CTASection from '@/components/livraison/CTASection';
 const Livraison = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow">
+      <main className="flex-grow pt-24">
         {/* Hero Section */}
         <HeroSection />
 
