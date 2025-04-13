@@ -10,6 +10,20 @@ interface ChatMessageProps {
   };
 }
 
+// Fonction pour convertir les marqueurs markdown simples en HTML
+const formatMessageContent = (content: string) => {
+  // Convertir les textes entre ** en gras
+  let formattedContent = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  
+  // Convertir les textes entre * en italique
+  formattedContent = formattedContent.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  
+  // Convertir les sauts de ligne
+  formattedContent = formattedContent.replace(/\n/g, '<br/>');
+  
+  return formattedContent;
+};
+
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
   const isUser = message.role === 'user';
   
@@ -33,12 +47,16 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
             : "bg-white border border-gray-200 shadow-sm rounded-tl-none"
         )}
       >
-        <p className={cn(
-          "text-sm whitespace-pre-wrap break-words",
-          isUser ? "font-montserrat font-light" : "font-montserrat"
-        )}>
-          {message.content}
-        </p>
+        {isUser ? (
+          <p className="text-sm whitespace-pre-wrap break-words font-montserrat font-light">
+            {message.content}
+          </p>
+        ) : (
+          <p 
+            className="text-sm whitespace-pre-wrap break-words font-montserrat"
+            dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }}
+          />
+        )}
       </div>
       {isUser && (
         <div className="w-8 h-8 flex items-center justify-center ml-1 mt-1">
