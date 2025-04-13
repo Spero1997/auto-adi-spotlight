@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -166,6 +165,7 @@ const Livraison = () => {
             <h2 className="text-3xl font-bold text-center mb-12">Destinations de livraison</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              {/* Road Transport Section */}
               <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="bg-blue-500 text-white p-6">
                   <h3 className="text-2xl font-bold mb-2 flex items-center">
@@ -192,7 +192,7 @@ const Livraison = () => {
                     <li className="flex items-start">
                       <Clock className="h-5 w-5 text-blue-500 mr-2 mt-1" />
                       <div>
-                        <span className="font-medium">Espagne, Italie, Suisse</span>
+                        <span className="font-medium">Espagne, Portugal</span>
                         <p className="text-sm text-gray-600">Délai: 3-5 jours</p>
                       </div>
                     </li>
@@ -207,6 +207,7 @@ const Livraison = () => {
                 </div>
               </div>
               
+              {/* Maritime Transport Section */}
               <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div className="bg-blue-700 text-white p-6">
                   <h3 className="text-2xl font-bold mb-2 flex items-center">
@@ -249,6 +250,7 @@ const Livraison = () => {
               </div>
             </div>
             
+            {/* Air Transport Section */}
             <h3 className="text-2xl font-bold text-center mb-6">Transport aérien express</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               <div className="bg-white shadow-md rounded-lg p-6 text-center">
@@ -291,6 +293,12 @@ const Livraison = () => {
                 <Plane className="h-10 w-10 text-blue-500 mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-2">Royaume-Uni</h3>
                 <p className="text-gray-600">Délai moyen: 5-7 jours</p>
+              </div>
+              
+              <div className="bg-white shadow-md rounded-lg p-6 text-center">
+                <Plane className="h-10 w-10 text-blue-500 mx-auto mb-4" />
+                <h3 className="text-xl font-bold mb-2">Portugal</h3>
+                <p className="text-gray-600">Délai moyen: 4-6 jours</p>
               </div>
               
               <div className="bg-white shadow-md rounded-lg p-6 text-center">
