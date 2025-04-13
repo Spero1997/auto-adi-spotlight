@@ -1,6 +1,5 @@
 
 import { getImportedVehicles, saveImportedVehicles, addImportedVehicle } from '@/utils/vehicleImportService';
-import { toast } from 'sonner';
 
 export const updateAudiQ2 = () => {
   try {
@@ -62,7 +61,6 @@ Garantie 24 mois`,
         ...audiQ2Data
       };
       saveImportedVehicles(standardVehicles, 'standard');
-      toast.success("Audi Q2 mise à jour dans le catalogue standard");
     } else {
       console.log("Audi Q2 non trouvée dans le catalogue standard, ajout...");
       addImportedVehicle(audiQ2Data, 'standard');
@@ -77,7 +75,6 @@ Garantie 24 mois`,
         featured: true
       };
       saveImportedVehicles(featuredVehicles, 'featured');
-      toast.success("Audi Q2 mise à jour dans le catalogue vedette");
     } else {
       console.log("Audi Q2 non trouvée dans le catalogue vedette, ajout...");
       addImportedVehicle({...audiQ2Data, featured: true}, 'featured');
@@ -86,7 +83,6 @@ Garantie 24 mois`,
     return true;
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l'Audi Q2:", error);
-    toast.error("Erreur lors de la mise à jour de l'Audi Q2");
     return false;
   }
 };

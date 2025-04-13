@@ -1,6 +1,5 @@
 
 import { getImportedVehicles, saveImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { toast } from 'sonner';
 
 // Structure pour définir les correspondances entre véhicules et images de remplacement
 interface VehicleImageMapping {
@@ -58,7 +57,7 @@ const matchesVehicle = (vehicle: ImportedVehicle, mapping: VehicleImageMapping):
 };
 
 /**
- * Met à jour les images des véhicules spécifiés
+ * Met à jour les images des véhicules spécifiés sans notifications
  */
 export const updateVehicleImages = (): boolean => {
   try {
@@ -109,7 +108,7 @@ export const updateVehicleImages = (): boolean => {
     }
     
     if (standardUpdated || featuredUpdated) {
-      toast.success("Images des véhicules mises à jour");
+      // Toast supprimé
       return true;
     } else {
       console.log("Aucun des véhicules spécifiés n'a été trouvé dans les catalogues");
@@ -117,7 +116,6 @@ export const updateVehicleImages = (): boolean => {
     }
   } catch (error) {
     console.error("Erreur lors de la mise à jour des images des véhicules:", error);
-    toast.error("Erreur lors de la mise à jour des images");
     return false;
   }
 };

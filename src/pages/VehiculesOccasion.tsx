@@ -29,13 +29,16 @@ const VehiculesOccasion = () => {
     setSearchFilters(filters);
   }, [searchParams]);
 
-  // Effet pour mettre à jour les images des véhicules spécifiés
+  // Effet pour mettre à jour les images des véhicules spécifiés silencieusement
   useEffect(() => {
-    // Mettre à jour les images des véhicules
-    updateVehicleImages();
+    // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
+    const firstLoadKey = 'vehiculesOccasionFirstLoad';
+    const isFirstLoad = !localStorage.getItem(firstLoadKey);
     
-    // Ajouter ou mettre à jour l'Audi Q2
-    updateAudiQ2();
+    if (isFirstLoad) {
+      // Marquer comme chargé pour les prochaines visites
+      localStorage.setItem(firstLoadKey, 'loaded');
+    }
   }, []);
 
   // Fonction pour mettre à jour les filtres de recherche
