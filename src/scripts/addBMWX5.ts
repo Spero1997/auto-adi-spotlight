@@ -40,7 +40,7 @@ Nos services inclus :
 • Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
 Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
       image: "/lovable-uploads/a4fa808b-f4bf-481d-8914-8e6c47e97a7c.png",
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/18rZNUyZ2o/?mibextid=wwXIfr",
       featured: true,
       catalogType: 'featured'
     };
