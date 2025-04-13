@@ -69,9 +69,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       'RO': 'Site-ul este acum în Română'
     };
     
-    toast({
-      description: messages[lang],
-    });
+    // Correction ici : on passe le message directement à toast sans utiliser de propriété
+    toast(messages[lang]);
   };
 
   // Translation function
