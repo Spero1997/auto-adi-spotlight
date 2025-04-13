@@ -18,14 +18,14 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#1A1F2C] text-white">
       <Header />
       
       <main className="flex-grow">
         <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-brand-blue">404</h1>
-          <p className="text-3xl mb-6 text-gray-700">Page non trouvée</p>
-          <p className="text-xl text-gray-600 mb-10 max-w-lg">
+          <p className="text-3xl mb-6 text-gray-200">Page non trouvée</p>
+          <p className="text-xl text-gray-300 mb-10 max-w-lg">
             Nous sommes désolés, mais la page que vous recherchez n'existe pas.
           </p>
           

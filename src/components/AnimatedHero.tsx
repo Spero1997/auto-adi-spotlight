@@ -1,12 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import QuickSearch from '@/components/QuickSearch';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-// Replace the import with a direct reference to the public image
-// import logoURL from '@/assets/auto-adi-monaco-logo.png';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -110,15 +107,15 @@ const AnimatedHero = () => {
   return (
     <>
       {/* Hero section avec fond animé pleine largeur/hauteur */}
-      <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-gray-900/90 to-gray-800/90">
+      <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-[#1A1F2C] to-[#222222]">
         {/* Animation en arrière-plan - utilisation d'un effet CSS pour l'animation */}
         <div className="absolute inset-0 z-0 w-full h-full bg-cover bg-center bg-no-repeat hero-background-animate">
           {/* Overlay semi-transparent pour améliorer le contraste et la lisibilité */}
-          <div className="absolute inset-0 bg-black/60 z-1"></div>
+          <div className="absolute inset-0 bg-black/70 z-1"></div>
         </div>
         
         {/* Navbar superposée - conserver la structure container mais pour la navbar uniquement */}
-        <div className={`fixed top-0 left-0 w-full z-30 py-3 transition-colors duration-300 ${scrolled ? 'bg-gray-900/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
+        <div className={`fixed top-0 left-0 w-full z-30 py-3 transition-colors duration-300 ${scrolled ? 'bg-[#1A1F2C]/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
           <div className="container mx-auto px-3 flex justify-between items-center">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
@@ -150,13 +147,13 @@ const AnimatedHero = () => {
                     Menu <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-screen p-0 border-none bg-gray-900/95">
+                <PopoverContent className="w-screen p-0 border-none bg-[#1A1F2C]/95">
                   <div className="flex flex-col p-3">
                     {mainLinks.map((link, index) => (
                       <Link 
                         key={index}
                         to={link.href}
-                        className="py-3 px-4 text-white hover:bg-gray-800 rounded-md"
+                        className="py-3 px-4 text-white hover:bg-[#222]/80 rounded-md"
                       >
                         {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                       </Link>
