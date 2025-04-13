@@ -179,7 +179,7 @@ const AnimatedHero = () => {
                     key={index}
                     to={link.href}
                     className={cn(
-                      "font-montserrat font-light tracking-wide px-5 py-1.5 border transition-all duration-300",
+                      "font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300",
                       isActiveLink 
                         ? "border-white/70 text-white" 
                         : "border-transparent hover:border-white/40 hover:shadow-sm"
@@ -195,7 +195,7 @@ const AnimatedHero = () => {
                 <DropdownMenuTrigger asChild>
                   <Button 
                     variant="ghost" 
-                    className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 transition-all duration-300"
+                    className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300"
                   >
                     <Globe className="mr-1 h-4 w-4" />
                     {translate('language', translations.language)}

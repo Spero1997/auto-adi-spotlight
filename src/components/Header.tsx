@@ -176,8 +176,8 @@ const Header = () => {
                 <Button
                   variant="ghost"
                   className={cn(
-                    "menu-item",
-                    isActive('/vehicules') && "menu-item-active"
+                    "menu-item border border-gray-200 rounded-md px-4 py-2 transition-all",
+                    isActive('/vehicules') && "menu-item-active border-brand-gold/70"
                   )}
                 >
                   {translate('vehicles', menuTranslations.vehicles)} <ChevronDown className="ml-1 h-4 w-4" />
@@ -202,8 +202,8 @@ const Header = () => {
             <Button 
               variant="ghost" 
               className={cn(
-                "menu-item",
-                isActive('/services') && "menu-item-active"
+                "menu-item border border-gray-200 rounded-md px-4 py-2 transition-all",
+                isActive('/services') && "menu-item-active border-brand-gold/70"
               )}
               onClick={() => handleNavigation('/services')}
             >
@@ -213,8 +213,8 @@ const Header = () => {
             <Button 
               variant="ghost" 
               className={cn(
-                "menu-item",
-                isActive('/financement') && "menu-item-active"
+                "menu-item border border-gray-200 rounded-md px-4 py-2 transition-all",
+                isActive('/financement') && "menu-item-active border-brand-gold/70"
               )}
               onClick={() => handleNavigation('/financement')}
             >
@@ -224,8 +224,8 @@ const Header = () => {
             <Button 
               variant="ghost" 
               className={cn(
-                "menu-item",
-                isActive('/rachat') && "menu-item-active"
+                "menu-item border border-gray-200 rounded-md px-4 py-2 transition-all",
+                isActive('/rachat') && "menu-item-active border-brand-gold/70"
               )}
               onClick={() => handleNavigation('/rachat')}
             >
@@ -235,8 +235,8 @@ const Header = () => {
             <Button 
               variant="ghost" 
               className={cn(
-                "menu-item",
-                isActive('/a-propos') && "menu-item-active"
+                "menu-item border border-gray-200 rounded-md px-4 py-2 transition-all",
+                isActive('/a-propos') && "menu-item-active border-brand-gold/70"
               )}
               onClick={() => handleNavigation('/a-propos')}
             >
