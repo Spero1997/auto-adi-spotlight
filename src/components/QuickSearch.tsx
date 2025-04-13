@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,20 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const QuickSearch = () => {
+// Définition de l'interface des filtres de recherche
+export interface SearchFilters {
+  brand?: string;
+  model?: string;
+  maxPrice?: number;
+  fuelType?: string;
+}
+
+// Définition des props du composant QuickSearch
+interface QuickSearchProps {
+  onSearch?: (filters: SearchFilters) => void;
+}
+
+const QuickSearch = ({ onSearch }: QuickSearchProps) => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { language, translate } = useLanguage();
@@ -217,6 +229,16 @@ const QuickSearch = () => {
       budget: selectedBudget,
       fuel: selectedFuel
     });
+    
+    // Appeler la fonction onSearch si elle est fournie
+    if (onSearch) {
+      onSearch({
+        brand: selectedBrand || undefined,
+        model: selectedModel || undefined, 
+        maxPrice: selectedBudget ? parseInt(selectedBudget) : undefined,
+        fuelType: selectedFuel || undefined
+      });
+    }
     
     // Correction: Navigate to the vehicules/occasion page with parameters instead of just /vehicules
     navigate(`/vehicules/occasion?${searchParams.toString()}`);

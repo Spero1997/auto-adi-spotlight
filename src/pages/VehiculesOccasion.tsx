@@ -4,17 +4,10 @@ import { Helmet } from 'react-helmet';
 import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import QuickSearch from '@/components/QuickSearch';
+import QuickSearch, { SearchFilters } from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import { updateVehicleImages } from '@/scripts/updateVehicleImages';
 import { updateAudiQ2 } from '@/scripts/updateAudiQ2';
-
-interface SearchFilters {
-  brand?: string;
-  model?: string;
-  maxPrice?: number;
-  fuelType?: string;
-}
 
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
@@ -45,6 +38,11 @@ const VehiculesOccasion = () => {
     updateAudiQ2();
   }, []);
 
+  // Fonction pour mettre à jour les filtres de recherche
+  function handleSearchFilters(filters: SearchFilters) {
+    setSearchFilters(filters);
+  }
+
   return (
     <>
       <Helmet>
@@ -69,11 +67,6 @@ const VehiculesOccasion = () => {
       </div>
     </>
   );
-  
-  // Fonction pour mettre à jour les filtres de recherche
-  function handleSearchFilters(filters: SearchFilters) {
-    setSearchFilters(filters);
-  }
 };
 
 export default VehiculesOccasion;
