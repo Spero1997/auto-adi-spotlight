@@ -51,6 +51,7 @@ const App = () => {
             <CatalogChecker>
               <Routes>
                 <Route path="/" element={<>
+                  {/* Utilisation de AnimatedHero comme composant principal en plein écran */}
                   <AnimatedHero />
                   <Index />
                 </>} />

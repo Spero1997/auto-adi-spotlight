@@ -1,135 +1,152 @@
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ChevronDown, Search } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import QuickSearch from '@/components/QuickSearch';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import logoURL from '@/assets/auto-adi-monaco-logo.png';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
-import QuickSearch from './QuickSearch';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+
+// Liens du menu principal
+const mainLinks = [
+  { href: '/services', labelKey: 'services' },
+  { href: '/vehicules/occasion', labelKey: 'usedVehicles' },
+  { href: '/financement', labelKey: 'financing' },
+  { href: '/rachat', labelKey: 'buyback' },
+  { href: '/a-propos', labelKey: 'about' },
+  { href: '/contact', labelKey: 'contact' },
+];
+
+// Liens secondaires (bas de page)
+const secondaryLinks = [
+  { href: '/mentions-legales', labelKey: 'legalNotice' },
+  { href: '/politique-confidentialite', labelKey: 'privacyPolicy' },
+  { href: '/cookies', labelKey: 'cookies' },
+  { href: '/cgv', labelKey: 'termsOfSale' },
+  { href: '/conditions', labelKey: 'terms' },
+];
 
 const AnimatedHero = () => {
+  const navigate = useNavigate();
   const { translate } = useLanguage();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const [scrolled, setScrolled] = useState(false);
 
-  // Traductions pour le bouton
-  const translations = {
-    usedVehicles: {
-      FR: "Véhicules d'occasion",
-      EN: "Used vehicles",
-      ES: "Vehículos usados",
-      IT: "Veicoli usati",
-      PT: "Veículos usados",
-      RO: "Vehicule second-hand"
-    }
-  };
+  // Détecter le défilement pour modifier le style du header
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
 
-  const handleShopClick = () => {
-    toast.success("Boutique en ligne bientôt disponible !");
-    console.log('Shop clicked');
-  };
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
 
   return (
     <>
-      {/* Ajout de w-screen pour occuper toute la largeur et suppression de la classe container pour l'intégralité du hero */}
-      <div className={`animated-header relative w-screen ${isMobile ? 'h-[380px]' : 'h-[500px] md:h-[600px]'}`}>
-        <div className="animated-header-background"></div>
+      {/* Hero section avec fond animé pleine largeur/hauteur */}
+      <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-gray-900/90 to-gray-800/90">
+        {/* Animation en arrière-plan - utilisation d'un effet CSS pour l'animation */}
+        <div className="absolute inset-0 z-0 w-full h-full bg-cover bg-center bg-no-repeat hero-background-animate">
+          {/* Overlay semi-transparent pour améliorer le contraste et la lisibilité */}
+          <div className="absolute inset-0 bg-black/50 z-1"></div>
+        </div>
         
         {/* Navbar superposée - conserver la structure container mais pour la navbar uniquement */}
-        <div className="absolute top-0 left-0 w-full z-10 py-3">
+        <div className={`fixed top-0 left-0 w-full z-30 py-3 transition-colors duration-300 ${scrolled ? 'bg-gray-900/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
           <div className="container mx-auto px-3 flex justify-between items-center">
             {/* Logo */}
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex-shrink-0">
               <img 
-                src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
-                alt="Auto Adi" 
-                className={`${isMobile ? 'h-8' : 'h-12'}`}
+                src={logoURL} 
+                alt="Auto ADI Monaco" 
+                className="h-12 md:h-14"
               />
             </Link>
             
-            {/* Boutons de droite */}
-            <div className="flex items-center gap-1">
-              {/* Bouton Shop */}
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
-                onClick={handleShopClick}
-              >
-                <ShoppingCart className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} />
-              </Button>
-              
-              {/* Bouton Menu avec dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 rounded-full"
-                  >
-                    {mobileMenuOpen ? 
-                      <X className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} /> : 
-                      <Menu className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} />
-                    }
+            {/* Menu de navigation - caché sur mobile */}
+            <div className="hidden md:flex space-x-6 text-white">
+              {mainLinks.map((link, index) => (
+                <Link 
+                  key={index}
+                  to={link.href}
+                  className="text-white hover:text-brand-orange transition-colors font-medium"
+                >
+                  {translate(link.labelKey, {
+                    services: 'Services',
+                    usedVehicles: 'Véhicules d\'occasion',
+                    financing: 'Financement',
+                    buyback: 'Rachat',
+                    about: 'À propos',
+                    contact: 'Contact'
+                  })}
+                </Link>
+              ))}
+            </div>
+            
+            {/* Menu mobile - visible uniquement sur mobile */}
+            <div className="flex md:hidden">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" className="text-white">
+                    Menu <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 mt-2 bg-white/95 backdrop-blur-md border-none shadow-lg rounded-lg">
-                  <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
-                    <Link to="/" className="w-full font-medium">Accueil</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
-                    <Link to="/vehicules/occasion" className="w-full font-medium">Véhicules d'occasion</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
-                    <Link to="/services" className="w-full font-medium">Services</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
-                    <Link to="/financement" className="w-full font-medium">Financement</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
-                    <Link to="/a-propos" className="w-full font-medium">À propos</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-slate-100 py-2">
-                    <Link to="/contact" className="w-full font-medium">Contact</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </PopoverTrigger>
+                <PopoverContent className="w-screen p-0 border-none bg-gray-900/95">
+                  <div className="flex flex-col p-3">
+                    {mainLinks.map((link, index) => (
+                      <Link 
+                        key={index}
+                        to={link.href}
+                        className="py-3 px-4 text-white hover:bg-gray-800 rounded-md"
+                      >
+                        {translate(link.labelKey, {
+                          services: 'Services',
+                          usedVehicles: 'Véhicules d\'occasion',
+                          financing: 'Financement',
+                          buyback: 'Rachat',
+                          about: 'À propos',
+                          contact: 'Contact'
+                        })}
+                      </Link>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+            
+            {/* Sélecteur de langue */}
+            <div className="hidden md:flex">
+              <LanguageSwitcher />
             </div>
           </div>
         </div>
         
-        {/* Utilisation de w-full à la place de container pour le contenu principal */}
-        <div className="relative z-3 w-full px-3 flex flex-col items-center justify-center h-full">
-          <h1 className={`animated-header-title ${isMobile ? 'text-2xl mb-5' : 'text-5xl md:text-6xl mb-8'}`}>
-            Bienvenue chez Auto ADI
-          </h1>
+        {/* Contenu central du hero avec titre et QuickSearch superposés */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full z-10 px-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
+              Bienvenue chez Auto ADI
+            </h1>
+            <p className="text-lg md:text-xl text-white mb-2 max-w-2xl mx-auto drop-shadow-md">
+              Votre partenaire de confiance pour l'importation et la vente de véhicules d'occasion de qualité
+            </p>
+          </div>
           
-          {/* Bouton Véhicules d'occasion - Amélioration de la lisibilité */}
-          <Link to="/vehicules/occasion">
-            <Button className={`bg-[#FF9752] hover:bg-[#FF8030] transition-all duration-300
-                              ${isMobile ? 'px-4 py-2 text-base' : 'px-6 py-4 text-xl'} 
-                              rounded-md font-bold shadow-lg shadow-black/30 pulse-animation 
-                              transform hover:scale-105 border-2 border-white text-white`}>
-              {translate('usedVehicles', translations.usedVehicles)}
-            </Button>
-          </Link>
+          {/* QuickSearch intégré directement dans le hero */}
+          <div className="w-full max-w-4xl mx-auto animate-fade-in animation-delay-300">
+            <QuickSearch />
+          </div>
         </div>
-      </div>
-      
-      {/* QuickSearch en dehors et en dessous du header - garder la classe container */}
-      <div className="container mx-auto px-3 mt-6 mb-16">
-        <QuickSearch />
       </div>
     </>
   );

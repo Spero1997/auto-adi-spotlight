@@ -223,16 +223,30 @@ const QuickSearch = () => {
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-xl ${isMobile ? 'p-3 -mt-6' : 'p-6 md:p-8 -mt-10'} mb-12`}>
+    <div className={`glass-search rounded-lg shadow-xl ${isMobile ? 'p-3' : 'p-6'}`}>
       <div className="flex flex-col md:flex-row gap-3 items-center">
         <div className="flex-1 w-full">
           <h3 className={`${isMobile ? 'text-base font-bold' : 'text-xl font-semibold'} mb-3 text-gray-800`}>
-            {translate('quickSearch', translations.quickSearch)}
+            {translate('quickSearch', {
+              FR: "Recherche rapide",
+              EN: "Quick search",
+              ES: "Búsqueda rápida",
+              IT: "Ricerca rapida",
+              PT: "Pesquisa rápida",
+              RO: "Căutare rapidă"
+            })}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <Select onValueChange={handleBrandChange} value={selectedBrand}>
               <SelectTrigger className={`w-full ${isMobile ? 'h-9 text-sm' : 'p-3'} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue`}>
-                <SelectValue placeholder={translate('brand', translations.brand)} />
+                <SelectValue placeholder={translate('brand', {
+                  FR: "Marque",
+                  EN: "Brand",
+                  ES: "Marca",
+                  IT: "Marca",
+                  PT: "Marca",
+                  RO: "Marcă"
+                })} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="audi">Audi</SelectItem>
@@ -310,12 +324,19 @@ const QuickSearch = () => {
         </div>
         <div className="mt-3 md:mt-0 w-full md:w-auto">
           <Button 
-            className={`bg-brand-blue hover:bg-brand-darkBlue transition-colors w-full md:w-auto ${isMobile ? 'px-4 py-2 text-sm' : 'px-8 py-5'} rounded-md text-white font-semibold flex items-center justify-center`}
+            className={`bg-brand-orange hover:bg-brand-darkOrange transition-colors w-full md:w-auto ${isMobile ? 'px-4 py-2 text-sm' : 'px-8 py-5'} rounded-md text-white font-semibold flex items-center justify-center`}
             size={isMobile ? "sm" : "lg"}
             onClick={handleSearch}
           >
             <Search className={`${isMobile ? 'h-3.5 w-3.5' : 'h-5 w-5'} mr-2`} />
-            {translate('search', translations.search)}
+            {translate('search', {
+              FR: "Rechercher",
+              EN: "Search",
+              ES: "Buscar",
+              IT: "Cerca",
+              PT: "Pesquisar",
+              RO: "Căutare"
+            })}
           </Button>
         </div>
       </div>
