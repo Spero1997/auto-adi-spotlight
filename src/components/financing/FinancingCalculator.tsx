@@ -48,34 +48,11 @@ const FinancingCalculator = ({ translations }: FinancingCalculatorProps) => {
     // Get the amount to finance
     const amountToFinance = price - contribution;
     
-    // Different interest rates based on financing type
-    let interestRate: number;
-    switch (financingType) {
-      case 'credit':
-        interestRate = 4.9; // 4.9% for traditional credit
-        break;
-      case 'loa':
-        interestRate = 3.9; // 3.9% for lease with option
-        break;
-      case 'installment':
-        interestRate = 0; // 0% for installment payment
-        break;
-      default:
-        interestRate = 4.9;
-    }
+    // Set interest rate to 0% for all financing types
+    const interestRate = 0;
     
-    // Calculate monthly payment based on financing type
-    let monthlyPayment: number;
-    
-    if (interestRate === 0) {
-      // Simple division for installment payment
-      monthlyPayment = amountToFinance / months;
-    } else {
-      // Formula for monthly payment with interest
-      const monthlyRate = interestRate / 100 / 12;
-      monthlyPayment = amountToFinance * (monthlyRate * Math.pow(1 + monthlyRate, months)) / 
-                       (Math.pow(1 + monthlyRate, months) - 1);
-    }
+    // Calculate monthly payment (simple division since interest rate is 0%)
+    const monthlyPayment = amountToFinance / months;
     
     // Calculate total cost
     const totalCost = monthlyPayment * months + contribution;
@@ -199,7 +176,7 @@ const FinancingCalculator = ({ translations }: FinancingCalculatorProps) => {
                 </div>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                *Simulation à titre informatif. Les taux et mensualités réels peuvent varier en fonction de votre profil.
+                *Simulation à titre informatif. Les mensualités réelles peuvent varier en fonction de votre profil.
               </p>
             </div>
           )}
