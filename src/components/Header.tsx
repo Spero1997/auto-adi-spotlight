@@ -202,17 +202,6 @@ const Header = () => {
                     </Link>
                   </div>
                 </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <div className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
-                    isScrolled ? 'text-gray-700' : 'text-white'
-                  )}>
-                    <Link to="/faq">
-                      FAQ
-                    </Link>
-                  </div>
-                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
 
@@ -293,9 +282,6 @@ const Header = () => {
               </Link>
               <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
                 Contact
-              </Link>
-              <Link to="/faq" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                FAQ
               </Link>
 
               <a

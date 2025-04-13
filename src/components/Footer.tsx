@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Phone, Mail, MapPin, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -113,6 +112,14 @@ const Footer = () => {
       IT: "Condizioni di vendita",
       PT: "Condições de venda",
       RO: "Condiții de vânzare"
+    },
+    faq: {
+      FR: "FAQ",
+      EN: "FAQ",
+      ES: "Preguntas frecuentes",
+      IT: "FAQ",
+      PT: "Perguntas frequentes",
+      RO: "Întrebări frecvente"
     },
     contact: {
       FR: "Contact",
@@ -233,7 +240,8 @@ const Footer = () => {
                 { to: "/politique-confidentialite", labelKey: "privacyPolicy" },
                 { to: "/cookies", labelKey: "cookieManagement" },
                 { to: "/cgv", labelKey: "termsAndConditions" },
-                { to: "/conditions", labelKey: "saleConditions" }
+                { to: "/conditions", labelKey: "saleConditions" },
+                { to: "/faq", labelKey: "faq" }
               ].map((link, index) => (
                 <li key={index}>
                   <Link 
