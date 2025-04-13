@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useState } from 'react';
@@ -25,11 +26,78 @@ const FinancingCalculator = ({ translations }: FinancingCalculatorProps) => {
   const [initialContribution, setInitialContribution] = useState<string>('5000');
   const [duration, setDuration] = useState<string>('48');
   const [financingType, setFinancingType] = useState<string>('credit');
+  const [calculationResult, setCalculationResult] = useState<{
+    monthlyPayment: number;
+    totalCost: number;
+    interestRate: number;
+  } | null>(null);
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
-    // Calculation logic would go here - keeping this the same as the original
-    console.log('Calculating financing:', { vehiclePrice, initialContribution, duration, financingType });
+    
+    // Convert inputs to numbers
+    const price = parseFloat(vehiclePrice);
+    const contribution = parseFloat(initialContribution);
+    const months = parseInt(duration);
+    
+    if (isNaN(price) || isNaN(contribution) || isNaN(months) || months <= 0) {
+      return;
+    }
+
+    // Get the amount to finance
+    const amountToFinance = price - contribution;
+    
+    // Different interest rates based on financing type
+    let interestRate: number;
+    switch (financingType) {
+      case 'credit':
+        interestRate = 4.9; // 4.9% for traditional credit
+        break;
+      case 'loa':
+        interestRate = 3.9; // 3.9% for lease with option
+        break;
+      case 'installment':
+        interestRate = 0; // 0% for installment payment
+        break;
+      default:
+        interestRate = 4.9;
+    }
+    
+    // Calculate monthly payment based on financing type
+    let monthlyPayment: number;
+    
+    if (interestRate === 0) {
+      // Simple division for installment payment
+      monthlyPayment = amountToFinance / months;
+    } else {
+      // Formula for monthly payment with interest
+      const monthlyRate = interestRate / 100 / 12;
+      monthlyPayment = amountToFinance * (monthlyRate * Math.pow(1 + monthlyRate, months)) / 
+                       (Math.pow(1 + monthlyRate, months) - 1);
+    }
+    
+    // Calculate total cost
+    const totalCost = monthlyPayment * months + contribution;
+    
+    // Set the calculation result
+    setCalculationResult({
+      monthlyPayment,
+      totalCost,
+      interestRate
+    });
+    
+    setHasCalculated(true);
+    
+    console.log('Calculating financing:', { 
+      vehiclePrice, 
+      initialContribution, 
+      duration, 
+      financingType,
+      monthlyPayment,
+      totalCost,
+      interestRate
+    });
   };
 
   return (
@@ -112,6 +180,29 @@ const FinancingCalculator = ({ translations }: FinancingCalculatorProps) => {
               {translate('calculatePayments', translations.calculatePayments)}
             </Button>
           </div>
+
+          {hasCalculated && calculationResult && (
+            <div className="md:col-span-2 mt-6 bg-white p-4 rounded-md border border-gray-200">
+              <h3 className="text-lg font-semibold mb-3 text-brand-blue">Résultats de simulation</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="border-r pr-4">
+                  <p className="text-sm text-gray-500">Mensualité estimée</p>
+                  <p className="text-xl font-bold">{calculationResult.monthlyPayment.toFixed(2)} €</p>
+                </div>
+                <div className="border-r pr-4">
+                  <p className="text-sm text-gray-500">Coût total</p>
+                  <p className="text-xl font-bold">{calculationResult.totalCost.toFixed(2)} €</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Taux d'intérêt</p>
+                  <p className="text-xl font-bold">{calculationResult.interestRate.toFixed(2)} %</p>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                *Simulation à titre informatif. Les taux et mensualités réels peuvent varier en fonction de votre profil.
+              </p>
+            </div>
+          )}
         </div>
       </form>
     </div>
