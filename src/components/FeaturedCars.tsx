@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,21 +27,21 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     loadVehicles();
     
     const handleVehiclesUpdated = (event: Event) => {
-      const customEvent = event as CustomEvent;
-      const catalogType = customEvent.detail?.catalogType;
-      
-      if (!catalogType || catalogType === 'standard' || catalogType === 'all' || 
-          (featuredOnly && catalogType === 'featured')) {
-        loadVehicles();
-      }
+      console.log("Événement vehiclesUpdated détecté, rechargement des véhicules");
+      loadVehicles();
+    };
+    
+    const handleCatalogChanged = (event: Event) => {
+      console.log("Événement catalogChanged détecté, rechargement des véhicules");
+      loadVehicles();
     };
     
     window.addEventListener('vehiclesUpdated', handleVehiclesUpdated);
-    window.addEventListener('catalogChanged', handleVehiclesUpdated);
+    window.addEventListener('catalogChanged', handleCatalogChanged);
     
     return () => {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
-      window.removeEventListener('catalogChanged', handleVehiclesUpdated);
+      window.removeEventListener('catalogChanged', handleCatalogChanged);
     };
   }, [featuredOnly]);
 
@@ -60,21 +61,26 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         const standardVehicles = getImportedVehicles('standard');
         const featuredVehicles = getImportedVehicles('featured');
         
+        console.log(`Chargement des véhicules: ${standardVehicles.length} standard, ${featuredVehicles.length} featured`);
+        console.log(`Plateforme actuelle: ${isMobile ? 'Mobile' : 'Desktop'}`);
+        
         // Créer une Map pour éviter les doublons, peu importe la plateforme
         const uniqueVehicles = new Map<string, ImportedVehicle>();
         
         // D'abord ajouter les véhicules standard
         standardVehicles.forEach(vehicle => {
-          // Utiliser une clé plus spécifique pour éviter les problèmes d'identification
-          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}-${vehicle.id}`;
+          // ID unique pour éviter tout problème d'identification
+          const key = `${vehicle.id || 'no-id'}-${vehicle.brand || 'no-brand'}-${vehicle.model || 'no-model'}-${vehicle.year || 'no-year'}`;
           uniqueVehicles.set(key, { ...vehicle, featured: false });
+          console.log(`Ajout du véhicule standard: ${vehicle.brand} ${vehicle.model} avec clé ${key}`);
         });
         
         // Ensuite ajouter/remplacer avec les véhicules featured
         featuredVehicles.forEach(vehicle => {
-          // Utiliser la même clé spécifique pour la cohérence
-          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}-${vehicle.id}`;
+          // Même format d'ID que ci-dessus
+          const key = `${vehicle.id || 'no-id'}-${vehicle.brand || 'no-brand'}-${vehicle.model || 'no-model'}-${vehicle.year || 'no-year'}`;
           uniqueVehicles.set(key, { ...vehicle, featured: true });
+          console.log(`Ajout du véhicule featured: ${vehicle.brand} ${vehicle.model} avec clé ${key}`);
         });
         
         // Convertir la Map en tableau
@@ -83,9 +89,10 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total après déduplication`);
         console.log(`Plateforme: ${isMobile ? 'Mobile' : 'Desktop'} - ${importedVehicles.length} véhicules chargés au total`);
         
-        // Log des véhicules pour vérification
-        importedVehicles.forEach(v => {
-          console.log(`Véhicule chargé: ${v.brand} ${v.model}`);
+        // Log des véhicules pour vérification détaillée
+        console.log("Liste complète des véhicules chargés:");
+        importedVehicles.forEach((v, index) => {
+          console.log(`${index + 1}. ${v.brand} ${v.model} (ID: ${v.id})`);
         });
       }
       

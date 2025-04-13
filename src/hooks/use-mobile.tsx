@@ -1,27 +1,27 @@
 
 import * as React from "react"
 
-// Lower the mobile breakpoint slightly to better match common mobile devices
-const MOBILE_BREAKPOINT = 640 // Changed from 768 to 640 for better mobile detection
+// Réduire légèrement le seuil mobile pour mieux correspondre aux appareils mobiles courants
+const MOBILE_BREAKPOINT = 640 // Changé de 768 à 640 pour une meilleure détection mobile
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState(false)
 
   React.useEffect(() => {
-    // Function to check if screen is in mobile mode
+    // Fonction pour vérifier si l'écran est en mode mobile
     const checkMobile = () => {
       const mobile = window.innerWidth < MOBILE_BREAKPOINT
       setIsMobile(mobile)
       console.log(`Mobile check: width=${window.innerWidth}, isMobile=${mobile}`)
     }
     
-    // Check immediately when component mounts
+    // Vérifier immédiatement lorsque le composant est monté
     checkMobile()
     
-    // Add event listener for screen size changes
+    // Ajouter un écouteur d'événements pour les changements de taille d'écran
     window.addEventListener("resize", checkMobile)
     
-    // Cleanup event listener when component unmounts
+    // Nettoyer l'écouteur d'événements lorsque le composant est démonté
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 

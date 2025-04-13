@@ -90,12 +90,12 @@ const defaultVehicles: ImportedVehicle[] = [];
 
 /**
  * Nettoie les catalogues en supprimant les véhicules sans images valides
- * IMPORTANT: Cette fonction est maintenant désactivée pour assurer la cohérence entre mobile et desktop
+ * IMPORTANT: Cette fonction est maintenant complètement désactivée
+ * pour garantir la cohérence entre mobile et desktop
  */
 export const cleanVehicleCatalogs = (): boolean => {
-  // Cette fonction est désactivée pour éviter la suppression automatique de véhicules
-  // ce qui pouvait créer des incohérences entre les appareils
-  console.log("Nettoyage automatique des catalogues désactivé pour assurer la cohérence entre mobile et desktop");
+  // Fonction désactivée pour éviter toute suppression automatique des véhicules
+  console.log("IMPORTANT: Nettoyage des catalogues complètement DÉSACTIVÉ - Tous les véhicules sont conservés");
   return true;
 };
 

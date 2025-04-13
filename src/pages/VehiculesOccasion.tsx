@@ -31,20 +31,25 @@ const VehiculesOccasion = () => {
     setSearchFilters(filters);
   }, [searchParams]);
 
-  // Effet pour garantir que tous les véhicules sont visibles
+  // Effet pour garantir que tous les véhicules sont visibles sur toutes les plateformes
   useEffect(() => {
-    // Désactiver le nettoyage des catalogues pour préserver tous les véhicules
+    // Forces de garantir que tous les véhicules sont visibles
+    console.log("VehiculesOccasion: Initialisation - Préparation pour affichage complet");
+    
+    // Désactiver explicitement le nettoyage des catalogues
     cleanVehicleCatalogs();
     
-    // Désactiver la suppression de véhicules spécifiques
+    // Désactiver explicitement la suppression de véhicules spécifiques
     removeSpecificVehicles();
     
     // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
     updateVehicleImages();
     updateAudiQ2();
     
-    // Log pour debug
-    console.log("VehiculesOccasion: initialisation terminée - tous les véhicules devraient être visibles");
+    // Déclencher un événement pour forcer le rechargement des véhicules
+    window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'all' } }));
+    
+    console.log("VehiculesOccasion: Initialisation terminée - tous les véhicules devraient être visibles");
   }, []);
 
   // Fonction pour mettre à jour les filtres de recherche
