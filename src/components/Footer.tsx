@@ -1,7 +1,9 @@
 
 import { Link } from 'react-router-dom';
-import { Facebook, MessageCircle, Phone, Mail, MapPin } from 'lucide-react';
+import { Facebook, MessageCircle, Phone, Mail, MapPin, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Separator } from '@/components/ui/separator';
+import { Card } from '@/components/ui/card';
 
 const Footer = () => {
   const { language, translate } = useLanguage();
@@ -147,22 +149,27 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-brand-blue pt-16 text-white">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-gradient-to-b from-brand-blue/95 to-brand-darkBlue pt-16 text-white relative overflow-hidden">
+      {/* Élément décoratif - cercles lumineux */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand-lightBlue/10 rounded-full filter blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-brand-orange/10 rounded-full filter blur-3xl"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Logo and description */}
-          <div className="space-y-4">
-            <Link to="/">
+          <div className="space-y-6">
+            <Link to="/" className="inline-block">
               <img 
                 src="/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png" 
                 alt="Auto Adi" 
-                className="h-12"
+                className="h-14 mb-2"
               />
+              <div className="h-1 w-16 bg-gradient-to-r from-brand-orange to-brand-lightOrange rounded-full"></div>
             </Link>
-            <p className="text-white/90">
+            <p className="text-white/90 text-base leading-relaxed">
               {translate('companyDescription', translations.companyDescription)}
             </p>
-            <p className="text-white/90 font-semibold">
+            <p className="text-white font-medium text-base">
               {translate('contactAvailability', translations.contactAvailability)}
             </p>
             <div className="flex space-x-4">
@@ -170,134 +177,141 @@ const Footer = () => {
                 href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white/80 hover:text-white transition-colors"
+                className="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-300 group"
                 aria-label="Facebook"
               >
-                <Facebook size={20} />
+                <Facebook size={20} className="text-white group-hover:scale-110 transition-transform" />
               </a>
               <a 
                 href="https://wa.me/393761753341" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white/80 hover:text-white transition-colors"
+                className="bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-300 group"
                 aria-label="WhatsApp"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={20} className="text-white group-hover:scale-110 transition-transform" />
               </a>
             </div>
           </div>
 
           {/* Quick links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">{translate('quickLinks', translations.quickLinks)}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/vehicules/neufs" className="text-white/80 hover:text-white transition-colors">
-                  {translate('newVehicles', translations.newVehicles)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/vehicules/occasion" className="text-white/80 hover:text-white transition-colors">
-                  {translate('usedVehicles', translations.usedVehicles)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="text-white/80 hover:text-white transition-colors">
-                  {translate('services', translations.services)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/financement" className="text-white/80 hover:text-white transition-colors">
-                  {translate('financing', translations.financing)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/rachat" className="text-white/80 hover:text-white transition-colors">
-                  {translate('vehicleBuyback', translations.vehicleBuyback)}
-                </Link>
-              </li>
+          <div className="mt-8 md:mt-0">
+            <h3 className="text-lg font-bold mb-6 relative">
+              <span className="relative z-10">{translate('quickLinks', translations.quickLinks)}</span>
+              <span className="absolute bottom-0 left-0 h-1 w-10 bg-brand-orange rounded-full"></span>
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { to: "/vehicules/neufs", labelKey: "newVehicles" },
+                { to: "/vehicules/occasion", labelKey: "usedVehicles" },
+                { to: "/services", labelKey: "services" },
+                { to: "/financement", labelKey: "financing" },
+                { to: "/rachat", labelKey: "vehicleBuyback" }
+              ].map((link, index) => (
+                <li key={index}>
+                  <Link 
+                    to={link.to} 
+                    className="text-white/80 hover:text-white transition-colors flex items-center group"
+                  >
+                    <ChevronRight size={16} className="mr-2 text-brand-orange opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-0 group-hover:translate-x-1 transition-transform" />
+                    <span>{translate(link.labelKey, translations[link.labelKey])}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Legal links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">{translate('legalInfo', translations.legalInfo)}</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/mentions-legales" className="text-white/80 hover:text-white transition-colors">
-                  {translate('legalNotice', translations.legalNotice)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/politique-confidentialite" className="text-white/80 hover:text-white transition-colors">
-                  {translate('privacyPolicy', translations.privacyPolicy)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/cookies" className="text-white/80 hover:text-white transition-colors">
-                  {translate('cookieManagement', translations.cookieManagement)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/cgv" className="text-white/80 hover:text-white transition-colors">
-                  {translate('termsAndConditions', translations.termsAndConditions)}
-                </Link>
-              </li>
-              <li>
-                <Link to="/conditions" className="text-white/80 hover:text-white transition-colors">
-                  {translate('saleConditions', translations.saleConditions)}
-                </Link>
-              </li>
+          <div className="mt-8 lg:mt-0">
+            <h3 className="text-lg font-bold mb-6 relative">
+              <span className="relative z-10">{translate('legalInfo', translations.legalInfo)}</span>
+              <span className="absolute bottom-0 left-0 h-1 w-10 bg-brand-orange rounded-full"></span>
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { to: "/mentions-legales", labelKey: "legalNotice" },
+                { to: "/politique-confidentialite", labelKey: "privacyPolicy" },
+                { to: "/cookies", labelKey: "cookieManagement" },
+                { to: "/cgv", labelKey: "termsAndConditions" },
+                { to: "/conditions", labelKey: "saleConditions" }
+              ].map((link, index) => (
+                <li key={index}>
+                  <Link 
+                    to={link.to} 
+                    className="text-white/80 hover:text-white transition-colors flex items-center group"
+                  >
+                    <ChevronRight size={16} className="mr-2 text-brand-orange opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-0 group-hover:translate-x-1 transition-transform" />
+                    <span>{translate(link.labelKey, translations[link.labelKey])}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">{translate('contact', translations.contact)}</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Phone className="h-5 w-5 mr-2 text-white flex-shrink-0" />
-                <span className="text-white/90">‪+39 376 175 3341‬</span>
-              </li>
-              <li className="flex items-start">
-                <MessageCircle className="h-5 w-5 mr-2 text-white flex-shrink-0" />
-                <span className="text-white/90">WhatsApp: ‪+39 376 175 3341‬</span>
-              </li>
-              <li className="flex items-start">
-                <Mail className="h-5 w-5 mr-2 text-white flex-shrink-0" />
-                <span className="text-white/90">serviceautoadi@gmail.com</span>
-              </li>
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-2 text-white flex-shrink-0" />
-                <span className="text-white/90">
-                  Borgo Ognissanti, 142r 50123 Firenze FI Italie
-                </span>
-              </li>
-              <li className="flex items-start">
-                <Facebook className="h-5 w-5 mr-2 text-white flex-shrink-0" />
-                <a 
-                  href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-white/80 hover:text-white transition-colors"
-                >
-                  {language === 'FR' ? 'Page Facebook' : 
-                   language === 'EN' ? 'Facebook Page' :
-                   language === 'ES' ? 'Página de Facebook' :
-                   language === 'IT' ? 'Pagina Facebook' :
-                   language === 'PT' ? 'Página do Facebook' :
-                   'Pagina Facebook'}
-                </a>
-              </li>
-            </ul>
+          <div className="mt-8 lg:mt-0">
+            <h3 className="text-lg font-bold mb-6 relative">
+              <span className="relative z-10">{translate('contact', translations.contact)}</span>
+              <span className="absolute bottom-0 left-0 h-1 w-10 bg-brand-orange rounded-full"></span>
+            </h3>
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 shadow-lg rounded-xl p-5">
+              <ul className="space-y-4">
+                <li className="flex items-start">
+                  <Phone className="h-5 w-5 mr-3 text-brand-orange flex-shrink-0" />
+                  <span className="text-white">‪+39 376 175 3341‬</span>
+                </li>
+                <li className="flex items-start">
+                  <MessageCircle className="h-5 w-5 mr-3 text-brand-orange flex-shrink-0" />
+                  <span className="text-white">WhatsApp: ‪+39 376 175 3341‬</span>
+                </li>
+                <li className="flex items-start">
+                  <Mail className="h-5 w-5 mr-3 text-brand-orange flex-shrink-0" />
+                  <span className="text-white">serviceautoadi@gmail.com</span>
+                </li>
+                <li className="flex items-start">
+                  <MapPin className="h-5 w-5 mr-3 text-brand-orange flex-shrink-0" />
+                  <span className="text-white">
+                    Borgo Ognissanti, 142r 50123 Firenze FI Italie
+                  </span>
+                </li>
+                <li className="flex items-start">
+                  <Facebook className="h-5 w-5 mr-3 text-brand-orange flex-shrink-0" />
+                  <a 
+                    href="https://www.facebook.com/share/1Ep7xZS8jM/?mibextid=wwXIfr"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white hover:text-brand-orange transition-colors"
+                  >
+                    {language === 'FR' ? 'Page Facebook' : 
+                     language === 'EN' ? 'Facebook Page' :
+                     language === 'ES' ? 'Página de Facebook' :
+                     language === 'IT' ? 'Pagina Facebook' :
+                     language === 'PT' ? 'Página do Facebook' :
+                     'Pagina Facebook'}
+                  </a>
+                </li>
+              </ul>
+            </Card>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-white/20 mt-12 py-8 text-center">
-          <p className="text-white/80 text-sm">
+        <Separator className="my-10 bg-white/10" />
+
+        {/* Bottom bar with subtle animation */}
+        <div className="py-8 flex flex-col md:flex-row md:items-center md:justify-between">
+          <p className="text-white/80 text-sm mb-4 md:mb-0">
             {translate('copyright', translations.copyright)}
           </p>
+          <div className="flex space-x-2 items-center">
+            <span className="text-xs uppercase tracking-wider text-white/60 mr-1">
+              Auto ADI
+            </span>
+            <span className="inline-block w-2 h-2 bg-brand-orange rounded-full animate-pulse"></span>
+            <span className="text-white/60">•</span>
+            <span className="text-white/60">Monaco</span>
+            <span className="text-white/60">•</span>
+            <span className="text-white/60">Italia</span>
+          </div>
         </div>
       </div>
     </footer>
