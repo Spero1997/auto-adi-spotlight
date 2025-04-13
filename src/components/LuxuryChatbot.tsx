@@ -131,9 +131,9 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, messagesEndRef, isTyping 
         ))}
         {isTyping && (
           <div className="flex items-center space-x-2 text-gray-500 pl-10 mt-2">
-            <div className="w-2 h-2 rounded-full bg-brand-blue/60 animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="w-2 h-2 rounded-full bg-brand-blue/60 animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="w-2 h-2 rounded-full bg-brand-blue/60 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            <div className="w-2 h-2 rounded-full bg-brand-blue/60"></div>
+            <div className="w-2 h-2 rounded-full bg-brand-blue/60"></div>
+            <div className="w-2 h-2 rounded-full bg-brand-blue/60"></div>
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -173,12 +173,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setLocalInput(newValue); // Mise à jour locale immédiate pour UI
-    
-    // Délai minimal pour réduire les mises à jour d'état parent
-    // Ce qui évite les rerendus fréquents pendant la frappe
-    requestAnimationFrame(() => {
-      setInput(newValue); // Mise à jour de l'état parent
-    });
+    setInput(newValue); // Mise à jour directe sans animation
   };
 
   return (
@@ -221,41 +216,28 @@ const LuxuryChatbot: React.FC = () => {
   
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
-  // Scroll automatique vers le bas lorsque nouveaux messages
+  // Scroll to bottom on new messages, but without animations
   useEffect(() => {
-    scrollToBottom();
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
+    }
   }, [messages]);
 
-  // Focus sur l'entrée lorsque le chat est ouvert
+  // Focus on input when chat is opened, without delay
   useEffect(() => {
-    if (isOpen && !isMinimized) {
-      // Délai pour permettre aux animations de se terminer
-      const timeoutId = setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 300);
-      
-      return () => clearTimeout(timeoutId);
+    if (isOpen && !isMinimized && inputRef.current) {
+      inputRef.current.focus();
     }
   }, [isOpen, isMinimized]);
-
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   const handleSend = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      // Maintenir le focus après l'envoi
-      requestAnimationFrame(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      });
+      // Immediate focus
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     }
   };
 
@@ -268,12 +250,10 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    // Maintenir le focus
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 300);
+    // Direct focus
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const ChatContainer = () => {
@@ -281,10 +261,8 @@ const LuxuryChatbot: React.FC = () => {
       return (
         <Drawer open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
-          if (open) {
-            setTimeout(() => {
-              if (inputRef.current) inputRef.current.focus();
-            }, 300);
+          if (open && inputRef.current) {
+            inputRef.current.focus();
           }
         }}>
           <DrawerTrigger asChild>
@@ -330,9 +308,9 @@ const LuxuryChatbot: React.FC = () => {
         setIsOpen(open);
         if (open) {
           setIsMinimized(false);
-          setTimeout(() => {
-            if (inputRef.current) inputRef.current.focus();
-          }, 300);
+          if (inputRef.current) {
+            inputRef.current.focus();
+          }
         }
       }}>
         <DialogTrigger asChild>
@@ -356,22 +334,17 @@ const LuxuryChatbot: React.FC = () => {
           )}
         </DialogTrigger>
         <DialogContent 
-          className="p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl sm:max-w-[400px] w-[400px] h-[500px]"
+          className="p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl"
           style={{ 
-            minHeight: '500px', 
-            maxHeight: '500px',
+            height: '500px',
             width: '400px',
-            transform: 'translateZ(0)', // Force GPU acceleration
-            willChange: 'transform', // Optimise les changements
             position: 'fixed',
             bottom: isExpanded ? '20px' : 'auto',
             right: isExpanded ? '20px' : 'auto',
-            // Définir des dimensions fixes pour éviter le zoom
-            fontSize: '16px' // Taille de police fixe
+            fontSize: '16px'
           }}
           aria-labelledby="chat-title"
           onPointerDownCapture={(e) => {
-            // Empêcher les événements de zoom sur mobile
             if (e.pointerType === 'touch' && e.target instanceof HTMLElement && 
                 !e.target.closest('input') && !e.target.closest('button')) {
               e.preventDefault();
