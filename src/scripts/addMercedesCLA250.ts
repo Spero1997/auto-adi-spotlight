@@ -1,6 +1,5 @@
 
 import { addImportedVehicle } from "../utils/vehicleImportService";
-import { toast } from "sonner";
 
 export const addMercedesCLA250 = () => {
   // Créer l'objet véhicule
@@ -60,11 +59,9 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
 
   if (successStandard && successFeatured) {
     console.log("Mercedes CLA 250 AMG ajoutée avec succès dans les deux catalogues !");
-    toast.success("Mercedes CLA 250 AMG ajoutée avec succès !");
     return true;
   } else {
     console.error("Erreur lors de l'ajout de la Mercedes CLA 250 AMG");
-    toast.error("Erreur lors de l'ajout du véhicule");
     return false;
   }
 };
