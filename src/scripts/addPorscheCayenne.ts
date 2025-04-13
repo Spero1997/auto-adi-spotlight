@@ -1,6 +1,5 @@
 
 import { addImportedVehicle, getImportedVehicles, ImportedVehicle, deleteImportedVehicle } from '@/utils/vehicleImportService';
-import { toast } from 'sonner';
 
 export const addPorscheCayenne = () => {
   try {
@@ -58,16 +57,16 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     if (success) {
       console.log("Porsche Cayenne Turbo PAW ajoutée/mise à jour dans le catalogue vedette avec succès");
       console.log("Nouveau lien Facebook:", porscheCayenne.fbLink);
-      toast.success("Porsche Cayenne Turbo PAW mise à jour dans le catalogue vedette avec succès");
+      // Suppression de la notification toast
       
       // Déclencher un événement pour forcer la mise à jour de l'affichage
       window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'featured' } }));
     } else {
       console.error("Échec de l'ajout/mise à jour de la Porsche Cayenne Turbo PAW au catalogue vedette");
-      toast.error("Échec de la mise à jour de la Porsche Cayenne Turbo PAW au catalogue vedette");
+      // Suppression de la notification toast d'erreur
     }
   } catch (error) {
     console.error("Erreur lors de l'ajout/mise à jour de la Porsche Cayenne Turbo PAW:", error);
-    toast.error("Erreur lors de la mise à jour de la Porsche Cayenne Turbo PAW");
+    // Suppression de la notification toast d'erreur
   }
 };

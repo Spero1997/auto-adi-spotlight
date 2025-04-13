@@ -57,10 +57,10 @@ const VehiculesOccasion = () => {
     updateVehicleImages();
     updateAudiQ2();
     
-    // Mise à jour de la BMW X5 avec le nouveau lien Facebook
+    // Mise à jour de la BMW X5 avec le nouveau lien Facebook - suppression de la notification
     addBMWX5();
     
-    // Mise à jour de la Porsche Cayenne avec le nouveau lien Facebook
+    // Mise à jour de la Porsche Cayenne avec le nouveau lien Facebook - suppression de la notification
     addPorscheCayenne();
     
     // Déclencher un événement pour forcer le rechargement des véhicules
@@ -69,13 +69,7 @@ const VehiculesOccasion = () => {
     console.log("VehiculesOccasion: Initialisation terminée - tous les véhicules devraient être visibles");
     setInitialized(true);
     
-    // Force update in 1 second in case the first update was missed
-    setTimeout(() => {
-      console.log("VehiculesOccasion: Forçage d'un second rechargement des véhicules");
-      addPorscheCayenne(); // Re-update Porsche Cayenne specifically
-      window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'all' } }));
-    }, 1000);
-    
+    // Supprimer le second rechargement qui génère une notification supplémentaire
   }, [initialized]);
 
   // Fonction pour mettre à jour les filtres de recherche
@@ -102,7 +96,6 @@ const VehiculesOccasion = () => {
           
           <FeaturedCars searchFilters={searchFilters} />
           
-          {/* Remplacer Benefits par ConditionsHighlight */}
           <ConditionsHighlight />
         </main>
         

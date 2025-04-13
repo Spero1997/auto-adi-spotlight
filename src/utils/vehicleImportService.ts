@@ -184,7 +184,15 @@ export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType: 'stand
     const updatedVehicles = [...vehicles, vehicleWithId];
     saveImportedVehicles(updatedVehicles, catalogType);
     
-    toast.success(`Véhicule ajouté au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
+    // Ne pas afficher de toast pour la Porsche Cayenne ou BMW X5
+    const isSilentVehicle = 
+      (vehicleWithId.brand === "Porsche" && vehicleWithId.model === "Cayenne Turbo PAW") ||
+      (vehicleWithId.brand === "BMW" && vehicleWithId.model === "X5 XDrive 40e M-Sport");
+    
+    if (!isSilentVehicle) {
+      toast.success(`Véhicule ajouté au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
+    }
+    
     return true;
   } catch (error) {
     console.error(`Erreur lors de l'ajout du véhicule (${catalogType}):`, error);
