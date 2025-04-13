@@ -1,4 +1,3 @@
-
 import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 
@@ -10,7 +9,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
-      className="toaster group hidden" // Hide sonner completely
+      className="toaster group"
       toastOptions={{
         classNames: {
           toast:

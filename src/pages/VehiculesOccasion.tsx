@@ -18,39 +18,6 @@ import { getCatalogIdFromUrl, getImportedVehicles } from '@/utils/vehicleImportS
 import { toast } from 'sonner';
 import CatalogShare from '@/components/CatalogShare';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ImportedVehicle } from '@/utils/types/vehicle';
-
-const generateVehicleListingSchema = (vehicles: ImportedVehicle[]) => {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": vehicles.map((vehicle, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "item": {
-        "@type": "Vehicle",
-        "name": `${vehicle.brand} ${vehicle.model}`,
-        "description": vehicle.description || `${vehicle.brand} ${vehicle.model} ${vehicle.year}, ${vehicle.mileage} km, ${vehicle.fuelType}`,
-        "vehicleModelDate": vehicle.year,
-        "mileageFromOdometer": {
-          "@type": "QuantitativeValue",
-          "value": vehicle.mileage,
-          "unitCode": "KMT"
-        },
-        "fuelType": vehicle.fuelType,
-        "vehicleTransmission": vehicle.transmission,
-        "color": vehicle.exteriorColor,
-        "offers": {
-          "@type": "Offer",
-          "price": vehicle.price,
-          "priceCurrency": "EUR",
-          "availability": "https://schema.org/InStock"
-        },
-        "image": vehicle.image
-      }
-    }))
-  };
-};
 
 const carBrands = [
   "Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Honda", "Hyundai", 
@@ -76,7 +43,6 @@ const VehiculesOccasion = () => {
   const location = useLocation();
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(false);
   const [isCatalogLoaded, setIsCatalogLoaded] = useState(false);
-  const [vehicles, setVehicles] = useState<ImportedVehicle[]>([]);
   
   const [filterAirbags, setFilterAirbags] = useState(false);
   const [filterAbs, setFilterAbs] = useState(false);
@@ -85,22 +51,23 @@ const VehiculesOccasion = () => {
   const [filterLeather, setFilterLeather] = useState(false);
   const [filterParkingSensors, setFilterParkingSensors] = useState(false);
   
+  // Traductions pour cette page
   const translations = {
     pageTitle: {
-      FR: "Véhicules d'occasion de qualité à petit prix | Auto Adi Florence",
-      EN: "Quality used vehicles at low prices | Auto Adi Florence",
-      ES: "Vehículos usados de calidad a precios bajos | Auto Adi Florencia",
-      IT: "Veicoli usati di qualità a prezzi bassi | Auto Adi Firenze",
-      PT: "Veículos usados de qualidade a preços baixos | Auto Adi Florença",
-      RO: "Vehicule second-hand de calitate la prețuri mici | Auto Adi Florența"
+      FR: "Véhicules d'occasion",
+      EN: "Used vehicles",
+      ES: "Vehículos usados",
+      IT: "Veicoli usati",
+      PT: "Veículos usados",
+      RO: "Vehicule second-hand"
     },
     pageDescription: {
-      FR: "Découvrez notre sélection de véhicules d'occasion contrôlés et garantis. Financement auto taux 0%, reprise véhicule gratuite. Toutes nos voitures sont inspectées pour vous assurer qualité et fiabilité.",
-      EN: "Discover our selection of inspected and guaranteed used vehicles. 0% auto financing, free vehicle trade-in. All our cars are inspected to ensure quality and reliability.",
-      ES: "Descubra nuestra selección de vehículos usados controlados y garantizados. Financiación auto al 0%, recompra gratuita de vehículos. Todos nuestros coches son inspeccionados para garantizar calidad y fiabilidad.",
-      IT: "Scopri la nostra selezione di veicoli usati controllati e garantiti. Finanziamento auto 0%, ripresa gratuita del veicolo. Tutte le nostre auto sono ispezionate per garantire qualità e affidabilità.",
-      PT: "Descubra a nossa seleção de veículos usados controlados e garantidos. Financiamento automóvel 0%, retoma gratuita de veículos. Todos os nossos carros são inspecionados para garantir qualidade e fiabilidade.",
-      RO: "Descoperiți selecția noastră de vehicule second-hand controlate și garantate. Finanțare auto 0%, preluare gratuită a vehiculelor. Toate mașinile noastre sunt inspectate pentru a vă asigura calitate și fiabilitate."
+      FR: "Découvrez notre sélection de véhicules d'occasion contrôlés et garantis. Toutes nos voitures sont inspectées pour vous assurer qualité et fiabilité.",
+      EN: "Discover our selection of inspected and guaranteed used vehicles. All our cars are inspected to ensure quality and reliability.",
+      ES: "Descubra nuestra selección de vehículos usados controlados y garantizados. Todos nuestros coches son inspeccionados para garantizar calidad y fiabilidad.",
+      IT: "Scopri la nostra selezione di veicoli usati controllati e garantiti. Tutte le nostre auto sono ispezionate per garantire qualità e affidabilità.",
+      PT: "Descubra a nossa seleção de veículos usados controlados e garantidos. Todos os nossos carros são inspecionados para garantir qualidade e fiabilidade.",
+      RO: "Descoperiți selecția noastră de vehicule second-hand controlate și garantate. Toate mașinile noastre sunt inspectate pentru a vă asigura calitate și fiabilitate."
     },
     loadingCatalog: {
       FR: "Chargement du catalogue partagé...",
@@ -117,15 +84,18 @@ const VehiculesOccasion = () => {
       IT: "Catalogo condiviso attivo",
       PT: "Catálogo compartilhado ativo",
       RO: "Catalog partajat activ"
-    }
+    },
+    // Ajoutez d'autres traductions au besoin
   };
   
   useEffect(() => {
+    // Récupérer les paramètres de recherche de l'URL
     const brandParam = searchParams.get('marque');
     const modelParam = searchParams.get('modele');
     const budgetParam = searchParams.get('budget');
     const fuelParam = searchParams.get('energie');
     
+    // Mettre à jour les états avec les paramètres d'URL
     if (brandParam) setSelectedBrand(brandParam);
     if (modelParam) setModelSearch(modelParam);
     if (budgetParam) {
@@ -134,12 +104,10 @@ const VehiculesOccasion = () => {
     }
     if (fuelParam) setSelectedFuelType(fuelParam);
     
+    // Appliquer les filtres automatiquement si des paramètres sont présents
     if (brandParam || modelParam || budgetParam || fuelParam) {
       setFiltersApplied(true);
     }
-    
-    const loadedVehicles = getImportedVehicles();
-    setVehicles(loadedVehicles);
   }, [searchParams]);
 
   const applyFilters = () => {
@@ -206,15 +174,8 @@ const VehiculesOccasion = () => {
   return (
     <>
       <Helmet>
-        <title>{translate('pageTitle', translations.pageTitle)}</title>
+        <title>{translate('pageTitle', translations.pageTitle)} | AutoAdi</title>
         <meta name="description" content={translate('pageDescription', translations.pageDescription)} />
-        <meta name="keywords" content="achat voiture occasion, concessionnaire auto pas cher, financement auto taux 0%, reprise véhicule gratuite, véhicules d'occasion AutoAdi, voiture occasion Florence" />
-        <link rel="canonical" href="https://autoadi.com/vehicules/occasion" />
-        {vehicles.length > 0 && (
-          <script type="application/ld+json">
-            {JSON.stringify(generateVehicleListingSchema(vehicles))}
-          </script>
-        )}
       </Helmet>
       
       <Header />

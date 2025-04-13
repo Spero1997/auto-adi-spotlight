@@ -5,202 +5,23 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
-import AiVehicleAdder from '@/components/AiVehicleAdder';
-import { getImportedVehicles, addVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Button } from '@/components/ui/button';
+import { getImportedVehicles } from '@/utils/vehicleImportService';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
+import { toast } from 'sonner';
 
 const VehicleImport = () => {
-  const [activeTab, setActiveTab] = useState("assistant");
+  const [activeTab, setActiveTab] = useState("add");
   const [vehiclesLoaded, setVehiclesLoaded] = useState(false);
   
-  const addHyundaiSantaFe = () => {
-    try {
-      const hyundaiSantaFe: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-hyundai-santa-fe`,
-        brand: 'Hyundai',
-        model: 'Santa Fe Sport',
-        year: 2013,
-        mileage: 79000,
-        price: 4500,
-        fuelType: 'Essence',
-        transmission: 'Automatique',
-        exteriorColor: 'Vert',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/74794e1d-cef3-4179-9428-d3359d588743.png',
-        fbLink: 'https://www.facebook.com/share/p/1GsrVVncej/?mibextid=wwXIfr',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
-Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
-        features: [
-          'Transmission automatique',
-          'Climatisation',
-          'Direction assistée',
-          'Vitres électriques',
-          'Jantes alliage'
-        ],
-        catalogType: 'standard'
-      };
-      
-      addVehicle(hyundaiSantaFe, 'standard');
-      console.log('Hyundai Santa Fe Sport ajouté avec succès au catalogue!');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du Hyundai Santa Fe Sport:', error);
-      console.error('Erreur lors de l\'ajout du véhicule');
-    }
-  };
-  
-  const addToyotaCamrySE = () => {
-    try {
-      const toyotaCamrySE: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-toyota-camry-se`,
-        brand: 'Toyota',
-        model: 'Camry SE',
-        year: 2022,
-        mileage: 28000,
-        price: 15500,
-        fuelType: 'Essence',
-        transmission: 'Automatique',
-        exteriorColor: 'Rouge',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/86cf6e1b-5f63-424c-8a21-168c2f127e59.png',
-        fbLink: 'https://www.facebook.com/share/p/1EqQLrWetM/?mibextid=wwXIfr',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !
-Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
-        features: [
-          'Transmission automatique',
-          'Climatisation',
-          'Direction assistée',
-          'Vitres électriques',
-          'Jantes alliage',
-          'Système de navigation',
-          'Caméra de recul'
-        ],
-        catalogType: 'standard'
-      };
-      
-      addVehicle(toyotaCamrySE, 'standard');
-      console.log('Toyota Camry SE ajouté avec succès au catalogue!');
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du Toyota Camry SE:', error);
-      console.error('Erreur lors de l\'ajout du véhicule');
-    }
-  };
-  
-  const addVolvoV40 = () => {
-    try {
-      const volvoV40: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-volvo-v40-d2-rdesign`,
-        brand: 'Volvo',
-        model: 'V40 D2 R-Design',
-        year: 2014,
-        mileage: 116000,
-        price: 4000,
-        fuelType: 'Diesel',
-        transmission: 'Automatique',
-        exteriorColor: 'Blanc',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/27eeacb3-e4bf-46b9-babd-527e06b998e1.png',
-        fbLink: 'https://www.facebook.com/share/p/1Hhh6zzGhy/?mibextid=wwXIfr',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Importation et livraison à domicile (délai : 5 jours)
-• Garantie 24 mois
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
-        features: [
-          'Toit panoramique',
-          'Navigation',
-          'Caméra de recul',
-          'R-Design',
-          'Automatique',
-          '115 ch'
-        ],
-        engine: 'D2 115ch',
-        doors: 5,
-        catalogType: 'standard'
-      };
-      
-      addVehicle(volvoV40, 'standard');
-      console.log('Volvo V40 D2 R-Design ajoutée avec succès au catalogue!');
-      
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout de la Volvo V40 D2 R-Design:', error);
-      console.error('Erreur lors de l\'ajout du véhicule');
-    }
-  };
-  
-  const addBMWX7 = () => {
-    try {
-      const bmwX7: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-bmw-x7-xdrive-40d-msport-pro`,
-        brand: 'BMW',
-        model: 'X7 xDrive 40d M Sport Pro',
-        year: 2022,
-        mileage: 43000,
-        price: 27000,
-        fuelType: 'Diesel',
-        transmission: 'Automatique',
-        exteriorColor: 'Noir',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png',
-        fbLink: '',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Importation et livraison à domicile (délai : 5 jours)
-• Garantie 24 mois
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
-        features: [
-          'Toit panoramique',
-          'Navigation',
-          'Caméra de recul',
-          'M Sport Pro',
-          'Automatique',
-          '259 ch'
-        ],
-        engine: 'xDrive 40d 259ch',
-        doors: 5,
-        catalogType: 'standard'
-      };
-      
-      addVehicle(bmwX7, 'standard');
-      console.log('BMW X7 xDrive 40d M Sport Pro ajoutée avec succès au catalogue!');
-      
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { detail: { catalogType: 'standard' } }));
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout de la BMW X7 xDrive 40d M Sport Pro:', error);
-      console.error('Erreur lors de l\'ajout du véhicule');
-    }
-  };
-  
+  // Force le chargement des véhicules au chargement de la page
   useEffect(() => {
     console.log("VehicleImport: Vérification des véhicules stockés");
     try {
       const vehicles = getImportedVehicles();
       console.log(`VehicleImport: ${vehicles.length} véhicules trouvés dans localStorage`);
       
+      // Recherche de la BMW X5
       const bmwX5 = vehicles.find(v => 
         v.brand === "BMW" && 
         v.model.includes("X5") && 
@@ -209,8 +30,10 @@ Nos services inclus :
       
       if (bmwX5) {
         console.log("La BMW X5 xDrive est présente dans le catalogue", bmwX5);
+        toast.success("La BMW X5 xDrive a été ajoutée au catalogue");
       }
 
+      // Recherche de la Volkswagen T-Cross
       const tCross = vehicles.find(v => 
         v.brand === "Volkswagen" && 
         v.model.includes("T-Cross") && 
@@ -219,8 +42,10 @@ Nos services inclus :
       
       if (tCross) {
         console.log("La Volkswagen T-Cross est présente dans le catalogue", tCross);
+        toast.success("La Volkswagen T-Cross a été ajoutée au catalogue");
       }
       
+      // Recherche de l'Audi A3 E-Tron
       const audiA3 = vehicles.find(v => 
         v.brand === "Audi" && 
         v.model.includes("A3 E-Tron") && 
@@ -229,8 +54,10 @@ Nos services inclus :
       
       if (audiA3) {
         console.log("L'Audi A3 E-Tron est présente dans le catalogue", audiA3);
+        toast.success("L'Audi A3 E-Tron a été ajoutée au catalogue");
       }
       
+      // Recherche de la Kia Niro
       const kiaNiro = vehicles.find(v => 
         v.brand === "Kia" && 
         v.model.includes("Niro") && 
@@ -239,8 +66,10 @@ Nos services inclus :
       
       if (kiaNiro) {
         console.log("La Kia Niro Hybride est présente dans le catalogue", kiaNiro);
+        toast.success("La Kia Niro Hybride a été ajoutée au catalogue");
       }
       
+      // Recherche de la BMW X1
       const bmwX1 = vehicles.find(v => 
         v.brand === "BMW" && 
         v.model.includes("X1") && 
@@ -249,8 +78,10 @@ Nos services inclus :
       
       if (bmwX1) {
         console.log("La BMW X1 xDrive 25e est présente dans le catalogue", bmwX1);
+        toast.success("La BMW X1 xDrive 25e a été ajoutée au catalogue");
       }
       
+      // Recherche de l'Audi Q5
       const audiQ5 = vehicles.find(v => 
         v.brand === "Audi" && 
         v.model.includes("Q5 Quattro") && 
@@ -259,8 +90,10 @@ Nos services inclus :
       
       if (audiQ5) {
         console.log("L'Audi Q5 Quattro S-Tronic est présente dans le catalogue", audiQ5);
+        toast.success("L'Audi Q5 Quattro S-Tronic a été ajoutée au catalogue");
       }
       
+      // Recherche de l'Audi Q7
       const audiQ7 = vehicles.find(v => 
         v.brand === "Audi" && 
         v.model.includes("Q7 245HK") && 
@@ -269,8 +102,10 @@ Nos services inclus :
       
       if (audiQ7) {
         console.log("L'Audi Q7 245HK-2XS-Line est présente dans le catalogue", audiQ7);
+        toast.success("L'Audi Q7 245HK-2XS-Line a été ajoutée au catalogue");
       }
       
+      // Recherche de l'Audi A3 Sportback
       const audiA3Sportback = vehicles.find(v => 
         v.brand === "Audi" && 
         v.model.includes("A3 Sportback") && 
@@ -279,8 +114,10 @@ Nos services inclus :
       
       if (audiA3Sportback) {
         console.log("L'Audi A3 Sportback 35 1,5 TFSI est présente dans le catalogue", audiA3Sportback);
+        toast.success("L'Audi A3 Sportback 35 1,5 TFSI a été ajoutée au catalogue");
       }
       
+      // Recherche de la BMW X3
       const bmwX3 = vehicles.find(v => 
         v.brand === "BMW" && 
         v.model.includes("X3 xDrive 20d M-sport") && 
@@ -289,8 +126,10 @@ Nos services inclus :
       
       if (bmwX3) {
         console.log("La BMW X3 xDrive 20d M-sport est présente dans le catalogue", bmwX3);
+        toast.success("La BMW X3 xDrive 20d M-sport a été ajoutée au catalogue");
       }
       
+      // Recherche de la Range Rover Evoque
       const rangeRoverEvoque = vehicles.find(v => 
         v.brand === "Range Rover" && 
         v.model.includes("Evoque 2.0 Prestige") && 
@@ -299,8 +138,10 @@ Nos services inclus :
       
       if (rangeRoverEvoque) {
         console.log("La Range Rover Evoque 2.0 Prestige est présente dans le catalogue", rangeRoverEvoque);
+        toast.success("La Range Rover Evoque 2.0 Prestige a été ajoutée au catalogue");
       }
       
+      // Recherche de la nouvelle BMW X3 2014
       const bmwX3_2014 = vehicles.find(v => 
         v.brand === "BMW" && 
         v.model.includes("X3 xDrive 20d") && 
@@ -309,71 +150,13 @@ Nos services inclus :
       
       if (bmwX3_2014) {
         console.log("La BMW X3 xDrive 20d 2014 est présente dans le catalogue", bmwX3_2014);
-      }
-      
-      const hyundaiSantaFe = vehicles.find(v => 
-        v.brand === "Hyundai" && 
-        v.model.includes("Santa Fe Sport") && 
-        v.year === 2013
-      );
-      
-      if (!hyundaiSantaFe) {
-        console.log("Ajout automatique du Hyundai Santa Fe Sport au catalogue");
-        addHyundaiSantaFe();
-      } else {
-        console.log("Le Hyundai Santa Fe Sport est présent dans le catalogue", hyundaiSantaFe);
-      }
-      
-      const toyotaCamry = vehicles.find(v => 
-        v.brand === "Toyota" && 
-        v.model.includes("Camry SE") && 
-        v.year === 2022
-      );
-      
-      if (!toyotaCamry) {
-        console.log("Ajout automatique du Toyota Camry SE au catalogue");
-        addToyotaCamrySE();
-      } else {
-        console.log("La Toyota Camry SE est présente dans le catalogue", toyotaCamry);
-      }
-      
-      const volvoV40 = vehicles.find(v => 
-        v.brand === "Volvo" && 
-        v.model.includes("V40 D2 R-Design") && 
-        v.year === 2014
-      );
-      
-      if (!volvoV40) {
-        console.log("Ajout automatique de la Volvo V40 au catalogue");
-        addVolvoV40();
-      } else {
-        console.log("La Volvo V40 est présente dans le catalogue", volvoV40);
-      }
-      
-      const bmwX7 = vehicles.find(v => 
-        v.brand === "BMW" && 
-        v.model.includes("X7 xDrive 40d M Sport Pro") && 
-        v.year === 2022
-      );
-      
-      if (bmwX7) {
-        console.log("La BMW X7 xDrive 40d M Sport Pro est présente dans le catalogue", bmwX7);
-        if (bmwX7.image !== '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png') {
-          bmwX7.image = '/lovable-uploads/13feee90-eb32-47e8-9525-3886e46966b4.png';
-          const updatedVehicles = vehicles.map(v => 
-            (v.id === bmwX7.id) ? bmwX7 : v
-          );
-          addVehicle(bmwX7, 'standard');
-          console.log('Image de la BMW X7 xDrive 40d M Sport Pro mise à jour!');
-        }
-      } else {
-        console.log("Ajout automatique de la BMW X7 xDrive 40d M Sport Pro au catalogue");
-        addBMWX7();
+        toast.success("La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue");
       }
       
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
+      toast.error("Erreur lors du chargement des véhicules");
     }
   }, []);
   
@@ -393,46 +176,99 @@ Nos services inclus :
             Ajoutez ou importez facilement des véhicules
           </p>
           
-          <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
-            <Button 
-              onClick={addVolvoV40}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              Ajouter la Volvo V40 D2 R-Design au catalogue
-            </Button>
-            
-            <Button 
-              onClick={addHyundaiSantaFe}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
-            >
-              Ajouter le Hyundai Santa Fe Sport au catalogue
-            </Button>
-            
-            <Button 
-              onClick={addToyotaCamrySE}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              Ajouter la Toyota Camry SE au catalogue
-            </Button>
+          <Alert className="mb-4">
+            <Info className="h-4 w-4" />
+            <AlertTitle>Mise à jour effectuée</AlertTitle>
+            <AlertDescription>
+              La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue avec sa nouvelle image.
+            </AlertDescription>
+          </Alert>
 
-            <Button 
-              onClick={addBMWX7}
-              className="bg-gray-800 hover:bg-gray-900 text-white"
-            >
-              Ajouter la BMW X7 xDrive 40d M Sport Pro
-            </Button>
-          </div>
+          <Alert className="mb-4 bg-blue-50 border-blue-200">
+            <Info className="h-4 w-4 text-blue-500" />
+            <AlertTitle>Nouvelle BMW ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X5 xDrive 2016 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
           
-          <Tabs defaultValue="assistant" className="w-full" onValueChange={(value) => setActiveTab(value)}>
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="assistant">Assistant IA</TabsTrigger>
+          <Alert className="mb-4 bg-green-50 border-green-200">
+            <Info className="h-4 w-4 text-green-500" />
+            <AlertTitle>Nouvelle Audi ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi A3 E-Tron 1.4 S Tronic 2017 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-4 bg-yellow-50 border-yellow-200">
+            <Info className="h-4 w-4 text-yellow-500" />
+            <AlertTitle>Nouvelle Kia ajoutée</AlertTitle>
+            <AlertDescription>
+              La Kia Niro Hybride 149 CH 2017 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-4 bg-amber-50 border-amber-200">
+            <Info className="h-4 w-4 text-amber-500" />
+            <AlertTitle>Nouvelle BMW X1 ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X1 xDrive 25e 2021 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-4 bg-indigo-50 border-indigo-200">
+            <Info className="h-4 w-4 text-indigo-500" />
+            <AlertTitle>Nouvelle Audi Q5 ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi Q5 Quattro S-Tronic 2014 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-4 bg-purple-50 border-purple-200">
+            <Info className="h-4 w-4 text-purple-500" />
+            <AlertTitle>Nouvelle Audi Q7 ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi Q7 245HK-2XS-Line 2012 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-4 bg-pink-50 border-pink-200">
+            <Info className="h-4 w-4 text-pink-500" />
+            <AlertTitle>Nouvelle Audi A3 Sportback ajoutée</AlertTitle>
+            <AlertDescription>
+              L'Audi A3 Sportback 35 1,5 TFSI 2019 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-gray-50 border-gray-200">
+            <Info className="h-4 w-4 text-gray-500" />
+            <AlertTitle>Nouvelle BMW X3 ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X3 xDrive 20d M-sport 190 CH 2016 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-teal-50 border-teal-200">
+            <Info className="h-4 w-4 text-teal-500" />
+            <AlertTitle>Nouvelle Range Rover ajoutée</AlertTitle>
+            <AlertDescription>
+              La Range Rover Evoque 2.0 Prestige 241 CH 2014 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Alert className="mb-6 bg-slate-50 border-slate-200">
+            <Info className="h-4 w-4 text-slate-500" />
+            <AlertTitle>Nouvelle BMW X3 2014 ajoutée</AlertTitle>
+            <AlertDescription>
+              La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue avec succès.
+            </AlertDescription>
+          </Alert>
+          
+          <Tabs defaultValue="add" className="w-full" onValueChange={(value) => setActiveTab(value)}>
+            <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="add">Ajout manuel</TabsTrigger>
               <TabsTrigger value="import">Import depuis URL</TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="assistant" className="mt-0">
-              <AiVehicleAdder />
-            </TabsContent>
             
             <TabsContent value="add" className="mt-0">
               <VehicleAddForm />

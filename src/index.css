@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,87 +92,22 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-    overflow-x: hidden;
-  }
-  
-  /* Application du fond bleu foncé pour la version desktop */
-  @media (min-width: 768px) {
-    body {
-      background-color: rgba(6, 78, 162, 0.05);
-    }
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-gray-900;
-    line-height: 1.3;
-    margin-bottom: 0.75em;
+    @apply font-bold;
   }
 
   h1 {
     @apply text-3xl md:text-5xl;
-    letter-spacing: -0.02em;
   }
 
   h2 {
     @apply text-2xl md:text-4xl;
-    letter-spacing: -0.01em;
   }
 
   h3 {
     @apply text-xl md:text-3xl;
-  }
-  
-  h4 {
-    @apply text-lg md:text-2xl;
-  }
-  
-  p, li, span {
-    @apply text-gray-800;
-    line-height: 1.6;
-  }
-  
-  /* Amélioration de la lisibilité sur fonds colorés */
-  .bg-brand-blue *, .bg-brand-darkBlue *, .bg-gray-800 *, .bg-gray-900 * {
-    @apply text-white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Amélioration du contraste pour les textes sur des images */
-  .bg-cover, [style*="background-image"] {
-    position: relative;
-  }
-  
-  .bg-cover::before, [style*="background-image"]::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-    pointer-events: none;
-  }
-  
-  /* Espacement spécifique pour mobile */
-  @media (max-width: 640px) {
-    h1, h2, h3, h4 {
-      margin-bottom: 0.5em;
-    }
-    
-    p, li {
-      @apply text-base;
-      margin-bottom: 1em;
-    }
-    
-    .container {
-      @apply px-4;
-    }
-  }
-
-  /* La scène 3D doit toujours prendre le contrôle total */
-  canvas {
-    touch-action: none;
-    outline: none;
   }
 }
 
@@ -189,58 +125,82 @@
   }
 
   .section-padding {
-    @apply py-12 md:py-16 lg:py-20;
+    @apply py-8 md:py-16 lg:py-20;
   }
   
-  /* Ombre de texte pour améliorer le contraste sur les fonds d'image */
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  /* Animated Header Styles */
+  .animated-header {
+    @apply relative w-full overflow-hidden flex items-center justify-center;
+    background: linear-gradient(120deg, #0A6ED5, #064EA2);
   }
   
-  /* Classes d'accessibilité pour améliorer la lisibilité */
-  .high-contrast {
-    @apply text-gray-900 bg-white shadow-md px-4 py-2 rounded-md;
+  .animated-header-background {
+    @apply absolute top-0 left-0 w-full h-full z-[1] opacity-50;
+    background: url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
+    animation: moveBackground 20s linear infinite;
   }
   
-  /* Animation spécifique pour le bouton du chatbot */
-  @keyframes chatbot-pulse {
+  .animated-header-title {
+    @apply relative text-white text-center z-[2];
+    text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 1.5s ease-out;
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes moveBackground {
     0% {
-      box-shadow: 0 0 0 0 rgba(6, 78, 162, 0.7);
+      background-position: 0% 50%;
     }
-    70% {
-      box-shadow: 0 0 0 15px rgba(6, 78, 162, 0);
+    50% {
+      background-position: 100% 50%;
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(6, 78, 162, 0);
+      background-position: 0% 50%;
     }
   }
   
-  .chatbot-button-pulse {
-    animation: chatbot-pulse 2s infinite;
-  }
-  
-  /* Animation d'apparition pour l'intro 3D */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  @keyframes slideInUp {
-    from {
-      transform: translateY(50px);
-      opacity: 0;
+  /* Pulse animation for the "Véhicules d'occasion" button */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 151, 82, 0.6);
     }
-    to {
-      transform: translateY(0);
-      opacity: 1;
+    70% {
+      box-shadow: 0 0 0 8px rgba(255, 151, 82, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 151, 82, 0);
     }
   }
   
-  .fade-in {
-    animation: fadeIn 1s ease-out forwards;
+  .pulse-animation {
+    animation: pulse 2s infinite;
+  }
+
+  /* Mobile optimizations */
+  @media (max-width: 640px) {
+    .container {
+      @apply px-3;
+    }
+    
+    .section-padding {
+      @apply py-6;
+    }
+    
+    .animated-header-title {
+      margin-top: -1rem;
+    }
+    
+    .pulse-animation {
+      animation: pulse 1.5s infinite;
+    }
   }
   
-  .slide-in-up {
-    animation: slideInUp 0.8s ease-out forwards;
+  /* Quick Search en bas du header */
+  #quick-search-container {
+    width: 100%;
   }
 }
