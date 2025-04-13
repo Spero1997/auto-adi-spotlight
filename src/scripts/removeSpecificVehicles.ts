@@ -1,7 +1,7 @@
 
 import { getImportedVehicles, saveImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 
-// Liste des véhicules à supprimer (vide pour le moment car nous voulons garder tous les véhicules)
+// Liste des véhicules à supprimer (vide car nous voulons garder tous les véhicules)
 const vehiclesToRemove: { brand: string; model: string }[] = [];
 
 /**

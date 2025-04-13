@@ -61,7 +61,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         const standardVehicles = getImportedVehicles('standard');
         const featuredVehicles = getImportedVehicles('featured');
         
-        // Créer une Map pour éviter les doublons, en utilisant la même logique peu importe la plateforme
+        // Créer une Map pour éviter les doublons, peu importe la plateforme
         const uniqueVehicles = new Map<string, ImportedVehicle>();
         
         // D'abord ajouter les véhicules standard
@@ -114,10 +114,9 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const featured = filteredVehicles();
 
+  // Même méthode pour ouvrir le lien Facebook, peu importe la plateforme
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
-    
-    // Utiliser la même méthode pour ouvrir le lien Facebook, peu importe la plateforme
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
