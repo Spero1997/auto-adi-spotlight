@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Footer from '@/components/Footer';
@@ -16,6 +17,7 @@ import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
 import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
+import AnimatedHero from '@/components/AnimatedHero';
 
 const Index = () => {
   useEffect(() => {
@@ -146,7 +148,8 @@ const Index = () => {
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
-        <main className="flex-grow pt-[100vh]">
+        <AnimatedHero />
+        <main className="flex-grow">
           <Benefits />
           <FeaturedCars featuredOnly={true} />
           

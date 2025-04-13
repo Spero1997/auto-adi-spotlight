@@ -32,7 +32,7 @@ const OrdersBackup = () => {
   if (!initialized) {
     return (
       <div className="min-h-screen flex flex-col">
-        <main className="flex-grow flex items-center justify-center pt-[100vh]">
+        <main className="flex-grow flex items-center justify-center">
           <p>Chargement...</p>
         </main>
         <Footer />
@@ -42,7 +42,7 @@ const OrdersBackup = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow pt-[100vh]">
+      <main className="flex-grow">
         <OrdersBackupComponent />
       </main>
       

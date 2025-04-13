@@ -1,3 +1,4 @@
+
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -6,7 +7,29 @@ import { Headset, Clock, User, Car, Calendar, ShieldCheck, Clock3, Award } from 
 const ServicePremium = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow pt-[100vh]">
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-b from-amber-500 to-amber-600 text-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Service client premium</h1>
+              <p className="text-xl mb-8">Une expérience automobile d'exception avec un accompagnement personnalisé à chaque étape de votre projet.</p>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/contact">
+                  <Button className="bg-white text-amber-600 hover:bg-gray-100 text-lg font-semibold">
+                    Devenir client premium
+                  </Button>
+                </Link>
+                <a href="tel:+33123456789">
+                  <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold">
+                    Ligne dédiée premium
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Main Content */}
         <section className="py-16">
           <div className="container mx-auto px-4">
