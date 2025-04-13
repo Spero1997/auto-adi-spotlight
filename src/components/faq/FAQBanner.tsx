@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
-import { HelpCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { HelpCircle, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 interface FAQBannerProps {
@@ -15,6 +15,16 @@ const FAQBanner = ({
   description = "Consultez notre page FAQ ou contactez-nous directement", 
   className = "" 
 }: FAQBannerProps) => {
+  const navigate = useNavigate();
+
+  const handleFAQClick = () => {
+    navigate("/faq");
+  };
+
+  const handleContactClick = () => {
+    navigate("/contact");
+  };
+
   return (
     <motion.div 
       className={`bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-10 text-center shadow-sm border border-blue-100 ${className}`}
@@ -28,16 +38,20 @@ const FAQBanner = ({
       <h3 className="text-2xl font-bold mb-4 font-playfair text-gray-800">{title}</h3>
       <p className="text-lg mb-8 text-gray-600 max-w-2xl mx-auto">{description}</p>
       <div className="flex flex-wrap justify-center gap-4">
-        <Link to="/faq">
-          <Button className="bg-brand-blue hover:bg-brand-darkBlue text-white px-6 py-6 h-auto text-base font-medium shadow-sm hover:shadow-md transition-all duration-300">
-            Consulter la FAQ
-          </Button>
-        </Link>
-        <Link to="/contact">
-          <Button variant="outline" className="border-brand-blue text-brand-blue hover:bg-blue-50 px-6 py-6 h-auto text-base font-medium shadow-sm hover:shadow-md transition-all duration-300">
-            Nous contacter
-          </Button>
-        </Link>
+        <Button 
+          onClick={handleFAQClick}
+          className="bg-brand-blue hover:bg-brand-darkBlue text-white px-6 py-6 h-auto text-base font-medium shadow-sm hover:shadow-md transition-all duration-300 group"
+        >
+          Consulter la FAQ
+          <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+        </Button>
+        <Button 
+          variant="outline" 
+          onClick={handleContactClick}
+          className="border-brand-blue text-brand-blue hover:bg-blue-50 px-6 py-6 h-auto text-base font-medium shadow-sm hover:shadow-md transition-all duration-300"
+        >
+          Nous contacter
+        </Button>
       </div>
     </motion.div>
   );
