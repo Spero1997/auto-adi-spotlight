@@ -1,466 +1,666 @@
 
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Wrench, Car, Calendar, Shield, Gauge, Fuel, ScrollText, Plane, Headset, CreditCard, ShieldCheck } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Wrench, AlertTriangle, Calendar, CheckCircle, Settings, Activity, ShieldCheck, Clock, Truck, User } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Services = () => {
+  const { translate } = useLanguage();
+
+  // Traductions pour la page Services
+  const translations = {
+    // Hero section
+    servicesTitle: {
+      FR: "Services automobiles professionnels",
+      EN: "Professional automotive services",
+      ES: "Servicios automotrices profesionales",
+      IT: "Servizi automobilistici professionali",
+      PT: "Serviços automotivos profissionais",
+      RO: "Servicii auto profesionale"
+    },
+    servicesDescription: {
+      FR: "Notre équipe d'experts est à votre service pour l'entretien, la réparation et l'acquisition de votre véhicule.",
+      EN: "Our team of experts is at your service for the maintenance, repair and acquisition of your vehicle.",
+      ES: "Nuestro equipo de expertos está a su servicio para el mantenimiento, reparación y adquisición de su vehículo.",
+      IT: "Il nostro team di esperti è al tuo servizio per la manutenzione, la riparazione e l'acquisizione del tuo veicolo.",
+      PT: "Nossa equipe de especialistas está ao seu serviço para manutenção, reparo e aquisição do seu veículo.",
+      RO: "Echipa noastră de experți vă stă la dispoziție pentru întreținerea, repararea și achiziționarea vehiculului dumneavoastră."
+    },
+    scheduleAppointment: {
+      FR: "Prendre rendez-vous",
+      EN: "Schedule an appointment",
+      ES: "Programar una cita",
+      IT: "Fissare un appuntamento",
+      PT: "Agendar uma consulta",
+      RO: "Programează o întâlnire"
+    },
+    ourServices: {
+      FR: "Nos services",
+      EN: "Our services",
+      ES: "Nuestros servicios",
+      IT: "I nostri servizi",
+      PT: "Nossos serviços",
+      RO: "Serviciile noastre"
+    },
+    
+    // Specialized services section
+    specializedServices: {
+      FR: "Nos services spécialisés",
+      EN: "Our specialized services",
+      ES: "Nuestros servicios especializados",
+      IT: "I nostri servizi specializzati",
+      PT: "Nossos serviços especializados",
+      RO: "Serviciile noastre specializate"
+    },
+    tailoredSolutions: {
+      FR: "Des solutions sur mesure pour répondre à tous vos besoins automobiles.",
+      EN: "Tailored solutions to meet all your automotive needs.",
+      ES: "Soluciones a medida para satisfacer todas sus necesidades automotrices.",
+      IT: "Soluzioni su misura per soddisfare tutte le tue esigenze automobilistiche.",
+      PT: "Soluções personalizadas para atender a todas as suas necessidades automotivas.",
+      RO: "Soluții personalizate pentru a răspunde tuturor nevoilor dumneavoastră auto."
+    },
+    
+    // Manufacturer warranty
+    manufacturerWarranty: {
+      FR: "Garantie constructeur",
+      EN: "Manufacturer warranty",
+      ES: "Garantía del fabricante",
+      IT: "Garanzia del produttore",
+      PT: "Garantia do fabricante",
+      RO: "Garanția producătorului"
+    },
+    manufacturerWarrantyDesc: {
+      FR: "Nous maintenons la garantie constructeur de votre véhicule tout en offrant un service de qualité à prix compétitif.",
+      EN: "We maintain your vehicle's manufacturer warranty while offering quality service at competitive prices.",
+      ES: "Mantenemos la garantía del fabricante de su vehículo mientras ofrecemos un servicio de calidad a precios competitivos.",
+      IT: "Manteniamo la garanzia del produttore del tuo veicolo offrendo al contempo un servizio di qualità a prezzi competitivi.",
+      PT: "Mantemos a garantia do fabricante do seu veículo enquanto oferecemos um serviço de qualidade a preços competitivos.",
+      RO: "Menținem garanția producătorului vehiculului dvs. oferind în același timp servicii de calitate la prețuri competitive."
+    },
+    learnMore: {
+      FR: "En savoir plus",
+      EN: "Learn more",
+      ES: "Saber más",
+      IT: "Saperne di più",
+      PT: "Saber mais",
+      RO: "Aflați mai multe"
+    },
+    
+    // International delivery
+    internationalDelivery: {
+      FR: "Livraison internationale",
+      EN: "International delivery",
+      ES: "Entrega internacional",
+      IT: "Consegna internazionale",
+      PT: "Entrega internacional",
+      RO: "Livrare internațională"
+    },
+    internationalDeliveryDesc: {
+      FR: "Notre service de livraison internationale vous permet d'acquérir votre véhicule où que vous soyez en Europe.",
+      EN: "Our international delivery service allows you to acquire your vehicle wherever you are in Europe.",
+      ES: "Nuestro servicio de entrega internacional le permite adquirir su vehículo dondequiera que esté en Europa.",
+      IT: "Il nostro servizio di consegna internazionale ti consente di acquisire il tuo veicolo ovunque tu sia in Europa.",
+      PT: "O nosso serviço de entrega internacional permite-lhe adquirir o seu veículo onde quer que esteja na Europa.",
+      RO: "Serviciul nostru de livrare internațională vă permite să achiziționați vehiculul oriunde v-ați afla în Europa."
+    },
+    
+    // Premium customer service
+    premiumCustomerService: {
+      FR: "Service client premium",
+      EN: "Premium customer service",
+      ES: "Servicio al cliente premium",
+      IT: "Servizio clienti premium",
+      PT: "Serviço premium ao cliente",
+      RO: "Serviciu premium pentru clienți"
+    },
+    premiumCustomerServiceDesc: {
+      FR: "Notre équipe de conseillers dédiés vous offre un accompagnement personnalisé pour tous vos projets automobiles.",
+      EN: "Our team of dedicated advisors offers you personalized support for all your automotive projects.",
+      ES: "Nuestro equipo de asesores dedicados le ofrece un apoyo personalizado para todos sus proyectos automotrices.",
+      IT: "Il nostro team di consulenti dedicati ti offre un supporto personalizzato per tutti i tuoi progetti automobilistici.",
+      PT: "A nossa equipa de consultores dedicados oferece-lhe apoio personalizado para todos os seus projetos automóveis.",
+      RO: "Echipa noastră de consilieri dedicați vă oferă asistență personalizată pentru toate proiectele dvs. auto."
+    },
+    
+    // Automotive services section
+    automotiveServices: {
+      FR: "Nos services automobiles",
+      EN: "Our automotive services",
+      ES: "Nuestros servicios automotrices",
+      IT: "I nostri servizi automobilistici",
+      PT: "Nossos serviços automotivos",
+      RO: "Serviciile noastre auto"
+    },
+    completeServiceRange: {
+      FR: "Découvrez notre gamme complète de services pour maintenir votre véhicule en parfait état.",
+      EN: "Discover our complete range of services to keep your vehicle in perfect condition.",
+      ES: "Descubra nuestra gama completa de servicios para mantener su vehículo en perfectas condiciones.",
+      IT: "Scopri la nostra gamma completa di servizi per mantenere il tuo veicolo in perfette condizioni.",
+      PT: "Descubra a nossa gama completa de serviços para manter o seu veículo em perfeitas condições.",
+      RO: "Descoperiți gama noastră completă de servicii pentru a menține vehiculul dvs. în stare perfectă."
+    },
+    
+    // Regular maintenance
+    regularMaintenance: {
+      FR: "Entretien régulier",
+      EN: "Regular maintenance",
+      ES: "Mantenimiento regular",
+      IT: "Manutenzione regolare",
+      PT: "Manutenção regular",
+      RO: "Întreținere regulată"
+    },
+    regularMaintenanceDesc: {
+      FR: "Services d'entretien régulier incluant vidange d'huile, remplacement des filtres et vérification complète des systèmes.",
+      EN: "Regular maintenance services including oil change, filter replacement and complete system check.",
+      ES: "Servicios de mantenimiento regular que incluyen cambio de aceite, reemplazo de filtros y verificación completa del sistema.",
+      IT: "Servizi di manutenzione regolare che includono cambio dell'olio, sostituzione dei filtri e controllo completo del sistema.",
+      PT: "Serviços de manutenção regular, incluindo mudança de óleo, substituição de filtros e verificação completa do sistema.",
+      RO: "Servicii de întreținere regulată, inclusiv schimb de ulei, înlocuirea filtrelor și verificarea completă a sistemului."
+    },
+    oilChange: {
+      FR: "Vidange d'huile et remplacement de filtre",
+      EN: "Oil change and filter replacement",
+      ES: "Cambio de aceite y reemplazo de filtro",
+      IT: "Cambio olio e sostituzione filtro",
+      PT: "Mudança de óleo e substituição de filtro",
+      RO: "Schimb de ulei și înlocuire de filtru"
+    },
+    tireRotation: {
+      FR: "Rotation des pneus et équilibrage",
+      EN: "Tire rotation and balancing",
+      ES: "Rotación y equilibrado de neumáticos",
+      IT: "Rotazione e bilanciamento degli pneumatici",
+      PT: "Rotação e balanceamento dos pneus",
+      RO: "Rotație și echilibrare anvelope"
+    },
+    fluidLevels: {
+      FR: "Vérification des niveaux de fluides",
+      EN: "Fluid level check",
+      ES: "Verificación de niveles de fluidos",
+      IT: "Controllo del livello dei fluidi",
+      PT: "Verificação dos níveis de fluidos",
+      RO: "Verificarea nivelurilor de fluide"
+    },
+    brakeInspection: {
+      FR: "Inspection des freins",
+      EN: "Brake inspection",
+      ES: "Inspección de frenos",
+      IT: "Ispezione dei freni",
+      PT: "Inspeção dos travões",
+      RO: "Inspecția frânelor"
+    },
+    
+    // Electronic diagnostics
+    electronicDiagnostics: {
+      FR: "Diagnostic électronique",
+      EN: "Electronic diagnostics",
+      ES: "Diagnóstico electrónico",
+      IT: "Diagnostica elettronica",
+      PT: "Diagnóstico eletrónico",
+      RO: "Diagnostic electronic"
+    },
+    electronicDiagnosticsDesc: {
+      FR: "Diagnostic complet des systèmes électroniques et informatiques de votre véhicule grâce à des équipements de pointe.",
+      EN: "Comprehensive diagnostics of your vehicle's electronic and computer systems using state-of-the-art equipment.",
+      ES: "Diagnóstico completo de los sistemas electrónicos y informáticos de su vehículo utilizando equipos de última generación.",
+      IT: "Diagnostica completa dei sistemi elettronici e informatici del tuo veicolo utilizzando apparecchiature all'avanguardia.",
+      PT: "Diagnóstico abrangente dos sistemas eletrónicos e informáticos do seu veículo utilizando equipamento de ponta.",
+      RO: "Diagnostic complet al sistemelor electronice și informatice ale vehiculului dvs. folosind echipamente de ultimă generație."
+    },
+    faultCodeReading: {
+      FR: "Lecture des codes défaut",
+      EN: "Fault code reading",
+      ES: "Lectura de códigos de fallo",
+      IT: "Lettura dei codici di guasto",
+      PT: "Leitura de códigos de falha",
+      RO: "Citirea codurilor de eroare"
+    },
+    electronicsIssues: {
+      FR: "Diagnostic des pannes électroniques",
+      EN: "Electronic fault diagnosis",
+      ES: "Diagnóstico de averías electrónicas",
+      IT: "Diagnosi di guasti elettronici",
+      PT: "Diagnóstico de falhas eletrónicas",
+      RO: "Diagnosticarea defecțiunilor electronice"
+    },
+    sensorActuatorTesting: {
+      FR: "Test des capteurs et actuateurs",
+      EN: "Sensor and actuator testing",
+      ES: "Prueba de sensores y actuadores",
+      IT: "Test di sensori e attuatori",
+      PT: "Teste de sensores e atuadores",
+      RO: "Testarea senzorilor și actuatoarelor"
+    },
+    ecuReprogramming: {
+      FR: "Reprogrammation des calculateurs",
+      EN: "ECU reprogramming",
+      ES: "Reprogramación de ECU",
+      IT: "Riprogrammazione della centralina",
+      PT: "Reprogramação da ECU",
+      RO: "Reprogramarea calculatoarelor"
+    },
+    
+    // Mechanical repairs
+    mechanicalRepairs: {
+      FR: "Réparations mécaniques",
+      EN: "Mechanical repairs",
+      ES: "Reparaciones mecánicas",
+      IT: "Riparazioni meccaniche",
+      PT: "Reparações mecânicas",
+      RO: "Reparații mecanice"
+    },
+    mechanicalRepairsDesc: {
+      FR: "Services de réparation pour tous types de problèmes mécaniques, réalisés par nos techniciens qualifiés.",
+      EN: "Repair services for all types of mechanical problems, performed by our qualified technicians.",
+      ES: "Servicios de reparación para todo tipo de problemas mecánicos, realizados por nuestros técnicos cualificados.",
+      IT: "Servizi di riparazione per tutti i tipi di problemi meccanici, eseguiti dai nostri tecnici qualificati.",
+      PT: "Serviços de reparação para todos os tipos de problemas mecânicos, realizados pelos nossos técnicos qualificados.",
+      RO: "Servicii de reparații pentru toate tipurile de probleme mecanice, efectuate de tehnicienii noștri calificați."
+    },
+    engineRepair: {
+      FR: "Réparation de moteur",
+      EN: "Engine repair",
+      ES: "Reparación de motor",
+      IT: "Riparazione del motore",
+      PT: "Reparação de motor",
+      RO: "Repararea motorului"
+    },
+    brakingSystem: {
+      FR: "Système de freinage",
+      EN: "Braking system",
+      ES: "Sistema de frenado",
+      IT: "Sistema frenante",
+      PT: "Sistema de travagem",
+      RO: "Sistem de frânare"
+    },
+    transmissionGearbox: {
+      FR: "Boîte de vitesses et transmission",
+      EN: "Transmission and gearbox",
+      ES: "Transmisión y caja de cambios",
+      IT: "Trasmissione e cambio",
+      PT: "Transmissão e caixa de velocidades",
+      RO: "Transmisie și cutie de viteze"
+    },
+    suspensionSteering: {
+      FR: "Suspension et direction",
+      EN: "Suspension and steering",
+      ES: "Suspensión y dirección",
+      IT: "Sospensione e sterzo",
+      PT: "Suspensão e direção",
+      RO: "Suspensie și direcție"
+    },
+    
+    // Service process section
+    serviceProcess: {
+      FR: "Notre processus de service",
+      EN: "Our service process",
+      ES: "Nuestro proceso de servicio",
+      IT: "Il nostro processo di servizio",
+      PT: "Nosso processo de serviço",
+      RO: "Procesul nostru de servicii"
+    },
+    transparentProcess: {
+      FR: "Un service transparent et efficace du début à la fin.",
+      EN: "A transparent and efficient service from start to finish.",
+      ES: "Un servicio transparente y eficiente de principio a fin.",
+      IT: "Un servizio trasparente ed efficiente dall'inizio alla fine.",
+      PT: "Um serviço transparente e eficiente do início ao fim.",
+      RO: "Un serviciu transparent și eficient de la început până la sfârșit."
+    },
+    
+    // Service steps
+    appointment: {
+      FR: "1. Rendez-vous",
+      EN: "1. Appointment",
+      ES: "1. Cita",
+      IT: "1. Appuntamento",
+      PT: "1. Agendamento",
+      RO: "1. Programare"
+    },
+    appointmentDesc: {
+      FR: "Prenez rendez-vous en ligne ou par téléphone selon vos disponibilités.",
+      EN: "Schedule an appointment online or by phone according to your availability.",
+      ES: "Programe una cita en línea o por teléfono según su disponibilidad.",
+      IT: "Fissa un appuntamento online o telefonicamente in base alla tua disponibilità.",
+      PT: "Marque uma consulta online ou por telefone de acordo com a sua disponibilidade.",
+      RO: "Programați o întâlnire online sau prin telefon în funcție de disponibilitatea dvs."
+    },
+    diagnostics: {
+      FR: "2. Diagnostic",
+      EN: "2. Diagnostics",
+      ES: "2. Diagnóstico",
+      IT: "2. Diagnostica",
+      PT: "2. Diagnóstico",
+      RO: "2. Diagnostic"
+    },
+    diagnosticsDesc: {
+      FR: "Nos techniciens examinent votre véhicule et vous fournissent un devis détaillé.",
+      EN: "Our technicians examine your vehicle and provide you with a detailed quote.",
+      ES: "Nuestros técnicos examinan su vehículo y le proporcionan un presupuesto detallado.",
+      IT: "I nostri tecnici esaminano il tuo veicolo e ti forniscono un preventivo dettagliato.",
+      PT: "Os nossos técnicos examinam o seu veículo e fornecem-lhe um orçamento detalhado.",
+      RO: "Tehnicienii noștri examinează vehiculul dvs. și vă oferă o estimare detaliată."
+    },
+    intervention: {
+      FR: "3. Intervention",
+      EN: "3. Intervention",
+      ES: "3. Intervención",
+      IT: "3. Intervento",
+      PT: "3. Intervenção",
+      RO: "3. Intervenție"
+    },
+    interventionDesc: {
+      FR: "Après votre approbation, nos mécaniciens effectuent les travaux nécessaires.",
+      EN: "After your approval, our mechanics perform the necessary work.",
+      ES: "Después de su aprobación, nuestros mecánicos realizan el trabajo necesario.",
+      IT: "Dopo la tua approvazione, i nostri meccanici eseguono i lavori necessari.",
+      PT: "Após a sua aprovação, os nossos mecânicos realizam o trabalho necessário.",
+      RO: "După aprobarea dvs., mecanicii noștri efectuează lucrările necesare."
+    },
+    vehicleDelivery: {
+      FR: "4. Remise du véhicule",
+      EN: "4. Vehicle delivery",
+      ES: "4. Entrega del vehículo",
+      IT: "4. Consegna del veicolo",
+      PT: "4. Entrega do veículo",
+      RO: "4. Livrarea vehiculului"
+    },
+    vehicleDeliveryDesc: {
+      FR: "Récupérez votre véhicule avec une explication détaillée des travaux effectués.",
+      EN: "Pick up your vehicle with a detailed explanation of the work performed.",
+      ES: "Recoja su vehículo con una explicación detallada del trabajo realizado.",
+      IT: "Ritira il tuo veicolo con una spiegazione dettagliata del lavoro svolto.",
+      PT: "Recolha o seu veículo com uma explicação detalhada do trabalho realizado.",
+      RO: "Ridicați-vă vehiculul cu o explicație detaliată a lucrărilor efectuate."
+    },
+    
+    // CTA section
+    needService: {
+      FR: "Besoin d'un service pour votre véhicule ?",
+      EN: "Need a service for your vehicle?",
+      ES: "¿Necesita un servicio para su vehículo?",
+      IT: "Hai bisogno di un servizio per il tuo veicolo?",
+      PT: "Precisa de um serviço para o seu veículo?",
+      RO: "Aveți nevoie de un serviciu pentru vehiculul dvs.?"
+    },
+    expertsAtYourService: {
+      FR: "Nos experts sont à votre service pour entretenir et réparer votre véhicule, quelle que soit sa marque ou son modèle.",
+      EN: "Our experts are at your service to maintain and repair your vehicle, regardless of its brand or model.",
+      ES: "Nuestros expertos están a su servicio para mantener y reparar su vehículo, independientemente de su marca o modelo.",
+      IT: "I nostri esperti sono al tuo servizio per mantenere e riparare il tuo veicolo, indipendentemente dalla marca o dal modello.",
+      PT: "Os nossos especialistas estão ao seu serviço para manter e reparar o seu veículo, independentemente da marca ou modelo.",
+      RO: "Experții noștri sunt la dispoziția dvs. pentru a întreține și repara vehiculul dvs., indiferent de marca sau modelul acestuia."
+    },
+    contactUs: {
+      FR: "Nous contacter",
+      EN: "Contact us",
+      ES: "Contáctenos",
+      IT: "Contattaci",
+      PT: "Contacte-nos",
+      RO: "Contactați-ne"
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-brand-blue text-white py-16">
+        <section className="bg-gradient-to-b from-brand-blue to-brand-darkBlue text-white py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Services automobiles professionnels</h1>
-              <p className="text-xl mb-8">Notre équipe d'experts est à votre service pour l'entretien, la réparation et l'acquisition de votre véhicule.</p>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{translate('servicesTitle', translations.servicesTitle)}</h1>
+              <p className="text-xl mb-8">{translate('servicesDescription', translations.servicesDescription)}</p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/rendez-vous">
-                  <Button className="bg-brand-orange text-white hover:bg-brand-lightOrange text-lg font-semibold">
-                    Prendre rendez-vous
+                  <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold">
+                    {translate('scheduleAppointment', translations.scheduleAppointment)}
                   </Button>
                 </Link>
-                <a href="tel:+33123456789">
+                <Link to="/contact">
                   <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold">
-                    Nous appeler
+                    {translate('contactUs', translations.contactUs)}
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Nouveaux Services Spéciaux */}
-        <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+        {/* Specialized Services Section */}
+        <section className="py-16 bg-gray-100">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Nos services spécialisés</h2>
+              <h2 className="text-3xl font-bold mb-4">{translate('specializedServices', translations.specializedServices)}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Des solutions sur mesure pour répondre à tous vos besoins automobiles.
+                {translate('tailoredSolutions', translations.tailoredSolutions)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Garantie constructeur */}
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-green-500">
-                <CardHeader className="pb-2">
-                  <div className="bg-green-500/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <ShieldCheck className="h-7 w-7 text-green-500" />
-                  </div>
-                  <CardTitle>Garantie constructeur</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Nous maintenons la garantie constructeur de votre véhicule tout en vous offrant un service de qualité à prix compétitif.
-                  </p>
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-gray-800">Pourquoi choisir notre service de garantie constructeur ?</h4>
-                    <p className="text-gray-600">
-                      Notre atelier agréé utilise exclusivement des pièces d'origine et respecte scrupuleusement les recommandations du constructeur pour chaque intervention. Vous conservez ainsi tous les avantages de votre garantie tout en bénéficiant de nos tarifs avantageux.
-                    </p>
-                    <Collapsible className="w-full">
-                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                        <span>Détails du service</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                          <li>Entretien selon les recommandations du constructeur</li>
-                          <li>Utilisation exclusive de pièces d'origine</li>
-                          <li>Documentation complète dans le carnet d'entretien</li>
-                          <li>Extension de garantie disponible jusqu'à 5 ans</li>
-                          <li>Assistance routière incluse 24h/24, 7j/7</li>
-                          <li>Diagnostic électronique avec équipements certifiés</li>
-                          <li>Mise à jour des logiciels embarqués</li>
-                          <li>Révision complète selon le plan de maintenance officiel</li>
-                        </ul>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/garantie" className="w-full">
-                    <Button variant="outline" className="w-full border-green-500 text-green-500 hover:bg-green-500 hover:text-white">
-                      En savoir plus
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <div className="bg-green-100 p-3 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+                  <ShieldCheck className="h-7 w-7 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{translate('manufacturerWarranty', translations.manufacturerWarranty)}</h3>
+                <p className="text-gray-600 mb-5">
+                  {translate('manufacturerWarrantyDesc', translations.manufacturerWarrantyDesc)}
+                </p>
+                <Link to="/garantie">
+                  <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
+                    {translate('learnMore', translations.learnMore)}
+                  </Button>
+                </Link>
+              </div>
 
-              {/* Livraison internationale */}
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-blue-500">
-                <CardHeader className="pb-2">
-                  <div className="bg-blue-500/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Plane className="h-7 w-7 text-blue-500" />
-                  </div>
-                  <CardTitle>Livraison internationale</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Notre service de livraison internationale vous permet d'acquérir votre véhicule où que vous soyez en Europe.
-                  </p>
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-gray-800">Un service clé en main partout en Europe</h4>
-                    <p className="text-gray-600">
-                      Nous prenons en charge toutes les démarches administratives, douanières et logistiques pour vous livrer votre véhicule dans les meilleures conditions, quelle que soit votre localisation en Europe.
-                    </p>
-                    <Collapsible className="w-full">
-                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                        <span>Détails du service</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                          <li>Livraison dans toute l'Europe</li>
-                          <li>Transporteurs spécialisés et assurés</li>
-                          <li>Suivi en temps réel de votre livraison</li>
-                          <li>Inspection du véhicule avant expédition</li>
-                          <li>Assistance administrative pour l'immatriculation</li>
-                          <li>Documentation complète pour les démarches douanières</li>
-                          <li>Options de transport premium (camion fermé, chauffeur privé)</li>
-                          <li>Garantie de livraison avec délais contractuels</li>
-                          <li>Assurance transport complète incluse</li>
-                        </ul>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/livraison" className="w-full">
-                    <Button variant="outline" className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
-                      En savoir plus
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <div className="bg-blue-100 p-3 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+                  <Truck className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{translate('internationalDelivery', translations.internationalDelivery)}</h3>
+                <p className="text-gray-600 mb-5">
+                  {translate('internationalDeliveryDesc', translations.internationalDeliveryDesc)}
+                </p>
+                <Link to="/livraison">
+                  <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+                    {translate('learnMore', translations.learnMore)}
+                  </Button>
+                </Link>
+              </div>
 
-              {/* Service client premium */}
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-amber-500">
-                <CardHeader className="pb-2">
-                  <div className="bg-amber-500/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Headset className="h-7 w-7 text-amber-500" />
-                  </div>
-                  <CardTitle>Service client premium</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Notre équipe de conseillers dédiés vous accompagne à chaque étape de votre projet automobile pour une expérience sans stress.
-                  </p>
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-gray-800">Un accompagnement personnalisé de A à Z</h4>
-                    <p className="text-gray-600">
-                      Dès votre premier contact, un conseiller dédié prend en charge votre dossier et reste votre interlocuteur unique tout au long de votre projet. Disponible sur rendez-vous en dehors des heures d'ouverture, il vous garantit un suivi privilégié.
-                    </p>
-                    <Collapsible className="w-full">
-                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                        <span>Détails du service</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                          <li>Conseiller personnel attitré</li>
-                          <li>Disponibilité étendue (6j/7)</li>
-                          <li>Service de conciergerie automobile</li>
-                          <li>Assistance prioritaire en cas de problème</li>
-                          <li>Invitations exclusives aux événements de la marque</li>
-                          <li>Véhicule de remplacement haut de gamme</li>
-                          <li>Service de prise en charge et livraison à domicile</li>
-                          <li>Suivi personnalisé de l'entretien de votre véhicule</li>
-                          <li>Accès à notre salon VIP lors de vos visites</li>
-                        </ul>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/service-premium" className="w-full">
-                    <Button variant="outline" className="w-full border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-white">
-                      En savoir plus
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-
-              {/* Financement personnalisé */}
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-rose-500">
-                <CardHeader className="pb-2">
-                  <div className="bg-rose-500/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <CreditCard className="h-7 w-7 text-rose-500" />
-                  </div>
-                  <CardTitle>Financement personnalisé</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Nous proposons des solutions de financement adaptées à votre situation, sans passer par une banque traditionnelle.
-                  </p>
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-gray-800">Des solutions financières sur mesure</h4>
-                    <p className="text-gray-600">
-                      Notre département financier interne étudie votre dossier pour vous proposer la solution la plus avantageuse : crédit classique, location avec option d'achat, leasing ou paiement échelonné. Profitez de taux compétitifs et d'une réponse rapide.
-                    </p>
-                    <Collapsible className="w-full">
-                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                        <span>Détails du service</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                          <li>Crédit interne sans intermédiaire bancaire</li>
-                          <li>Mensualités flexibles de 6 à 84 mois</li>
-                          <li>Possibilité de financement sans apport</li>
-                          <li>Options d'achat avec valeur résiduelle</li>
-                          <li>Étude personnalisée de votre dossier sous 48h</li>
-                          <li>Assurance emprunteur à tarifs préférentiels</li>
-                          <li>Solutions pour profils atypiques ou indépendants</li>
-                          <li>Rachat de crédit en cours pour votre ancien véhicule</li>
-                          <li>Formules tout inclus (financement + entretien + assurance)</li>
-                        </ul>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/financement" className="w-full">
-                    <Button variant="outline" className="w-full border-rose-500 text-rose-500 hover:bg-rose-500 hover:text-white">
-                      En savoir plus
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <div className="bg-amber-100 p-3 w-14 h-14 rounded-full flex items-center justify-center mb-4">
+                  <User className="h-7 w-7 text-amber-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">{translate('premiumCustomerService', translations.premiumCustomerService)}</h3>
+                <p className="text-gray-600 mb-5">
+                  {translate('premiumCustomerServiceDesc', translations.premiumCustomerServiceDesc)}
+                </p>
+                <Link to="/service-premium">
+                  <Button variant="outline" className="border-amber-600 text-amber-600 hover:bg-amber-50">
+                    {translate('learnMore', translations.learnMore)}
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Services Overview */}
+        {/* Automotive Services Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Nos services automobiles</h2>
+              <h2 className="text-3xl font-bold mb-4">{translate('automotiveServices', translations.automotiveServices)}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Découvrez notre gamme complète de services pour maintenir votre véhicule en parfait état.
+                {translate('completeServiceRange', translations.completeServiceRange)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Wrench className="h-7 w-7 text-brand-blue" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Regular Maintenance */}
+              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                <div className="flex items-center mb-4">
+                  <div className="bg-gray-100 p-3 rounded-full mr-4">
+                    <Wrench className="h-6 w-6 text-brand-blue" />
                   </div>
-                  <CardTitle>Entretien régulier</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Services d'entretien régulier incluant vidange d'huile, remplacement des filtres et vérification complète des systèmes.
-                  </p>
-                  <ul className="mt-4 space-y-2 list-disc pl-5 text-gray-600">
-                    <li>Vidange d'huile et remplacement de filtre</li>
-                    <li>Rotation des pneus et équilibrage</li>
-                    <li>Vérification des niveaux de fluides</li>
-                    <li>Inspection des freins</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/rendez-vous" className="w-full">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Prendre rendez-vous
-                    </Button>
+                  <h3 className="text-xl font-bold">{translate('regularMaintenance', translations.regularMaintenance)}</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  {translate('regularMaintenanceDesc', translations.regularMaintenanceDesc)}
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('oilChange', translations.oilChange)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('tireRotation', translations.tireRotation)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('fluidLevels', translations.fluidLevels)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('brakeInspection', translations.brakeInspection)}</span>
+                  </li>
+                </ul>
+                <div className="mt-6">
+                  <Link to="/rendez-vous">
+                    <Button className="w-full">{translate('scheduleAppointment', translations.scheduleAppointment)}</Button>
                   </Link>
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
 
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Gauge className="h-7 w-7 text-brand-blue" />
+              {/* Electronic Diagnostics */}
+              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                <div className="flex items-center mb-4">
+                  <div className="bg-gray-100 p-3 rounded-full mr-4">
+                    <Activity className="h-6 w-6 text-brand-blue" />
                   </div>
-                  <CardTitle>Diagnostic électronique</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Diagnostic complet des systèmes électroniques et informatiques de votre véhicule grâce à des équipements de pointe.
-                  </p>
-                  <ul className="mt-4 space-y-2 list-disc pl-5 text-gray-600">
-                    <li>Lecture des codes défaut</li>
-                    <li>Diagnostic des pannes électroniques</li>
-                    <li>Test des capteurs et actuateurs</li>
-                    <li>Reprogrammation des calculateurs</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/rendez-vous" className="w-full">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Prendre rendez-vous
-                    </Button>
+                  <h3 className="text-xl font-bold">{translate('electronicDiagnostics', translations.electronicDiagnostics)}</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  {translate('electronicDiagnosticsDesc', translations.electronicDiagnosticsDesc)}
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('faultCodeReading', translations.faultCodeReading)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('electronicsIssues', translations.electronicsIssues)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('sensorActuatorTesting', translations.sensorActuatorTesting)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('ecuReprogramming', translations.ecuReprogramming)}</span>
+                  </li>
+                </ul>
+                <div className="mt-6">
+                  <Link to="/rendez-vous">
+                    <Button className="w-full">{translate('scheduleAppointment', translations.scheduleAppointment)}</Button>
                   </Link>
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
 
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Wrench className="h-7 w-7 text-brand-blue" />
+              {/* Mechanical Repairs */}
+              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                <div className="flex items-center mb-4">
+                  <div className="bg-gray-100 p-3 rounded-full mr-4">
+                    <Settings className="h-6 w-6 text-brand-blue" />
                   </div>
-                  <CardTitle>Réparations mécaniques</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Services de réparation pour tous types de problèmes mécaniques, réalisés par nos techniciens qualifiés.
-                  </p>
-                  <ul className="mt-4 space-y-2 list-disc pl-5 text-gray-600">
-                    <li>Réparation de moteur</li>
-                    <li>Système de freinage</li>
-                    <li>Boîte de vitesses et transmission</li>
-                    <li>Suspension et direction</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/rendez-vous" className="w-full">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Prendre rendez-vous
-                    </Button>
+                  <h3 className="text-xl font-bold">{translate('mechanicalRepairs', translations.mechanicalRepairs)}</h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  {translate('mechanicalRepairsDesc', translations.mechanicalRepairsDesc)}
+                </p>
+                <ul className="space-y-2">
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('engineRepair', translations.engineRepair)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('brakingSystem', translations.brakingSystem)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('transmissionGearbox', translations.transmissionGearbox)}</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <span>{translate('suspensionSteering', translations.suspensionSteering)}</span>
+                  </li>
+                </ul>
+                <div className="mt-6">
+                  <Link to="/rendez-vous">
+                    <Button className="w-full">{translate('scheduleAppointment', translations.scheduleAppointment)}</Button>
                   </Link>
-                </CardFooter>
-              </Card>
-
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Shield className="h-7 w-7 text-brand-blue" />
-                  </div>
-                  <CardTitle>Garantie constructeur</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Entretien de votre véhicule sous garantie constructeur sans l'affecter, en utilisant des pièces d'origine.
-                  </p>
-                  <ul className="mt-4 space-y-2 list-disc pl-5 text-gray-600">
-                    <li>Service agréé multi-marques</li>
-                    <li>Utilisation de pièces d'origine</li>
-                    <li>Respect du carnet d'entretien</li>
-                    <li>Documentation complète des interventions</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/rendez-vous" className="w-full">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Prendre rendez-vous
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Car className="h-7 w-7 text-brand-blue" />
-                  </div>
-                  <CardTitle>Préparation technique</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Préparation de votre véhicule pour le contrôle technique, avec pré-contrôle et corrections nécessaires.
-                  </p>
-                  <ul className="mt-4 space-y-2 list-disc pl-5 text-gray-600">
-                    <li>Pré-contrôle technique complet</li>
-                    <li>Correction des points de défaillance</li>
-                    <li>Rapport détaillé des interventions</li>
-                    <li>Accompagnement administratif</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/rendez-vous" className="w-full">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Prendre rendez-vous
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="bg-brand-blue/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <Fuel className="h-7 w-7 text-brand-blue" />
-                  </div>
-                  <CardTitle>Climatisation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Service complet pour les systèmes de climatisation : recharge, désinfection et réparation.
-                  </p>
-                  <ul className="mt-4 space-y-2 list-disc pl-5 text-gray-600">
-                    <li>Recharge de gaz climatisation</li>
-                    <li>Nettoyage et désinfection du circuit</li>
-                    <li>Remplacement des filtres d'habitacle</li>
-                    <li>Détection et réparation des fuites</li>
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/rendez-vous" className="w-full">
-                    <Button variant="outline" className="w-full border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white">
-                      Prendre rendez-vous
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Process Section */}
-        <section className="py-16 bg-gray-50">
+        {/* Service Process Section */}
+        <section className="py-16 bg-gray-100">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Notre processus de service</h2>
+              <h2 className="text-3xl font-bold mb-4">{translate('serviceProcess', translations.serviceProcess)}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Un service transparent et efficace du début à la fin.
+                {translate('transparentProcess', translations.transparentProcess)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="bg-brand-blue rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="h-8 w-8 text-white" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="h-8 w-8 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">1. Rendez-vous</h3>
+                <h3 className="text-xl font-bold mb-3">{translate('appointment', translations.appointment)}</h3>
                 <p className="text-gray-600">
-                  Prenez rendez-vous en ligne ou par téléphone selon vos disponibilités.
+                  {translate('appointmentDesc', translations.appointmentDesc)}
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="bg-brand-blue rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Car className="h-8 w-8 text-white" />
+              <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <AlertTriangle className="h-8 w-8 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">2. Diagnostic</h3>
+                <h3 className="text-xl font-bold mb-3">{translate('diagnostics', translations.diagnostics)}</h3>
                 <p className="text-gray-600">
-                  Nos techniciens examinent votre véhicule et vous fournissent un devis détaillé.
+                  {translate('diagnosticsDesc', translations.diagnosticsDesc)}
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="bg-brand-blue rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Wrench className="h-8 w-8 text-white" />
+              <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Wrench className="h-8 w-8 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">3. Intervention</h3>
+                <h3 className="text-xl font-bold mb-3">{translate('intervention', translations.intervention)}</h3>
                 <p className="text-gray-600">
-                  Après votre approbation, nos mécaniciens effectuent les travaux nécessaires.
+                  {translate('interventionDesc', translations.interventionDesc)}
                 </p>
               </div>
 
-              <div className="text-center">
-                <div className="bg-brand-blue rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <ScrollText className="h-8 w-8 text-white" />
+              <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="h-8 w-8 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">4. Remise du véhicule</h3>
+                <h3 className="text-xl font-bold mb-3">{translate('vehicleDelivery', translations.vehicleDelivery)}</h3>
                 <p className="text-gray-600">
-                  Récupérez votre véhicule avec une explication détaillée des travaux effectués.
+                  {translate('vehicleDeliveryDesc', translations.vehicleDeliveryDesc)}
                 </p>
               </div>
             </div>
@@ -469,24 +669,22 @@ const Services = () => {
 
         {/* CTA Section */}
         <section className="py-16 bg-brand-blue text-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold mb-6">Besoin d'un service pour votre véhicule ?</h2>
-              <p className="text-xl mb-8">
-                Nos experts sont à votre service pour entretenir et réparer votre véhicule, quelle que soit sa marque ou son modèle.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/rendez-vous">
-                  <Button className="bg-brand-orange text-white hover:bg-brand-lightOrange text-lg font-semibold px-8 py-3">
-                    Prendre rendez-vous
-                  </Button>
-                </Link>
-                <Link to="/contact">
-                  <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold px-8 py-3">
-                    Nous contacter
-                  </Button>
-                </Link>
-              </div>
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold mb-4">{translate('needService', translations.needService)}</h2>
+            <p className="text-xl mb-8 max-w-3xl mx-auto">
+              {translate('expertsAtYourService', translations.expertsAtYourService)}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/rendez-vous">
+                <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold px-8 py-3">
+                  {translate('scheduleAppointment', translations.scheduleAppointment)}
+                </Button>
+              </Link>
+              <Link to="/contact">
+                <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold px-8 py-3">
+                  {translate('contactUs', translations.contactUs)}
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
