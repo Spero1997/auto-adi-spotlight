@@ -1,5 +1,5 @@
 
-import { addImportedVehicle, getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
+import { addImportedVehicle, getImportedVehicles, ImportedVehicle, deleteImportedVehicle } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 
 export const addBMWX5 = () => {
@@ -13,14 +13,15 @@ export const addBMWX5 = () => {
           v.year === 2018
     );
     
+    // Si le véhicule existe déjà, le supprimer d'abord pour le mettre à jour
     if (bmwExists) {
-      console.log("BMW X5 déjà présente dans le catalogue vedette");
-      return;
+      console.log("BMW X5 déjà présente dans le catalogue vedette - suppression pour mise à jour");
+      deleteImportedVehicle(bmwExists.id, 'featured');
     }
     
-    // Créer le véhicule
+    // Créer le véhicule avec le nouveau lien Facebook
     const bmwX5: ImportedVehicle = {
-      id: `vehicle-featured-bmw-x5-${Date.now()}`,
+      id: bmwExists ? bmwExists.id : `vehicle-featured-bmw-x5-${Date.now()}`,
       brand: "BMW",
       model: "X5 XDrive 40e M-Sport",
       year: 2018,
@@ -49,14 +50,17 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     const success = addImportedVehicle(bmwX5, 'featured');
     
     if (success) {
-      console.log("BMW X5 ajoutée au catalogue vedette avec succès");
-      toast.success("BMW X5 ajoutée au catalogue vedette avec succès");
+      console.log("BMW X5 ajoutée/mise à jour dans le catalogue vedette avec succès");
+      toast.success("BMW X5 mise à jour dans le catalogue vedette avec succès");
+      
+      // Déclencher un événement pour forcer la mise à jour de l'affichage
+      window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'featured' } }));
     } else {
-      console.error("Échec de l'ajout de la BMW X5 au catalogue vedette");
-      toast.error("Échec de l'ajout de la BMW X5 au catalogue vedette");
+      console.error("Échec de l'ajout/mise à jour de la BMW X5 au catalogue vedette");
+      toast.error("Échec de la mise à jour de la BMW X5 au catalogue vedette");
     }
   } catch (error) {
-    console.error("Erreur lors de l'ajout de la BMW X5:", error);
-    toast.error("Erreur lors de l'ajout de la BMW X5");
+    console.error("Erreur lors de l'ajout/mise à jour de la BMW X5:", error);
+    toast.error("Erreur lors de la mise à jour de la BMW X5");
   }
 };

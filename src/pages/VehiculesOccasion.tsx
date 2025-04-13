@@ -11,6 +11,7 @@ import { updateAudiQ2 } from '@/scripts/updateAudiQ2';
 import { cleanVehicleCatalogs } from '@/utils/vehicleImportService';
 import { removeSpecificVehicles } from '@/scripts/removeSpecificVehicles';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
+import { addBMWX5 } from '@/scripts/addBMWX5';
 
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
@@ -46,6 +47,9 @@ const VehiculesOccasion = () => {
     // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
     updateVehicleImages();
     updateAudiQ2();
+    
+    // Mise à jour de la BMW X5 avec le nouveau lien Facebook
+    addBMWX5();
     
     // Déclencher un événement pour forcer le rechargement des véhicules
     window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'all' } }));
