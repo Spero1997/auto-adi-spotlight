@@ -1,7 +1,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { ImportedVehicle } from '@/utils/types/vehicle';
+import { getCatalogIdFromUrl } from '@/utils/vehicleImportService';
+import { getImportedVehicles } from '@/utils/services/vehicleStorageService';
 
 interface SearchFilters {
   brand?: string;
