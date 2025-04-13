@@ -12,17 +12,23 @@ export const updateVolvoV40Image = () => {
   const volvoIndex = vehicles.findIndex(v => 
     v.brand?.toLowerCase() === 'volvo' && 
     v.model?.toLowerCase().includes('v40') &&
-    v.model?.toLowerCase().includes('d2') &&
     v.model?.toLowerCase().includes('r-design')
   );
   
   // Si on a trouvé le véhicule, mettre à jour son image
   if (volvoIndex !== -1) {
     console.log('Volvo V40 trouvée, mise à jour de l\'image...');
+    
+    // Vérification si l'image est déjà la bonne
+    if (vehicles[volvoIndex].image === '/lovable-uploads/9d49d39c-ef6c-4f74-a302-3f7c8a2d031c.png') {
+      console.log('L\'image de la Volvo V40 est déjà à jour');
+      return false;
+    }
+    
     const updatedVehicles = [...vehicles];
     updatedVehicles[volvoIndex] = {
       ...updatedVehicles[volvoIndex],
-      image: '/lovable-uploads/1ea328d9-f6a1-4dfd-a3be-daf3e53d39de.png'
+      image: '/lovable-uploads/9d49d39c-ef6c-4f74-a302-3f7c8a2d031c.png'
     };
     
     saveImportedVehicles(updatedVehicles);
@@ -34,6 +40,3 @@ export const updateVolvoV40Image = () => {
     return false;
   }
 };
-
-// Exécuter la fonction lors de l'importation
-updateVolvoV40Image();

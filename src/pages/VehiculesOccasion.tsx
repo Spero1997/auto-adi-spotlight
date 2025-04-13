@@ -4,9 +4,13 @@ import { Helmet } from 'react-helmet';
 import FeaturedCars from '@/components/FeaturedCars';
 import QuickSearch from '@/components/QuickSearch';
 import { updateVolvoV40Image } from '@/scripts/updateVolvoV40Image';
+import { addVolvoV40 } from '@/scripts/addVolvoV40';
 
 const VehiculesOccasion = () => {
   useEffect(() => {
+    // Ajouter la Volvo V40 au catalogue si elle n'existe pas déjà
+    addVolvoV40();
+    
     // Mettre à jour l'image de la Volvo V40 s'il existe dans le catalogue
     updateVolvoV40Image();
   }, []);
