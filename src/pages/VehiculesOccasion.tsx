@@ -5,14 +5,18 @@ import FeaturedCars from '@/components/FeaturedCars';
 import QuickSearch from '@/components/QuickSearch';
 import { updateVolvoV40Image } from '@/scripts/updateVolvoV40Image';
 import { addVolvoV40 } from '@/scripts/addVolvoV40';
+import { updateToyotaCHRImage } from '@/scripts/updateToyotaCHRImage';
+import { addToyotaCHR } from '@/scripts/addToyotaCHR';
 
 const VehiculesOccasion = () => {
   useEffect(() => {
-    // Ajouter la Volvo V40 au catalogue si elle n'existe pas déjà
+    // Ajouter les véhicules au catalogue s'ils n'existent pas déjà
     addVolvoV40();
+    addToyotaCHR();
     
-    // Mettre à jour l'image de la Volvo V40 s'il existe dans le catalogue
+    // Mettre à jour les images des véhicules s'ils existent dans le catalogue
     updateVolvoV40Image();
+    updateToyotaCHRImage();
   }, []);
 
   return (
