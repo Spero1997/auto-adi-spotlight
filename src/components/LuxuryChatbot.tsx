@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useChatMessages } from '@/hooks/use-chat-messages';
 import ChatMessage from '@/components/ChatMessage';
+import { Textarea } from '@/components/ui/textarea';
 
 const translations = {
   chatTitle: {
@@ -60,13 +61,22 @@ const LuxuryChatbot: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Focus textarea when chat opens
+  useEffect(() => {
+    if (isOpen && !isMinimized && textareaRef.current) {
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 300);
+    }
+  }, [isOpen, isMinimized]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -122,7 +132,7 @@ const LuxuryChatbot: React.FC = () => {
                 setInput={setInput} 
                 handleSend={handleSend} 
                 handleKeyDown={handleKeyDown}
-                inputRef={inputRef}
+                textareaRef={textareaRef}
                 translate={translate}
                 language={language}
               />
@@ -179,7 +189,7 @@ const LuxuryChatbot: React.FC = () => {
               setInput={setInput} 
               handleSend={handleSend} 
               handleKeyDown={handleKeyDown}
-              inputRef={inputRef}
+              textareaRef={textareaRef}
               translate={translate}
               language={language}
             />
@@ -264,15 +274,15 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, messagesEndRef, isTyping 
   
   return (
     <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-      <div className="space-y-4">
+      <div className="space-y-1">
         {displayedMessages.map((message, index) => (
           <ChatMessage key={index} message={message} />
         ))}
         {isTyping && (
-          <div className="flex items-center space-x-2 text-gray-500">
-            <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          <div className="flex items-center space-x-2 text-gray-500 pl-10 mt-2">
+            <div className="w-2 h-2 rounded-full bg-brand-blue/60 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+            <div className="w-2 h-2 rounded-full bg-brand-blue/60 animate-bounce" style={{ animationDelay: '150ms' }}></div>
+            <div className="w-2 h-2 rounded-full bg-brand-blue/60 animate-bounce" style={{ animationDelay: '300ms' }}></div>
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -286,7 +296,7 @@ interface ChatInputProps {
   setInput: React.Dispatch<React.SetStateAction<string>>;
   handleSend: (e?: React.FormEvent) => void;
   handleKeyDown: (e: React.KeyboardEvent) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
   translate: any;
   language: string;
 }
@@ -296,25 +306,25 @@ const ChatInput: React.FC<ChatInputProps> = ({
   setInput, 
   handleSend, 
   handleKeyDown,
-  inputRef,
+  textareaRef,
   translate,
   language
 }) => {
   return (
     <form onSubmit={handleSend} className="border-t border-brand-gold/20 p-4 bg-white">
-      <div className="flex items-center space-x-2">
-        <input
-          type="text"
-          ref={inputRef}
+      <div className="flex items-end space-x-2">
+        <Textarea
+          ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
-          className="flex-1 p-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
+          className="flex-1 p-2 min-h-[50px] max-h-[120px] resize-none border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
         />
         <Button 
           type="submit" 
-          className="bg-brand-blue hover:bg-brand-darkBlue text-white p-2 rounded-md"
+          className="bg-brand-blue hover:bg-brand-darkBlue text-white p-2 h-10 w-10 rounded-md flex items-center justify-center"
+          disabled={!input.trim()}
         >
           <Send className="h-4 w-4" />
           <span className="sr-only">{translate('send', translations.send)}</span>
