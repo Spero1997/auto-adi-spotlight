@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -9,7 +8,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useChatMessages } from '@/hooks/use-chat-messages';
 import ChatMessage from '@/components/ChatMessage';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 
 const translations = {
   chatTitle: {
@@ -147,7 +146,7 @@ interface ChatInputProps {
   setInput: React.Dispatch<React.SetStateAction<string>>;
   handleSend: (e?: React.FormEvent) => void;
   handleKeyDown: (e: React.KeyboardEvent) => void;
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
   translate: any;
   language: string;
 }
@@ -157,31 +156,25 @@ const ChatInput: React.FC<ChatInputProps> = ({
   setInput, 
   handleSend, 
   handleKeyDown,
-  textareaRef,
+  inputRef,
   translate,
   language
 }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
-    // Utilisation de requestAnimationFrame pour différer la focalisation
-    // et éviter les conflits avec d'autres événements du DOM
-    requestAnimationFrame(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
-      }
-    });
   };
 
   return (
     <form onSubmit={handleSend} className="border-t border-brand-gold/20 p-4 bg-white">
-      <div className="flex items-end space-x-2">
-        <Textarea
-          ref={textareaRef}
+      <div className="flex items-center space-x-2">
+        <Input
+          ref={inputRef}
+          type="text"
           value={input}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
-          className="flex-1 p-2 min-h-[50px] max-h-[120px] resize-none border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
+          className="flex-1 p-2 h-10 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
           autoComplete="off"
           spellCheck="false"
           aria-label={translate('placeholder', translations.placeholder)}
@@ -207,23 +200,19 @@ const LuxuryChatbot: React.FC = () => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
-  // Gestion du défilement automatique quand il y a de nouveaux messages
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  // Focus automatique sur le textarea quand le chat s'ouvre
   useEffect(() => {
-    if (isOpen && !isMinimized && textareaRef.current) {
-      const timeoutId = setTimeout(() => {
-        textareaRef.current?.focus();
-      }, 300); // Délai court pour permettre aux animations de se terminer
-      
-      return () => clearTimeout(timeoutId);
+    if (isOpen && !isMinimized && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 300);
     }
   }, [isOpen, isMinimized]);
 
@@ -237,10 +226,9 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      // Remettre le focus sur le textarea après l'envoi
       setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.focus();
+        if (inputRef.current) {
+          inputRef.current.focus();
         }
       }, 0);
     }
@@ -255,15 +243,13 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    // Re-focus après changement d'état
     setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
     }, 300);
   };
 
-  // Composant de la fenêtre de chat optimisé
   const ChatContainer = () => {
     if (isMobile) {
       return (
@@ -296,7 +282,7 @@ const LuxuryChatbot: React.FC = () => {
                 setInput={setInput} 
                 handleSend={handleSend} 
                 handleKeyDown={handleKeyDown}
-                textareaRef={textareaRef}
+                inputRef={inputRef}
                 translate={translate}
                 language={language}
               />
@@ -356,7 +342,7 @@ const LuxuryChatbot: React.FC = () => {
               setInput={setInput} 
               handleSend={handleSend} 
               handleKeyDown={handleKeyDown}
-              textareaRef={textareaRef}
+              inputRef={inputRef}
               translate={translate}
               language={language}
             />
