@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -69,7 +68,6 @@ const LuxuryChatbot: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Focus textarea when chat opens
   useEffect(() => {
     if (isOpen && !isMinimized && textareaRef.current) {
       setTimeout(() => {
@@ -100,7 +98,6 @@ const LuxuryChatbot: React.FC = () => {
     setIsExpanded(!isExpanded);
   };
 
-  // Utilisez le Drawer sur mobile et le Dialog sur desktop
   const ChatContainer = () => {
     if (isMobile) {
       return (
@@ -267,7 +264,6 @@ interface ChatBodyProps {
 const ChatBody: React.FC<ChatBodyProps> = ({ messages, messagesEndRef, isTyping }) => {
   const { language, translate } = useLanguage();
   
-  // Afficher le message de bienvenue s'il n'y a pas de messages
   const displayedMessages = messages.length > 0 
     ? messages 
     : [{ role: 'assistant', content: translate('welcomeMessage', translations.welcomeMessage) }];
@@ -320,6 +316,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 min-h-[50px] max-h-[120px] resize-none border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
+          autoComplete="off"
+          spellCheck="false"
         />
         <Button 
           type="submit" 
