@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -123,7 +124,7 @@ const ChatBody: React.FC<ChatBodyProps> = ({ messages, messagesEndRef, isTyping 
     : [{ role: 'assistant', content: translate('welcomeMessage', translations.welcomeMessage) }];
   
   return (
-    <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+    <div className="flex-1 overflow-y-auto p-4 bg-gray-50 static">
       <div className="space-y-1">
         {displayedMessages.map((message, index) => (
           <ChatMessage key={index} message={message} />
@@ -151,27 +152,28 @@ interface ChatInputProps {
   language: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ 
-  input, 
-  setInput, 
-  handleSend, 
+const ChatInput: React.FC<ChatInputProps> = ({
+  input,
+  setInput,
+  handleSend,
   handleKeyDown,
   inputRef,
   translate,
   language
 }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSend();
   };
 
   return (
-    <form onSubmit={handleSend} className="border-t border-brand-gold/20 p-4 bg-white">
+    <form onSubmit={handleSubmit} className="border-t border-brand-gold/20 p-4 bg-white">
       <div className="flex items-center space-x-2">
         <Input
           ref={inputRef}
           type="text"
           value={input}
-          onChange={handleChange}
+          onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 h-10 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
@@ -202,17 +204,24 @@ const LuxuryChatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   
+  // Utilisez directement useChatMessages sans déclarations supplémentaires
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
+  // Scroll vers le bas lorsque de nouveaux messages arrivent
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [messages]);
 
+  // Focus sur l'input lorsque le chat est ouvert
   useEffect(() => {
     if (isOpen && !isMinimized && inputRef.current) {
-      inputRef.current.focus();
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 100);
     }
   }, [isOpen, isMinimized]);
 
@@ -220,9 +229,12 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      // Pour éviter les problèmes de focus, on utilise un timeout
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 50);
     }
   };
 
@@ -235,9 +247,11 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 50);
   };
 
   const ChatContainer = () => {
@@ -246,7 +260,11 @@ const LuxuryChatbot: React.FC = () => {
         <Drawer open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
           if (open && inputRef.current) {
-            inputRef.current.focus();
+            setTimeout(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            }, 50);
           }
         }}>
           <DrawerTrigger asChild>
@@ -288,15 +306,20 @@ const LuxuryChatbot: React.FC = () => {
     }
 
     return (
-      <Dialog open={isOpen && !isMinimized} onOpenChange={(open) => {
-        setIsOpen(open);
-        if (open) {
-          setIsMinimized(false);
-          if (inputRef.current) {
-            inputRef.current.focus();
+      <Dialog 
+        open={isOpen && !isMinimized} 
+        onOpenChange={(open) => {
+          setIsOpen(open);
+          if (open) {
+            setIsMinimized(false);
+            setTimeout(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            }, 50);
           }
-        }
-      }}>
+        }}
+      >
         <DialogTrigger asChild>
           {isMinimized ? (
             <div 
@@ -329,6 +352,7 @@ const LuxuryChatbot: React.FC = () => {
           }}
           aria-labelledby="chat-title"
           onPointerDownCapture={(e) => {
+            // Empêcher le comportement par défaut uniquement si ce n'est pas l'input
             if (e.pointerType === 'touch' && e.target instanceof HTMLElement && 
                 !e.target.closest('input') && !e.target.closest('button')) {
               e.preventDefault();
