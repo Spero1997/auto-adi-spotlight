@@ -14,7 +14,7 @@ const Financement = () => {
   const translations = getFinancingTranslations();
   
   return (
-    <div className="min-h-screen flex flex-col pt-[80px]">
+    <div className="min-h-screen flex flex-col pt-[100vh]">
       <main className="flex-grow">
         {/* Hero Section */}
         <FinancingHero translations={translations} />
