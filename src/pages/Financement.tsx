@@ -15,7 +15,7 @@ const Financement = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow pt-24">
+      <main className="flex-grow">
         {/* Hero Section */}
         <FinancingHero translations={translations} />
 

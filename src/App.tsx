@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -31,6 +31,14 @@ import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
 import FAQ from "./pages/FAQ";
 
+// Component to conditionally render the AnimatedHero
+const ConditionalHeader = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+  
+  return isHomePage ? <AnimatedHero /> : null;
+};
+
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const catalogId = getCatalogIdFromUrl();
@@ -54,7 +62,6 @@ const App = () => {
           <BrowserRouter>
             <ScrollToTop />
             <CatalogChecker>
-              <AnimatedHero />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/services" element={<Services />} />
@@ -91,6 +98,7 @@ const App = () => {
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              <ConditionalHeader />
             </CatalogChecker>
           </BrowserRouter>
         </TooltipProvider>

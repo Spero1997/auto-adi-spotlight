@@ -1,3 +1,4 @@
+
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -6,7 +7,7 @@ import { Headset, Clock, User, Car, Calendar, ShieldCheck, Clock3, Award } from 
 const ServicePremium = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow pt-24">
+      <main className="flex-grow">
         {/* Hero Section */}
         <section className="bg-gradient-to-b from-amber-500 to-amber-600 text-white py-16">
           <div className="container mx-auto px-4">

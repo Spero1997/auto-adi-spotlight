@@ -10,7 +10,7 @@ import CTASection from '@/components/livraison/CTASection';
 const Livraison = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow pt-24">
+      <main className="flex-grow">
         {/* Hero Section */}
         <HeroSection />
 
