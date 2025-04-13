@@ -1,5 +1,5 @@
 
-import { addImportedVehicle, getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
+import { addImportedVehicle, getImportedVehicles, ImportedVehicle, deleteImportedVehicle } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 
 export const addPorscheCayenne = () => {
@@ -13,14 +13,15 @@ export const addPorscheCayenne = () => {
           v.year === 2018
     );
     
+    // Si le véhicule existe déjà, le supprimer d'abord pour le mettre à jour
     if (porscheExists) {
-      console.log("Porsche Cayenne Turbo PAW déjà présente dans le catalogue vedette");
-      return;
+      console.log("Porsche Cayenne Turbo PAW déjà présente dans le catalogue vedette - suppression pour mise à jour");
+      deleteImportedVehicle(porscheExists.id, 'featured');
     }
     
-    // Créer le véhicule
+    // Créer le véhicule avec le nouveau lien Facebook
     const porscheCayenne: ImportedVehicle = {
-      id: `vehicle-featured-porsche-cayenne-${Date.now()}`,
+      id: porscheExists ? porscheExists.id : `vehicle-featured-porsche-cayenne-${Date.now()}`,
       brand: "Porsche",
       model: "Cayenne Turbo PAW",
       year: 2018,
@@ -43,7 +44,7 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
         "/lovable-uploads/b6e36253-96f9-4661-b91c-3d89337ebf11.png"
       ],
       image: "/lovable-uploads/b6e36253-96f9-4661-b91c-3d89337ebf11.png",
-      fbLink: "https://www.facebook.com/share/p/15s6ctVrwn/?mibextid=wwXIfr",
+      fbLink: "https://www.facebook.com/share/1BVVuSFKu8/?mibextid=wwXIfr",
       featured: true,
       catalogType: 'featured'
     };
@@ -52,14 +53,17 @@ Garantie : 12 à 48 mois, selon le type de véhicule, avec possibilité d'extens
     const success = addImportedVehicle(porscheCayenne, 'featured');
     
     if (success) {
-      console.log("Porsche Cayenne Turbo PAW ajoutée au catalogue vedette avec succès");
-      toast.success("Porsche Cayenne Turbo PAW ajoutée au catalogue vedette avec succès");
+      console.log("Porsche Cayenne Turbo PAW ajoutée/mise à jour dans le catalogue vedette avec succès");
+      toast.success("Porsche Cayenne Turbo PAW mise à jour dans le catalogue vedette avec succès");
+      
+      // Déclencher un événement pour forcer la mise à jour de l'affichage
+      window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'featured' } }));
     } else {
-      console.error("Échec de l'ajout de la Porsche Cayenne Turbo PAW au catalogue vedette");
-      toast.error("Échec de l'ajout de la Porsche Cayenne Turbo PAW au catalogue vedette");
+      console.error("Échec de l'ajout/mise à jour de la Porsche Cayenne Turbo PAW au catalogue vedette");
+      toast.error("Échec de la mise à jour de la Porsche Cayenne Turbo PAW au catalogue vedette");
     }
   } catch (error) {
-    console.error("Erreur lors de l'ajout de la Porsche Cayenne Turbo PAW:", error);
-    toast.error("Erreur lors de l'ajout de la Porsche Cayenne Turbo PAW");
+    console.error("Erreur lors de l'ajout/mise à jour de la Porsche Cayenne Turbo PAW:", error);
+    toast.error("Erreur lors de la mise à jour de la Porsche Cayenne Turbo PAW");
   }
 };

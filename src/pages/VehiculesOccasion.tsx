@@ -12,6 +12,7 @@ import { cleanVehicleCatalogs } from '@/utils/vehicleImportService';
 import { removeSpecificVehicles } from '@/scripts/removeSpecificVehicles';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { addBMWX5 } from '@/scripts/addBMWX5';
+import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
@@ -50,6 +51,9 @@ const VehiculesOccasion = () => {
     
     // Mise à jour de la BMW X5 avec le nouveau lien Facebook
     addBMWX5();
+    
+    // Mise à jour de la Porsche Cayenne avec le nouveau lien Facebook
+    addPorscheCayenne();
     
     // Déclencher un événement pour forcer le rechargement des véhicules
     window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'all' } }));
