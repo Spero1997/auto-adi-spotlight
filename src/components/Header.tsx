@@ -14,11 +14,19 @@ import {
 } from '@/components/ui/navigation-menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import LanguageSwitcher from './LanguageSwitcher';
+import { Globe } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { language } = useLanguage();
+  const { language, translate } = useLanguage();
   const location = useLocation();
 
   useEffect(() => {
@@ -36,6 +44,17 @@ const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+    const translations = {
+    language: {
+      FR: "Langue",
+      EN: "Language",
+      ES: "Idioma",
+      IT: "Lingua",
+      PT: "Idioma",
+      RO: "Limbă"
+    },
   };
 
   return (
@@ -203,8 +222,26 @@ const Header = () => {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-          </div>
 
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300"
+                >
+                  <Globe className="mr-1 h-4 w-4" />
+                  {translate('language', translations.language)}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
+              >
+                <LanguageSwitcher />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          
           {/* Mobile menu button */}
           <button
             onClick={toggleMenu}
@@ -230,6 +267,8 @@ const Header = () => {
             className="lg:hidden bg-white shadow-lg overflow-hidden"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
+              
+
               <div className="space-y-2">
                 <div className="font-medium text-gray-800">Véhicules</div>
                 <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">

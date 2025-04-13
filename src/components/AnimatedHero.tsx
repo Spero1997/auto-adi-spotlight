@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { ChevronDown, Search, Globe, Phone } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -24,7 +23,6 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 
-// Liens du menu principal
 const mainLinks = [
   { href: '/services', labelKey: 'services' },
   { href: '/vehicules/occasion', labelKey: 'usedVehicles' },
@@ -34,7 +32,6 @@ const mainLinks = [
   { href: '/contact', labelKey: 'contact' },
 ];
 
-// Liens secondaires (bas de page)
 const secondaryLinks = [
   { href: '/mentions-legales', labelKey: 'legalNotice' },
   { href: '/politique-confidentialite', labelKey: 'privacyPolicy' },
@@ -50,10 +47,8 @@ const AnimatedHero = () => {
   const isMobile = useIsMobile();
   const [scrolled, setScrolled] = useState(false);
   
-  // Use a logo from the public folder
   const logoURL = "/lovable-uploads/f18eff87-6558-4180-a9d8-1f31ef85c370.png";
 
-  // Détecter le défilement pour modifier le style du header
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 50;
@@ -69,7 +64,6 @@ const AnimatedHero = () => {
     };
   }, [scrolled]);
 
-  // Vérifier si un chemin est actif (pour le soulignement du menu actif)
   const isActive = (path: string) => {
     if (path === '/') {
       return location.pathname === '/';
@@ -77,7 +71,6 @@ const AnimatedHero = () => {
     return location.pathname.startsWith(path);
   };
 
-  // Traductions pour les liens du menu et le texte d'accueil
   const translations = {
     services: {
       FR: "Services",
@@ -127,7 +120,6 @@ const AnimatedHero = () => {
       PT: "Contato",
       RO: "Contact"
     },
-    // Nouvelles traductions pour le texte de bienvenue
     welcomeHeader: {
       FR: "Bienvenue chez Auto ADI",
       EN: "Welcome to Auto ADI",
@@ -144,7 +136,6 @@ const AnimatedHero = () => {
       PT: "Seu parceiro confiável para importação e venda de veículos usados de qualidade",
       RO: "Partenerul dvs. de încredere pentru importul și vânzarea de vehicule rulate de calitate"
     },
-    // Traduction pour le menu langue
     language: {
       FR: "Langue",
       EN: "Language",
@@ -153,7 +144,6 @@ const AnimatedHero = () => {
       PT: "Idioma",
       RO: "Limbă"
     },
-    // Traductions pour les sous-menus de véhicules
     allVehicles: {
       FR: "Tous nos véhicules",
       EN: "All our vehicles",
@@ -222,18 +212,13 @@ const AnimatedHero = () => {
 
   return (
     <>
-      {/* Hero section avec fond animé pleine largeur/hauteur */}
       <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-brand-blue to-brand-darkBlue">
-        {/* Animation en arrière-plan - utilisation d'un effet CSS pour l'animation */}
         <div className="absolute inset-0 z-0 w-full h-full bg-cover bg-center bg-no-repeat hero-background-animate">
-          {/* Overlay semi-transparent pour améliorer le contraste et la lisibilité */}
           <div className="absolute inset-0 bg-black/70 z-1"></div>
         </div>
         
-        {/* Navbar superposée - conserver la structure container mais pour la navbar uniquement */}
         <div className={`fixed top-0 left-0 w-full z-30 py-3 transition-colors duration-300 ${scrolled ? 'bg-brand-blue/95 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
           <div className="container mx-auto px-3 flex justify-between items-center">
-            {/* Logo */}
             <Link to="/" className="flex-shrink-0">
               <img 
                 src={logoURL} 
@@ -242,9 +227,7 @@ const AnimatedHero = () => {
               />
             </Link>
             
-            {/* Menu de navigation - caché sur mobile */}
             <div className="hidden md:flex space-x-4 text-white">
-              {/* Menu déroulant pour les véhicules */}
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -313,7 +296,6 @@ const AnimatedHero = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* Menu déroulant pour les services */}
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -383,7 +365,6 @@ const AnimatedHero = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* Lien simple pour À propos */}
               <Link 
                 to="/a-propos"
                 className="font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40 hover:shadow-sm"
@@ -391,7 +372,6 @@ const AnimatedHero = () => {
                 {translate('about', translations.about)}
               </Link>
 
-              {/* Lien simple pour Contact */}
               <Link 
                 to="/contact"
                 className="font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40 hover:shadow-sm"
@@ -399,16 +379,6 @@ const AnimatedHero = () => {
                 {translate('contact', translations.contact)}
               </Link>
               
-              {/* Lien téléphone */}
-              <a
-                href="tel:+33123456789"
-                className="flex items-center gap-2 font-medium transition-colors font-montserrat font-light"
-              >
-                <Phone className="h-5 w-5" />
-                <span className="hidden xl:inline">+33 1 23 45 67 89</span>
-              </a>
-              
-              {/* Menu déroulant pour la sélection de langue - desktop */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
@@ -428,7 +398,6 @@ const AnimatedHero = () => {
               </DropdownMenu>
             </div>
             
-            {/* Menu mobile - visible uniquement sur mobile */}
             <div className="flex md:hidden">
               <Popover>
                 <PopoverTrigger asChild>
@@ -438,7 +407,6 @@ const AnimatedHero = () => {
                 </PopoverTrigger>
                 <PopoverContent className="w-screen p-0 border-none bg-brand-blue/95 backdrop-blur-md">
                   <div className="flex flex-col p-3">
-                    {/* Ajouter les liens de véhicules pour mobile */}
                     <div className="py-3 px-4 text-white border-b border-white/10">
                       <div className="font-montserrat font-semibold mb-2">Véhicules</div>
                       <Link 
@@ -467,7 +435,6 @@ const AnimatedHero = () => {
                       </Link>
                     </div>
                     
-                    {/* Sous-menu services pour mobile */}
                     <div className="py-3 px-4 text-white border-b border-white/10">
                       <div className="font-montserrat font-semibold mb-2">Services</div>
                       <Link 
@@ -502,7 +469,6 @@ const AnimatedHero = () => {
                       </Link>
                     </div>
                     
-                    {/* Autres liens principaux pour mobile */}
                     <Link 
                       to="/a-propos"
                       className="py-3 px-4 text-white font-montserrat font-light hover:bg-brand-darkBlue/80 rounded-sm"
@@ -517,16 +483,6 @@ const AnimatedHero = () => {
                       {translate('contact', translations.contact)}
                     </Link>
                     
-                    {/* Lien de téléphone pour mobile */}
-                    <a
-                      href="tel:+33123456789"
-                      className="py-3 px-4 text-white font-montserrat font-semibold hover:bg-brand-darkBlue/80 rounded-sm flex items-center"
-                    >
-                      <Phone className="h-5 w-5 mr-2" />
-                      +33 1 23 45 67 89
-                    </a>
-                    
-                    {/* Option de langue pour mobile */}
                     <div className="py-3 px-4 text-white border-t border-white/10 mt-2">
                       <p className="mb-2 font-montserrat font-semibold">{translate('language', translations.language)}</p>
                       <LanguageSwitcher />
@@ -538,7 +494,6 @@ const AnimatedHero = () => {
           </div>
         </div>
         
-        {/* Contenu central du hero avec titre et QuickSearch superposés */}
         <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full z-10 px-4">
           <div className="text-center mb-8 md:mb-12">
             <h1 className="font-playfair text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
@@ -549,7 +504,6 @@ const AnimatedHero = () => {
             </p>
           </div>
           
-          {/* QuickSearch intégré directement dans le hero */}
           <div className="w-full max-w-4xl mx-auto animate-fade-in animation-delay-300">
             <QuickSearch />
           </div>
