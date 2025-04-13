@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -91,6 +92,14 @@ const LuxuryChatbot: React.FC = () => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+    // Ensure the textarea maintains focus after text input
+    if (textareaRef.current) {
+      textareaRef.current.focus();
     }
   };
 
@@ -306,13 +315,21 @@ const ChatInput: React.FC<ChatInputProps> = ({
   translate,
   language
 }) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+    // Make sure focus remains on the textarea
+    if (textareaRef.current && document.activeElement !== textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
+
   return (
     <form onSubmit={handleSend} className="border-t border-brand-gold/20 p-4 bg-white">
       <div className="flex items-end space-x-2">
         <Textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 min-h-[50px] max-h-[120px] resize-none border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
