@@ -24,8 +24,8 @@ const LanguageSwitcher = () => {
           onClick={() => setLanguage(lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO")}
           className={`flex items-center justify-start text-sm px-2 py-1 ${
             language === lang.code 
-              ? "bg-brand-orange/20 text-brand-orange font-medium" 
-              : "text-white hover:bg-white/10"
+              ? "bg-blue-100 text-blue-700 font-medium" 
+              : "text-gray-700 hover:bg-gray-100"
           }`}
         >
           <span className="mr-2">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>

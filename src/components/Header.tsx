@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import {
@@ -21,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from './LanguageSwitcher';
-import { Globe } from 'lucide-react';
+import { menuTranslations } from '@/translations/menuTranslations';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,17 +47,6 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const translations = {
-    language: {
-      FR: "Langue",
-      EN: "Language",
-      ES: "Idioma",
-      IT: "Lingua",
-      PT: "Idioma",
-      RO: "Limbă"
-    },
-  };
-
   return (
     <header
       className={cn(
@@ -77,7 +67,7 @@ const Header = () => {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-gray-700">
-                    Véhicules
+                    {translate('vehicles', menuTranslations.vehicles)}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -88,10 +78,10 @@ const Header = () => {
                             to="/vehicules"
                           >
                             <div className="mt-4 mb-2 text-lg font-medium text-white">
-                              Tous nos véhicules
+                              {translate('allVehicles', menuTranslations.allVehicles)}
                             </div>
                             <p className="text-sm leading-tight text-white/90">
-                              Découvrez notre sélection complète de véhicules neufs et d'occasion
+                              {translate('allVehicles', menuTranslations.allVehicles)}
                             </p>
                           </Link>
                         </NavigationMenuLink>
@@ -101,9 +91,9 @@ const Header = () => {
                           to="/vehicules/neufs"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Véhicules neufs</div>
+                          <div className="text-sm font-medium leading-none">{translate('newVehicles', menuTranslations.newVehicles)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Les derniers modèles disponibles
+                            {translate('latestModels', menuTranslations.latestModels)}
                           </p>
                         </Link>
                       </li>
@@ -112,9 +102,9 @@ const Header = () => {
                           to="/vehicules/occasion"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Véhicules d'occasion</div>
+                          <div className="text-sm font-medium leading-none">{translate('usedVehicles', menuTranslations.usedVehicles)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Véhicules d'occasion certifiés et garantis
+                            {translate('certifiedUsed', menuTranslations.certifiedUsed)}
                           </p>
                         </Link>
                       </li>
@@ -123,9 +113,9 @@ const Header = () => {
                           to="/vehicules/utilitaires"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Utilitaires</div>
+                          <div className="text-sm font-medium leading-none">{translate('utility', menuTranslations.utility)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Véhicules utilitaires pour professionnels
+                            {translate('utilityVehicles', menuTranslations.utilityVehicles)}
                           </p>
                         </Link>
                       </li>
@@ -135,7 +125,7 @@ const Header = () => {
 
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-gray-700">
-                    Services
+                    {translate('services', menuTranslations.services)}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -144,9 +134,9 @@ const Header = () => {
                           to="/services"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Nos services</div>
+                          <div className="text-sm font-medium leading-none">{translate('ourServices', menuTranslations.ourServices)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Découvrez tous nos services automobiles
+                            {translate('discoverAll', menuTranslations.discoverAll)}
                           </p>
                         </Link>
                       </li>
@@ -155,9 +145,9 @@ const Header = () => {
                           to="/financement"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Financement</div>
+                          <div className="text-sm font-medium leading-none">{translate('financing', menuTranslations.financing)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Solutions de financement adaptées
+                            {translate('financingSolutions', menuTranslations.financingSolutions)}
                           </p>
                         </Link>
                       </li>
@@ -166,9 +156,9 @@ const Header = () => {
                           to="/garantie"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Garantie</div>
+                          <div className="text-sm font-medium leading-none">{translate('warranty', menuTranslations.warranty)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Nos garanties sur tous les véhicules
+                            {translate('warrantyOnVehicles', menuTranslations.warrantyOnVehicles)}
                           </p>
                         </Link>
                       </li>
@@ -177,9 +167,9 @@ const Header = () => {
                           to="/livraison"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Livraison</div>
+                          <div className="text-sm font-medium leading-none">{translate('delivery', menuTranslations.delivery)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Livraison partout en Europe
+                            {translate('deliveryEurope', menuTranslations.deliveryEurope)}
                           </p>
                         </Link>
                       </li>
@@ -188,9 +178,9 @@ const Header = () => {
                           to="/rachat"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                         >
-                          <div className="text-sm font-medium leading-none">Rachat de véhicule</div>
+                          <div className="text-sm font-medium leading-none">{translate('vehicleBuyback', menuTranslations.vehicleBuyback)}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            Vendez votre véhicule rapidement
+                            {translate('sellYourVehicle', menuTranslations.sellYourVehicle)}
                           </p>
                         </Link>
                       </li>
@@ -201,7 +191,7 @@ const Header = () => {
                 <NavigationMenuItem>
                   <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
                     <Link to="/a-propos">
-                      À propos
+                      {translate('aboutUs', menuTranslations.aboutUs)}
                     </Link>
                   </div>
                 </NavigationMenuItem>
@@ -209,7 +199,7 @@ const Header = () => {
                 <NavigationMenuItem>
                   <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
                     <Link to="/contact">
-                      Contact
+                      {translate('contact', menuTranslations.contact)}
                     </Link>
                   </div>
                 </NavigationMenuItem>
@@ -223,7 +213,7 @@ const Header = () => {
                   className="text-gray-700 font-montserrat font-light tracking-wide px-5 py-1.5 hover:bg-gray-100 rounded-md transition-all duration-300"
                 >
                   <Globe className="mr-1 h-4 w-4 text-gray-700" />
-                  {translate('language', translations.language)}
+                  {translate('language', menuTranslations.language)}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
@@ -259,46 +249,51 @@ const Header = () => {
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
               <div className="space-y-2">
-                <div className="font-medium text-gray-800">Véhicules</div>
+                <div className="font-medium text-gray-800">{translate('vehicles', menuTranslations.vehicles)}</div>
                 <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Tous nos véhicules
+                  {translate('allVehicles', menuTranslations.allVehicles)}
                 </Link>
                 <Link to="/vehicules/neufs" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Véhicules neufs
+                  {translate('newVehicles', menuTranslations.newVehicles)}
                 </Link>
                 <Link to="/vehicules/occasion" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Véhicules d'occasion
+                  {translate('usedVehicles', menuTranslations.usedVehicles)}
                 </Link>
                 <Link to="/vehicules/utilitaires" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Utilitaires
+                  {translate('utility', menuTranslations.utility)}
                 </Link>
               </div>
 
               <div className="space-y-2">
-                <div className="font-medium text-gray-800">Services</div>
+                <div className="font-medium text-gray-800">{translate('services', menuTranslations.services)}</div>
                 <Link to="/services" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Nos services
+                  {translate('ourServices', menuTranslations.ourServices)}
                 </Link>
                 <Link to="/financement" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Financement
+                  {translate('financing', menuTranslations.financing)}
                 </Link>
                 <Link to="/garantie" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Garantie
+                  {translate('warranty', menuTranslations.warranty)}
                 </Link>
                 <Link to="/livraison" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Livraison
+                  {translate('delivery', menuTranslations.delivery)}
                 </Link>
                 <Link to="/rachat" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  Rachat de véhicule
+                  {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
                 </Link>
               </div>
 
               <Link to="/a-propos" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                À propos
+                {translate('aboutUs', menuTranslations.aboutUs)}
               </Link>
               <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                Contact
+                {translate('contact', menuTranslations.contact)}
               </Link>
+              
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="font-medium text-gray-800 mb-2">{translate('language', menuTranslations.language)}</div>
+                <LanguageSwitcher />
+              </div>
             </div>
           </motion.div>
         )}
