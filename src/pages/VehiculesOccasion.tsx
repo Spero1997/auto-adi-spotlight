@@ -10,6 +10,7 @@ import { updateVehicleImages } from '@/scripts/updateVehicleImages';
 import { updateAudiQ2 } from '@/scripts/updateAudiQ2';
 import { cleanVehicleCatalogs } from '@/utils/vehicleImportService';
 import { removeSpecificVehicles } from '@/scripts/removeSpecificVehicles';
+import ConditionsHighlight from '@/components/ConditionsHighlight';
 
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
@@ -75,6 +76,9 @@ const VehiculesOccasion = () => {
           </section>
           
           <FeaturedCars searchFilters={searchFilters} />
+          
+          {/* Remplacer Benefits par ConditionsHighlight */}
+          <ConditionsHighlight />
         </main>
         
         <Footer />
