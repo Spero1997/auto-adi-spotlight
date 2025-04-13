@@ -29,7 +29,6 @@ import Garantie from "./pages/Garantie";
 import Livraison from "./pages/Livraison";
 import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
-import LuxuryChatbot from "./components/LuxuryChatbot";
 
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -96,8 +95,7 @@ const App = () => {
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              {/* Ajout du chatbot de luxe sur toutes les pages */}
-              <LuxuryChatbot />
+              {/* Le chatbot de luxe a été supprimé */}
             </CatalogChecker>
           </BrowserRouter>
         </TooltipProvider>
