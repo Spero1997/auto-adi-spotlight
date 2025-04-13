@@ -16,9 +16,10 @@ const shouldRemoveVehicle = (vehicle: ImportedVehicle): boolean => {
 
 /**
  * Supprime les véhicules spécifiques des catalogues
- * IMPORTANT: Désactivé pour maintenir la cohérence entre mobile et desktop
+ * IMPORTANT: Cette fonction est désactivée et retourne toujours true pour assurer
+ * que tous les véhicules sont visibles sur toutes les plateformes
  */
 export const removeSpecificVehicles = (): boolean => {
-  console.log("Suppression spécifique de véhicules désactivée pour maintenir tous les véhicules visibles");
+  console.log("Fonction de suppression spécifique de véhicules DÉSACTIVÉE - Tous les véhicules restent visibles");
   return true;
 };

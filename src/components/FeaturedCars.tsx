@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -66,13 +65,15 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         
         // D'abord ajouter les véhicules standard
         standardVehicles.forEach(vehicle => {
-          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
+          // Utiliser une clé plus spécifique pour éviter les problèmes d'identification
+          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}-${vehicle.id}`;
           uniqueVehicles.set(key, { ...vehicle, featured: false });
         });
         
         // Ensuite ajouter/remplacer avec les véhicules featured
         featuredVehicles.forEach(vehicle => {
-          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
+          // Utiliser la même clé spécifique pour la cohérence
+          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}-${vehicle.id}`;
           uniqueVehicles.set(key, { ...vehicle, featured: true });
         });
         
@@ -80,6 +81,12 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         importedVehicles = Array.from(uniqueVehicles.values());
         
         console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total après déduplication`);
+        console.log(`Plateforme: ${isMobile ? 'Mobile' : 'Desktop'} - ${importedVehicles.length} véhicules chargés au total`);
+        
+        // Log des véhicules pour vérification
+        importedVehicles.forEach(v => {
+          console.log(`Véhicule chargé: ${v.brand} ${v.model}`);
+        });
       }
       
       setVehicles(importedVehicles);
