@@ -90,43 +90,13 @@ const defaultVehicles: ImportedVehicle[] = [];
 
 /**
  * Nettoie les catalogues en supprimant les véhicules sans images valides
+ * IMPORTANT: Cette fonction est maintenant désactivée pour assurer la cohérence entre mobile et desktop
  */
 export const cleanVehicleCatalogs = (): boolean => {
-  try {
-    // Nettoyer les deux catalogues
-    const standardVehicles = getImportedVehicles('standard');
-    const featuredVehicles = getImportedVehicles('featured');
-    
-    // Filtrer les véhicules standard qui ont des images valides
-    // Une image est considérée valide si elle commence par http ou /
-    const validStandardVehicles = standardVehicles.filter(vehicle => 
-      vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
-    );
-    
-    // Filtrer les véhicules featured qui ont des images valides
-    const validFeaturedVehicles = featuredVehicles.filter(vehicle => 
-      vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
-    );
-    
-    const standardRemoved = standardVehicles.length - validStandardVehicles.length;
-    const featuredRemoved = featuredVehicles.length - validFeaturedVehicles.length;
-    
-    // Sauvegarder uniquement les véhicules avec des images valides
-    if (standardRemoved > 0) {
-      saveImportedVehicles(validStandardVehicles, 'standard');
-      console.log(`${standardRemoved} véhicules sans images valides supprimés du catalogue standard`);
-    }
-    
-    if (featuredRemoved > 0) {
-      saveImportedVehicles(validFeaturedVehicles, 'featured');
-      console.log(`${featuredRemoved} véhicules sans images valides supprimés du catalogue vedette`);
-    }
-    
-    return true;
-  } catch (error) {
-    console.error("Erreur lors du nettoyage des catalogues:", error);
-    return false;
-  }
+  // Cette fonction est désactivée pour éviter la suppression automatique de véhicules
+  // ce qui pouvait créer des incohérences entre les appareils
+  console.log("Nettoyage automatique des catalogues désactivé pour assurer la cohérence entre mobile et desktop");
+  return true;
 };
 
 /**
