@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -176,6 +177,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 h-10 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
           autoComplete="off"
+          autoFocus={true}
           spellCheck="false"
           aria-label={translate('placeholder', translations.placeholder)}
         />
@@ -208,11 +210,17 @@ const LuxuryChatbot: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
+  // Fixed focus effect - using both a timeout and direct focusing
   useEffect(() => {
-    if (isOpen && !isMinimized && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current?.focus();
+    if (isOpen && !isMinimized) {
+      // Initial focus with a delay to allow animations to complete
+      const timeoutId = setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
       }, 300);
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [isOpen, isMinimized]);
 
@@ -226,11 +234,12 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      setTimeout(() => {
+      // Ensure focus is maintained after sending a message
+      requestAnimationFrame(() => {
         if (inputRef.current) {
           inputRef.current.focus();
         }
-      }, 0);
+      });
     }
   };
 
@@ -243,6 +252,7 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
+    // Ensure focus is maintained after expanding/contracting
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
@@ -253,7 +263,15 @@ const LuxuryChatbot: React.FC = () => {
   const ChatContainer = () => {
     if (isMobile) {
       return (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <Drawer open={isOpen} onOpenChange={(open) => {
+          setIsOpen(open);
+          // Fixed: ensure focus when drawer opens
+          if (open) {
+            setTimeout(() => {
+              if (inputRef.current) inputRef.current.focus();
+            }, 300);
+          }
+        }}>
           <DrawerTrigger asChild>
             <Button
               className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 p-0 flex items-center justify-center"
@@ -295,7 +313,13 @@ const LuxuryChatbot: React.FC = () => {
     return (
       <Dialog open={isOpen && !isMinimized} onOpenChange={(open) => {
         setIsOpen(open);
-        if (open) setIsMinimized(false);
+        if (open) {
+          setIsMinimized(false);
+          // Fixed: ensure focus when dialog opens
+          setTimeout(() => {
+            if (inputRef.current) inputRef.current.focus();
+          }, 300);
+        }
       }}>
         <DialogTrigger asChild>
           {isMinimized ? (
