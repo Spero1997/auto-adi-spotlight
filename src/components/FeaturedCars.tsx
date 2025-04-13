@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,11 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       
       if (featuredOnly) {
         // Sur la page d'accueil (featuredOnly=true), on charge seulement les véhicules en vedette
-        importedVehicles = getImportedVehicles('featured');
+        const featuredVehicles = getImportedVehicles('featured');
+        // Filtrer les véhicules sans images valides
+        importedVehicles = featuredVehicles.filter(vehicle => 
+          vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
+        );
         console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue featured`);
       } else {
         // Sur la page des véhicules d'occasion, on charge TOUS les véhicules (standard et featured)

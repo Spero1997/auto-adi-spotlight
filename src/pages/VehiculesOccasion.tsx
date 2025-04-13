@@ -32,21 +32,12 @@ const VehiculesOccasion = () => {
 
   // Effet pour nettoyer les catalogues et mettre à jour les images des véhicules spécifiés silencieusement
   useEffect(() => {
-    // Clé pour vérifier si c'est le premier chargement
-    const firstLoadKey = 'vehiculesOccasionFirstLoad';
-    const isFirstLoad = !localStorage.getItem(firstLoadKey);
+    // Nettoyer les catalogues silencieusement (supprime les véhicules sans images)
+    cleanVehicleCatalogs();
     
-    if (isFirstLoad) {
-      // Nettoyer les catalogues silencieusement (supprime les véhicules sans images)
-      cleanVehicleCatalogs();
-      
-      // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
-      updateVehicleImages();
-      updateAudiQ2();
-      
-      // Marquer comme chargé pour les prochaines visites
-      localStorage.setItem(firstLoadKey, 'loaded');
-    }
+    // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
+    updateVehicleImages();
+    updateAudiQ2();
   }, []);
 
   // Fonction pour mettre à jour les filtres de recherche
