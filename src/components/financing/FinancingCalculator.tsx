@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 type FinancingCalculatorTranslations = {
   simulateFinancing: Record<string, string>;
@@ -40,6 +41,12 @@ const FinancingCalculator = ({ translations }: FinancingCalculatorProps) => {
     const price = parseFloat(vehiclePrice);
     const contribution = parseFloat(initialContribution);
     const months = parseInt(duration);
+    
+    // Validate duration between 3 and 120 months
+    if (months < 3 || months > 120) {
+      toast.error('La durée de remboursement doit être entre 3 et 120 mois');
+      return;
+    }
     
     if (isNaN(price) || isNaN(contribution) || isNaN(months) || months <= 0) {
       return;
