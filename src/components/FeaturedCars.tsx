@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,43 +68,27 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
           vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
         );
         
-        // Correction: Ne pas utiliser Map qui remplace les véhicules avec le même ID
-        // Au lieu de cela, combiner les deux tableaux et marquer les véhicules featured
-        const allVehicles = [...validStandardVehicles];
+        // Créer une Map pour éviter les doublons basés sur la combinaison brand+model+year
+        const uniqueVehicles = new Map<string, ImportedVehicle>();
         
-        // Ajouter les véhicules featured qui ne sont pas déjà dans standardVehicles
-        validFeaturedVehicles.forEach(featuredVehicle => {
-          // Marquer le véhicule comme featured
-          const vehicleWithFeatured = { ...featuredVehicle, featured: true };
-          
-          // Vérifier si ce véhicule existe déjà dans la liste standard
-          // Note: l'ID peut être différent entre les catalogues, alors on vérifie par marque, modèle et année
-          const existsInStandard = validStandardVehicles.some(
-            stdVehicle => 
-              stdVehicle.brand === featuredVehicle.brand &&
-              stdVehicle.model === featuredVehicle.model &&
-              stdVehicle.year === featuredVehicle.year
-          );
-          
-          // Si le véhicule n'est pas déjà dans la liste standard, l'ajouter
-          if (!existsInStandard) {
-            allVehicles.push(vehicleWithFeatured);
-          } else {
-            // Si le véhicule existe déjà, mettre à jour sa propriété featured à true
-            const index = allVehicles.findIndex(
-              v => v.brand === featuredVehicle.brand && 
-                  v.model === featuredVehicle.model && 
-                  v.year === featuredVehicle.year
-            );
-            
-            if (index !== -1) {
-              allVehicles[index] = { ...allVehicles[index], featured: true };
-            }
-          }
+        // D'abord ajouter les véhicules standard
+        validStandardVehicles.forEach(vehicle => {
+          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
+          uniqueVehicles.set(key, { ...vehicle, featured: false });
         });
         
-        importedVehicles = allVehicles;
-        console.log(`FeaturedCars: ${validStandardVehicles.length} véhicules standard + ${validFeaturedVehicles.length} véhicules featured = ${importedVehicles.length} total`);
+        // Ensuite ajouter/remplacer avec les véhicules featured
+        validFeaturedVehicles.forEach(vehicle => {
+          const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
+          // Si le véhicule est déjà dans la Map, remplacer par la version featured
+          // Sinon, ajouter le nouveau véhicule featured
+          uniqueVehicles.set(key, { ...vehicle, featured: true });
+        });
+        
+        // Convertir la Map en tableau
+        importedVehicles = Array.from(uniqueVehicles.values());
+        
+        console.log(`FeaturedCars: ${validStandardVehicles.length} véhicules standard + ${validFeaturedVehicles.length} véhicules featured = ${importedVehicles.length} total après déduplication`);
       }
       
       setVehicles(importedVehicles);
@@ -140,7 +123,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const featured = filteredVehicles();
 
-  // Fonction améliorée pour ouvrir directement la publication Facebook sur mobile et desktop
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
     
@@ -218,7 +200,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                   <h3 className="text-lg font-semibold text-gray-800">{vehicle.brand} {vehicle.model}</h3>
                   <p className="text-gray-600">{vehicle.year} • {vehicle.fuelType}</p>
                   
-                  {/* Bouton Facebook amélioré avec nouvelle logique pour une meilleure compatibilité mobile */}
                   {vehicle.fbLink && (
                     <button 
                       onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}
@@ -243,7 +224,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
             ))}
           </div>
           
-          {/* Bouton pour voir tous les véhicules, visible uniquement sur la page d'accueil avec featuredOnly=true */}
           {featuredOnly && (
             <div className="mt-10 text-center">
               <Link to="/vehicules/occasion">
