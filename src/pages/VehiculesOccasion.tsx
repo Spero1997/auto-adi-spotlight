@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Car } from 'lucide-react';
-import { VerticalMarquee } from '@/components/VerticalMarquee';
+import VerticalMarquee from '@/components/VerticalMarquee';
 import FeaturedCars from '@/components/FeaturedCars';
 import QuickSearch from '@/components/QuickSearch';
 import Footer from '@/components/Footer';
@@ -77,7 +77,7 @@ const VehiculesOccasion = () => {
               </div>
             </div>
             
-            <QuickSearch onSearch={handleSearch} />
+            <QuickSearch />
           </div>
         </section>
         
@@ -86,25 +86,9 @@ const VehiculesOccasion = () => {
           featuredOnly={false}
         />
 
-        <VerticalMarquee
-          phrases={[
-            "Véhicules d'occasion contrôlés",
-            "Garantie incluse",
-            "Financement sur mesure",
-            "Reprise de votre ancien véhicule",
-            "Livraison possible dans toute la France",
-            "SAV 7j/7",
-            "Prix transparent sans surprise",
-            "Véhicules sélectionnés selon nos critères exigeants"
-          ]}
-        />
+        <VerticalMarquee />
 
-        <CallToAction 
-          title="Vous ne trouvez pas le véhicule de vos rêves ?" 
-          description="Contactez-nous avec vos critères et nous le trouverons pour vous."
-          buttonText="Demande personnalisée"
-          buttonLink="/contact"
-        />
+        <CallToAction />
       </main>
 
       <Footer />
