@@ -157,8 +157,12 @@ const Index = () => {
           {/* AnimatedHero est ajouté directement dans App.tsx, pas besoin de l'ajouter ici */}
           <Benefits />
           <FeaturedCars featuredOnly={true} />
-          {/* Ajout de la section des conditions d'achat */}
-          <ConditionsHighlight />
+          
+          {/* Ajout de la section des conditions d'achat avec une classe spécifique pour le débogage */}
+          <div id="conditions-section" className="w-full">
+            <ConditionsHighlight />
+          </div>
+          
           <TestimonialSection />
           {/* Removed CallToAction component */}
         </main>
