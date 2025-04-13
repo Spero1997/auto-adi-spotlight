@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -29,8 +28,8 @@ import Garantie from "./pages/Garantie";
 import Livraison from "./pages/Livraison";
 import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
+import FAQ from "./pages/FAQ";
 
-// Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const catalogId = getCatalogIdFromUrl();
@@ -56,7 +55,6 @@ const App = () => {
             <CatalogChecker>
               <Routes>
                 <Route path="/" element={<>
-                  {/* Utilisation de AnimatedHero comme composant principal en plein écran */}
                   <AnimatedHero />
                   <Index />
                 </>} />
@@ -66,8 +64,8 @@ const App = () => {
                 <Route path="/rachat" element={<Rachat />} />
                 <Route path="/a-propos" element={<APropos />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/faq" element={<FAQ />} />
                 
-                {/* Nouvelles routes pour les pages de services spécialisés */}
                 <Route path="/garantie" element={<Garantie />} />
                 <Route path="/livraison" element={<Livraison />} />
                 <Route path="/service-premium" element={<ServicePremium />} />
@@ -95,7 +93,6 @@ const App = () => {
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              {/* Le chatbot de luxe a été supprimé */}
             </CatalogChecker>
           </BrowserRouter>
         </TooltipProvider>
