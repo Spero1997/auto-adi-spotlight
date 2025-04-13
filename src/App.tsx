@@ -24,19 +24,18 @@ import VehicleImport from "./pages/VehicleImport";
 import VehicleDetails from "./pages/VehicleDetails";
 import { useEffect } from "react";
 import { getCatalogIdFromUrl } from "./utils/vehicleImportService";
-import AnimatedHero from "./components/AnimatedHero";
+import Header from "./components/Header";
 import Garantie from "./pages/Garantie";
 import Livraison from "./pages/Livraison";
 import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
 import FAQ from "./pages/FAQ";
 
-// Component to conditionally render the AnimatedHero
+// Component to conditionally render the Header
 const ConditionalHeader = () => {
   const location = useLocation();
-  const isHomePage = location.pathname === "/";
   
-  return isHomePage ? <AnimatedHero /> : null;
+  return <Header />;
 };
 
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -62,6 +61,7 @@ const App = () => {
           <BrowserRouter>
             <ScrollToTop />
             <CatalogChecker>
+              <ConditionalHeader />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/services" element={<Services />} />
@@ -98,7 +98,6 @@ const App = () => {
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <ConditionalHeader />
             </CatalogChecker>
           </BrowserRouter>
         </TooltipProvider>
