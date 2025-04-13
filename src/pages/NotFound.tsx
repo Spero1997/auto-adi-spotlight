@@ -31,7 +31,7 @@ const NotFound = () => {
           
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/">
-              <Button className="bg-white hover:bg-gray-100 text-brand-blue transition-colors px-6 py-3 text-lg">
+              <Button className="bg-brand-orange hover:bg-brand-lightOrange text-white transition-colors px-6 py-3 text-lg">
                 <ArrowLeft className="h-5 w-5 mr-2" />
                 Retour à l'accueil
               </Button>
