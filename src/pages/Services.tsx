@@ -1,9 +1,8 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Wrench, Car, Calendar, Shield, Gauge, Fuel, ScrollText, FileImport, Plane, Headset, CreditCard, ShieldCheck } from 'lucide-react';
+import { Wrench, Car, Calendar, Shield, Gauge, Fuel, ScrollText, FileSpreadsheet, Plane, Headset, CreditCard, ShieldCheck } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -51,7 +50,7 @@ const Services = () => {
               <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-purple-500">
                 <CardHeader className="pb-2">
                   <div className="bg-purple-500/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <FileImport className="h-7 w-7 text-purple-500" />
+                    <FileSpreadsheet className="h-7 w-7 text-purple-500" />
                   </div>
                   <CardTitle>Importation de véhicules</CardTitle>
                 </CardHeader>
