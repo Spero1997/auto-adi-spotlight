@@ -5,11 +5,11 @@ import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 type SpecialOfferTranslations = {
   specialOffer: Record<Language, string>;
-  specialOfferDescription: Record<Language, string>;
+  cashDiscount: Record<Language, string>;
 }
 
 type SpecialOfferProps = {
-  translations: any; // Accept the full translations object
+  translations: SpecialOfferTranslations;
 }
 
 const SpecialOffer = ({ translations }: SpecialOfferProps) => {
@@ -22,7 +22,7 @@ const SpecialOffer = ({ translations }: SpecialOfferProps) => {
         {translate('specialOffer', translations.specialOffer)}
       </AlertTitle>
       <AlertDescription>
-        {translate('specialOfferDescription', translations.specialOfferDescription)}
+        {translate('cashDiscount', translations.cashDiscount)}
       </AlertDescription>
     </Alert>
   );
