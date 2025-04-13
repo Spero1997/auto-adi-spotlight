@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams, Link } from 'react-router-dom';
@@ -19,7 +18,7 @@ import { sendOrderConfirmationEmail } from '@/utils/emailService';
 import PaymentOptions from '@/components/PaymentOptions';
 import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
 import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 interface OrderFormData {
   name: string;
@@ -42,7 +41,7 @@ const VehicleDetails = () => {
   const [paymentMethod, setPaymentMethod] = useState('bank-transfer');
   const [paymentProof, setPaymentProof] = useState<File | null>(null);
   const [couponCode, setCouponCode] = useState('');
-  const { translate } = useLanguage();
+  const { translate, language } = useLanguage();
   
   const translations = {
     vehicleDetails: {
@@ -1114,4 +1113,3 @@ const VehicleDetails = () => {
 };
 
 export default VehicleDetails;
-

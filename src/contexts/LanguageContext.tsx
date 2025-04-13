@@ -9,7 +9,7 @@ export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
 type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
-  translate: (key: string, translations: Record<Language, string>) => string;
+  translate: <T extends Record<string, string>>(key: string, translations: T) => string;
 };
 
 // Create the context with default values
@@ -72,10 +72,21 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     toast(messages[lang]);
   };
 
-  // Translation function
-  const translate = (key: string, translations: Record<string, string>) => {
-    // Assurez-vous que la clé de langue existe, sinon utilisez FR comme fallback
-    return translations[language] || translations['FR'] || key;
+  // Translation function that accepts any record with string keys
+  const translate = <T extends Record<string, string>>(key: string, translations: T): string => {
+    if (!translations) return key;
+    
+    // Try to get the translation for the current language
+    const translation = translations[language];
+    
+    // If translation exists, return it
+    if (translation) return translation;
+    
+    // Fall back to French if available
+    if (translations['FR']) return translations['FR'];
+    
+    // Last resort: return the key itself
+    return key;
   };
 
   return (
