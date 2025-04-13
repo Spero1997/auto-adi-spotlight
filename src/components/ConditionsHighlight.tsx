@@ -1,10 +1,10 @@
 
 import { Check, Shield, Calendar, CreditCard, Truck, Settings } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { useLanguage, Language } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ConditionsHighlight = () => {
-  const { translate, language } = useLanguage();
+  const { translate } = useLanguage();
 
   // Traductions pour le composant ConditionsHighlight
   const translations = {
