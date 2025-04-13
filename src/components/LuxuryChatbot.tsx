@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -204,24 +203,17 @@ const LuxuryChatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   
-  // Utilisez directement useChatMessages sans déclarations supplémentaires
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
-  // Scroll vers le bas lorsque de nouveaux messages arrivent
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [messages]);
 
-  // Focus sur l'input lorsque le chat est ouvert
   useEffect(() => {
     if (isOpen && !isMinimized && inputRef.current) {
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 100);
+      inputRef.current.focus();
     }
   }, [isOpen, isMinimized]);
 
@@ -229,12 +221,9 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      // Pour éviter les problèmes de focus, on utilise un timeout
-      setTimeout(() => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 50);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
     }
   };
 
@@ -247,11 +236,9 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 50);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const ChatContainer = () => {
@@ -260,11 +247,7 @@ const LuxuryChatbot: React.FC = () => {
         <Drawer open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
           if (open && inputRef.current) {
-            setTimeout(() => {
-              if (inputRef.current) {
-                inputRef.current.focus();
-              }
-            }, 50);
+            inputRef.current.focus();
           }
         }}>
           <DrawerTrigger asChild>
@@ -312,11 +295,9 @@ const LuxuryChatbot: React.FC = () => {
           setIsOpen(open);
           if (open) {
             setIsMinimized(false);
-            setTimeout(() => {
-              if (inputRef.current) {
-                inputRef.current.focus();
-              }
-            }, 50);
+            if (inputRef.current) {
+              inputRef.current.focus();
+            }
           }
         }}
       >
@@ -352,7 +333,6 @@ const LuxuryChatbot: React.FC = () => {
           }}
           aria-labelledby="chat-title"
           onPointerDownCapture={(e) => {
-            // Empêcher le comportement par défaut uniquement si ce n'est pas l'input
             if (e.pointerType === 'touch' && e.target instanceof HTMLElement && 
                 !e.target.closest('input') && !e.target.closest('button')) {
               e.preventDefault();
