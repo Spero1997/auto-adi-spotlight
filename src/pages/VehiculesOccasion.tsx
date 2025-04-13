@@ -18,6 +18,7 @@ import { getCatalogIdFromUrl, getImportedVehicles } from '@/utils/vehicleImportS
 import { toast } from 'sonner';
 import CatalogShare from '@/components/CatalogShare';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { updateToyotaCHR } from '@/scripts/updateToyotaCHR';
 
 const carBrands = [
   "Audi", "BMW", "Citroën", "Dacia", "Fiat", "Ford", "Honda", "Hyundai", 
@@ -51,7 +52,6 @@ const VehiculesOccasion = () => {
   const [filterLeather, setFilterLeather] = useState(false);
   const [filterParkingSensors, setFilterParkingSensors] = useState(false);
   
-  // Traductions pour cette page
   const translations = {
     pageTitle: {
       FR: "Véhicules d'occasion",
@@ -84,18 +84,15 @@ const VehiculesOccasion = () => {
       IT: "Catalogo condiviso attivo",
       PT: "Catálogo compartilhado ativo",
       RO: "Catalog partajat activ"
-    },
-    // Ajoutez d'autres traductions au besoin
+    }
   };
   
   useEffect(() => {
-    // Récupérer les paramètres de recherche de l'URL
     const brandParam = searchParams.get('marque');
     const modelParam = searchParams.get('modele');
     const budgetParam = searchParams.get('budget');
     const fuelParam = searchParams.get('energie');
     
-    // Mettre à jour les états avec les paramètres d'URL
     if (brandParam) setSelectedBrand(brandParam);
     if (modelParam) setModelSearch(modelParam);
     if (budgetParam) {
@@ -104,11 +101,18 @@ const VehiculesOccasion = () => {
     }
     if (fuelParam) setSelectedFuelType(fuelParam);
     
-    // Appliquer les filtres automatiquement si des paramètres sont présents
     if (brandParam || modelParam || budgetParam || fuelParam) {
       setFiltersApplied(true);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    try {
+      updateToyotaCHR();
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du Toyota C-HR:", error);
+    }
+  }, []);
 
   const applyFilters = () => {
     setFiltersApplied(true);
