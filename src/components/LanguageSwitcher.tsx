@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { useLanguage, languageFlags } from "@/contexts/LanguageContext";
+import { useLanguage, languageFlags, languageNames } from "@/contexts/LanguageContext";
 
 const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
@@ -15,20 +15,21 @@ const LanguageSwitcher = () => {
   ];
   
   return (
-    <div className="flex space-x-1">
+    <div className="grid grid-cols-2 gap-2">
       {languages.map((lang) => (
         <Button
           key={lang.code}
-          variant={language === lang.code ? "default" : "ghost"}
+          variant="ghost"
           size="sm"
           onClick={() => setLanguage(lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO")}
-          className={`text-xs px-2 py-1 ${
+          className={`flex items-center justify-start text-sm px-2 py-1 ${
             language === lang.code 
-              ? "bg-brand-orange hover:bg-brand-darkOrange text-white" 
-              : "text-white hover:bg-gray-800/50"
+              ? "bg-brand-orange/20 text-brand-orange font-medium" 
+              : "text-white hover:bg-white/10"
           }`}
         >
-          {languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]} {lang.label}
+          <span className="mr-2">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
+          {lang.label}
         </Button>
       ))}
     </div>

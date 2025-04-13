@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, Search } from 'lucide-react';
+import { ChevronDown, Search, Globe } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import QuickSearch from '@/components/QuickSearch';
@@ -8,6 +8,12 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Liens du menu principal
 const mainLinks = [
@@ -30,7 +36,7 @@ const secondaryLinks = [
 
 const AnimatedHero = () => {
   const navigate = useNavigate();
-  const { translate } = useLanguage();
+  const { language, setLanguage, translate } = useLanguage();
   const isMobile = useIsMobile();
   const [scrolled, setScrolled] = useState(false);
   
@@ -119,6 +125,15 @@ const AnimatedHero = () => {
       IT: "Il vostro partner affidabile per l'importazione e la vendita di veicoli usati di qualità",
       PT: "Seu parceiro confiável para importação e venda de veículos usados de qualidade",
       RO: "Partenerul dvs. de încredere pentru importul și vânzarea de vehicule rulate de calitate"
+    },
+    // Traduction pour le menu langue
+    language: {
+      FR: "Langue",
+      EN: "Language",
+      ES: "Idioma",
+      IT: "Lingua",
+      PT: "Idioma",
+      RO: "Limbă"
     }
   };
 
@@ -155,6 +170,19 @@ const AnimatedHero = () => {
                   {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                 </Link>
               ))}
+              
+              {/* Menu déroulant pour la sélection de langue - desktop */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-white hover:text-brand-orange transition-colors font-medium">
+                    <Globe className="mr-1 h-4 w-4" />
+                    {translate('language', translations.language)}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40 bg-brand-blue/95 text-white border-brand-darkBlue">
+                  <LanguageSwitcher />
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             
             {/* Menu mobile - visible uniquement sur mobile */}
@@ -176,14 +204,15 @@ const AnimatedHero = () => {
                         {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                       </Link>
                     ))}
+                    
+                    {/* Option de langue pour mobile */}
+                    <div className="py-3 px-4 text-white">
+                      <p className="mb-2 font-semibold">{translate('language', translations.language)}</p>
+                      <LanguageSwitcher />
+                    </div>
                   </div>
                 </PopoverContent>
               </Popover>
-            </div>
-            
-            {/* Sélecteur de langue */}
-            <div className="hidden md:flex">
-              <LanguageSwitcher />
             </div>
           </div>
         </div>
