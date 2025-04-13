@@ -15,8 +15,6 @@ import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
-import { addKiaSorento } from '@/scripts/addKiaSorento';
-import { addAudiQ2 } from '@/scripts/addAudiQ2';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -155,34 +153,6 @@ const Index = () => {
       addMercedesClassC180();
     } else {
       console.log("Mercedes Benz Classe C 180 AMG déjà présente dans le catalogue standard");
-    }
-    
-    // Vérifier si la Kia Sorento existe déjà dans le catalogue standard
-    const kiaSorentoInStandard = standardVehicles.find(
-      v => v.brand === "Kia" && 
-          v.model === "Sorento 1.6 T-GDI Hybride rechargeable" && 
-          v.year === 2021
-    );
-
-    if (!kiaSorentoInStandard) {
-      console.log("Kia Sorento non trouvée dans le catalogue standard, ajout au catalogue...");
-      addKiaSorento();
-    } else {
-      console.log("Kia Sorento déjà présente dans le catalogue standard");
-    }
-    
-    // Vérifier si l'Audi Q2 existe déjà dans le catalogue standard
-    const audiQ2InStandard = standardVehicles.find(
-      v => v.brand === "Audi" && 
-          v.model === "Q2 ULTRA SPORT SIÈGES CROCHET LED ACC DAB" && 
-          v.year === 2018
-    );
-
-    if (!audiQ2InStandard) {
-      console.log("Audi Q2 non trouvée dans le catalogue standard, ajout au catalogue...");
-      addAudiQ2();
-    } else {
-      console.log("Audi Q2 déjà présente dans le catalogue standard");
     }
   }, []);
 

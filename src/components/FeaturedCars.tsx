@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Search, Star, Link as LinkIcon, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { updateToyotaCHR } from '@/scripts/updateToyotaCHR';
 
 interface SearchFilters {
   brand?: string;
@@ -22,19 +22,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
-  const [scriptExecuted, setScriptExecuted] = useState(false);
 
   useEffect(() => {
-    // Exécuter le script de mise à jour du Toyota C-HR au chargement de la page
-    if (!scriptExecuted) {
-      try {
-        updateToyotaCHR();
-        setScriptExecuted(true);
-      } catch (error) {
-        console.error("Erreur lors de l'exécution du script updateToyotaCHR:", error);
-      }
-    }
-
     loadVehicles();
     
     const handleVehiclesUpdated = (event: Event) => {
@@ -54,7 +43,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       window.removeEventListener('vehiclesUpdated', handleVehiclesUpdated);
       window.removeEventListener('catalogChanged', handleVehiclesUpdated);
     };
-  }, [featuredOnly, scriptExecuted]);
+  }, [featuredOnly]);
 
   const loadVehicles = () => {
     setLoading(true);
