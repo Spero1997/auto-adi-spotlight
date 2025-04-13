@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Search, Star, Link as LinkIcon, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SearchFilters {
   brand?: string;
@@ -22,6 +22,106 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const isMobile = useIsMobile();
+  const { translate } = useLanguage();
+
+  const translations = {
+    featuredVehicles: {
+      FR: "Nos véhicules en vedette",
+      EN: "Our featured vehicles",
+      ES: "Nuestros vehículos destacados",
+      IT: "I nostri veicoli in evidenza",
+      PT: "Nossos veículos em destaque",
+      RO: "Vehiculele noastre în evidență"
+    },
+    allVehicles: {
+      FR: "Tous nos véhicules d'occasion",
+      EN: "All our used vehicles",
+      ES: "Todos nuestros vehículos usados",
+      IT: "Tutti i nostri veicoli usati",
+      PT: "Todos os nossos veículos usados",
+      RO: "Toate vehiculele noastre second-hand"
+    },
+    searchResults: {
+      FR: "Résultats de votre recherche",
+      EN: "Results of your search",
+      ES: "Resultados de su búsqueda",
+      IT: "Risultati della tua ricerca",
+      PT: "Resultados da sua pesquisa",
+      RO: "Rezultatele căutării dvs."
+    },
+    loading: {
+      FR: "Chargement des véhicules...",
+      EN: "Loading vehicles...",
+      ES: "Cargando vehículos...",
+      IT: "Caricamento veicoli...",
+      PT: "Carregando veículos...",
+      RO: "Încărcare vehicule..."
+    },
+    error: {
+      FR: "Erreur: ",
+      EN: "Error: ",
+      ES: "Error: ",
+      IT: "Errore: ",
+      PT: "Erro: ",
+      RO: "Eroare: "
+    },
+    noVehiclesFound: {
+      FR: "Aucun véhicule trouvé.",
+      EN: "No vehicles found.",
+      ES: "No se encontraron vehículos.",
+      IT: "Nessun veicolo trovato.",
+      PT: "Nenhum veículo encontrado.",
+      RO: "Nu s-au găsit vehicule."
+    },
+    noVehiclesInFeatured: {
+      FR: "Aucun véhicule n'a encore été ajouté au catalogue vedette.",
+      EN: "No vehicles have been added to the featured catalog yet.",
+      ES: "Aún no se han añadido vehículos al catálogo destacado.",
+      IT: "Nessun veicolo è stato ancora aggiunto al catalogo in evidenza.",
+      PT: "Nenhum veículo foi adicionado ao catálogo em destaque ainda.",
+      RO: "Niciun vehicul nu a fost adăugat încă la catalogul evidențiat."
+    },
+    noVehiclesMatchingCriteria: {
+      FR: "Aucun véhicule ne correspond à vos critères de recherche.",
+      EN: "No vehicles match your search criteria.",
+      ES: "Ningún vehículo coincide con sus criterios de búsqueda.",
+      IT: "Nessun veicolo corrisponde ai tuoi criteri di ricerca.",
+      PT: "Nenhum veículo corresponde aos seus critérios de pesquisa.",
+      RO: "Niciun vehicul nu corespunde criteriilor dvs. de căutare."
+    },
+    viewOnFacebook: {
+      FR: "Voir sur Facebook",
+      EN: "View on Facebook",
+      ES: "Ver en Facebook",
+      IT: "Visualizza su Facebook",
+      PT: "Ver no Facebook",
+      RO: "Vezi pe Facebook"
+    },
+    updated: {
+      FR: "(MAJ)",
+      EN: "(UPD)",
+      ES: "(ACT)",
+      IT: "(AGG)",
+      PT: "(ATU)",
+      RO: "(ACT)"
+    },
+    viewDetails: {
+      FR: "Voir détails",
+      EN: "View details",
+      ES: "Ver detalles",
+      IT: "Vedi dettagli",
+      PT: "Ver detalhes",
+      RO: "Vezi detalii"
+    },
+    viewAllVehicles: {
+      FR: "Voir tous les véhicules",
+      EN: "View all vehicles",
+      ES: "Ver todos los vehículos",
+      IT: "Vedi tutti i veicoli",
+      PT: "Ver todos os veículos",
+      RO: "Vezi toate vehiculele"
+    }
+  };
 
   useEffect(() => {
     loadVehicles();
@@ -52,44 +152,35 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       let importedVehicles: ImportedVehicle[] = [];
       
       if (featuredOnly) {
-        // Sur la page d'accueil (featuredOnly=true), on charge seulement les véhicules en vedette
         const featuredVehicles = getImportedVehicles('featured');
         importedVehicles = featuredVehicles;
         console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue featured`);
       } else {
-        // Sur la page des véhicules d'occasion, on charge TOUS les véhicules (standard et featured)
         const standardVehicles = getImportedVehicles('standard');
         const featuredVehicles = getImportedVehicles('featured');
         
         console.log(`Chargement des véhicules: ${standardVehicles.length} standard, ${featuredVehicles.length} featured`);
         console.log(`Plateforme actuelle: ${isMobile ? 'Mobile' : 'Desktop'}`);
         
-        // Créer une Map pour éviter les doublons, peu importe la plateforme
         const uniqueVehicles = new Map<string, ImportedVehicle>();
         
-        // D'abord ajouter les véhicules standard
         standardVehicles.forEach(vehicle => {
-          // ID unique pour éviter tout problème d'identification
           const key = `${vehicle.id || 'no-id'}-${vehicle.brand || 'no-brand'}-${vehicle.model || 'no-model'}-${vehicle.year || 'no-year'}`;
           uniqueVehicles.set(key, { ...vehicle, featured: false });
           console.log(`Ajout du véhicule standard: ${vehicle.brand} ${vehicle.model} avec clé ${key}`);
         });
         
-        // Ensuite ajouter/remplacer avec les véhicules featured
         featuredVehicles.forEach(vehicle => {
-          // Même format d'ID que ci-dessus
           const key = `${vehicle.id || 'no-id'}-${vehicle.brand || 'no-brand'}-${vehicle.model || 'no-model'}-${vehicle.year || 'no-year'}`;
           uniqueVehicles.set(key, { ...vehicle, featured: true });
           console.log(`Ajout du véhicule featured: ${vehicle.brand} ${vehicle.model} avec clé ${key}`);
         });
         
-        // Convertir la Map en tableau
         importedVehicles = Array.from(uniqueVehicles.values());
         
         console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total après déduplication`);
         console.log(`Plateforme: ${isMobile ? 'Mobile' : 'Desktop'} - ${importedVehicles.length} véhicules chargés au total`);
         
-        // Log des véhicules pour vérification détaillée
         console.log("Liste complète des véhicules chargés:");
         importedVehicles.forEach((v, index) => {
           console.log(`${index + 1}. ${v.brand} ${v.model} (ID: ${v.id}, FB Link: ${v.fbLink || 'none'})`);
@@ -128,7 +219,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
 
   const featured = filteredVehicles();
 
-  // Même méthode pour ouvrir le lien Facebook, peu importe la plateforme
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
     console.log("Ouverture du lien Facebook:", url);
@@ -139,23 +229,23 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
     <div className="container mx-auto px-4 py-12">
       <h2 className="text-3xl font-bold text-center mb-8">
         {searchFilters && (searchFilters.brand || searchFilters.model || searchFilters.maxPrice || searchFilters.fuelType)
-          ? "Résultats de votre recherche"
+          ? translate("searchResults", translations.searchResults)
           : featuredOnly
-            ? "Nos véhicules en vedette"
-            : "Tous nos véhicules d'occasion"}
+            ? translate("featuredVehicles", translations.featuredVehicles)
+            : translate("allVehicles", translations.allVehicles)}
       </h2>
 
-      {loading && <p className="text-center">Chargement des véhicules...</p>}
-      {error && <p className="text-center text-red-500">Erreur: {error}</p>}
+      {loading && <p className="text-center">{translate("loading", translations.loading)}</p>}
+      {error && <p className="text-center text-red-500">{translate("error", translations.error)}{error}</p>}
 
       {!loading && featured.length === 0 ? (
         <div className="text-center my-12">
           <Search className="mx-auto h-10 w-10 text-gray-400 mb-4" />
-          <p className="text-gray-500 text-lg mb-2">Aucun véhicule trouvé.</p>
+          <p className="text-gray-500 text-lg mb-2">{translate("noVehiclesFound", translations.noVehiclesFound)}</p>
           <p className="text-gray-400">
             {featuredOnly 
-              ? "Aucun véhicule n'a encore été ajouté au catalogue vedette." 
-              : "Aucun véhicule ne correspond à vos critères de recherche."}
+              ? translate("noVehiclesInFeatured", translations.noVehiclesInFeatured)
+              : translate("noVehiclesMatchingCriteria", translations.noVehiclesMatchingCriteria)}
           </p>
         </div>
       ) : (
@@ -187,10 +277,10 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                     <button 
                       onClick={(e) => openFacebookLink(vehicle.fbLink || '', e)}
                       className="mt-2 inline-flex items-center text-blue-600 hover:text-blue-800 cursor-pointer"
-                      aria-label="Voir sur Facebook"
+                      aria-label={translate("viewOnFacebook", translations.viewOnFacebook)}
                     >
                       <LinkIcon className="h-4 w-4 mr-1" />
-                      Voir sur Facebook {vehicle.brand === "Porsche" && "(MAJ)"} 
+                      {translate("viewOnFacebook", translations.viewOnFacebook)} {vehicle.brand === "Porsche" && translate("updated", translations.updated)} 
                     </button>
                   )}
                   
@@ -198,7 +288,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                     <span className="text-xl font-bold text-brand-blue">{vehicle.price?.toLocaleString('fr-FR')} €</span>
                     <Link to={`/vehicule/${vehicle.id}`} data-testid={`vehicle-link-${vehicle.id}`}>
                       <Button>
-                        Voir détails
+                        {translate("viewDetails", translations.viewDetails)}
                       </Button>
                     </Link>
                   </div>
@@ -211,7 +301,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
             <div className="mt-10 text-center">
               <Link to="/vehicules/occasion">
                 <Button className="px-6" size="lg">
-                  Voir tous les véhicules
+                  {translate("viewAllVehicles", translations.viewAllVehicles)}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>

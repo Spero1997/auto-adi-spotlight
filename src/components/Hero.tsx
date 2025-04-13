@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Hero = () => {
-  const { translate, language } = useLanguage();
+  const { translate } = useLanguage();
 
   // Traductions pour l'interface du Hero
   const translations = {
