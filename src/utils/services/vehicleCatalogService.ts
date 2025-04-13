@@ -1,7 +1,7 @@
+
 import { ImportedVehicle } from '../types/vehicle';
 import { getImportedVehicles, saveImportedVehicles } from './vehicleStorageService';
 import { validateImageUrl } from '../vehicleImportService';
-import { toast } from '@/hooks/use-toast';
 
 /**
  * Resets all catalogs to their default empty state
@@ -30,13 +30,6 @@ export const resetCatalog = (catalogType: 'standard' | 'featured' | 'all' = 'all
       detail: { catalogType: 'all' } 
     }));
   }, 100);
-  
-  // Notification pour indiquer que les catalogues ont été réinitialisés
-  toast({
-    title: 'Catalogues réinitialisés',
-    description: 'Les catalogues ont été vidés avec succès.',
-    variant: 'default'
-  });
 };
 
 /**

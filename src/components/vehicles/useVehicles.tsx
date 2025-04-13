@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ImportedVehicle, getImportedVehicles, getCatalogIdFromUrl } from '@/utils/vehicleImportService';
-import { fetchVehiclesFromSupabase } from '@/utils/services/vehicleService';
 
 interface SearchFilters {
   brand?: string;
@@ -17,7 +16,7 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
-  const loadVehicles = useCallback(async () => {
+  const loadVehicles = useCallback(() => {
     setLoading(true);
     setError(null);
     try {
@@ -27,75 +26,15 @@ export const useVehicles = (searchFilters?: SearchFilters, featuredOnly = false)
       
       console.log(`useVehicles: Chargement des véhicules pour le catalogue ${catalogType}, ID=${catalogId || 'local'}`);
       
-      let loadedVehicles: ImportedVehicle[] = [];
-      
-      // 1. D'abord, chargeons les véhicules depuis le localStorage
       const importedVehicles = getImportedVehicles(catalogType);
-      loadedVehicles = [...importedVehicles];
-      
-      // 2. Ensuite, essayons de charger les véhicules depuis Supabase
-      try {
-        const supabaseVehicles = await fetchVehiclesFromSupabase();
-        
-        // Transformer les véhicules Supabase au format ImportedVehicle
-        const transformedSupabaseVehicles = supabaseVehicles.map(v => ({
-          id: v.id,
-          brand: v.brand,
-          model: v.model,
-          year: v.year,
-          mileage: v.mileage,
-          fuelType: v.fuel_type,
-          transmission: v.transmission,
-          price: v.price,
-          description: v.description,
-          image: v.image_url,
-          images: v.additional_images,
-          exteriorColor: v.exterior_color,
-          interiorColor: v.interior_color,
-          engine: v.engine,
-          doors: v.doors,
-          features: v.features,
-          featured: v.is_featured,
-          catalogType: v.is_featured ? 'featured' : 'standard'
-        })) as ImportedVehicle[];
-        
-        // Si on ne cherche que les véhicules vedettes, filtrer les résultats
-        const filteredSupabaseVehicles = featuredOnly 
-          ? transformedSupabaseVehicles.filter(v => v.featured) 
-          : transformedSupabaseVehicles;
-        
-        // Combiner les véhicules du localStorage et de Supabase
-        // Utiliser un Map pour éviter les doublons basés sur l'ID
-        const vehicleMap = new Map();
-        
-        // D'abord ajouter les véhicules du localStorage
-        loadedVehicles.forEach(v => vehicleMap.set(v.id, v));
-        
-        // Ensuite ajouter ou mettre à jour avec les véhicules de Supabase
-        filteredSupabaseVehicles.forEach(v => {
-          if (!vehicleMap.has(v.id)) {
-            vehicleMap.set(v.id, v);
-          }
-        });
-        
-        // Convertir le Map en tableau
-        loadedVehicles = Array.from(vehicleMap.values());
-        
-        console.log(`useVehicles: ${loadedVehicles.length} véhicules chargés (local + Supabase)`);
-      } catch (supabaseError) {
-        console.error("Erreur lors du chargement des véhicules depuis Supabase:", supabaseError);
-        console.log("Continuons avec les véhicules du localStorage uniquement");
-      }
-      
-      // Trier les véhicules par année (du plus récent au plus ancien)
-      loadedVehicles.sort((a, b) => (b.year || 0) - (a.year || 0));
+      console.log(`useVehicles: ${importedVehicles.length} véhicules chargés depuis le catalogue ${catalogType}`);
       
       // Log individual vehicles to help with debugging
-      loadedVehicles.forEach((vehicle, index) => {
-        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Année: ${vehicle.year}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
+      importedVehicles.forEach((vehicle, index) => {
+        console.log(`Véhicule ${index+1}: ${vehicle.brand} ${vehicle.model}, Type: ${vehicle.catalogType || 'non spécifié'}, ID: ${vehicle.id}`);
       });
       
-      setVehicles(loadedVehicles);
+      setVehicles(importedVehicles);
     } catch (e) {
       setError("Échec du chargement des véhicules.");
       console.error("Erreur lors du chargement des véhicules:", e);

@@ -34,7 +34,6 @@ const addDemoVehicles = () => {
     // Identifiants fixes pour éviter les duplications
     const volvoV40Id = 'vehicle-standard-volvo-v40-d2-rdesign-2014';
     const bmwX7Id = 'vehicle-standard-bmw-x7-xdrive-40d-msport-pro-2022';
-    const audiQ2Id = 'vehicle-standard-audi-q2-ultra-sport-2018';
     
     // Vérifier si la Volvo V40 existe déjà dans le catalogue
     const volvoV40Exists = vehicles.some(v => 
@@ -170,73 +169,6 @@ Nos services inclus :
         vehiclesUpdated = true;
       } else {
         console.log('La BMW X7 xDrive 40d M Sport Pro est déjà présente dans le catalogue');
-      }
-    }
-    
-    // Vérifier si l'Audi Q2 existe déjà dans le catalogue
-    const audiQ2Exists = vehicles.some(v => 
-      (v.id === audiQ2Id) ||
-      (v.brand === 'Audi' && 
-      v.model.includes('Q2 Ultra Sport') && 
-      v.year === 2018)
-    );
-    
-    // Si elle n'existe pas, on l'ajoute
-    if (!audiQ2Exists) {
-      const audiQ2: ImportedVehicle = {
-        id: audiQ2Id,
-        brand: 'Audi',
-        model: 'Q2 Ultra Sport Sièges Crochet LED',
-        year: 2018,
-        mileage: 98000,
-        price: 4000,
-        fuelType: 'Diesel',
-        transmission: 'Automatique',
-        exteriorColor: 'Bleu',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png',
-        fbLink: '',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Importation et livraison à domicile (délai : 5 jours)
-• Garantie 24 mois
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
-        features: [
-          'Toit panoramique',
-          'Navigation',
-          'Caméra de recul',
-          'Sport Sièges',
-          'Automatique',
-          '116 ch'
-        ],
-        engine: 'Ultra 116ch',
-        doors: 5,
-        catalogType: 'standard'
-      };
-      
-      addVehicle(audiQ2, 'standard');
-      console.log('Audi Q2 Ultra Sport ajoutée automatiquement au catalogue!');
-      vehiclesUpdated = true;
-    } else {
-      // Si elle existe déjà, mettre à jour son image
-      const existingAudiQ2 = vehicles.find(v => 
-        (v.id === audiQ2Id) || 
-        (v.brand === 'Audi' && 
-        v.model.includes('Q2 Ultra Sport') && 
-        v.year === 2018)
-      );
-      
-      if (existingAudiQ2) {
-        existingAudiQ2.image = '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png';
-        console.log("Mise à jour de l'image de l'Audi Q2 avec:", existingAudiQ2.image);
-        saveImportedVehicles(vehicles, 'standard');
-        console.log("Image de l'Audi Q2 Ultra Sport mise à jour dans le catalogue!");
-        vehiclesUpdated = true;
       }
     }
     

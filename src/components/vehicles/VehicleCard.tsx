@@ -56,11 +56,10 @@ const SeoOptimizedVehicleCard: React.FC<VehicleCardProps> = ({ vehicle, showShar
     setImageError(true);
   };
 
-  // Corrigeons les liens pour s'assurer qu'ils correspondent aux routes définies dans App.tsx
   return (
     <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-shadow duration-300">
       <div className="relative pb-[56.25%] overflow-hidden bg-gray-100">
-        <Link to={`/vehicule/${id}`} className="block">
+        <Link to={`/vehicule/${id}/${vehicleSlug}`} className="block">
           {!imageError ? (
             <img
               src={image}
@@ -85,7 +84,7 @@ const SeoOptimizedVehicleCard: React.FC<VehicleCardProps> = ({ vehicle, showShar
       
       <CardContent className="flex-grow p-4">
         <div className="mb-3">
-          <Link to={`/vehicule/${id}`} className="block">
+          <Link to={`/vehicule/${id}/${vehicleSlug}`} className="block">
             <h2 className="text-xl font-bold line-clamp-1 group-hover:text-primary transition-colors">
               {brand} {model}
             </h2>
@@ -140,7 +139,7 @@ const SeoOptimizedVehicleCard: React.FC<VehicleCardProps> = ({ vehicle, showShar
             </Button>
           )}
           
-          <Link to={`/vehicule/${id}`}>
+          <Link to={`/vehicule/${id}/${vehicleSlug}`}>
             <Button variant="default" size="sm" className="gap-1">
               <Info className="h-4 w-4" />
               Détails

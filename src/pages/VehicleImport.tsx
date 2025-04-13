@@ -6,9 +6,8 @@ import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 import AiVehicleAdder from '@/components/AiVehicleAdder';
-import { getImportedVehicles, addVehicle, ImportedVehicle, addToyotaCHR } from '@/utils/vehicleImportService';
+import { getImportedVehicles, addVehicle, ImportedVehicle } from '@/utils/vehicleImportService';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 
 const VehicleImport = () => {
   const [activeTab, setActiveTab] = useState("assistant");
@@ -196,141 +195,6 @@ Nos services inclus :
     }
   };
   
-  const addAudiQ2 = () => {
-    try {
-      const audiQ2: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-audi-q2-ultra-sport`,
-        brand: 'Audi',
-        model: 'Q2 Ultra Sport Sièges Crochet LED',
-        year: 2018,
-        mileage: 98000,
-        price: 4000,
-        fuelType: 'Diesel',
-        transmission: 'Automatique',
-        exteriorColor: 'Bleu',
-        interiorColor: 'Noir',
-        image: '/lovable-uploads/efaee038-1389-45b1-9a8d-970b6f3c5832.png',
-        fbLink: '',
-        description: `Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % pour paiement comptant à la commande
-Nos services inclus :
-• Importation et livraison à domicile (délai : 5 jours)
-• Garantie 24 mois
-• Délai de rétractation : 14 jours (Satisfait ou remboursé)
-• Facilité de paiement : Payable comptant ou en mensualités sans intérêt.
-• Pas besoin de banque ni d'organisme financier, nous nous occupons de tout !`,
-        features: [
-          'Toit panoramique',
-          'Navigation',
-          'Caméra de recul',
-          'Sport Sièges',
-          'Automatique',
-          '116 ch'
-        ],
-        engine: 'Ultra 116ch',
-        doors: 5,
-        catalogType: 'standard'
-      };
-      
-      addVehicle(audiQ2, 'standard');
-      console.log('Audi Q2 Ultra Sport ajoutée avec succès au catalogue!');
-      
-      window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-        detail: { catalogType: 'standard' } 
-      }));
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'Audi Q2 Ultra Sport:', error);
-      console.error('Erreur lors de l\'ajout du véhicule');
-    }
-  };
-  
-  const addAudiA4 = () => {
-    try {
-      const audiA4: ImportedVehicle = {
-        id: `vehicle-standard-${Date.now()}-audi-a4-35-tfsi`,
-        brand: 'Audi',
-        model: 'A4 35 TFSI Sport',
-        year: 2019,
-        mileage: 121337,
-        price: 6000,
-        fuelType: 'Essence',
-        transmission: 'Automatique',
-        exteriorColor: 'Noir',
-        interiorColor: 'Noir/Beige',
-        image: '/lovable-uploads/d1e0c19e-72fd-40a2-a228-b75188a71035.png',
-        images: [
-          '/lovable-uploads/79af1234-d887-4920-8edd-78971e26f636.png',
-          '/lovable-uploads/84bf936c-fc4a-4fc9-8da4-696276e861ff.png',
-          '/lovable-uploads/3ce46bb8-45d7-412a-9453-5c0a9a493ee1.png',
-          '/lovable-uploads/7c30aba7-14ca-4c5c-a954-6e0ff468b848.png',
-          '/lovable-uploads/7806d902-9d95-4659-b8f1-7b9f0e0b831b.png',
-          '/lovable-uploads/1ee80174-6f50-41c3-9668-5f62b09f1ecc.png'
-        ],
-        fbLink: '',
-        description: `Audi A4 35 TFSI by s-t sport ulb150 Navi/Crochet/Cuir/V-Cockpit
-Année: 07/2019
-Kilométrage: 121 337 km (Certifié)
-Puissance: 150 CH
-Carburant: Essence
-Boîte de Vitesse: Automatique
-
-Modalités de paiement
-• Acompte : 20 % à la commande
-• Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % de réduction pour tout achat comptant à la commande
-
-Nous nous occupons de toutes les démarches d'importation jusqu'à la livraison a votre domicile. Délais de livraison 5 jours / Délai de rétractation 14 JOURS (Satisfait ou remboursé)
-Garantie 24 mois`,
-        features: [
-          'Navigation GPS',
-          'Crochet d\'attelage',
-          'Intérieur cuir',
-          'Virtual Cockpit',
-          'Système audio ULB150',
-          'Sport Package',
-          'Jantes alliage noir',
-          'Sièges sport',
-          'Climatisation automatique'
-        ],
-        engine: '35 TFSI 150ch',
-        doors: 5,
-        catalogType: 'standard'
-      };
-      
-      const success = addVehicle(audiA4, 'standard');
-      
-      if (success) {
-        toast.success('Audi A4 35 TFSI Sport ajoutée avec succès au catalogue!');
-        
-        window.dispatchEvent(new CustomEvent('vehiclesUpdated', { 
-          detail: { catalogType: 'standard' } 
-        }));
-        
-        window.dispatchEvent(new CustomEvent('catalogChanged'));
-        
-        return true;
-      } else {
-        toast.error('Erreur lors de l\'ajout de l\'Audi A4 35 TFSI Sport');
-        return false;
-      }
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'Audi A4 35 TFSI Sport:', error);
-      toast.error('Erreur lors de l\'ajout du véhicule');
-      return false;
-    }
-  };
-  
-  const addToyotaCHRGRSport = () => {
-    const success = addToyotaCHR();
-    if (success) {
-      toast.success('Toyota C-HR 1.8i Hybride GR Sport ajouté avec succès!');
-    } else {
-      toast.error('Erreur lors de l\'ajout du Toyota C-HR');
-    }
-  };
-  
   useEffect(() => {
     console.log("VehicleImport: Vérification des véhicules stockés");
     try {
@@ -507,45 +371,6 @@ Garantie 24 mois`,
         addBMWX7();
       }
       
-      const audiQ2 = vehicles.find(v => 
-        v.brand === "Audi" && 
-        v.model.includes("Q2 Ultra Sport") && 
-        v.year === 2018
-      );
-      
-      if (!audiQ2) {
-        console.log("Ajout automatique de l'Audi Q2 Ultra Sport au catalogue");
-        addAudiQ2();
-      } else {
-        console.log("L'Audi Q2 Ultra Sport est présente dans le catalogue", audiQ2);
-      }
-      
-      const audiA4 = vehicles.find(v => 
-        v.brand === "Audi" && 
-        v.model.includes("A4 35 TFSI") && 
-        v.year === 2019
-      );
-      
-      if (!audiA4) {
-        console.log("Ajout automatique de l'Audi A4 35 TFSI Sport au catalogue");
-        addAudiA4();
-      } else {
-        console.log("L'Audi A4 35 TFSI Sport est présente dans le catalogue", audiA4);
-      }
-      
-      const toyotaCHR = vehicles.find(v => 
-        v.brand === "Toyota" && 
-        v.model.includes("C-HR") && 
-        v.year === 2022
-      );
-      
-      if (!toyotaCHR) {
-        console.log("Ajout automatique du Toyota C-HR 1.8i Hybride GR Sport au catalogue");
-        addToyotaCHR();
-      } else {
-        console.log("Le Toyota C-HR 1.8i Hybride GR Sport est présent dans le catalogue", toyotaCHR);
-      }
-      
       setVehiclesLoaded(true);
     } catch (error) {
       console.error("Erreur lors du chargement des véhicules:", error);
@@ -568,7 +393,7 @@ Garantie 24 mois`,
             Ajoutez ou importez facilement des véhicules
           </p>
           
-          <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center flex-wrap">
+          <div className="mb-6 flex flex-col md:flex-row gap-4 justify-center">
             <Button 
               onClick={addVolvoV40}
               className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -595,27 +420,6 @@ Garantie 24 mois`,
               className="bg-gray-800 hover:bg-gray-900 text-white"
             >
               Ajouter la BMW X7 xDrive 40d M Sport Pro
-            </Button>
-            
-            <Button 
-              onClick={addAudiQ2}
-              className="bg-blue-800 hover:bg-blue-900 text-white"
-            >
-              Ajouter l'Audi Q2 Ultra Sport
-            </Button>
-            
-            <Button 
-              onClick={addAudiA4}
-              className="bg-red-800 hover:bg-red-900 text-white"
-            >
-              Ajouter l'Audi A4 35 TFSI Sport
-            </Button>
-            
-            <Button 
-              onClick={addToyotaCHRGRSport}
-              className="bg-sky-600 hover:bg-sky-700 text-white"
-            >
-              Ajouter le Toyota C-HR 1.8i Hybride GR Sport
             </Button>
           </div>
           
