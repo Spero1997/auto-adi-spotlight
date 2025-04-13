@@ -1,4 +1,3 @@
-
 import { ImportedVehicle } from './types/vehicle';
 import { addVehicle } from './services/vehicleCatalogService';
 
@@ -154,19 +153,16 @@ export const addKiaSorento = () => {
     transmission: 'Automatique',
     exteriorColor: 'Bleu',
     interiorColor: 'Noir',
-    image: '/lovable-uploads/3b4fb48b-ad09-469b-84b9-b8c8c8b99888.png',
+    image: '/lovable-uploads/09a3cc25-c750-4556-927a-2c1db9a725b4.png',
     images: [
-      '/lovable-uploads/e8868948-8b92-4871-b4fb-b6bb393ea221.png',
-      '/lovable-uploads/f385ebfd-67a0-4256-8a98-c43c8723ae8f.png',
-      '/lovable-uploads/757b310b-bd11-4eab-99d0-06814a80623b.png'
+      '/lovable-uploads/0b3d94df-7bf3-4bdf-a10b-14c117c8aef8.png',
+      '/lovable-uploads/61e64acf-14c0-41eb-8c86-eaf04b26ae2d.png',
+      '/lovable-uploads/f3d9dc21-ffbf-409f-87ff-efafcb393b01.png'
     ],
     description: `Modalités de paiement
 • Acompte : 20 % à la commande
 • Solde : à la livraison ou en mensualités sans intérêt (de 6 à 84 mois)
-• Offre spéciale : -10 % de réduction pour tout achat comptant à la commande
-
-Nous nous occupons de toutes les démarches d'importation jusqu'à la livraison a votre domicile. Délais de livraison 5 jours / Délai de rétractation 14 JOURS (Satisfait ou remboursé)
-Garantie 24 mois`,
+• Offre spéciale : -10 % de réduction pour tout achat comptant à la commande`,
     features: [
       'Airbags (frontaux, latéraux, rideaux)',
       'Système ABS (Anti-blocage des freins)',
