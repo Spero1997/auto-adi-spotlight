@@ -54,160 +54,6 @@ const translations = {
   }
 };
 
-const LuxuryChatbot: React.FC = () => {
-  const isMobile = useIsMobile();
-  const { language, translate } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
-  const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    if (isOpen && !isMinimized && textareaRef.current) {
-      setTimeout(() => {
-        textareaRef.current?.focus();
-      }, 300);
-    }
-  }, [isOpen, isMinimized]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleSend = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (input.trim()) {
-      sendMessage(input);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);
-    // Ensure the textarea maintains focus after text input
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
-
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const ChatContainer = () => {
-    if (isMobile) {
-      return (
-        <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerTrigger asChild>
-            <Button
-              className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 p-0 flex items-center justify-center"
-              onClick={() => setIsOpen(true)}
-            >
-              <MessageSquare className="h-6 w-6 text-white" />
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent className="h-[85vh] rounded-t-xl bg-white p-0">
-            <div className="flex flex-col h-full">
-              <ChatHeader 
-                onClose={() => setIsOpen(false)} 
-                onMinimize={() => {}} 
-                onExpand={() => {}} 
-                isExpanded={false}
-                isMobile={true}
-              />
-              <ChatBody 
-                messages={messages} 
-                messagesEndRef={messagesEndRef} 
-                isTyping={isTyping} 
-              />
-              <ChatInput 
-                input={input} 
-                setInput={setInput} 
-                handleSend={handleSend} 
-                handleKeyDown={handleKeyDown}
-                textareaRef={textareaRef}
-                translate={translate}
-                language={language}
-              />
-            </div>
-          </DrawerContent>
-        </Drawer>
-      );
-    }
-
-    return (
-      <Dialog open={isOpen && !isMinimized} onOpenChange={(open) => {
-        setIsOpen(open);
-        if (open) setIsMinimized(false);
-      }}>
-        <DialogTrigger asChild>
-          {isMinimized ? (
-            <div 
-              className="fixed bottom-6 right-6 h-14 px-4 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 flex items-center justify-center cursor-pointer"
-              onClick={() => setIsMinimized(false)}
-            >
-              <MessageSquare className="h-5 w-5 text-white mr-2" />
-              <span className="text-white font-montserrat font-light">{translate('chatTitle', translations.chatTitle)}</span>
-            </div>
-          ) : (
-            <Button
-              className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 p-0 flex items-center justify-center"
-              onClick={() => setIsOpen(true)}
-            >
-              <MessageSquare className="h-6 w-6 text-white" />
-            </Button>
-          )}
-        </DialogTrigger>
-        <DialogContent 
-          className={cn(
-            "p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl transition-all",
-            isExpanded ? "fixed inset-4 max-w-none h-auto" : "sm:max-w-[400px] h-[500px]"
-          )}
-        >
-          <div className="flex flex-col h-full">
-            <ChatHeader 
-              onClose={() => setIsOpen(false)} 
-              onMinimize={() => setIsMinimized(true)} 
-              onExpand={toggleExpand} 
-              isExpanded={isExpanded}
-              isMobile={false}
-            />
-            <ChatBody 
-              messages={messages} 
-              messagesEndRef={messagesEndRef} 
-              isTyping={isTyping} 
-            />
-            <ChatInput 
-              input={input} 
-              setInput={setInput} 
-              handleSend={handleSend} 
-              handleKeyDown={handleKeyDown}
-              textareaRef={textareaRef}
-              translate={translate}
-              language={language}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  };
-
-  return <ChatContainer />;
-};
-
 interface ChatHeaderProps {
   onClose: () => void;
   onMinimize: () => void;
@@ -317,10 +163,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-    // Make sure focus remains on the textarea
-    if (textareaRef.current && document.activeElement !== textareaRef.current) {
-      textareaRef.current.focus();
-    }
+    // Utilisation de requestAnimationFrame pour différer la focalisation
+    // et éviter les conflits avec d'autres événements du DOM
+    requestAnimationFrame(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    });
   };
 
   return (
@@ -335,11 +184,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
           className="flex-1 p-2 min-h-[50px] max-h-[120px] resize-none border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
           autoComplete="off"
           spellCheck="false"
+          aria-label={translate('placeholder', translations.placeholder)}
         />
         <Button 
           type="submit" 
           className="bg-brand-blue hover:bg-brand-darkBlue text-white p-2 h-10 w-10 rounded-md flex items-center justify-center"
           disabled={!input.trim()}
+          aria-label={translate('send', translations.send)}
         >
           <Send className="h-4 w-4" />
           <span className="sr-only">{translate('send', translations.send)}</span>
@@ -347,6 +198,175 @@ const ChatInput: React.FC<ChatInputProps> = ({
       </div>
     </form>
   );
+};
+
+const LuxuryChatbot: React.FC = () => {
+  const isMobile = useIsMobile();
+  const { language, translate } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  
+  const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
+
+  // Gestion du défilement automatique quand il y a de nouveaux messages
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Focus automatique sur le textarea quand le chat s'ouvre
+  useEffect(() => {
+    if (isOpen && !isMinimized && textareaRef.current) {
+      const timeoutId = setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 300); // Délai court pour permettre aux animations de se terminer
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isOpen, isMinimized]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSend = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (input.trim()) {
+      sendMessage(input);
+      // Remettre le focus sur le textarea après l'envoi
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+        }
+      }, 0);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+    // Re-focus après changement d'état
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    }, 300);
+  };
+
+  // Composant de la fenêtre de chat optimisé
+  const ChatContainer = () => {
+    if (isMobile) {
+      return (
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+          <DrawerTrigger asChild>
+            <Button
+              className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 p-0 flex items-center justify-center"
+              onClick={() => setIsOpen(true)}
+              aria-label={translate('open', translations.open)}
+            >
+              <MessageSquare className="h-6 w-6 text-white" />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent className="h-[85vh] rounded-t-xl bg-white p-0">
+            <div className="flex flex-col h-full">
+              <ChatHeader 
+                onClose={() => setIsOpen(false)} 
+                onMinimize={() => {}} 
+                onExpand={() => {}} 
+                isExpanded={false}
+                isMobile={true}
+              />
+              <ChatBody 
+                messages={messages} 
+                messagesEndRef={messagesEndRef} 
+                isTyping={isTyping} 
+              />
+              <ChatInput 
+                input={input} 
+                setInput={setInput} 
+                handleSend={handleSend} 
+                handleKeyDown={handleKeyDown}
+                textareaRef={textareaRef}
+                translate={translate}
+                language={language}
+              />
+            </div>
+          </DrawerContent>
+        </Drawer>
+      );
+    }
+
+    return (
+      <Dialog open={isOpen && !isMinimized} onOpenChange={(open) => {
+        setIsOpen(open);
+        if (open) setIsMinimized(false);
+      }}>
+        <DialogTrigger asChild>
+          {isMinimized ? (
+            <div 
+              className="fixed bottom-6 right-6 h-14 px-4 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 flex items-center justify-center cursor-pointer"
+              onClick={() => setIsMinimized(false)}
+              aria-label={translate('chatTitle', translations.chatTitle)}
+            >
+              <MessageSquare className="h-5 w-5 text-white mr-2" />
+              <span className="text-white font-montserrat font-light">{translate('chatTitle', translations.chatTitle)}</span>
+            </div>
+          ) : (
+            <Button
+              className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-brand-blue hover:bg-brand-darkBlue shadow-lg z-50 p-0 flex items-center justify-center"
+              onClick={() => setIsOpen(true)}
+              aria-label={translate('open', translations.open)}
+            >
+              <MessageSquare className="h-6 w-6 text-white" />
+            </Button>
+          )}
+        </DialogTrigger>
+        <DialogContent 
+          className={cn(
+            "p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl transition-all",
+            isExpanded ? "fixed inset-4 max-w-none h-auto" : "sm:max-w-[400px] h-[500px]"
+          )}
+          aria-labelledby="chat-title"
+        >
+          <div className="flex flex-col h-full">
+            <ChatHeader 
+              onClose={() => setIsOpen(false)} 
+              onMinimize={() => setIsMinimized(true)} 
+              onExpand={toggleExpand} 
+              isExpanded={isExpanded}
+              isMobile={false}
+            />
+            <ChatBody 
+              messages={messages} 
+              messagesEndRef={messagesEndRef} 
+              isTyping={isTyping} 
+            />
+            <ChatInput 
+              input={input} 
+              setInput={setInput} 
+              handleSend={handleSend} 
+              handleKeyDown={handleKeyDown}
+              textareaRef={textareaRef}
+              translate={translate}
+              language={language}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  return <ChatContainer />;
 };
 
 export default LuxuryChatbot;
