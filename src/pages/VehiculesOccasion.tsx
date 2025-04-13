@@ -9,6 +9,7 @@ import FeaturedCars from '@/components/FeaturedCars';
 import { updateVehicleImages } from '@/scripts/updateVehicleImages';
 import { updateAudiQ2 } from '@/scripts/updateAudiQ2';
 import { cleanVehicleCatalogs } from '@/utils/vehicleImportService';
+import { removeSpecificVehicles } from '@/scripts/removeSpecificVehicles';
 
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
@@ -34,6 +35,9 @@ const VehiculesOccasion = () => {
   useEffect(() => {
     // Nettoyer les catalogues silencieusement (supprime les véhicules sans images)
     cleanVehicleCatalogs();
+    
+    // Supprimer les véhicules spécifiques demandés
+    removeSpecificVehicles();
     
     // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
     updateVehicleImages();
