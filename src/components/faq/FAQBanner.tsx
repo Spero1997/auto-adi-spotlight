@@ -18,11 +18,12 @@ const FAQBanner = ({
   const navigate = useNavigate();
 
   const handleFAQClick = () => {
-    navigate("/faq");
+    // Force a complete navigation to ensure the page reloads
+    window.location.href = "/faq";
   };
 
   const handleContactClick = () => {
-    navigate("/contact");
+    window.location.href = "/contact";
   };
 
   return (
