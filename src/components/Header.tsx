@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -181,36 +182,36 @@ const Header = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <Link to="/a-propos">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
-                      isScrolled ? 'text-gray-700' : 'text-white'
-                    )}>
+                  <div className={cn(
+                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
+                    isScrolled ? 'text-gray-700' : 'text-white'
+                  )}>
+                    <Link to="/a-propos">
                       À propos
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </div>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <Link to="/contact">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
-                      isScrolled ? 'text-gray-700' : 'text-white'
-                    )}>
+                  <div className={cn(
+                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
+                    isScrolled ? 'text-gray-700' : 'text-white'
+                  )}>
+                    <Link to="/contact">
                       Contact
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </div>
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <Link to="/faq">
-                    <NavigationMenuLink className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
-                      isScrolled ? 'text-gray-700' : 'text-white'
-                    )}>
+                  <div className={cn(
+                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
+                    isScrolled ? 'text-gray-700' : 'text-white'
+                  )}>
+                    <Link to="/faq">
                       FAQ
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </div>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
