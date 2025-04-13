@@ -16,6 +16,7 @@ import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
 import { addKiaSorento } from '@/scripts/addKiaSorento';
+import { addAudiQ2 } from '@/scripts/addAudiQ2';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -168,6 +169,20 @@ const Index = () => {
       addKiaSorento();
     } else {
       console.log("Kia Sorento déjà présente dans le catalogue standard");
+    }
+    
+    // Vérifier si l'Audi Q2 existe déjà dans le catalogue standard
+    const audiQ2InStandard = standardVehicles.find(
+      v => v.brand === "Audi" && 
+          v.model === "Q2 ULTRA SPORT SIÈGES CROCHET LED ACC DAB" && 
+          v.year === 2018
+    );
+
+    if (!audiQ2InStandard) {
+      console.log("Audi Q2 non trouvée dans le catalogue standard, ajout au catalogue...");
+      addAudiQ2();
+    } else {
+      console.log("Audi Q2 déjà présente dans le catalogue standard");
     }
   }, []);
 
