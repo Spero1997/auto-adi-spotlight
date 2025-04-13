@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -596,4 +597,256 @@ const Financement = () => {
                     <div className="bg-brand-orange/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
                       <BarChart3 className="h-7 w-7 text-brand-orange" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">{translate('leaseWithOption', translations.leaseWith
+                    <h3 className="text-xl font-bold mb-2">{translate('leaseWithOption', translations.leaseWithOption)}</h3>
+                    <p className="text-gray-600">
+                      {translate('leaseWithOptionDesc', translations.leaseWithOptionDesc)}
+                    </p>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">{translate('duration', translations.duration)}</span>
+                        <span className="font-semibold">{translate('months24to60', translations.months24to60)}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">{translate('initialRent', translations.initialRent)}</span>
+                        <span className="font-semibold">{translate('from10To30Percent', translations.from10To30Percent)}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">{translate('purchaseOption', translations.purchaseOption)}</span>
+                        <span className="font-semibold">{translate('endOfContract', translations.endOfContract)}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">{translate('lowerPayments', translations.lowerPayments)}</span>
+                    </div>
+                    <div className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">{translate('endOfContractChoice', translations.endOfContractChoice)}</span>
+                    </div>
+                    <div className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">{translate('depreciationProtection', translations.depreciationProtection)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <Link to="/contact" className="w-full">
+                      <Button className="w-full bg-brand-orange hover:bg-brand-darkOrange">
+                        {translate('requestQuote', translations.requestQuote)}
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="border-t-4 border-t-brand-green shadow-lg hover:shadow-xl transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="mb-6">
+                    <div className="bg-brand-green/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
+                      <Calculator className="h-7 w-7 text-brand-green" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{translate('installmentPayment', translations.installmentPayment)}</h3>
+                    <p className="text-gray-600">
+                      {translate('installmentPaymentDesc', translations.installmentPaymentDesc)}
+                    </p>
+                  </div>
+                  
+                  <div className="mb-6">
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">{translate('duration', translations.duration)}</span>
+                        <span className="font-semibold">{translate('months6to48', translations.months6to48)}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">{translate('orderDeposit', translations.orderDeposit)}</span>
+                        <span className="font-semibold">{translate('atOrder', translations.atOrder)}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">{translate('ownership', translations.ownership)}</span>
+                        <span className="font-semibold">{translate('fromSigning', translations.fromSigning)}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">{translate('noFeesInterest', translations.noFeesInterest)}</span>
+                    </div>
+                    <div className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">{translate('withoutFinancialOrg', translations.withoutFinancialOrg)}</span>
+                    </div>
+                    <div className="flex items-start">
+                      <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">{translate('fastSolution', translations.fastSolution)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <Link to="/contact" className="w-full">
+                      <Button className="w-full bg-brand-green hover:bg-brand-darkGreen">
+                        {translate('requestQuote', translations.requestQuote)}
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Special cash payment offer */}
+            <Alert className="mb-12 bg-gray-50 border-brand-blue/30">
+              <AlertCircle className="h-5 w-5 text-brand-blue" />
+              <AlertTitle className="text-brand-blue font-semibold">{translate('specialOffer', translations.specialOffer)}</AlertTitle>
+              <AlertDescription>{translate('cashDiscount', translations.cashDiscount)}</AlertDescription>
+            </Alert>
+            
+            {/* Financing simulation section */}
+            <div className="bg-gray-50 rounded-lg p-8 mb-12">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-4">{translate('simulateFinancing', translations.simulateFinancing)}</h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  {translate('useCalculator', translations.useCalculator)}
+                </p>
+              </div>
+              
+              <div className="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="vehicle-price" className="block text-sm font-medium text-gray-700 mb-1">
+                    {translate('vehiclePrice', translations.vehiclePrice)}
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">€</span>
+                    <input
+                      type="number"
+                      id="vehicle-price"
+                      className="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue"
+                      placeholder="25000"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="initial-contribution" className="block text-sm font-medium text-gray-700 mb-1">
+                    {translate('initialContribution', translations.initialContribution)}
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">€</span>
+                    <input
+                      type="number"
+                      id="initial-contribution"
+                      className="pl-8 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue"
+                      placeholder="5000"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-1">
+                    {translate('durationInMonths', translations.durationInMonths)}
+                  </label>
+                  <input
+                    type="number"
+                    id="duration"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue"
+                    placeholder="48"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="financing-type" className="block text-sm font-medium text-gray-700 mb-1">
+                    {translate('financingType', translations.financingType)}
+                  </label>
+                  <select
+                    id="financing-type"
+                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-blue focus:ring-brand-blue"
+                  >
+                    <option value="credit">{translate('traditionalCredit', translations.traditionalCredit)}</option>
+                    <option value="loa">{translate('leaseWithOption', translations.leaseWithOption)}</option>
+                    <option value="installment">{translate('installmentPayment', translations.installmentPayment)}</option>
+                  </select>
+                </div>
+                
+                <div className="md:col-span-2">
+                  <Button className="w-full bg-brand-blue hover:bg-brand-darkBlue">
+                    {translate('calculatePayments', translations.calculatePayments)}
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
+            {/* FAQ section */}
+            <div className="mb-12">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-4">{translate('frequentlyAskedQuestions', translations.frequentlyAskedQuestions)}</h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  {translate('everythingToKnow', translations.everythingToKnow)}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-xl font-bold mb-2">{translate('whatDocumentsNeeded', translations.whatDocumentsNeeded)}</h3>
+                  <p className="text-gray-600">
+                    {translate('idProofEtc', translations.idProofEtc)}
+                  </p>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-xl font-bold mb-2">{translate('canIgetFinancingWithMinContribution', translations.canIgetFinancingWithMinContribution)}</h3>
+                  <p className="text-gray-600">
+                    {translate('yesSolutionsFrom10Percent', translations.yesSolutionsFrom10Percent)}
+                  </p>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-xl font-bold mb-2">{translate('whatsDifferenceCreditLoa', translations.whatsDifferenceCreditLoa)}</h3>
+                  <p className="text-gray-600">
+                    {translate('withCreditYouOwnVehicle', translations.withCreditYouOwnVehicle)}
+                  </p>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <h3 className="text-xl font-bold mb-2">{translate('isInstallmentPaymentSubjectToFees', translations.isInstallmentPaymentSubjectToFees)}</h3>
+                  <p className="text-gray-600">
+                    {translate('noOurInstallmentPaymentIsFree', translations.noOurInstallmentPaymentIsFree)}
+                  </p>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-md md:col-span-2">
+                  <h3 className="text-xl font-bold mb-2">{translate('canIRepayMyCreditEarly', translations.canIRepayMyCreditEarly)}</h3>
+                  <p className="text-gray-600">
+                    {translate('yesEarlyRepaymentPossible', translations.yesEarlyRepaymentPossible)}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Call-to-action section */}
+            <div className="bg-brand-blue text-white rounded-lg p-8 text-center">
+              <h2 className="text-3xl font-bold mb-4">{translate('readyToFinance', translations.readyToFinance)}</h2>
+              <p className="text-xl mb-6 max-w-3xl mx-auto">
+                {translate('financialAdvisors', translations.financialAdvisors)}
+              </p>
+              <Link to="/contact">
+                <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold px-8 py-3">
+                  {translate('getQuote', translations.getQuote)}
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default Financement;
