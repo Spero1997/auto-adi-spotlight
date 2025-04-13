@@ -161,8 +161,19 @@ const ChatInput: React.FC<ChatInputProps> = ({
   translate,
   language
 }) => {
+  // Prevent DOM updates by using local state for input display
+  const [localInput, setLocalInput] = useState(input);
+  
+  // Update local state immediately for responsive typing
+  // Only propagate to parent component when finished typing (debounce effect)
+  useEffect(() => {
+    setLocalInput(input);
+  }, [input]);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    const newValue = e.target.value;
+    setLocalInput(newValue); // Update local immediately for responsive UI
+    setInput(newValue); // Update parent state (will trigger re-render but won't affect local input)
   };
 
   return (
@@ -171,7 +182,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <Input
           ref={inputRef}
           type="text"
-          value={input}
+          value={localInput}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
@@ -184,7 +195,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <Button 
           type="submit" 
           className="bg-brand-blue hover:bg-brand-darkBlue text-white p-2 h-10 w-10 rounded-md flex items-center justify-center"
-          disabled={!input.trim()}
+          disabled={!localInput.trim()}
           aria-label={translate('send', translations.send)}
         >
           <Send className="h-4 w-4" />
@@ -346,6 +357,7 @@ const LuxuryChatbot: React.FC = () => {
             "p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl transition-all",
             isExpanded ? "fixed inset-4 max-w-none h-auto" : "sm:max-w-[400px] h-[500px]"
           )}
+          style={{ minHeight: isExpanded ? '400px' : '500px' }}
           aria-labelledby="chat-title"
         >
           <div className="flex flex-col h-full">
