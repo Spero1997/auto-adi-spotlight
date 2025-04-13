@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Phone, Mail, MapPin, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -79,7 +78,7 @@ const Footer = () => {
       EN: "Legal notice",
       ES: "Avisos legales",
       IT: "Note legali",
-      PT: "Avisos legais",
+      PT: "Avisos legales",
       RO: "Mențiuni legale"
     },
     privacyPolicy: {
@@ -307,8 +306,6 @@ const Footer = () => {
               Auto ADI
             </span>
             <span className="inline-block w-2 h-2 bg-brand-orange rounded-full animate-pulse"></span>
-            <span className="text-white/60">•</span>
-            <span className="text-white/60">Monaco</span>
             <span className="text-white/60">•</span>
             <span className="text-white/60">Italia</span>
           </div>
