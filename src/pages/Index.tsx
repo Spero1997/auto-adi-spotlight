@@ -15,6 +15,7 @@ import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
+import { addKiaSorento } from '@/scripts/addKiaSorento';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -153,6 +154,20 @@ const Index = () => {
       addMercedesClassC180();
     } else {
       console.log("Mercedes Benz Classe C 180 AMG déjà présente dans le catalogue standard");
+    }
+    
+    // Vérifier si la Kia Sorento existe déjà dans le catalogue standard
+    const kiaSorentoInStandard = standardVehicles.find(
+      v => v.brand === "Kia" && 
+          v.model === "Sorento 1.6 T-GDI Hybride rechargeable" && 
+          v.year === 2021
+    );
+
+    if (!kiaSorentoInStandard) {
+      console.log("Kia Sorento non trouvée dans le catalogue standard, ajout au catalogue...");
+      addKiaSorento();
+    } else {
+      console.log("Kia Sorento déjà présente dans le catalogue standard");
     }
   }, []);
 
