@@ -1,3 +1,4 @@
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -58,21 +59,30 @@ const Services = () => {
                   <p className="text-gray-600 mb-4">
                     Nous maintenons la garantie constructeur de votre véhicule tout en vous offrant un service de qualité à prix compétitif.
                   </p>
-                  <Collapsible className="w-full">
-                    <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                      <span>Détails du service</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                      <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                        <li>Entretien selon les recommandations du constructeur</li>
-                        <li>Utilisation exclusive de pièces d'origine</li>
-                        <li>Documentation complète dans le carnet d'entretien</li>
-                        <li>Extension de garantie disponible jusqu'à 5 ans</li>
-                        <li>Assistance routière incluse 24h/24, 7j/7</li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-gray-800">Pourquoi choisir notre service de garantie constructeur ?</h4>
+                    <p className="text-gray-600">
+                      Notre atelier agréé utilise exclusivement des pièces d'origine et respecte scrupuleusement les recommandations du constructeur pour chaque intervention. Vous conservez ainsi tous les avantages de votre garantie tout en bénéficiant de nos tarifs avantageux.
+                    </p>
+                    <Collapsible className="w-full">
+                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
+                        <span>Détails du service</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
+                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
+                          <li>Entretien selon les recommandations du constructeur</li>
+                          <li>Utilisation exclusive de pièces d'origine</li>
+                          <li>Documentation complète dans le carnet d'entretien</li>
+                          <li>Extension de garantie disponible jusqu'à 5 ans</li>
+                          <li>Assistance routière incluse 24h/24, 7j/7</li>
+                          <li>Diagnostic électronique avec équipements certifiés</li>
+                          <li>Mise à jour des logiciels embarqués</li>
+                          <li>Révision complète selon le plan de maintenance officiel</li>
+                        </ul>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Link to="/garantie" className="w-full">
@@ -95,21 +105,31 @@ const Services = () => {
                   <p className="text-gray-600 mb-4">
                     Notre service de livraison internationale vous permet d'acquérir votre véhicule où que vous soyez en Europe.
                   </p>
-                  <Collapsible className="w-full">
-                    <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                      <span>Détails du service</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                      <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                        <li>Livraison dans toute l'Europe</li>
-                        <li>Transporteurs spécialisés et assurés</li>
-                        <li>Suivi en temps réel de votre livraison</li>
-                        <li>Inspection du véhicule avant expédition</li>
-                        <li>Assistance administrative pour l'immatriculation</li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-gray-800">Un service clé en main partout en Europe</h4>
+                    <p className="text-gray-600">
+                      Nous prenons en charge toutes les démarches administratives, douanières et logistiques pour vous livrer votre véhicule dans les meilleures conditions, quelle que soit votre localisation en Europe.
+                    </p>
+                    <Collapsible className="w-full">
+                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
+                        <span>Détails du service</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
+                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
+                          <li>Livraison dans toute l'Europe</li>
+                          <li>Transporteurs spécialisés et assurés</li>
+                          <li>Suivi en temps réel de votre livraison</li>
+                          <li>Inspection du véhicule avant expédition</li>
+                          <li>Assistance administrative pour l'immatriculation</li>
+                          <li>Documentation complète pour les démarches douanières</li>
+                          <li>Options de transport premium (camion fermé, chauffeur privé)</li>
+                          <li>Garantie de livraison avec délais contractuels</li>
+                          <li>Assurance transport complète incluse</li>
+                        </ul>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Link to="/livraison" className="w-full">
@@ -132,21 +152,31 @@ const Services = () => {
                   <p className="text-gray-600 mb-4">
                     Notre équipe de conseillers dédiés vous accompagne à chaque étape de votre projet automobile pour une expérience sans stress.
                   </p>
-                  <Collapsible className="w-full">
-                    <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                      <span>Détails du service</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                      <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                        <li>Conseiller personnel attitré</li>
-                        <li>Disponibilité étendue (6j/7)</li>
-                        <li>Service de conciergerie automobile</li>
-                        <li>Assistance prioritaire en cas de problème</li>
-                        <li>Invitations exclusives aux événements de la marque</li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-gray-800">Un accompagnement personnalisé de A à Z</h4>
+                    <p className="text-gray-600">
+                      Dès votre premier contact, un conseiller dédié prend en charge votre dossier et reste votre interlocuteur unique tout au long de votre projet. Disponible sur rendez-vous en dehors des heures d'ouverture, il vous garantit un suivi privilégié.
+                    </p>
+                    <Collapsible className="w-full">
+                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
+                        <span>Détails du service</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
+                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
+                          <li>Conseiller personnel attitré</li>
+                          <li>Disponibilité étendue (6j/7)</li>
+                          <li>Service de conciergerie automobile</li>
+                          <li>Assistance prioritaire en cas de problème</li>
+                          <li>Invitations exclusives aux événements de la marque</li>
+                          <li>Véhicule de remplacement haut de gamme</li>
+                          <li>Service de prise en charge et livraison à domicile</li>
+                          <li>Suivi personnalisé de l'entretien de votre véhicule</li>
+                          <li>Accès à notre salon VIP lors de vos visites</li>
+                        </ul>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Link to="/service-premium" className="w-full">
@@ -169,21 +199,31 @@ const Services = () => {
                   <p className="text-gray-600 mb-4">
                     Nous proposons des solutions de financement adaptées à votre situation, sans passer par une banque traditionnelle.
                   </p>
-                  <Collapsible className="w-full">
-                    <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                      <span>Détails du service</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                      <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                        <li>Crédit interne sans intermédiaire bancaire</li>
-                        <li>Mensualités flexibles de 6 à 84 mois</li>
-                        <li>Possibilité de financement sans apport</li>
-                        <li>Options d'achat avec valeur résiduelle</li>
-                        <li>Étude personnalisée de votre dossier sous 48h</li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-gray-800">Des solutions financières sur mesure</h4>
+                    <p className="text-gray-600">
+                      Notre département financier interne étudie votre dossier pour vous proposer la solution la plus avantageuse : crédit classique, location avec option d'achat, leasing ou paiement échelonné. Profitez de taux compétitifs et d'une réponse rapide.
+                    </p>
+                    <Collapsible className="w-full">
+                      <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
+                        <span>Détails du service</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
+                        <ul className="space-y-2 list-disc pl-5 text-gray-600">
+                          <li>Crédit interne sans intermédiaire bancaire</li>
+                          <li>Mensualités flexibles de 6 à 84 mois</li>
+                          <li>Possibilité de financement sans apport</li>
+                          <li>Options d'achat avec valeur résiduelle</li>
+                          <li>Étude personnalisée de votre dossier sous 48h</li>
+                          <li>Assurance emprunteur à tarifs préférentiels</li>
+                          <li>Solutions pour profils atypiques ou indépendants</li>
+                          <li>Rachat de crédit en cours pour votre ancien véhicule</li>
+                          <li>Formules tout inclus (financement + entretien + assurance)</li>
+                        </ul>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Link to="/financement" className="w-full">
