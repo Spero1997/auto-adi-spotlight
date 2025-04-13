@@ -26,7 +26,7 @@ const LegalPageLayout = ({ title, children }: LegalPageLayoutProps) => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow bg-gray-50 py-12">
+      <main className="flex-grow bg-gray-50 py-12 pt-[100vh]">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm p-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6 border-b pb-4">{title}</h1>

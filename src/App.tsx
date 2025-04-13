@@ -31,12 +31,9 @@ import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
 import FAQ from "./pages/FAQ";
 
-// Component to conditionally render the AnimatedHero
-const ConditionalHeader = () => {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/";
-  
-  return isHomePage ? <AnimatedHero /> : null;
+// Component to render AnimatedHero on all pages
+const PageHeader = () => {
+  return <AnimatedHero />;
 };
 
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -62,6 +59,7 @@ const App = () => {
           <BrowserRouter>
             <ScrollToTop />
             <CatalogChecker>
+              <PageHeader />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/services" element={<Services />} />
@@ -98,7 +96,6 @@ const App = () => {
                 
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              <ConditionalHeader />
             </CatalogChecker>
           </BrowserRouter>
         </TooltipProvider>

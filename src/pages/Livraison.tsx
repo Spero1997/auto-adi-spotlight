@@ -10,12 +10,9 @@ import CTASection from '@/components/livraison/CTASection';
 const Livraison = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <HeroSection />
-
-        {/* Main Content */}
-        <section className="py-16">
+      <main className="flex-grow pt-screen">
+        {/* Main Content - add padding to account for the header */}
+        <section className="pt-[100vh] py-16">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* Left Column - Main Description */}

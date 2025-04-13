@@ -15,10 +15,7 @@ const Financement = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <FinancingHero translations={translations} />
-
+      <main className="flex-grow pt-[100vh]">
         {/* Main Financing Options */}
         <section className="py-16">
           <div className="container mx-auto px-4">
