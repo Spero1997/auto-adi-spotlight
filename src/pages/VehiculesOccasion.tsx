@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -87,7 +86,7 @@ const VehiculesOccasion = () => {
       <div className="flex flex-col min-h-screen">
         <Header />
         
-        <main className="flex-grow">
+        <main className="flex-grow mt-8">
           <section className="bg-gray-50 py-8">
             <div className="container mx-auto px-4">
               <QuickSearch onSearch={handleSearchFilters} />

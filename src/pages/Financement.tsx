@@ -18,27 +18,16 @@ const Financement = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow">
+      <main className="flex-grow mt-8"> {/* Ajout de mt-8 pour un margin-top de 2 cm */}
         {/* Hero Section */}
         <FinancingHero translations={translations} />
 
-        {/* Main Financing Options */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <FinancingOptions translations={translations} />
-            
-            {/* Special cash payment offer */}
-            <SpecialOffer translations={translations} />
-            
-            {/* Financing simulation section */}
-            <FinancingCalculator translations={translations} />
-            
-            {/* FAQ section */}
-            <FinancingFAQ translations={translations} />
-            
-            {/* Call-to-action section */}
-            <CallToAction translations={translations} />
-          </div>
+        <section className="py-16 container mx-auto px-4">
+          <FinancingOptions translations={translations} />
+          <SpecialOffer translations={translations} />
+          <FinancingCalculator translations={translations} />
+          <FinancingFAQ translations={translations} />
+          <CallToAction translations={translations} />
         </section>
       </main>
       

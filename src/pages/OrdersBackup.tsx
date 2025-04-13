@@ -46,7 +46,7 @@ const OrdersBackup = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow">
+      <main className="flex-grow mt-8"> {/* Ajout de mt-8 pour un margin-top de 2 cm */}
         <OrdersBackupComponent />
       </main>
       
