@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, Phone } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import {
@@ -204,17 +203,6 @@ const Header = () => {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-
-            <a
-              href="tel:+33123456789"
-              className={cn(
-                "ml-4 flex items-center gap-2 font-medium transition-colors",
-                isScrolled ? 'text-blue-600' : 'text-white'
-              )}
-            >
-              <Phone className="h-5 w-5" />
-              <span className="hidden xl:inline">+33 1 23 45 67 89</span>
-            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -283,14 +271,6 @@ const Header = () => {
               <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
                 Contact
               </Link>
-
-              <a
-                href="tel:+33123456789"
-                className="flex items-center gap-2 px-4 py-2 text-blue-600 font-medium"
-              >
-                <Phone className="h-5 w-5" />
-                +33 1 23 45 67 89
-              </a>
             </div>
           </motion.div>
         )}
