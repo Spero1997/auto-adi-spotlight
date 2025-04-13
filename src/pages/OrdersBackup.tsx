@@ -35,7 +35,9 @@ const OrdersBackup = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <p>Chargement...</p>
+          <div className="p-8 rounded-lg bg-white shadow-md">
+            <p className="text-center">Chargement...</p>
+          </div>
         </main>
         <Footer />
       </div>
@@ -46,8 +48,13 @@ const OrdersBackup = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow mt-8"> {/* Ajout de mt-8 pour un margin-top de 2 cm */}
-        <OrdersBackupComponent />
+      <main className="flex-grow mt-8 bg-gradient-to-b from-white to-gray-50"> 
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-3xl font-playfair font-bold mb-8 text-center text-brand-darkBlue">Suivi de commandes</h1>
+          <div className="max-w-5xl mx-auto">
+            <OrdersBackupComponent />
+          </div>
+        </div>
       </main>
       
       <Footer />

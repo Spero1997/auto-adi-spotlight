@@ -13,19 +13,21 @@ const Livraison = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow mt-8"> {/* Ajout de mt-8 pour un margin-top de 2 cm */}
+      <main className="flex-grow mt-8">
         {/* Hero Section */}
         <HeroSection />
 
         {/* Main Content */}
-        <section className="py-16">
+        <section className="py-16 bg-gradient-to-b from-white to-gray-50">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {/* Left Column - Main Description */}
-              <ServiceDescription />
-              
-              {/* Right Column - Process Cards */}
-              <ProcessCards />
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                {/* Left Column - Main Description */}
+                <ServiceDescription />
+                
+                {/* Right Column - Process Cards */}
+                <ProcessCards />
+              </div>
             </div>
           </div>
         </section>
@@ -33,8 +35,14 @@ const Livraison = () => {
         {/* Destinations Section */}
         <TransportDestinations />
 
-        {/* Testimonials Section */}
-        <TestimonialsSection />
+        {/* Testimonials Section with improved styling */}
+        <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <TestimonialsSection />
+            </div>
+          </div>
+        </section>
 
         {/* CTA Section */}
         <CTASection />

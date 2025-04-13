@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSearchParams } from 'react-router-dom';
@@ -87,15 +88,24 @@ const VehiculesOccasion = () => {
         <Header />
         
         <main className="flex-grow mt-8">
-          <section className="bg-gray-50 py-8">
+          <section className="bg-gradient-to-b from-gray-50 to-white py-8">
             <div className="container mx-auto px-4">
-              <QuickSearch onSearch={handleSearchFilters} />
+              <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-8 text-center text-brand-darkBlue">Véhicules d'occasion</h1>
+              <div className="max-w-5xl mx-auto">
+                <QuickSearch onSearch={handleSearchFilters} />
+              </div>
             </div>
           </section>
           
           <FeaturedCars searchFilters={searchFilters} />
           
-          <ConditionsHighlight />
+          <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+            <div className="container mx-auto px-4">
+              <div className="max-w-5xl mx-auto">
+                <ConditionsHighlight />
+              </div>
+            </div>
+          </section>
         </main>
         
         <Footer />

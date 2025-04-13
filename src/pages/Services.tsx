@@ -409,17 +409,19 @@ const Services = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow">
+      <main className="flex-grow mt-8">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-brand-blue to-brand-darkBlue text-white py-16">
-          <div className="container mx-auto px-4">
+        <section className="relative bg-gradient-to-b from-brand-blue to-brand-darkBlue text-white py-20 overflow-hidden">
+          <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-4.0.3')] bg-cover bg-center"></div>
+          <div className="relative container mx-auto px-4 z-10">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">{translate('servicesTitle', translations.servicesTitle)}</h1>
-              <p className="text-xl mb-8">{translate('servicesDescription', translations.servicesDescription)}</p>
-              <div className="flex flex-wrap gap-4">
+              <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-6 animate-fade-in">{translate('servicesTitle', translations.servicesTitle)}</h1>
+              <p className="text-xl mb-8 opacity-90 animate-fade-in animation-delay-300">{translate('servicesDescription', translations.servicesDescription)}</p>
+              <div className="flex flex-wrap gap-4 animate-fade-in animation-delay-300">
                 <Link to="/rendez-vous">
-                  <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold">
-                    {translate('scheduleAppointment', translations.scheduleAppointment)}
+                  <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold group">
+                    <Calendar className="mr-2 h-5 w-5" />
+                    <span>{translate('scheduleAppointment', translations.scheduleAppointment)}</span>
                   </Button>
                 </Link>
                 <Link to="/contact">
@@ -433,56 +435,56 @@ const Services = () => {
         </section>
 
         {/* Specialized Services Section */}
-        <section className="py-16 bg-gray-100">
+        <section className="py-16 bg-gradient-to-b from-white to-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">{translate('specializedServices', translations.specializedServices)}</h2>
+              <h2 className="text-3xl font-playfair font-bold mb-4">{translate('specializedServices', translations.specializedServices)}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 {translate('tailoredSolutions', translations.tailoredSolutions)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <div className="bg-green-100 p-3 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-                  <ShieldCheck className="h-7 w-7 text-green-600" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-green-100 p-4 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                  <ShieldCheck className="h-8 w-8 text-green-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('manufacturerWarranty', translations.manufacturerWarranty)}</h3>
-                <p className="text-gray-600 mb-5">
+                <h3 className="text-xl font-bold mb-3 text-center">{translate('manufacturerWarranty', translations.manufacturerWarranty)}</h3>
+                <p className="text-gray-600 mb-5 text-center">
                   {translate('manufacturerWarrantyDesc', translations.manufacturerWarrantyDesc)}
                 </p>
-                <Link to="/garantie">
-                  <Button variant="outline" className="border-green-600 text-green-600 hover:bg-green-50">
+                <Link to="/garantie" className="block w-full">
+                  <Button variant="outline" className="w-full border-green-600 text-green-600 hover:bg-green-50">
                     {translate('learnMore', translations.learnMore)}
                   </Button>
                 </Link>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <div className="bg-blue-100 p-3 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-                  <Truck className="h-7 w-7 text-blue-600" />
+              <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                  <Truck className="h-8 w-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('internationalDelivery', translations.internationalDelivery)}</h3>
-                <p className="text-gray-600 mb-5">
+                <h3 className="text-xl font-bold mb-3 text-center">{translate('internationalDelivery', translations.internationalDelivery)}</h3>
+                <p className="text-gray-600 mb-5 text-center">
                   {translate('internationalDeliveryDesc', translations.internationalDeliveryDesc)}
                 </p>
-                <Link to="/livraison">
-                  <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+                <Link to="/livraison" className="block w-full">
+                  <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-50">
                     {translate('learnMore', translations.learnMore)}
                   </Button>
                 </Link>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                <div className="bg-amber-100 p-3 w-14 h-14 rounded-full flex items-center justify-center mb-4">
-                  <User className="h-7 w-7 text-amber-600" />
+              <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                <div className="bg-amber-100 p-4 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                  <User className="h-8 w-8 text-amber-600" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('premiumCustomerService', translations.premiumCustomerService)}</h3>
-                <p className="text-gray-600 mb-5">
+                <h3 className="text-xl font-bold mb-3 text-center">{translate('premiumCustomerService', translations.premiumCustomerService)}</h3>
+                <p className="text-gray-600 mb-5 text-center">
                   {translate('premiumCustomerServiceDesc', translations.premiumCustomerServiceDesc)}
                 </p>
-                <Link to="/service-premium">
-                  <Button variant="outline" className="border-amber-600 text-amber-600 hover:bg-amber-50">
+                <Link to="/service-premium" className="block w-full">
+                  <Button variant="outline" className="w-full border-amber-600 text-amber-600 hover:bg-amber-50">
                     {translate('learnMore', translations.learnMore)}
                   </Button>
                 </Link>
@@ -492,119 +494,119 @@ const Services = () => {
         </section>
 
         {/* Automotive Services Section */}
-        <section className="py-16">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">{translate('automotiveServices', translations.automotiveServices)}</h2>
+              <h2 className="text-3xl font-playfair font-bold mb-4">{translate('automotiveServices', translations.automotiveServices)}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 {translate('completeServiceRange', translations.completeServiceRange)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Regular Maintenance */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-gray-100 p-3 rounded-full mr-4">
-                    <Wrench className="h-6 w-6 text-brand-blue" />
+              <div className="bg-gradient-to-b from-white to-gray-50 border border-gray-200 rounded-lg shadow-sm p-8 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="bg-brand-blue/10 p-4 rounded-full mr-4">
+                    <Wrench className="h-7 w-7 text-brand-blue" />
                   </div>
                   <h3 className="text-xl font-bold">{translate('regularMaintenance', translations.regularMaintenance)}</h3>
                 </div>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-6">
                   {translate('regularMaintenanceDesc', translations.regularMaintenanceDesc)}
                 </p>
-                <ul className="space-y-2">
+                <ul className="space-y-3 mb-6">
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('oilChange', translations.oilChange)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('tireRotation', translations.tireRotation)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('fluidLevels', translations.fluidLevels)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('brakeInspection', translations.brakeInspection)}</span>
                   </li>
                 </ul>
-                <div className="mt-6">
-                  <Link to="/rendez-vous">
+                <div>
+                  <Link to="/rendez-vous" className="block w-full">
                     <Button className="w-full">{translate('scheduleAppointment', translations.scheduleAppointment)}</Button>
                   </Link>
                 </div>
               </div>
 
               {/* Electronic Diagnostics */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-gray-100 p-3 rounded-full mr-4">
-                    <Activity className="h-6 w-6 text-brand-blue" />
+              <div className="bg-gradient-to-b from-white to-gray-50 border border-gray-200 rounded-lg shadow-sm p-8 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="bg-brand-blue/10 p-4 rounded-full mr-4">
+                    <Activity className="h-7 w-7 text-brand-blue" />
                   </div>
                   <h3 className="text-xl font-bold">{translate('electronicDiagnostics', translations.electronicDiagnostics)}</h3>
                 </div>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-6">
                   {translate('electronicDiagnosticsDesc', translations.electronicDiagnosticsDesc)}
                 </p>
-                <ul className="space-y-2">
+                <ul className="space-y-3 mb-6">
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('faultCodeReading', translations.faultCodeReading)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('electronicsIssues', translations.electronicsIssues)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('sensorActuatorTesting', translations.sensorActuatorTesting)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('ecuReprogramming', translations.ecuReprogramming)}</span>
                   </li>
                 </ul>
-                <div className="mt-6">
-                  <Link to="/rendez-vous">
+                <div>
+                  <Link to="/rendez-vous" className="block w-full">
                     <Button className="w-full">{translate('scheduleAppointment', translations.scheduleAppointment)}</Button>
                   </Link>
                 </div>
               </div>
 
               {/* Mechanical Repairs */}
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                <div className="flex items-center mb-4">
-                  <div className="bg-gray-100 p-3 rounded-full mr-4">
-                    <Settings className="h-6 w-6 text-brand-blue" />
+              <div className="bg-gradient-to-b from-white to-gray-50 border border-gray-200 rounded-lg shadow-sm p-8 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="bg-brand-blue/10 p-4 rounded-full mr-4">
+                    <Settings className="h-7 w-7 text-brand-blue" />
                   </div>
                   <h3 className="text-xl font-bold">{translate('mechanicalRepairs', translations.mechanicalRepairs)}</h3>
                 </div>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-6">
                   {translate('mechanicalRepairsDesc', translations.mechanicalRepairsDesc)}
                 </p>
-                <ul className="space-y-2">
+                <ul className="space-y-3 mb-6">
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('engineRepair', translations.engineRepair)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('brakingSystem', translations.brakingSystem)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('transmissionGearbox', translations.transmissionGearbox)}</span>
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                     <span>{translate('suspensionSteering', translations.suspensionSteering)}</span>
                   </li>
                 </ul>
-                <div className="mt-6">
-                  <Link to="/rendez-vous">
+                <div>
+                  <Link to="/rendez-vous" className="block w-full">
                     <Button className="w-full">{translate('scheduleAppointment', translations.scheduleAppointment)}</Button>
                   </Link>
                 </div>
@@ -614,51 +616,51 @@ const Services = () => {
         </section>
 
         {/* Service Process Section */}
-        <section className="py-16 bg-gray-100">
+        <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">{translate('serviceProcess', translations.serviceProcess)}</h2>
+              <h2 className="text-3xl font-playfair font-bold mb-4">{translate('serviceProcess', translations.serviceProcess)}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 {translate('transparentProcess', translations.transparentProcess)}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="h-8 w-8 text-brand-blue" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              <div className="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-lg transition-all duration-300 border border-gray-100">
+                <div className="bg-brand-blue/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Calendar className="h-10 w-10 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('appointment', translations.appointment)}</h3>
+                <h3 className="text-xl font-bold mb-4">{translate('appointment', translations.appointment)}</h3>
                 <p className="text-gray-600">
                   {translate('appointmentDesc', translations.appointmentDesc)}
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <AlertTriangle className="h-8 w-8 text-brand-blue" />
+              <div className="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-lg transition-all duration-300 border border-gray-100">
+                <div className="bg-brand-blue/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <AlertTriangle className="h-10 w-10 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('diagnostics', translations.diagnostics)}</h3>
+                <h3 className="text-xl font-bold mb-4">{translate('diagnostics', translations.diagnostics)}</h3>
                 <p className="text-gray-600">
                   {translate('diagnosticsDesc', translations.diagnosticsDesc)}
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Wrench className="h-8 w-8 text-brand-blue" />
+              <div className="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-lg transition-all duration-300 border border-gray-100">
+                <div className="bg-brand-blue/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Wrench className="h-10 w-10 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('intervention', translations.intervention)}</h3>
+                <h3 className="text-xl font-bold mb-4">{translate('intervention', translations.intervention)}</h3>
                 <p className="text-gray-600">
                   {translate('interventionDesc', translations.interventionDesc)}
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Clock className="h-8 w-8 text-brand-blue" />
+              <div className="bg-white p-8 rounded-lg shadow-md text-center hover:shadow-lg transition-all duration-300 border border-gray-100">
+                <div className="bg-brand-blue/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="h-10 w-10 text-brand-blue" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{translate('vehicleDelivery', translations.vehicleDelivery)}</h3>
+                <h3 className="text-xl font-bold mb-4">{translate('vehicleDelivery', translations.vehicleDelivery)}</h3>
                 <p className="text-gray-600">
                   {translate('vehicleDeliveryDesc', translations.vehicleDeliveryDesc)}
                 </p>
@@ -668,10 +670,10 @@ const Services = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-brand-blue text-white">
+        <section className="py-16 bg-gradient-to-r from-brand-blue to-brand-darkBlue text-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold mb-6">{translate('needService', translations.needService)}</h2>
+              <h2 className="text-3xl font-playfair font-bold mb-6">{translate('needService', translations.needService)}</h2>
               <p className="text-xl mb-8">
                 {translate('expertsAtYourService', translations.expertsAtYourService)}
               </p>
