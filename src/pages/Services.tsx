@@ -22,7 +22,7 @@ const Services = () => {
               <p className="text-xl mb-8">Notre équipe d'experts est à votre service pour l'entretien, la réparation et l'acquisition de votre véhicule.</p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/rendez-vous">
-                  <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold">
+                  <Button className="bg-brand-orange text-white hover:bg-brand-lightOrange text-lg font-semibold">
                     Prendre rendez-vous
                   </Button>
                 </Link>
@@ -477,7 +477,7 @@ const Services = () => {
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link to="/rendez-vous">
-                  <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold px-8 py-3">
+                  <Button className="bg-brand-orange text-white hover:bg-brand-lightOrange text-lg font-semibold px-8 py-3">
                     Prendre rendez-vous
                   </Button>
                 </Link>

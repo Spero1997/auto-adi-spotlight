@@ -57,7 +57,7 @@ const CallToAction = () => {
       RO: "Disponibil pe Facebook și WhatsApp"
     }
   };
-
+  
   return (
     <section className="py-16 bg-brand-blue text-white">
       <div className="container mx-auto px-4">
@@ -118,7 +118,7 @@ const CallToAction = () => {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/contact">
-                <Button className="bg-white text-brand-blue hover:bg-gray-100 transition-colors px-6 py-3 text-lg font-semibold">
+                <Button className="bg-brand-orange text-white hover:bg-brand-lightOrange transition-colors px-6 py-3 text-lg font-semibold">
                   {translate('contactUs', translations.contactUs)}
                 </Button>
               </Link>
