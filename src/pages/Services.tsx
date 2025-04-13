@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -366,8 +365,8 @@ const Services = () => {
       EN: "4. Vehicle delivery",
       ES: "4. Entrega del vehículo",
       IT: "4. Consegna del veicolo",
-      PT: "4. Entrega do veículo",
-      RO: "4. Livrarea vehiculului"
+      PT: "Entrega do veículo",
+      RO: "Livrarea vehiculului"
     },
     vehicleDeliveryDesc: {
       FR: "Récupérez votre véhicule avec une explication détaillée des travaux effectués.",
@@ -650,49 +649,3 @@ const Services = () => {
                 </div>
                 <h3 className="text-xl font-bold mb-3">{translate('intervention', translations.intervention)}</h3>
                 <p className="text-gray-600">
-                  {translate('interventionDesc', translations.interventionDesc)}
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="bg-brand-blue/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Clock className="h-8 w-8 text-brand-blue" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">{translate('vehicleDelivery', translations.vehicleDelivery)}</h3>
-                <p className="text-gray-600">
-                  {translate('vehicleDeliveryDesc', translations.vehicleDeliveryDesc)}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-brand-blue text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">{translate('needService', translations.needService)}</h2>
-            <p className="text-xl mb-8 max-w-3xl mx-auto">
-              {translate('expertsAtYourService', translations.expertsAtYourService)}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/rendez-vous">
-                <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold px-8 py-3">
-                  {translate('scheduleAppointment', translations.scheduleAppointment)}
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold px-8 py-3">
-                  {translate('contactUs', translations.contactUs)}
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      
-      <Footer />
-    </div>
-  );
-};
-
-export default Services;

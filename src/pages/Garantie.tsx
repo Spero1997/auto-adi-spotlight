@@ -1,11 +1,82 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Wrench, Calendar, Car } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Garantie = () => {
+  const { translate } = useLanguage();
+  
+  const translations = {
+    warrantyService: {
+      FR: "Service de garantie constructeur",
+      EN: "Manufacturer warranty service",
+      ES: "Servicio de garantía del fabricante",
+      IT: "Servizio di garanzia del produttore",
+      PT: "Serviço de garantia do fabricante",
+      RO: "Serviciu de garanție producător"
+    },
+    warrantyIntro: {
+      FR: "Maintenez la garantie de votre véhicule tout en bénéficiant de notre expertise et de nos tarifs avantageux.",
+      EN: "Maintain your vehicle warranty while benefiting from our expertise and competitive rates.",
+      ES: "Mantenga la garantía de su vehículo mientras se beneficia de nuestra experiencia y tarifas competitivas.",
+      IT: "Mantieni la garanzia del tuo veicolo beneficiando della nostra esperienza e delle nostre tariffe competitive.",
+      PT: "Mantenha a garantia do seu veículo enquanto beneficia da nossa experiência e preços competitivos.",
+      RO: "Mențineți garanția vehiculului dvs. beneficiind de expertiza noastră și de tarifele noastre competitive."
+    },
+    scheduleAppointment: {
+      FR: "Prendre rendez-vous",
+      EN: "Schedule an appointment",
+      ES: "Programar una cita",
+      IT: "Fissare un appuntamento",
+      PT: "Agendar uma consulta",
+      RO: "Programează o întâlnire"
+    },
+    callUs: {
+      FR: "Nous appeler",
+      EN: "Call us",
+      ES: "Llámanos",
+      IT: "Chiamaci",
+      PT: "Ligue-nos",
+      RO: "Sunați-ne"
+    },
+    
+    whyChooseUs: {
+      FR: "Pourquoi choisir notre service de garantie constructeur ?",
+      EN: "Why choose our manufacturer warranty service?",
+      ES: "¿Por qué elegir nuestro servicio de garantía de fabricante?",
+      IT: "Perché scegliere il nostro servizio di garanzia del produttore?",
+      PT: "Por que escolher o nosso serviço de garantia do fabricante?",
+      RO: "De ce să alegeți serviciul nostru de garanție producător?"
+    },
+    commitments: {
+      FR: "Nos engagements",
+      EN: "Our commitments",
+      ES: "Nuestros compromisos",
+      IT: "I nostri impegni",
+      PT: "Nossos compromissos",
+      RO: "Angajamentele noastre"
+    },
+    serviceProcess: {
+      FR: "Notre processus de service",
+      EN: "Our service process",
+      ES: "Nuestro proceso de servicio",
+      IT: "Il nostro processo di servizio",
+      PT: "Nosso processo de serviço",
+      RO: "Procesul nostru de servicii"
+    },
+    
+    contactUs: {
+      FR: "Nous contacter",
+      EN: "Contact us",
+      ES: "Contáctenos",
+      IT: "Contattaci",
+      PT: "Contacte-nos",
+      RO: "Contactați-ne"
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -15,17 +86,17 @@ const Garantie = () => {
         <section className="bg-gradient-to-b from-green-500 to-green-600 text-white py-16">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Service de garantie constructeur</h1>
-              <p className="text-xl mb-8">Maintenez la garantie de votre véhicule tout en bénéficiant de notre expertise et de nos tarifs avantageux.</p>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">{translate('warrantyService', translations.warrantyService)}</h1>
+              <p className="text-xl mb-8">{translate('warrantyIntro', translations.warrantyIntro)}</p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/rendez-vous">
                   <Button className="bg-white text-green-600 hover:bg-gray-100 text-lg font-semibold">
-                    Prendre rendez-vous
+                    {translate('scheduleAppointment', translations.scheduleAppointment)}
                   </Button>
                 </Link>
                 <a href="tel:+33123456789">
                   <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold">
-                    Nous appeler
+                    {translate('callUs', translations.callUs)}
                   </Button>
                 </a>
               </div>
@@ -37,9 +108,8 @@ const Garantie = () => {
         <section className="py-16">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              {/* Left Column - Main Description */}
               <div>
-                <h2 className="text-3xl font-bold mb-6">Pourquoi choisir notre service de garantie constructeur ?</h2>
+                <h2 className="text-3xl font-bold mb-6">{translate('whyChooseUs', translations.whyChooseUs)}</h2>
                 <p className="text-lg text-gray-700 mb-6">
                   Notre atelier agréé utilise exclusivement des pièces d'origine et respecte scrupuleusement les recommandations du constructeur pour chaque intervention. Vous conservez ainsi tous les avantages de votre garantie tout en bénéficiant de nos tarifs avantageux.
                 </p>
@@ -50,7 +120,7 @@ const Garantie = () => {
                   Notre équipe de techniciens certifiés possède toutes les accréditations nécessaires et utilise les mêmes outils de diagnostic que les concessionnaires officiels.
                 </p>
                 
-                <h3 className="text-2xl font-bold mb-4 mt-8">Nos engagements</h3>
+                <h3 className="text-2xl font-bold mb-4 mt-8">{translate('commitments', translations.commitments)}</h3>
                 <ul className="space-y-4">
                   <li className="flex items-start space-x-3">
                     <ShieldCheck className="h-6 w-6 text-green-500 flex-shrink-0 mt-1" />
@@ -75,9 +145,8 @@ const Garantie = () => {
                 </ul>
               </div>
               
-              {/* Right Column - Process Cards */}
               <div>
-                <h3 className="text-2xl font-bold mb-6">Notre processus de service</h3>
+                <h3 className="text-2xl font-bold mb-6">{translate('serviceProcess', translations.serviceProcess)}</h3>
                 
                 <div className="space-y-6">
                   <div className="bg-white shadow-lg rounded-lg p-6 border-l-4 border-green-500">
@@ -186,19 +255,19 @@ const Garantie = () => {
         <section className="py-16 bg-green-500 text-white">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold mb-6">Maintenez votre garantie constructeur sans compromis</h2>
+              <h2 className="text-3xl font-bold mb-6">{translate('warrantyService', translations.warrantyService)}</h2>
               <p className="text-xl mb-8">
-                Profitez de notre expertise technique et de nos tarifs avantageux tout en préservant la garantie de votre véhicule.
+                {translate('warrantyIntro', translations.warrantyIntro)}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link to="/rendez-vous">
                   <Button className="bg-white text-green-600 hover:bg-gray-100 text-lg font-semibold px-8 py-3">
-                    Prendre rendez-vous
+                    {translate('scheduleAppointment', translations.scheduleAppointment)}
                   </Button>
                 </Link>
                 <Link to="/contact">
                   <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold px-8 py-3">
-                    Nous contacter
+                    {translate('contactUs', translations.contactUs)}
                   </Button>
                 </Link>
               </div>
