@@ -62,21 +62,21 @@ const Header = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full',
         isScrolled
-          ? 'bg-white shadow-md py-2'
-          : 'bg-transparent py-4'
+          ? 'bg-white shadow-md py-2' 
+          : 'bg-white shadow-sm py-2'
       )}
     >
       <div className="container mx-auto px-4 w-full">
         <div className="flex items-center justify-between w-full">
           <Link to="/" className="flex items-center">
-            <Logo className={cn('h-10 w-auto', isScrolled ? 'text-blue-600' : 'text-white')} />
+            <Logo className={cn('h-10 w-auto', 'text-blue-600')} />
           </Link>
 
           <div className="hidden lg:flex items-center space-x-1 w-full justify-between">
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={isScrolled ? 'text-gray-700' : 'text-white'}>
+                  <NavigationMenuTrigger className="text-gray-700">
                     Véhicules
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -134,7 +134,7 @@ const Header = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={isScrolled ? 'text-gray-700' : 'text-white'}>
+                  <NavigationMenuTrigger className="text-gray-700">
                     Services
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -199,10 +199,7 @@ const Header = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <div className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
-                    isScrolled ? 'text-gray-700' : 'text-white'
-                  )}>
+                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
                     <Link to="/a-propos">
                       À propos
                     </Link>
@@ -210,10 +207,7 @@ const Header = () => {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <div className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide transition-all duration-300 hover:border-brand-gold/70 hover:shadow-sm hover:text-brand-darkBlue border border-transparent focus:outline-none",
-                    isScrolled ? 'text-gray-700' : 'text-white'
-                  )}>
+                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
                     <Link to="/contact">
                       Contact
                     </Link>
@@ -226,9 +220,9 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button 
                   variant="ghost" 
-                  className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300"
+                  className="text-gray-700 font-montserrat font-light tracking-wide px-5 py-1.5 hover:bg-gray-100 rounded-md transition-all duration-300"
                 >
-                  <Globe className="mr-1 h-4 w-4" />
+                  <Globe className="mr-1 h-4 w-4 text-gray-700" />
                   {translate('language', translations.language)}
                 </Button>
               </DropdownMenuTrigger>
@@ -247,9 +241,9 @@ const Header = () => {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className={isScrolled ? 'text-gray-700' : 'text-white'} />
+              <X className="text-gray-700" />
             ) : (
-              <Menu className={isScrolled ? 'text-gray-700' : 'text-white'} />
+              <Menu className="text-gray-700" />
             )}
           </button>
         </div>
