@@ -161,19 +161,18 @@ const ChatInput: React.FC<ChatInputProps> = ({
   translate,
   language
 }) => {
-  // Prevent DOM updates by using local state for input display
+  // Utiliser localInput pour la UI seulement, sans déclencher de re-render externe
   const [localInput, setLocalInput] = useState(input);
   
-  // Update local state immediately for responsive typing
-  // Only propagate to parent component when finished typing (debounce effect)
+  // Synchronise l'état local avec l'état parent uniquement quand l'état parent change
   useEffect(() => {
     setLocalInput(input);
   }, [input]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    setLocalInput(newValue); // Update local immediately for responsive UI
-    setInput(newValue); // Update parent state (will trigger re-render but won't affect local input)
+    setLocalInput(newValue); // Mise à jour locale immédiate pour une UI réactive
+    setInput(newValue); // Mise à jour de l'état parent
   };
 
   return (
@@ -221,10 +220,10 @@ const LuxuryChatbot: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Fixed focus effect - using both a timeout and direct focusing
+  // Effet de focus fixe - utilisation d'un timeout et d'un focus direct
   useEffect(() => {
     if (isOpen && !isMinimized) {
-      // Initial focus with a delay to allow animations to complete
+      // Focus initial avec un délai pour permettre aux animations de se terminer
       const timeoutId = setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus();
@@ -245,7 +244,7 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      // Ensure focus is maintained after sending a message
+      // Maintenir le focus après l'envoi d'un message
       requestAnimationFrame(() => {
         if (inputRef.current) {
           inputRef.current.focus();
@@ -263,7 +262,7 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    // Ensure focus is maintained after expanding/contracting
+    // Maintenir le focus après l'agrandissement/la réduction
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
@@ -276,7 +275,7 @@ const LuxuryChatbot: React.FC = () => {
       return (
         <Drawer open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
-          // Fixed: ensure focus when drawer opens
+          // Fixé: assurer le focus lorsque le tiroir s'ouvre
           if (open) {
             setTimeout(() => {
               if (inputRef.current) inputRef.current.focus();
@@ -326,7 +325,7 @@ const LuxuryChatbot: React.FC = () => {
         setIsOpen(open);
         if (open) {
           setIsMinimized(false);
-          // Fixed: ensure focus when dialog opens
+          // Fixé: assurer le focus lorsque la boîte de dialogue s'ouvre
           setTimeout(() => {
             if (inputRef.current) inputRef.current.focus();
           }, 300);
@@ -357,7 +356,12 @@ const LuxuryChatbot: React.FC = () => {
             "p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl transition-all",
             isExpanded ? "fixed inset-4 max-w-none h-auto" : "sm:max-w-[400px] h-[500px]"
           )}
-          style={{ minHeight: isExpanded ? '400px' : '500px' }}
+          style={{ 
+            minHeight: isExpanded ? '400px' : '500px',
+            // Définir une largeur et une hauteur fixes pour éviter le zoom lors de la frappe
+            width: isExpanded ? 'auto' : '400px',
+            height: '500px'
+          }}
           aria-labelledby="chat-title"
         >
           <div className="flex flex-col h-full">
