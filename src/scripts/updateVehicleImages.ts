@@ -1,3 +1,4 @@
+
 import { getImportedVehicles, saveImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 
@@ -14,25 +15,25 @@ const vehicleImageMappings: VehicleImageMapping[] = [
   {
     brandKeywords: ['Kia'],
     modelKeywords: ['Sorento', 'Hybride rechargeable'],
-    replacementImage: 'https://via.placeholder.com/800x600/007bff/ffffff?text=Kia+Sorento',
+    replacementImage: '/lovable-uploads/1d43c09f-608c-456e-bb7f-ae06eb9bab3b.png',
     displayName: 'Kia Sorento'
   },
   {
     brandKeywords: ['Audi'],
     modelKeywords: ['Q2', 'ULTRA SPORT'],
-    replacementImage: 'https://via.placeholder.com/800x600/023047/ffffff?text=Audi+Q2',
+    replacementImage: '/lovable-uploads/46b47302-22df-4ef8-a230-63621a783e09.png',
     displayName: 'Audi Q2'
   },
   {
     brandKeywords: ['Volvo'],
     modelKeywords: ['V40', 'D2', 'R-Design'],
-    replacementImage: 'https://via.placeholder.com/800x600/023047/ffffff?text=Volvo+V40',
+    replacementImage: '/lovable-uploads/ef36053d-6e92-41d9-9654-497a534d2b84.png',
     displayName: 'Volvo V40'
   },
   {
     brandKeywords: ['Toyota'],
     modelKeywords: ['C-HR', 'Hybride', 'GR Sport'],
-    replacementImage: 'https://via.placeholder.com/800x600/219ebc/ffffff?text=Toyota+C-HR',
+    replacementImage: '/lovable-uploads/ee5703fa-4d1c-4b0d-8ee7-63360be7c312.png',
     displayName: 'Toyota C-HR'
   }
 ];
