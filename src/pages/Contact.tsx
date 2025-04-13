@@ -240,6 +240,22 @@ const Contact = () => {
       IT: "Ti risponderemo a breve.",
       PT: "Responderemos em breve.",
       RO: "Vă vom răspunde în curând."
+    },
+    error: {
+      FR: "Erreur",
+      EN: "Error",
+      ES: "Error",
+      IT: "Errore",
+      PT: "Erro",
+      RO: "Eroare"
+    },
+    errorMessage: {
+      FR: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+      EN: "An error occurred while sending the message. Please try again.",
+      ES: "Se produjo un error al enviar el mensaje. Por favor, inténtelo de nuevo.",
+      IT: "Si è verificato un errore durante l'invio del messaggio. Si prega di riprovare.",
+      PT: "Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente.",
+      RO: "A apărut o eroare la trimiterea mesajului. Vă rugăm să încercați din nou."
     }
   };
   
@@ -307,8 +323,8 @@ const Contact = () => {
       setIsSubmitting(false);
       
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        title: translate('error', translations.error),
+        description: translate('errorMessage', translations.errorMessage),
         duration: 5000,
         variant: "destructive",
       });
