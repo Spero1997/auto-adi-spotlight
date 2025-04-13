@@ -62,7 +62,8 @@ const HeroCarousel = () => {
   console.log("Images du carrousel:", carImages);
 
   return (
-    <div className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden">
+    // Ajout de w-screen pour occuper toute la largeur de l'écran
+    <div className="relative w-screen h-[70vh] md:h-[80vh] overflow-hidden">
       <Carousel 
         className="w-full h-full" 
         opts={{ loop: true, align: "start" }} 

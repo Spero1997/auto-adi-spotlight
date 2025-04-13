@@ -36,7 +36,8 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative bg-gray-900 overflow-hidden py-12">
+    // Modifié pour prendre toute la largeur de l'écran avec w-screen
+    <div className="relative bg-gray-900 overflow-hidden py-12 w-screen">
       {/* Background image */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-60"
@@ -45,8 +46,8 @@ const Hero = () => {
         }}
       />
       
-      <div className="container mx-auto px-4 py-8 md:py-12 relative z-10">
-        <div className="max-w-3xl text-white">
+      <div className="mx-auto px-4 py-8 md:py-12 relative z-10 w-full">
+        <div className="max-w-3xl text-white mx-auto">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             {translate('heroTitle', translations.heroTitle)}
           </h1>
@@ -55,7 +56,7 @@ const Hero = () => {
           </p>
           
           {/* Call to action button */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/vehicules/occasion">
               <Button className="bg-brand-orange hover:bg-brand-lightOrange transition-colors text-white px-6 py-3 rounded-md font-semibold text-lg">
                 {translate('usedVehicles', translations.usedVehicles)}

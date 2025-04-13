@@ -42,10 +42,11 @@ const AnimatedHero = () => {
 
   return (
     <>
-      <div className={`animated-header relative ${isMobile ? 'h-[380px]' : 'h-[500px] md:h-[600px]'}`}>
+      {/* Ajout de w-screen pour occuper toute la largeur et suppression de la classe container pour l'intégralité du hero */}
+      <div className={`animated-header relative w-screen ${isMobile ? 'h-[380px]' : 'h-[500px] md:h-[600px]'}`}>
         <div className="animated-header-background"></div>
         
-        {/* Navbar superposée */}
+        {/* Navbar superposée - conserver la structure container mais pour la navbar uniquement */}
         <div className="absolute top-0 left-0 w-full z-10 py-3">
           <div className="container mx-auto px-3 flex justify-between items-center">
             {/* Logo */}
@@ -108,7 +109,8 @@ const AnimatedHero = () => {
           </div>
         </div>
         
-        <div className="relative z-3 container mx-auto px-3 flex flex-col items-center justify-center h-full">
+        {/* Utilisation de w-full à la place de container pour le contenu principal */}
+        <div className="relative z-3 w-full px-3 flex flex-col items-center justify-center h-full">
           <h1 className={`animated-header-title ${isMobile ? 'text-2xl mb-5' : 'text-5xl md:text-6xl mb-8'}`}>
             Bienvenue chez Auto ADI
           </h1>
@@ -125,7 +127,7 @@ const AnimatedHero = () => {
         </div>
       </div>
       
-      {/* QuickSearch en dehors et en dessous du header avec plus d'espace */}
+      {/* QuickSearch en dehors et en dessous du header - garder la classe container */}
       <div className="container mx-auto px-3 mt-6 mb-16">
         <QuickSearch />
       </div>
