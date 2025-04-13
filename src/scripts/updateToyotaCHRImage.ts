@@ -20,7 +20,7 @@ export const updateToyotaCHRImage = () => {
     console.log('Toyota C-HR trouvée, mise à jour de l\'image...');
     
     // Utiliser la nouvelle image téléchargée
-    const newImageUrl = '/lovable-uploads/7c59b90c-9c91-4c3e-ae22-0560967a0dcf.png';
+    const newImageUrl = '/lovable-uploads/18a35a43-3322-4891-bb48-c33beb463195.png';
     
     // Vérification si l'image est déjà la bonne
     if (vehicles[toyotaIndex].image === newImageUrl) {
