@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
-import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check, CreditCard, Truck, FilePenLine } from 'lucide-react';
+import { Car, ChevronLeft, Calendar, Fuel, ShieldCheck, ShoppingCart, Ruler, Info, Palette, Cog, Check, CreditCard, Truck, FilePenLine, Link as LinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -17,6 +17,7 @@ import { useForm } from 'react-hook-form';
 import { sendOrderConfirmationEmail } from '@/utils/emailService';
 import PaymentOptions from '@/components/PaymentOptions';
 import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
+import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
 
 interface OrderFormData {
   name: string;
@@ -65,6 +66,10 @@ const VehicleDetails = () => {
         updateKiaSorentoImage();
       }
       
+      if (id.includes('porsche-cayenne')) {
+        addPorscheCayenne();
+      }
+      
       let vehicles = getImportedVehicles('featured');
       console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
       
@@ -94,6 +99,7 @@ const VehicleDetails = () => {
         console.log("Véhicule trouvé:", foundVehicle);
         console.log("ID du véhicule:", foundVehicle.id);
         console.log("URL de l'image:", foundVehicle.image);
+        console.log("Lien Facebook:", foundVehicle.fbLink || "Aucun lien Facebook");
         setVehicle(foundVehicle);
       } else {
         console.error("Véhicule non trouvé avec l'ID:", id);

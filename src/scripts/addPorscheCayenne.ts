@@ -22,7 +22,7 @@ export const addPorscheCayenne = () => {
       }
     }
     
-    // Créer le véhicule avec le nouveau lien Facebook
+    // Créer le véhicule avec le nouveau lien Facebook mis à jour
     const porscheCayenne: ImportedVehicle = {
       id: porscheExists ? porscheExists.id : `vehicle-featured-porsche-cayenne-${Date.now()}`,
       brand: "Porsche",
