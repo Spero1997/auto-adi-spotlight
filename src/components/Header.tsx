@@ -1,13 +1,27 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './Logo';
-import MainNavigation from './navigation/MainNavigation';
-import MobileMenu from './navigation/MobileMenu';
-import LanguageSelector from './language/LanguageSelector';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import LanguageSwitcher from './LanguageSwitcher';
+import { Globe } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -59,8 +73,166 @@ const Header = () => {
           </Link>
 
           <div className="hidden lg:flex items-center space-x-1 w-full justify-between">
-            <MainNavigation />
-            <LanguageSelector translations={translations} />
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-gray-700">
+                    Véhicules
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      <li className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-500 to-blue-700 p-6 no-underline outline-none focus:shadow-md"
+                            to="/vehicules"
+                          >
+                            <div className="mt-4 mb-2 text-lg font-medium text-white">
+                              Tous nos véhicules
+                            </div>
+                            <p className="text-sm leading-tight text-white/90">
+                              Découvrez notre sélection complète de véhicules neufs et d'occasion
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                      <li>
+                        <Link
+                          to="/vehicules/neufs"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Véhicules neufs</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Les derniers modèles disponibles
+                          </p>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/vehicules/occasion"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Véhicules d'occasion</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Véhicules d'occasion certifiés et garantis
+                          </p>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/vehicules/utilitaires"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Utilitaires</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Véhicules utilitaires pour professionnels
+                          </p>
+                        </Link>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-gray-700">
+                    Services
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                      <li>
+                        <Link
+                          to="/services"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Nos services</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Découvrez tous nos services automobiles
+                          </p>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/financement"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Financement</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Solutions de financement adaptées
+                          </p>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/garantie"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Garantie</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Nos garanties sur tous les véhicules
+                          </p>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/livraison"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Livraison</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Livraison partout en Europe
+                          </p>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/rachat"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                        >
+                          <div className="text-sm font-medium leading-none">Rachat de véhicule</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                            Vendez votre véhicule rapidement
+                          </p>
+                        </Link>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
+                    <Link to="/a-propos">
+                      À propos
+                    </Link>
+                  </div>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
+                    <Link to="/contact">
+                      Contact
+                    </Link>
+                  </div>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 font-montserrat font-light tracking-wide px-5 py-1.5 hover:bg-gray-100 rounded-md transition-all duration-300"
+                >
+                  <Globe className="mr-1 h-4 w-4 text-gray-700" />
+                  {translate('language', translations.language)}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
+              >
+                <LanguageSwitcher />
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           
           <button
@@ -77,7 +249,60 @@ const Header = () => {
         </div>
       </div>
 
-      <MobileMenu isOpen={isMenuOpen} />
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-white shadow-lg overflow-hidden"
+          >
+            <div className="container mx-auto px-4 py-4 space-y-4">
+              <div className="space-y-2">
+                <div className="font-medium text-gray-800">Véhicules</div>
+                <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Tous nos véhicules
+                </Link>
+                <Link to="/vehicules/neufs" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Véhicules neufs
+                </Link>
+                <Link to="/vehicules/occasion" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Véhicules d'occasion
+                </Link>
+                <Link to="/vehicules/utilitaires" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Utilitaires
+                </Link>
+              </div>
+
+              <div className="space-y-2">
+                <div className="font-medium text-gray-800">Services</div>
+                <Link to="/services" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Nos services
+                </Link>
+                <Link to="/financement" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Financement
+                </Link>
+                <Link to="/garantie" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Garantie
+                </Link>
+                <Link to="/livraison" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Livraison
+                </Link>
+                <Link to="/rachat" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  Rachat de véhicule
+                </Link>
+              </div>
+
+              <Link to="/a-propos" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                À propos
+              </Link>
+              <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                Contact
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
