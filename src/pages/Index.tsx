@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -5,7 +6,7 @@ import Footer from '@/components/Footer';
 import Benefits from '@/components/Benefits';
 import FeaturedCars from '@/components/FeaturedCars';
 import TestimonialSection from '@/components/TestimonialSection';
-import { getImportedVehicles } from '@/utils/vehicleImportService';
+import { getImportedVehicles, cleanVehicleCatalogs } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
 import { addBMWX5 } from '@/scripts/addBMWX5';
 import { addMercedesClassC } from '@/scripts/addMercedesClassC';
@@ -26,6 +27,9 @@ const Index = () => {
     if (isFirstLoad) {
       // Marquer comme chargé pour les prochaines visites
       localStorage.setItem(firstLoadKey, 'loaded');
+      
+      // Nettoyer les catalogues (supprimer les véhicules sans images)
+      cleanVehicleCatalogs();
       
       // Vérification et ajout silencieux des véhicules
       const standardVehicles = getImportedVehicles('standard');

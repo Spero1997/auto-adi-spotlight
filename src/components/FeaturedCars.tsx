@@ -60,18 +60,27 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         const standardVehicles = getImportedVehicles('standard');
         const featuredVehicles = getImportedVehicles('featured');
         
+        // Filtrer les véhicules sans images
+        const validStandardVehicles = standardVehicles.filter(vehicle => 
+          vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
+        );
+        
+        const validFeaturedVehicles = featuredVehicles.filter(vehicle => 
+          vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
+        );
+        
         // Correction: Ne pas utiliser Map qui remplace les véhicules avec le même ID
         // Au lieu de cela, combiner les deux tableaux et marquer les véhicules featured
-        const allVehicles = [...standardVehicles];
+        const allVehicles = [...validStandardVehicles];
         
         // Ajouter les véhicules featured qui ne sont pas déjà dans standardVehicles
-        featuredVehicles.forEach(featuredVehicle => {
+        validFeaturedVehicles.forEach(featuredVehicle => {
           // Marquer le véhicule comme featured
           const vehicleWithFeatured = { ...featuredVehicle, featured: true };
           
           // Vérifier si ce véhicule existe déjà dans la liste standard
           // Note: l'ID peut être différent entre les catalogues, alors on vérifie par marque, modèle et année
-          const existsInStandard = standardVehicles.some(
+          const existsInStandard = validStandardVehicles.some(
             stdVehicle => 
               stdVehicle.brand === featuredVehicle.brand &&
               stdVehicle.model === featuredVehicle.model &&
@@ -96,7 +105,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         });
         
         importedVehicles = allVehicles;
-        console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total`);
+        console.log(`FeaturedCars: ${validStandardVehicles.length} véhicules standard + ${validFeaturedVehicles.length} véhicules featured = ${importedVehicles.length} total`);
       }
       
       setVehicles(importedVehicles);

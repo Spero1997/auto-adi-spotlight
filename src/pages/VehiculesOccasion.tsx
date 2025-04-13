@@ -8,6 +8,7 @@ import QuickSearch, { SearchFilters } from '@/components/QuickSearch';
 import FeaturedCars from '@/components/FeaturedCars';
 import { updateVehicleImages } from '@/scripts/updateVehicleImages';
 import { updateAudiQ2 } from '@/scripts/updateAudiQ2';
+import { cleanVehicleCatalogs } from '@/utils/vehicleImportService';
 
 const VehiculesOccasion = () => {
   const [searchParams] = useSearchParams();
@@ -29,13 +30,20 @@ const VehiculesOccasion = () => {
     setSearchFilters(filters);
   }, [searchParams]);
 
-  // Effet pour mettre à jour les images des véhicules spécifiés silencieusement
+  // Effet pour nettoyer les catalogues et mettre à jour les images des véhicules spécifiés silencieusement
   useEffect(() => {
-    // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
+    // Clé pour vérifier si c'est le premier chargement
     const firstLoadKey = 'vehiculesOccasionFirstLoad';
     const isFirstLoad = !localStorage.getItem(firstLoadKey);
     
     if (isFirstLoad) {
+      // Nettoyer les catalogues silencieusement (supprime les véhicules sans images)
+      cleanVehicleCatalogs();
+      
+      // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
+      updateVehicleImages();
+      updateAudiQ2();
+      
       // Marquer comme chargé pour les prochaines visites
       localStorage.setItem(firstLoadKey, 'loaded');
     }
