@@ -73,7 +73,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   // Translation function
-  const translate = (key: string, translations: Record<Language, string>) => {
+  const translate = (key: string, translations: Record<string, string>) => {
+    // Assurez-vous que la clé de langue existe, sinon utilisez FR comme fallback
     return translations[language] || translations['FR'] || key;
   };
 

@@ -1,12 +1,12 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 type CallToActionTranslations = {
-  readyToFinance: Record<string, string>;
-  financialAdvisors: Record<string, string>;
-  getQuote: Record<string, string>;
+  readyToFinance: Record<Language, string>;
+  financialAdvisors: Record<Language, string>;
+  getQuote: Record<Language, string>;
 }
 
 type CallToActionProps = {

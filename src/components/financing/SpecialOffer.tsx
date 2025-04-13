@@ -1,11 +1,11 @@
 
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 type SpecialOfferTranslations = {
-  specialOffer: Record<string, string>;
-  cashDiscount: Record<string, string>;
+  specialOffer: Record<Language, string>;
+  cashDiscount: Record<Language, string>;
 }
 
 type SpecialOfferProps = {

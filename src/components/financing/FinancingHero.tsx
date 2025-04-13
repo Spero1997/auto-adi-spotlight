@@ -1,13 +1,13 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 type FinancingHeroTranslations = {
-  financingTitle: Record<string, string>;
-  financingDescription: Record<string, string>;
-  getQuote: Record<string, string>;
-  seeVehicles: Record<string, string>;
+  financingTitle: Record<Language, string>;
+  financingDescription: Record<Language, string>;
+  getQuote: Record<Language, string>;
+  seeVehicles: Record<Language, string>;
 }
 
 type FinancingHeroProps = {
