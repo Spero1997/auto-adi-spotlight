@@ -54,36 +54,24 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
       if (featuredOnly) {
         // Sur la page d'accueil (featuredOnly=true), on charge seulement les véhicules en vedette
         const featuredVehicles = getImportedVehicles('featured');
-        // Filtrer les véhicules sans images valides
-        importedVehicles = featuredVehicles.filter(vehicle => 
-          vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
-        );
+        importedVehicles = featuredVehicles;
         console.log(`FeaturedCars: ${importedVehicles.length} véhicules chargés depuis le catalogue featured`);
       } else {
         // Sur la page des véhicules d'occasion, on charge TOUS les véhicules (standard et featured)
         const standardVehicles = getImportedVehicles('standard');
         const featuredVehicles = getImportedVehicles('featured');
         
-        // Filtrer les véhicules sans images
-        const validStandardVehicles = standardVehicles.filter(vehicle => 
-          vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
-        );
-        
-        const validFeaturedVehicles = featuredVehicles.filter(vehicle => 
-          vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
-        );
-        
         // Créer une Map pour éviter les doublons, en utilisant la même logique peu importe la plateforme
         const uniqueVehicles = new Map<string, ImportedVehicle>();
         
         // D'abord ajouter les véhicules standard
-        validStandardVehicles.forEach(vehicle => {
+        standardVehicles.forEach(vehicle => {
           const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
           uniqueVehicles.set(key, { ...vehicle, featured: false });
         });
         
         // Ensuite ajouter/remplacer avec les véhicules featured
-        validFeaturedVehicles.forEach(vehicle => {
+        featuredVehicles.forEach(vehicle => {
           const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
           uniqueVehicles.set(key, { ...vehicle, featured: true });
         });
@@ -91,7 +79,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         // Convertir la Map en tableau
         importedVehicles = Array.from(uniqueVehicles.values());
         
-        console.log(`FeaturedCars: ${validStandardVehicles.length} véhicules standard + ${validFeaturedVehicles.length} véhicules featured = ${importedVehicles.length} total après déduplication`);
+        console.log(`FeaturedCars: ${standardVehicles.length} véhicules standard + ${featuredVehicles.length} véhicules featured = ${importedVehicles.length} total après déduplication`);
       }
       
       setVehicles(importedVehicles);
