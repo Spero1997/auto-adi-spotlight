@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Facebook, MessageCircle, Phone, Mail, MapPin, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -78,7 +79,7 @@ const Footer = () => {
       EN: "Legal notice",
       ES: "Avisos legales",
       IT: "Note legali",
-      PT: "Avisos legales",
+      PT: "Avisos legais",
       RO: "Mențiuni legale"
     },
     privacyPolicy: {
