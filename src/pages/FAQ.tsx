@@ -74,7 +74,7 @@ const FAQ = () => {
               <p>Oui ! Réservez un essai gratuit :</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
                 <li><strong>En concession</strong> : 30 min avec un conseiller.</li>
-                <li><strong>À domicile</strong> : Possible pour les véhicules > 25k€ (frais selon distance).</li>
+                <li><strong>À domicile</strong> : Possible pour les véhicules {'>'}25k€ (frais selon distance).</li>
               </ul>
             </div>
           ),
@@ -86,7 +86,7 @@ const FAQ = () => {
               <p>Bien sûr ! Nous recommandons même :</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
                 <li><strong>Centres agréés</strong> : Dekra, Norauto.</li>
-                <li><strong>Coût</strong> : Offert pour les véhicules > 20k€ (sinon 150€ à votre charge).</li>
+                <li><strong>Coût</strong> : Offert pour les véhicules {'>'}20k€ (sinon 150€ à votre charge).</li>
               </ul>
             </div>
           ),
@@ -156,7 +156,7 @@ const FAQ = () => {
               <p>Oui, surtout pour :</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
                 <li><strong>Paiement comptant</strong> (jusqu'à -10%).</li>
-                <li><strong>Anciens modèles</strong> (stock > 6 mois).</li>
+                <li><strong>Anciens modèles</strong> (stock {'>'}6 mois).</li>
               </ul>
             </div>
           ),
@@ -276,7 +276,7 @@ const FAQ = () => {
           question: "30. Puis-je voir le véhicule avant de payer les 80% ?",
           answer: (
             <div>
-              <p><strong>Oui, absolument ! vous pouvez venir voir la voiture en Italie ou en Espagne</strong></p>
+              <p><strong>Oui, absolument ! vous pouvez venir voir la voiture en Portugal ou en Espagne</strong></p>
               <p>Vous pouvez :</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
                 <li><strong>Vérifier le véhicule</strong> à la livraison</li>
@@ -382,3 +382,4 @@ const FAQ = () => {
 };
 
 export default FAQ;
+
