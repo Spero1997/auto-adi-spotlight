@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, languageFlags } from "@/contexts/LanguageContext";
 
 const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
@@ -28,7 +28,7 @@ const LanguageSwitcher = () => {
               : "text-white hover:bg-gray-800/50"
           }`}
         >
-          {lang.label}
+          {languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]} {lang.label}
         </Button>
       ))}
     </div>
