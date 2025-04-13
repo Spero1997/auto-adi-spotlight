@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import Benefits from '@/components/Benefits';
 import FeaturedCars from '@/components/FeaturedCars';
 import TestimonialSection from '@/components/TestimonialSection';
+import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { getImportedVehicles, cleanVehicleCatalogs } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
 import { addBMWX5 } from '@/scripts/addBMWX5';
@@ -156,6 +157,8 @@ const Index = () => {
           {/* AnimatedHero est ajouté directement dans App.tsx, pas besoin de l'ajouter ici */}
           <Benefits />
           <FeaturedCars featuredOnly={true} />
+          {/* Ajout de la section des conditions d'achat */}
+          <ConditionsHighlight />
           <TestimonialSection />
           {/* Removed CallToAction component */}
         </main>
