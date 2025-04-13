@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Send, X, User, Bot, Car, Calendar, HelpCircle, Home, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -200,7 +199,6 @@ const stateOptions = [
   { text: "Occasion (bon plan)", action: "state_used_deal" }
 ];
 
-// Inventory data for specific model searches
 const vehicleInventory = [
   { 
     id: 'a4-tdi-2021',
@@ -260,6 +258,8 @@ const Chatbot = () => {
   const [isFinanceDialogOpen, setIsFinanceDialogOpen] = useState(false);
   const [financeDialog, setFinanceDialog] = useState({ vehicle: '', downPayment: 0, totalAmount: 0 });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animationIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -267,8 +267,36 @@ const Chatbot = () => {
     }
   }, [messages]);
 
+  useEffect(() => {
+    animationIntervalRef.current = setInterval(() => {
+      setIsAnimating(true);
+      
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 2000);
+    }, 8000);
+    
+    return () => {
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+      }
+    };
+  }, []);
+
   const toggleChat = () => {
     setIsOpen(!isOpen);
+    
+    if (!isOpen && animationIntervalRef.current) {
+      clearInterval(animationIntervalRef.current);
+      setIsAnimating(false);
+    } else if (isOpen && !animationIntervalRef.current) {
+      animationIntervalRef.current = setInterval(() => {
+        setIsAnimating(true);
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 2000);
+      }, 8000);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -298,12 +326,10 @@ const Chatbot = () => {
     return null;
   };
 
-  // Parse user input for intentions and entities
   const extractVehicleIntent = (message: string) => {
     const lowerMessage = message.toLowerCase();
     const intent: VehicleIntent = {};
     
-    // Extract brand
     const brands = ['audi', 'bmw', 'mercedes', 'volkswagen', 'volvo', 'tesla', 'peugeot'];
     for (const brand of brands) {
       if (lowerMessage.includes(brand)) {
@@ -312,7 +338,6 @@ const Chatbot = () => {
       }
     }
     
-    // Extract model
     if (intent.brand === 'Audi') {
       const models = ['a1', 'a3', 'a4', 'a5', 'a6', 'q3', 'q5', 'q7'];
       for (const model of models) {
@@ -331,7 +356,6 @@ const Chatbot = () => {
       }
     }
     
-    // Extract budget
     const budgetMatch = lowerMessage.match(/(\d+)k€|(\d+)k|(\d+)[., ]?000 ?€|(\d+)[., ]?000/);
     if (budgetMatch) {
       const match = budgetMatch[1] || budgetMatch[2] || budgetMatch[3] || budgetMatch[4];
@@ -343,14 +367,12 @@ const Chatbot = () => {
       }
     }
     
-    // Extract state
     if (lowerMessage.includes('neuf') || lowerMessage.includes('nouveau')) {
       intent.state = 'neuf';
     } else if (lowerMessage.includes('occasion') || lowerMessage.includes('usagé') || lowerMessage.includes('seconde main')) {
       intent.state = 'occasion';
     }
     
-    // Extract type
     if (lowerMessage.includes('suv') || lowerMessage.includes('4x4')) {
       intent.type = 'suv';
     } else if (lowerMessage.includes('berline')) {
@@ -544,7 +566,6 @@ const Chatbot = () => {
         addMessage(resultsMessage, "bot", options);
         
         if (matchingVehicles.length === 1) {
-          // Auto-set for finance simulation
           setFinanceDialog({
             vehicle: `${matchingVehicles[0].brand} ${matchingVehicles[0].model} ${matchingVehicles[0].year}`,
             downPayment: Math.round(matchingVehicles[0].price * 0.2),
@@ -592,7 +613,6 @@ const Chatbot = () => {
     const intent = vehicleIntent;
     const results = [];
     
-    // First try to find exact matches
     let filteredVehicles = vehicleInventory.filter(vehicle => {
       if (intent.brand && vehicle.brand.toLowerCase() !== intent.brand.toLowerCase()) return false;
       if (intent.model && !vehicle.model.toLowerCase().includes(intent.model.toLowerCase())) return false;
@@ -602,7 +622,6 @@ const Chatbot = () => {
       return true;
     });
     
-    // If no matches, show all vehicles
     if (filteredVehicles.length === 0) {
       filteredVehicles = vehicleInventory.slice(0, 3);
     }
@@ -627,7 +646,6 @@ const Chatbot = () => {
     
     addMessage(resultsMessage, "bot", options);
     
-    // Reset search state for next search
     setVehicleIntent({});
   };
 
@@ -699,7 +717,6 @@ const Chatbot = () => {
   };
 
   const processUserMessage = (message: string) => {
-    // Check for FAQ responses first
     const faqResponse = findFaqResponse(message);
     
     if (faqResponse) {
@@ -707,18 +724,15 @@ const Chatbot = () => {
       return;
     }
     
-    // Extract vehicle intent from user message
     const intent = extractVehicleIntent(message);
     console.log("Detected intent:", intent);
     
-    // If we have a complex query with brand and model or brand and budget, show results
     if (Object.keys(intent).length > 1) {
       setVehicleIntent(intent);
       const processed = processComplexQuery(intent);
       if (processed) return;
     }
     
-    // Process based on keywords
     const lowercaseMessage = message.toLowerCase();
     
     if (lowercaseMessage.includes('cherche') && lowercaseMessage.includes('voiture')) {
@@ -747,7 +761,6 @@ const Chatbot = () => {
   };
 
   const renderMessageContent = (message: Message) => {
-    // Convert markdown-like syntax to JSX
     const processedText = message.text
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -788,10 +801,10 @@ const Chatbot = () => {
           onClick={toggleChat}
           className={`bg-brand-blue hover:bg-brand-darkBlue text-white rounded-full p-4 shadow-lg transition-all chatbot-button-pulse ${
             isOpen ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
-          }`}
+          } ${isAnimating ? 'animate-bounce' : ''}`}
           aria-label="Discuter avec nous"
         >
-          <MessageSquare className="h-6 w-6" />
+          <MessageSquare className={`h-6 w-6 ${isAnimating ? 'animate-ping' : ''}`} />
         </button>
 
         <div

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -9,6 +10,7 @@ import TestimonialSection from '@/components/TestimonialSection';
 import CallToAction from '@/components/CallToAction';
 import Brands from '@/components/Brands';
 import Footer from '@/components/Footer';
+import Chatbot from '@/components/Chatbot';
 // Import HeroScene3D seulement si vous décidez de l'utiliser
 // import HeroScene3D from '@/components/HeroScene3D';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -64,6 +66,9 @@ const Index = () => {
       </main>
       
       <Footer />
+      
+      {/* Chatbot */}
+      <Chatbot />
     </>
   );
 };
