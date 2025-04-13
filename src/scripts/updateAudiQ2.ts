@@ -13,7 +13,7 @@ export const updateAudiQ2 = () => {
       mileage: 98149,
       fuelType: 'Essence',
       price: 5000,
-      image: '/lovable-uploads/aca2e4c0-cadb-4939-8cc9-5cc39ce3ed09.png',
+      image: 'https://via.placeholder.com/800x600/023047/ffffff?text=Audi+Q2',
       transmission: 'Automatique',
       description: `NOUVEAU EU!
 Année: 04/2018

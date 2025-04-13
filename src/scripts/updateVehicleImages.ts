@@ -1,4 +1,3 @@
-
 import { getImportedVehicles, saveImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportService';
 import { toast } from 'sonner';
 
@@ -21,7 +20,7 @@ const vehicleImageMappings: VehicleImageMapping[] = [
   {
     brandKeywords: ['Audi'],
     modelKeywords: ['Q2', 'ULTRA SPORT'],
-    replacementImage: '/lovable-uploads/aca2e4c0-cadb-4939-8cc9-5cc39ce3ed09.png',
+    replacementImage: 'https://via.placeholder.com/800x600/023047/ffffff?text=Audi+Q2',
     displayName: 'Audi Q2'
   },
   {

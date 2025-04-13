@@ -45,11 +45,6 @@ const VehiculesOccasion = () => {
     updateAudiQ2();
   }, []);
 
-  // Fonction pour mettre à jour les filtres de recherche
-  const handleSearchFilters = (filters: SearchFilters) => {
-    setSearchFilters(filters);
-  };
-
   return (
     <>
       <Helmet>
@@ -74,6 +69,11 @@ const VehiculesOccasion = () => {
       </div>
     </>
   );
+  
+  // Fonction pour mettre à jour les filtres de recherche
+  function handleSearchFilters(filters: SearchFilters) {
+    setSearchFilters(filters);
+  }
 };
 
 export default VehiculesOccasion;
