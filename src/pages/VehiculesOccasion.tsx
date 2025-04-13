@@ -19,6 +19,11 @@ const VehiculesOccasion = () => {
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
   const [initialized, setInitialized] = useState(false);
 
+  // Effet pour remonter la page au début lors du chargement
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Effet pour appliquer les filtres de recherche depuis l'URL
   useEffect(() => {
     const brand = searchParams.get('brand');

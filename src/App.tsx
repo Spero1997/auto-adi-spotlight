@@ -28,6 +28,7 @@ import AnimatedHero from "./components/AnimatedHero";
 import Garantie from "./pages/Garantie";
 import Livraison from "./pages/Livraison";
 import ServicePremium from "./pages/ServicePremium";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Composant qui vérifie le catalogue dans l'URL avant que les routes soient rendues
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -51,6 +52,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <CatalogChecker>
               <Routes>
                 <Route path="/" element={<>
