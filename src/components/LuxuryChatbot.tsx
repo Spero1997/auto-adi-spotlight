@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -160,6 +161,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
   translate,
   language
 }) => {
+  // Utiliser un gestionnaire de changement qui conserve le focus
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+    // S'assurer que l'élément conserve le focus après la mise à jour de l'état
+    e.target.focus();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSend();
@@ -172,11 +180,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
           ref={inputRef}
           type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 h-10 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
           autoComplete="off"
+          autoFocus
           aria-label={translate('placeholder', translations.placeholder)}
           style={{ fontSize: '14px' }}
         />
@@ -205,25 +214,28 @@ const LuxuryChatbot: React.FC = () => {
   
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
+  // Gestionnaire d'effet pour le scroll automatique
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [messages]);
 
-  useEffect(() => {
-    if (isOpen && !isMinimized && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen, isMinimized]);
+  // Désactivation de la propagation d'événements pour éviter la perte de focus
+  const stopPropagation = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   const handleSend = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      // Maintenir l'accent sur l'input après l'envoi
+      requestAnimationFrame(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      });
     }
   };
 
@@ -236,9 +248,12 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    // Utiliser requestAnimationFrame pour s'assurer que le focus est défini après le rendu
+    requestAnimationFrame(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    });
   };
 
   const ChatContainer = () => {
@@ -246,8 +261,13 @@ const LuxuryChatbot: React.FC = () => {
       return (
         <Drawer open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
-          if (open && inputRef.current) {
-            inputRef.current.focus();
+          if (open) {
+            // Utiliser requestAnimationFrame pour s'assurer que le focus est défini après le rendu
+            requestAnimationFrame(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            });
           }
         }}>
           <DrawerTrigger asChild>
@@ -260,7 +280,7 @@ const LuxuryChatbot: React.FC = () => {
             </Button>
           </DrawerTrigger>
           <DrawerContent className="h-[85vh] rounded-t-xl bg-white p-0">
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col h-full" onClick={stopPropagation}>
               <ChatHeader 
                 onClose={() => setIsOpen(false)} 
                 onMinimize={() => {}} 
@@ -295,9 +315,12 @@ const LuxuryChatbot: React.FC = () => {
           setIsOpen(open);
           if (open) {
             setIsMinimized(false);
-            if (inputRef.current) {
-              inputRef.current.focus();
-            }
+            // Utiliser requestAnimationFrame pour s'assurer que le focus est défini après le rendu
+            requestAnimationFrame(() => {
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            });
           }
         }}
       >
@@ -332,12 +355,7 @@ const LuxuryChatbot: React.FC = () => {
             fontSize: '16px'
           }}
           aria-labelledby="chat-title"
-          onPointerDownCapture={(e) => {
-            if (e.pointerType === 'touch' && e.target instanceof HTMLElement && 
-                !e.target.closest('input') && !e.target.closest('button')) {
-              e.preventDefault();
-            }
-          }}
+          onClick={stopPropagation}
         >
           <div className="flex flex-col h-full">
             <ChatHeader 
