@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Search } from "lucide-react";
@@ -17,7 +18,9 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-brand-blue text-white pt-[100vh]">
+    <div className="min-h-screen flex flex-col bg-brand-blue text-white">
+      <Header />
+      
       <main className="flex-grow">
         <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">404</h1>
