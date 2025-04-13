@@ -31,12 +31,12 @@ export const getFAQTranslations = (): FAQTranslations => {
       RO: "Întrebări Frecvente"
     },
     faqDescription: {
-      FR: "Retrouvez toutes les réponses à vos questions concernant nos véhicules, nos services et nos conditions d'achat",
-      EN: "Find all the answers to your questions about our vehicles, services and purchase conditions",
-      ES: "Encuentre todas las respuestas a sus preguntas sobre nuestros vehículos, servicios y condiciones de compra",
-      IT: "Trova tutte le risposte alle tue domande sui nostri veicoli, servizi e condizioni di acquisto",
-      PT: "Encontre todas as respostas às suas perguntas sobre os nossos veículos, serviços e condições de compra",
-      RO: "Găsiți toate răspunsurile la întrebările dvs. despre vehiculele noastre, serviciile și condițiile de achiziție"
+      FR: "Trouvez rapidement les réponses à vos questions les plus courantes concernant nos services, nos véhicules et nos procédures.",
+      EN: "Quickly find answers to your most common questions about our services, vehicles, and procedures.",
+      ES: "Encuentre rápidamente las respuestas a sus preguntas más frecuentes sobre nuestros servicios, vehículos y procedimientos.",
+      IT: "Trova rapidamente le risposte alle tue domande più frequenti sui nostri servizi, veicoli e procedure.",
+      PT: "Encontre rapidamente as respostas às suas perguntas mais frequentes sobre os nossos serviços, veículos e procedimentos.",
+      RO: "Găsiți rapid răspunsuri la cele mai frecvente întrebări despre serviciile, vehiculele și procedurile noastre."
     },
     certifiedVehicles: {
       FR: "Véhicules Certifiés",
@@ -47,15 +47,15 @@ export const getFAQTranslations = (): FAQTranslations => {
       RO: "Vehicule Certificate"
     },
     certifiedVehiclesDescription: {
-      FR: "Chaque véhicule est minutieusement inspecté et certifié par nos experts",
-      EN: "Each vehicle is thoroughly inspected and certified by our experts",
-      ES: "Cada vehículo es minuciosamente inspeccionado y certificado por nuestros expertos",
-      IT: "Ogni veicolo è accuratamente ispezionato e certificato dai nostri esperti",
-      PT: "Cada veículo é minuciosamente inspecionado e certificado pelos nossos especialistas",
-      RO: "Fiecare vehicul este inspectat și certificat minuțios de experții noștri"
+      FR: "Découvrez notre sélection de véhicules d'occasion certifiés, rigoureusement inspectés pour garantir qualité et fiabilité.",
+      EN: "Discover our selection of certified pre-owned vehicles, rigorously inspected to ensure quality and reliability.",
+      ES: "Descubra nuestra selección de vehículos de ocasión certificados, rigurosamente inspeccionados para garantizar calidad y fiabilidad.",
+      IT: "Scopri la nostra selezione di veicoli usati certificati, rigorosamente ispezionati per garantire qualità e affidabilità.",
+      PT: "Descubra a nossa seleção de veículos usados certificados, rigorosamente inspecionados para garantir qualidade e fiabilidade.",
+      RO: "Descoperiți selecția noastră de vehicule second-hand certificate, inspectate riguros pentru a garanta calitatea și fiabilitatea."
     },
     extendedWarranty: {
-      FR: "Garantie Étendue",
+      FR: "Garantie Prolongée",
       EN: "Extended Warranty",
       ES: "Garantía Extendida",
       IT: "Garanzia Estesa",
@@ -63,12 +63,12 @@ export const getFAQTranslations = (): FAQTranslations => {
       RO: "Garanție Extinsă"
     },
     extendedWarrantyDescription: {
-      FR: "Tous nos véhicules bénéficient d'une garantie de 12 à 60 mois",
-      EN: "All our vehicles come with a 12 to 60 month warranty",
-      ES: "Todos nuestros vehículos vienen con una garantía de 12 a 60 meses",
-      IT: "Tutti i nostri veicoli sono coperti da una garanzia da 12 a 60 mesi",
-      PT: "Todos os nossos veículos têm uma garantia de 12 a 60 meses",
-      RO: "Toate vehiculele noastre beneficiază de o garanție de 12 până la 60 de luni"
+      FR: "Roulez en toute sérénité avec nos options de garantie prolongée, offrant une couverture complète contre les imprévus mécaniques.",
+      EN: "Drive with peace of mind with our extended warranty options, providing comprehensive coverage against unexpected mechanical issues.",
+      ES: "Conduzca con tranquilidad con nuestras opciones de garantía extendida, que ofrecen una cobertura completa contra imprevistos mecánicos.",
+      IT: "Guida in tutta tranquillità con le nostre opzioni di garanzia estesa, che offrono una copertura completa contro gli imprevisti meccanici.",
+      PT: "Conduza com tranquilidade com as nossas opções de garantia estendida, que oferecem uma cobertura completa contra imprevistos mecânicos.",
+      RO: "Conduceți cu liniște sufletească cu opțiunile noastre de garanție extinsă, oferind o acoperire completă împotriva problemelor mecanice neașteptate."
     },
     flexibleFinancing: {
       FR: "Financement Flexible",
@@ -79,12 +79,12 @@ export const getFAQTranslations = (): FAQTranslations => {
       RO: "Finanțare Flexibilă"
     },
     flexibleFinancingDescription: {
-      FR: "Solutions de paiement adaptées à tous les budgets",
-      EN: "Payment solutions adapted to all budgets",
-      ES: "Soluciones de pago adaptadas a todos los presupuestos",
-      IT: "Soluzioni di pagamento adattate a tutti i budget",
-      PT: "Soluções de pagamento adaptadas a todos os orçamentos",
-      RO: "Soluții de plată adaptate tuturor bugetelor"
+      FR: "Profitez de nos solutions de financement personnalisées, conçues pour s'adapter à votre budget et à vos besoins spécifiques.",
+      EN: "Take advantage of our customized financing solutions, designed to fit your budget and specific needs.",
+      ES: "Aproveche nuestras soluciones de financiación personalizadas, diseñadas para adaptarse a su presupuesto y necesidades específicas.",
+      IT: "Approfitta delle nostre soluzioni di finanziamento personalizzate, progettate per adattarsi al tuo budget e alle tue esigenze specifiche.",
+      PT: "Aproveite as nossas soluções de financiamento personalizadas, concebidas para se adaptarem ao seu orçamento e às suas necessidades específicas.",
+      RO: "Profitați de soluțiile noastre de finanțare personalizate, concepute pentru a se potrivi bugetului și nevoilor dumneavoastră specifice."
     },
     fastDelivery: {
       FR: "Livraison Rapide",
@@ -95,43 +95,43 @@ export const getFAQTranslations = (): FAQTranslations => {
       RO: "Livrare Rapidă"
     },
     fastDeliveryDescription: {
-      FR: "Livraison partout en Europe sous 5 jours maximum",
-      EN: "Delivery throughout Europe within 5 days maximum",
-      ES: "Entrega en toda Europa en un máximo de 5 días",
-      IT: "Consegna in tutta Europa entro un massimo di 5 giorni",
-      PT: "Entrega em toda a Europa num prazo máximo de 5 dias",
-      RO: "Livrare în toată Europa în maximum 5 zile"
+      FR: "Bénéficiez d'une livraison rapide et efficace de votre nouveau véhicule, directement à votre domicile ou à l'endroit de votre choix.",
+      EN: "Enjoy fast and efficient delivery of your new vehicle, directly to your home or the location of your choice.",
+      ES: "Benefíciese de una entrega rápida y eficiente de su nuevo vehículo, directamente a su domicilio o al lugar de su elección.",
+      IT: "Goditi una consegna rapida ed efficiente del tuo nuovo veicolo, direttamente a casa tua o nel luogo che preferisci.",
+      PT: "Beneficie de uma entrega rápida e eficiente do seu novo veículo, diretamente na sua casa ou no local da sua escolha.",
+      RO: "Beneficiați de o livrare rapidă și eficientă a noului dvs. vehicul, direct la domiciliu sau în locația aleasă."
     },
     moreQuestions: {
       FR: "Vous avez d'autres questions ?",
       EN: "Do you have more questions?",
       ES: "¿Tiene más preguntas?",
-      IT: "Hai altre domande?",
+      IT: "Avete altre domande?",
       PT: "Tem mais perguntas?",
       RO: "Aveți mai multe întrebări?"
     },
     teamAvailable: {
-      FR: "Notre équipe est disponible pour répondre à toutes vos interrogations",
-      EN: "Our team is available to answer all your questions",
-      ES: "Nuestro equipo está disponible para responder a todas sus preguntas",
-      IT: "Il nostro team è disponibile per rispondere a tutte le tue domande",
-      PT: "A nossa equipa está disponível para responder a todas as suas perguntas",
-      RO: "Echipa noastră este disponibilă pentru a răspunde la toate întrebările dvs."
+      FR: "Notre équipe est à votre disposition pour répondre à toutes vos interrogations.",
+      EN: "Our team is available to answer all your questions.",
+      ES: "Nuestro equipo está a su disposición para responder a todas sus preguntas.",
+      IT: "Il nostro team è a tua disposizione per rispondere a tutte le tue domande.",
+      PT: "A nossa equipa está à sua disposição para responder a todas as suas perguntas.",
+      RO: "Echipa noastră este disponibilă pentru a răspunde la toate întrebările dumneavoastră."
     },
     contactUs: {
-      FR: "Nous contacter",
-      EN: "Contact us",
+      FR: "Contactez-nous",
+      EN: "Contact Us",
       ES: "Contáctenos",
       IT: "Contattaci",
       PT: "Contacte-nos",
       RO: "Contactați-ne"
     },
     callDirectly: {
-      FR: "Appeler directement",
+      FR: "Appelez directement",
       EN: "Call directly",
-      ES: "Llamar directamente",
+      ES: "Llame directamente",
       IT: "Chiama direttamente",
-      PT: "Ligar diretamente",
+      PT: "Ligue diretamente",
       RO: "Sunați direct"
     },
     faqSections: {
@@ -140,624 +140,178 @@ export const getFAQTranslations = (): FAQTranslations => {
           title: "État et caractéristiques du véhicule",
           faqs: [
             {
-              question: "1. Quel est l'état du véhicule et son kilométrage actuel ?",
+              question: "Quel est l'état du véhicule et son kilométrage actuel ?",
               answer: (
                 <div>
-                  <p>Tous nos véhicules sont inspectés par nos experts. Le kilométrage exact est indiqué sur chaque fiche produit (exemple : <em>Audi A4 2021 – 45 000 km</em>). L'état est classé comme :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Comme neuf</strong> (aucun défaut mécanique ou esthétique).</li>
-                    <li><strong>Très bon état</strong> (légères marques d'usage).</li>
-                    <li><strong>Bon état</strong> (petits défauts sans impact technique).</li>
-                  </ul>
+                  <p>Tous nos véhicules sont inspectés par nos experts. Le kilométrage exact est indiqué sur chaque fiche produit.</p>
                 </div>
               ),
             },
             {
-              question: "2. Y a-t-il eu remplacement ou mise à jour de pièces ?",
-              answer: "Oui, nous indiquons toutes les pièces remplacées (ex : embrayage, freins, batterie) dans le rapport d'expertise. Demandez-le pour le véhicule qui vous intéresse !",
-            },
-            {
-              question: "3. Pourquoi vendez-vous le véhicule à ce prix ?",
+              question: "Le véhicule a-t-il été accidenté ?",
               answer: (
                 <div>
-                  <p>Nos prix sont compétitifs car :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Occasions</strong> : Révisées et garanties (pas de mauvaises surprises).</li>
-                    <li><strong>Neufs</strong> : Remises constructeur jusqu'à -15%.</li>
-                    <li><strong>Paiement comptant</strong> : Réduction supplémentaire de <strong>10%</strong>.</li>
-                  </ul>
+                  <p>Nous fournissons un historique complet du véhicule, incluant les éventuels accidents, dans la mesure où ces informations sont disponibles.</p>
                 </div>
               ),
             },
             {
-              question: "4. Quand et de qui avez-vous acheté le véhicule ?",
+              question: "Puis-je obtenir un rapport d'inspection détaillé du véhicule ?",
               answer: (
                 <div>
-                  <p>Nous sourçons nos véhicules :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Neufs</strong> : Directement des constructeurs.</li>
-                    <li><strong>Occasions</strong> : Anciens locataires (LOA), reprises clients, ou flottes d'entreprise.</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "5. A-t-on changé régulièrement l'huile du véhicule ? Qu'en est-il de son entretien ?",
-              answer: "Tous nos véhicules ont un carnet d'entretien complet (huile, filtres, vidanges) respectant les préconisations constructeur.",
-            },
-            {
-              question: "6. Puis-je voir le VIN, le titre de propriété du véhicule et une pièce d'identité ?",
-              answer: (
-                <div>
-                  <p>Absolument ! Ces documents sont disponibles :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>En concession</strong> : Présentés avant l'achat.</li>
-                    <li><strong>En ligne</strong> : Envoyés cryptés après signature d'un NDA (pour éviter la fraude).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "7. Autorisez-vous des essais ?",
-              answer: (
-                <div>
-                  <p>Oui ! Réservez un essai gratuit :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>En concession</strong> : 30 min avec un conseiller.</li>
-                    <li><strong>À domicile</strong> : Possible pour les véhicules {'>'}25k€ (frais selon distance).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "8. Puis-je soumettre le véhicule à une inspection indépendante ?",
-              answer: (
-                <div>
-                  <p>Bien sûr ! Nous recommandons même :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Centres agréés</strong> : Dekra, Norauto.</li>
-                    <li><strong>Coût</strong> : Offert pour les véhicules {'>'}20k€ (sinon 150€ à votre charge).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "9. Pouvons-nous régler ce problème avant l'achat ?",
-              answer: "Tout défaut détecté est réparé avant livraison (ex : peinture, pièce mécanique). Sinon, nous ajustons le prix ou annulons la vente.",
-            },
-            {
-              question: "10. Quel est votre budget ?",
-              answer: "Nous avons des véhicules de 10k€ à 100k€. Dites-nous votre fourchette, nous trouverons la meilleure offre !",
-            },
-            {
-              question: "11. Quel est le kilométrage actuel du véhicule ?",
-              answer: "Indiqué sur chaque fiche. Nos occasions ont moins de 200 000 km.",
-            },
-            {
-              question: "12. Quelle est la consommation de carburant constatée ?",
-              answer: (
-                <div>
-                  <p>Elle correspond aux données constructeur (±5%). Exemple :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Diesel</strong> : 4,5L/100km (autoroute).</li>
-                    <li><strong>Essence</strong> : 6,0L/100km (ville).</li>
-                  </ul>
+                  <p>Oui, un rapport d'inspection détaillé est disponible sur demande pour chaque véhicule.</p>
                 </div>
               ),
             },
           ]
         },
         {
-          title: "État technique et inspection",
+          title: "Garantie et financement",
           faqs: [
             {
-              question: "13. Quel est l'état général du véhicule ?",
+              question: "Quelle est la durée de la garantie offerte sur les véhicules ?",
               answer: (
                 <div>
-                  <p>Évalué via notre grille <strong>AutoAdi Certified</strong> :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Mécanique</strong> : 10/10.</li>
-                    <li><strong>Carrosserie</strong> : 8/10 (rayures mineures).</li>
-                    <li><strong>Intérieur</strong> : 9/10 (sièges quasi neufs).</li>
-                  </ul>
+                  <p>La durée de la garantie varie en fonction du véhicule et de l'option de garantie choisie. Les détails sont spécifiés dans la fiche produit.</p>
                 </div>
               ),
             },
             {
-              question: "14. Y a-t-il un contrôle technique ?",
-              answer: "Oui, valide 6 mois minimum pour toutes nos occasions. Exemple : Contrôle technique du 01/01/2024 – Aucun point critique.",
-            },
-            {
-              question: "15. S'agit-il d'un véhicule de première, seconde main ou troisième main ?",
+              question: "Quelles sont les options de financement disponibles ?",
               answer: (
                 <div>
-                  <p>Nous précisons toujours le nombre de propriétaires :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Première main</strong> : Modèles neufs ou ex-LOA.</li>
-                    <li><strong>Seconde main</strong> : 80% de notre stock.</li>
-                  </ul>
+                  <p>Nous proposons plusieurs options de financement, y compris des prêts automobiles classiques et des solutions de location avec option d'achat.</p>
                 </div>
               ),
             },
             {
-              question: "16. Le prix est-il négociable ?",
+              question: "Comment puis-je faire une demande de financement ?",
               answer: (
                 <div>
-                  <p>Oui, surtout pour :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Paiement comptant</strong> (jusqu'à -10%).</li>
-                    <li><strong>Anciens modèles</strong> (stock {'>'}6 mois).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "17. Combien de personnes ont possédé le véhicule avant vous ?",
-              answer: "Entre 1 et 3 maximum. Exemple : Volvo XC60 – 1 propriétaire (dossier transparent disponible).",
-            },
-            {
-              question: "18. Le véhicule a-t-il été utilisé en ville, sur autoroute ou pour de longs trajets ?",
-              answer: (
-                <div>
-                  <p>Nous vérifions l'historique :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Autoroute</strong> : Usure moteur réduite (idéal).</li>
-                    <li><strong>Ville</strong> : Embrayage plus sollicité.</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "19. Le véhicule est-il encore sous garantie ? Si oui, quelle est la durée restante et quels sont les éléments couverts ?",
-              answer: (
-                <div>
-                  <p>Garantie constructeur ou <strong>AutoAdi Extended</strong> :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Neufs</strong> : 2 à 5 ans (moteur, boîte, électronique).</li>
-                    <li><strong>Occasions</strong> : 12 à 24 mois (selon kilométrage).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "20. Quel est l'état de la carrosserie ?",
-              answer: "Inspectée avec un testeur d'épaisseur de peinture. Aucune réparation masquée !",
-            },
-            {
-              question: "21. Les pneus sont-ils en bon état ?",
-              answer: "Profondeur minimale de 3 mm (sinon remplacés). Exemple : Pneus neufs Michelin sur Tesla Model 3.",
-            },
-            {
-              question: "22. L'intérieur de la voiture est-il bien entretenu ?",
-              answer: "Oui, nettoyage pro complet avant livraison (sièges, moquette, odeur).",
-            },
-            {
-              question: "23. Le véhicule fait-il des bruits étranges au démarrage ou en roulant ?",
-              answer: "Non, tous nos véhicules passent un test acoustique. Bruit = diagnostic gratuit.",
-            },
-            {
-              question: "24. Quels sont les papiers nécessaires pour acheter une voiture d'occasion ?",
-              answer: (
-                <div>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Pour vous</strong> : Pièce d'identité + justificatif de domicile.</li>
-                    <li><strong>Pour la voiture</strong> : Carte grise + contrôle technique + rapport d'expertise.</li>
-                  </ul>
+                  <p>Vous pouvez faire une demande de financement directement en ligne via notre site web ou en contactant notre équipe commerciale.</p>
                 </div>
               ),
             },
           ]
         },
         {
-          title: "Conditions d'achat",
+          title: "Livraison et service après-vente",
           faqs: [
             {
-              question: "25. Puis-je annuler ?",
-              answer: "Oui ! 14 jours de rétractation, remboursement intégral.",
+              question: "Quels sont les délais de livraison ?",
+              answer: (
+                <div>
+                  <p>Les délais de livraison varient en fonction de la destination et de la disponibilité du véhicule. Nous vous fournirons une estimation précise lors de votre commande.</p>
+                </div>
+              ),
             },
             {
-              question: "26. Essai obligatoire ?",
-              answer: "Non, mais recommandé ! Réservez via notre page de contact.",
+              question: "Proposez-vous un service après-vente ?",
+              answer: (
+                <div>
+                  <p>Oui, nous disposons d'un service après-vente complet pour assurer l'entretien et la réparation de votre véhicule.</p>
+                </div>
+              ),
             },
             {
-              question: "27. Extension de garantie ?",
-              answer: "Oui, jusqu'à 5 ans. Demandez un devis !",
+              question: "Comment puis-je prendre rendez-vous pour un entretien ?",
+              answer: (
+                <div>
+                  <p>Vous pouvez prendre rendez-vous en ligne via notre site web ou en contactant notre service clientèle.</p>
+                </div>
+              ),
             },
           ]
-        },
-        {
-          title: "Modalités de paiement flexibles",
-          faqs: [
-            {
-              question: "28. Quand dois-je payer les 80% restants ?",
-              answer: (
-                <div>
-                  <p><strong>Aucun paiement entre l'acompte et la livraison !</strong></p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li>Vous payez seulement <strong>20% à la commande</strong> pour réserver le véhicule</li>
-                    <li>Les <strong>80% restants</strong> sont réglés :
-                      <ul className="list-disc pl-6 mt-1 space-y-1">
-                        <li><strong>À la livraison</strong> en un seul versement</li>
-                        <li><strong>OU</strong> en mensualités sans intérêt (6-84 mois) après livraison</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "29. Exemple concret de paiement différé",
-              answer: (
-                <div>
-                  <p>Pour un véhicule à <strong>40 000€</strong> :</p>
-                  <ol className="list-decimal pl-6 mt-2 space-y-1">
-                    <li><strong>Aujourd'hui</strong> : 8 000€ (20%)</li>
-                    <li><strong>À la livraison (dans 2 semaines)</strong> :
-                      <ul className="list-disc pl-6 mt-1 space-y-1">
-                        <li>Option 1 : Paiement des <strong>32 000€</strong> restants en une fois</li>
-                        <li>Option 2 : Mensualités de <strong>533€/mois sur 60 mois</strong> (0% d'intérêt)</li>
-                      </ul>
-                    </li>
-                  </ol>
-                </div>
-              ),
-            },
-            {
-              question: "30. Puis-je voir le véhicule avant de payer les 80% ?",
-              answer: (
-                <div>
-                  <p><strong>Oui, absolument ! vous pouvez venir voir la voiture en Portugal ou en Espagne</strong></p>
-                  <p>Vous pouvez :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Vérifier le véhicule</strong> à la livraison</li>
-                    <li><strong>Faire un essai final</strong></li>
-                    <li><strong>Payer seulement si satisfait</strong> (dans les 48h suivant la livraison)</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "31. Que se passe-t-il si je refuse le véhicule à la livraison ?",
-              answer: (
-                <div>
-                  <p>Deux options :</p>
-                  <ol className="list-decimal pl-6 mt-2 space-y-1">
-                    <li><strong>Échange</strong> : Nous trouvons un autre modèle</li>
-                    <li><strong>Remboursement</strong> : Votre acompte de 20% est intégralement restitué</li>
-                  </ol>
-                </div>
-              ),
-            },
-            {
-              question: "32. Puis-je payer une partie à la livraison et le reste en mensualités ?",
-              answer: (
-                <div>
-                  <p>Oui ! Par exemple :</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>À la livraison</strong> : 10 000€</li>
-                    <li><strong>Reste</strong> : 22 000€ en 36 mensualités de 611€</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "33. Quel est le délai de livraison?",
-              answer: "Je précise que le délai de livraison en Portugal, en France, En Espagne, en Roumanie, en Italie ne dépasse pas 5 jours.",
-            },
-          ]
-        },
+        }
       ],
       EN: [
         {
           title: "Vehicle Condition and Features",
           faqs: [
             {
-              question: "1. What is the vehicle's condition and current mileage?",
+              question: "What is the condition of the vehicle and its current mileage?",
               answer: (
                 <div>
-                  <p>All our vehicles are inspected by our experts. The exact mileage is indicated on each product card (example: <em>Audi A4 2021 - 45,000 km</em>). The condition is classified as:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Like new</strong> (no mechanical or aesthetic defects).</li>
-                    <li><strong>Very good condition</strong> (slight signs of use).</li>
-                    <li><strong>Good condition</strong> (minor defects with no technical impact).</li>
-                  </ul>
+                  <p>All our vehicles are inspected by our experts. The exact mileage is indicated on each product sheet.</p>
                 </div>
               ),
             },
             {
-              question: "2. Have there been any replacement or update of parts?",
-              answer: "Yes, we indicate all replaced parts (e.g., clutch, brakes, battery) in the inspection report. Ask for it for the vehicle you're interested in!",
-            },
-            {
-              question: "3. Why are you selling the vehicle at this price?",
+              question: "Has the vehicle been in an accident?",
               answer: (
                 <div>
-                  <p>Our prices are competitive because:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Used</strong>: Serviced and guaranteed (no unpleasant surprises).</li>
-                    <li><strong>New</strong>: Manufacturer discounts up to -15%.</li>
-                    <li><strong>Cash payment</strong>: Additional discount of <strong>10%</strong>.</li>
-                  </ul>
+                  <p>We provide a complete vehicle history, including any accidents, to the extent that this information is available.</p>
                 </div>
               ),
             },
             {
-              question: "4. When and from whom did you buy the vehicle?",
+              question: "Can I get a detailed inspection report of the vehicle?",
               answer: (
                 <div>
-                  <p>We source our vehicles:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>New</strong>: Directly from manufacturers.</li>
-                    <li><strong>Used</strong>: Former tenants (LOA), customer trade-ins, or company fleets.</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "5. Has the vehicle's oil been changed regularly? What about its maintenance?",
-              answer: "All our vehicles have a complete maintenance record (oil, filters, oil changes) respecting manufacturer recommendations.",
-            },
-            {
-              question: "6. Can I see the VIN, the vehicle's title of ownership, and a piece of identification?",
-              answer: (
-                <div>
-                  <p>Absolutely! These documents are available:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>In dealership</strong>: Presented before purchase.</li>
-                    <li><strong>Online</strong>: Sent encrypted after signing an NDA (to avoid fraud).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "7. Do you allow test drives?",
-              answer: (
-                <div>
-                  <p>Yes! Book a free test drive:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>In dealership</strong>: 30 min with an advisor.</li>
-                    <li><strong>At home</strong>: Possible for vehicles {'>'}25k€ (fees depending on distance).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "8. Can I submit the vehicle to an independent inspection?",
-              answer: (
-                <div>
-                  <p>Of course! We even recommend it:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Approved centers</strong>: Dekra, Norauto.</li>
-                    <li><strong>Cost</strong>: Offered for vehicles {'>'}20k€ (otherwise 150€ at your expense).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "9. Can we fix this problem before purchase?",
-              answer: "Any defect detected is repaired before delivery (e.g., paint, mechanical part). Otherwise, we adjust the price or cancel the sale.",
-            },
-            {
-              question: "10. What is your budget?",
-              answer: "We have vehicles from 10k€ to 100k€. Tell us your range, we'll find the best offer!",
-            },
-            {
-              question: "11. What is the vehicle's current mileage?",
-              answer: "Indicated on each card. Our used vehicles have less than 200,000 km.",
-            },
-            {
-              question: "12. What is the observed fuel consumption?",
-              answer: (
-                <div>
-                  <p>It corresponds to the manufacturer's data (±5%). Example:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Diesel</strong>: 4.5L/100km (highway).</li>
-                    <li><strong>Gasoline</strong>: 6.0L/100km (city).</li>
-                  </ul>
+                  <p>Yes, a detailed inspection report is available upon request for each vehicle.</p>
                 </div>
               ),
             },
           ]
         },
         {
-          title: "Technical Condition and Inspection",
+          title: "Warranty and Financing",
           faqs: [
             {
-              question: "13. What is the overall condition of the vehicle?",
+              question: "What is the duration of the warranty offered on the vehicles?",
               answer: (
                 <div>
-                  <p>Evaluated via our <strong>AutoAdi Certified</strong> grid:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Mechanics</strong>: 10/10.</li>
-                    <li><strong>Bodywork</strong>: 8/10 (minor scratches).</li>
-                    <li><strong>Interior</strong>: 9/10 (seats almost new).</li>
-                  </ul>
+                  <p>The duration of the warranty varies depending on the vehicle and the warranty option chosen. Details are specified in the product sheet.</p>
                 </div>
               ),
             },
             {
-              question: "14. Is there a technical inspection?",
-              answer: "Yes, valid for a minimum of 6 months for all our used vehicles. Example: Technical inspection of 01/01/2024 – No critical points.",
-            },
-            {
-              question: "15. Is this a first, second, or third-hand vehicle?",
+              question: "What financing options are available?",
               answer: (
                 <div>
-                  <p>We always specify the number of owners:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>First hand</strong>: New models or ex-LOA.</li>
-                    <li><strong>Second hand</strong>: 80% of our stock.</li>
-                  </ul>
+                  <p>We offer several financing options, including traditional car loans and lease-to-own solutions.</p>
                 </div>
               ),
             },
             {
-              question: "16. Is the price negotiable?",
+              question: "How can I apply for financing?",
               answer: (
                 <div>
-                  <p>Yes, especially for:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Cash payment</strong> (up to -10%).</li>
-                    <li><strong>Old models</strong> (stock {'>'}6 months).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "17. How many people have owned the vehicle before you?",
-              answer: "Between 1 and 3 maximum. Example: Volvo XC60 – 1 owner (transparent file available).",
-            },
-            {
-              question: "18. Has the vehicle been used in the city, on the highway, or for long journeys?",
-              answer: (
-                <div>
-                  <p>We check the history:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Highway</strong>: Reduced engine wear (ideal).</li>
-                    <li><strong>City</strong>: Clutch more stressed.</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "19. Is the vehicle still under warranty? If so, what is the remaining duration and what elements are covered?",
-              answer: (
-                <div>
-                  <p>Manufacturer's warranty or <strong>AutoAdi Extended</strong>:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>New</strong>: 2 to 5 years (engine, gearbox, electronics).</li>
-                    <li><strong>Used</strong>: 12 to 24 months (depending on mileage).</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "20. What is the condition of the bodywork?",
-              answer: "Inspected with a paint thickness tester. No hidden repairs!",
-            },
-            {
-              question: "21. Are the tires in good condition?",
-              answer: "Minimum depth of 3 mm (otherwise replaced). Example: New Michelin tires on Tesla Model 3.",
-            },
-            {
-              question: "22. Is the interior of the car well maintained?",
-              answer: "Yes, complete professional cleaning before delivery (seats, carpet, odor).",
-            },
-            {
-              question: "23. Does the vehicle make strange noises when starting or driving?",
-              answer: "No, all our vehicles pass an acoustic test. Noise = free diagnosis.",
-            },
-            {
-              question: "24. What papers are needed to buy a used car?",
-              answer: (
-                <div>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>For you</strong>: Identity document + proof of address.</li>
-                    <li><strong>For the car</strong>: Registration certificate + technical inspection + expert report.</li>
-                  </ul>
+                  <p>You can apply for financing directly online via our website or by contacting our sales team.</p>
                 </div>
               ),
             },
           ]
         },
         {
-          title: "Purchase Conditions",
+          title: "Delivery and After-Sales Service",
           faqs: [
             {
-              question: "25. Can I cancel?",
-              answer: "Yes! 14 days withdrawal, full refund.",
+              question: "What are the delivery times?",
+              answer: (
+                <div>
+                  <p>Delivery times vary depending on the destination and the availability of the vehicle. We will provide you with an accurate estimate when you place your order.</p>
+                </div>
+              ),
             },
             {
-              question: "26. Mandatory test?",
-              answer: "No, but recommended! Book via our contact page.",
+              question: "Do you offer after-sales service?",
+              answer: (
+                <div>
+                  <p>Yes, we have a comprehensive after-sales service to ensure the maintenance and repair of your vehicle.</p>
+                </div>
+              ),
             },
             {
-              question: "27. Warranty extension?",
-              answer: "Yes, up to 5 years. Ask for a quote!",
+              question: "How can I make an appointment for maintenance?",
+              answer: (
+                <div>
+                  <p>You can make an appointment online via our website or by contacting our customer service.</p>
+                </div>
+              ),
             },
           ]
-        },
-        {
-          title: "Flexible Payment Methods",
-          faqs: [
-            {
-              question: "28. When do I have to pay the remaining 80%?",
-              answer: (
-                <div>
-                  <p><strong>No payment between the deposit and delivery!</strong></p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li>You only pay <strong>20% upon order</strong> to reserve the vehicle</li>
-                    <li>The <strong>remaining 80%</strong> is settled:
-                      <ul className="list-disc pl-6 mt-1 space-y-1">
-                        <li><strong>Upon delivery</strong> in a single payment</li>
-                        <li><strong>OR</strong> in interest-free monthly installments (6-84 months) after delivery</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "29. Concrete example of deferred payment",
-              answer: (
-                <div>
-                  <p>For a vehicle at <strong>40,000€</strong>:</p>
-                  <ol className="list-decimal pl-6 mt-2 space-y-1">
-                    <li><strong>Today</strong>: 8,000€ (20%)</li>
-                    <li><strong>Upon delivery (in 2 weeks)</strong>:
-                      <ul className="list-disc pl-6 mt-1 space-y-1">
-                        <li>Option 1: Payment of the <strong>32,000€</strong> remaining in one go</li>
-                        <li>Option 2: Monthly installments of <strong>533€/month over 60 months</strong> (0% interest)</li>
-                      </ul>
-                    </li>
-                  </ol>
-                </div>
-              ),
-            },
-            {
-              question: "30. Can I see the vehicle before paying the 80%?",
-              answer: (
-                <div>
-                  <p><strong>Yes, absolutely! you can come and see the car in Portugal or Spain</strong></p>
-                  <p>You can:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Check the vehicle</strong> upon delivery</li>
-                    <li><strong>Do a final test drive</strong></li>
-                    <li><strong>Pay only if satisfied</strong> (within 48 hours of delivery)</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "31. What happens if I refuse the vehicle upon delivery?",
-              answer: (
-                <div>
-                  <p>Two options:</p>
-                  <ol className="list-decimal pl-6 mt-2 space-y-1">
-                    <li><strong>Exchange</strong>: We find another model</li>
-                    <li><strong>Refund</strong>: Your 20% deposit is fully refunded</li>
-                  </ol>
-                </div>
-              ),
-            },
-            {
-              question: "32. Can I pay part upon delivery and the rest in monthly installments?",
-              answer: (
-                <div>
-                  <p>Yes! For example:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Upon delivery</strong>: 10,000€</li>
-                    <li><strong>Remaining</strong>: 22,000€ in 36 monthly installments of 611€</li>
-                  </ul>
-                </div>
-              ),
-            },
-            {
-              question: "33. What is the delivery time?",
-              answer: "I specify that the delivery time in Portugal, France, Spain, Romania, Italy does not exceed 5 days.",
-            },
-          ]
-        },
+        }
       ],
       ES: [
         {
@@ -767,4 +321,354 @@ export const getFAQTranslations = (): FAQTranslations => {
               question: "¿Cuál es el estado del vehículo y su kilometraje actual?",
               answer: (
                 <div>
-                  <p>Todos nuestros vehículos son inspeccionados por nuestros expertos. El kilometraje exacto
+                  <p>Todos nuestros vehículos son inspeccionados por nuestros expertos. El kilometraje exacto se indica en cada ficha de producto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "¿El vehículo ha tenido algún accidente?",
+              answer: (
+                <div>
+                  <p>Proporcionamos un historial completo del vehículo, incluyendo cualquier accidente, en la medida en que esta información esté disponible.</p>
+                </div>
+              ),
+            },
+            {
+              question: "¿Puedo obtener un informe de inspección detallado del vehículo?",
+              answer: (
+                <div>
+                  <p>Sí, un informe de inspección detallado está disponible bajo petición para cada vehículo.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Garantía y financiación",
+          faqs: [
+            {
+              question: "¿Cuál es la duración de la garantía ofrecida en los vehículos?",
+              answer: (
+                <div>
+                  <p>La duración de la garantía varía en función del vehículo y de la opción de garantía elegida. Los detalles se especifican en la ficha del producto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "¿Qué opciones de financiación están disponibles?",
+              answer: (
+                <div>
+                  <p>Ofrecemos varias opciones de financiación, incluyendo préstamos de coche tradicionales y soluciones de alquiler con opción a compra.</p>
+                </div>
+              ),
+            },
+            {
+              question: "¿Cómo puedo solicitar financiación?",
+              answer: (
+                <div>
+                  <p>Puede solicitar financiación directamente en línea a través de nuestro sitio web o poniéndose en contacto con nuestro equipo de ventas.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Entrega y servicio postventa",
+          faqs: [
+            {
+              question: "¿Cuáles son los plazos de entrega?",
+              answer: (
+                <div>
+                  <p>Los plazos de entrega varían en función del destino y de la disponibilidad del vehículo. Le proporcionaremos una estimación precisa al realizar su pedido.</p>
+                </div>
+              ),
+            },
+            {
+              question: "¿Ofrecen servicio postventa?",
+              answer: (
+                <div>
+                  <p>Sí, disponemos de un servicio postventa completo para garantizar el mantenimiento y la reparación de su vehículo.</p>
+                </div>
+              ),
+            },
+            {
+              question: "¿Cómo puedo concertar una cita para el mantenimiento?",
+              answer: (
+                <div>
+                  <p>Puede concertar una cita en línea a través de nuestro sitio web o poniéndose en contacto con nuestro servicio de atención al cliente.</p>
+                </div>
+              ),
+            },
+          ]
+        }
+      ],
+      IT: [
+        {
+          title: "Stato e caratteristiche del veicolo",
+          faqs: [
+            {
+              question: "Qual è lo stato del veicolo e il suo chilometraggio attuale?",
+              answer: (
+                <div>
+                  <p>Tutti i nostri veicoli sono ispezionati dai nostri esperti. Il chilometraggio esatto è indicato su ogni scheda prodotto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Il veicolo ha subito incidenti?",
+              answer: (
+                <div>
+                  <p>Forniamo una cronologia completa del veicolo, inclusi eventuali incidenti, nella misura in cui tali informazioni siano disponibili.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Posso ottenere una relazione di ispezione dettagliata del veicolo?",
+              answer: (
+                <div>
+                  <p>Sì, una relazione di ispezione dettagliata è disponibile su richiesta per ogni veicolo.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Garanzia e finanziamento",
+          faqs: [
+            {
+              question: "Qual è la durata della garanzia offerta sui veicoli?",
+              answer: (
+                <div>
+                  <p>La durata della garanzia varia a seconda del veicolo e dell'opzione di garanzia scelta. I dettagli sono specificati nella scheda prodotto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Quali sono le opzioni di finanziamento disponibili?",
+              answer: (
+                <div>
+                  <p>Offriamo diverse opzioni di finanziamento, inclusi prestiti auto tradizionali e soluzioni di leasing con opzione di acquisto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Come posso richiedere un finanziamento?",
+              answer: (
+                <div>
+                  <p>Puoi richiedere un finanziamento direttamente online tramite il nostro sito web o contattando il nostro team di vendita.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Consegna e servizio post-vendita",
+          faqs: [
+            {
+              question: "Quali sono i tempi di consegna?",
+              answer: (
+                <div>
+                  <p>I tempi di consegna variano a seconda della destinazione e della disponibilità del veicolo. Ti forniremo una stima precisa al momento dell'ordine.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Offrite un servizio post-vendita?",
+              answer: (
+                <div>
+                  <p>Sì, disponiamo di un servizio post-vendita completo per garantire la manutenzione e la riparazione del tuo veicolo.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Come posso fissare un appuntamento per la manutenzione?",
+              answer: (
+                <div>
+                  <p>Puoi fissare un appuntamento online tramite il nostro sito web o contattando il nostro servizio clienti.</p>
+                </div>
+              ),
+            },
+          ]
+        }
+      ],
+      PT: [
+        {
+          title: "Estado e características do veículo",
+          faqs: [
+            {
+              question: "Qual é o estado do veículo e a sua quilometragem atual?",
+              answer: (
+                <div>
+                  <p>Todos os nossos veículos são inspecionados pelos nossos especialistas. A quilometragem exata é indicada em cada ficha de produto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "O veículo já teve algum acidente?",
+              answer: (
+                <div>
+                  <p>Fornecemos um histórico completo do veículo, incluindo quaisquer acidentes, na medida em que essa informação esteja disponível.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Posso obter um relatório de inspeção detalhado do veículo?",
+              answer: (
+                <div>
+                  <p>Sim, um relatório de inspeção detalhado está disponível mediante pedido para cada veículo.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Garantia e financiamento",
+          faqs: [
+            {
+              question: "Qual é a duração da garantia oferecida nos veículos?",
+              answer: (
+                <div>
+                  <p>A duração da garantia varia dependendo do veículo e da opção de garantia escolhida. Os detalhes são especificados na ficha do produto.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Que opções de financiamento estão disponíveis?",
+              answer: (
+                <div>
+                  <p>Oferecemos várias opções de financiamento, incluindo empréstimos de carro tradicionais e soluções de leasing com opção de compra.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Como posso solicitar financiamento?",
+              answer: (
+                <div>
+                  <p>Pode solicitar financiamento diretamente online através do nosso site ou entrando em contato com a nossa equipa de vendas.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Entrega e serviço pós-venda",
+          faqs: [
+            {
+              question: "Quais são os prazos de entrega?",
+              answer: (
+                <div>
+                  <p>Os prazos de entrega variam dependendo do destino e da disponibilidade do veículo. Forneceremos uma estimativa precisa ao fazer o seu pedido.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Vocês oferecem serviço pós-venda?",
+              answer: (
+                <div>
+                  <p>Sim, temos um serviço pós-venda completo para garantir a manutenção e reparação do seu veículo.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Como posso marcar uma consulta para manutenção?",
+              answer: (
+                <div>
+                  <p>Pode marcar uma consulta online através do nosso site ou entrando em contato com o nosso serviço de apoio ao cliente.</p>
+                </div>
+              ),
+            },
+          ]
+        }
+      ],
+      RO: [
+        {
+          title: "Starea și caracteristicile vehiculului",
+          faqs: [
+            {
+              question: "Care este starea vehiculului și kilometrajul său actual?",
+              answer: (
+                <div>
+                  <p>Toate vehiculele noastre sunt inspectate de experții noștri. Kilometrajul exact este indicat pe fiecare fișă de produs.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Vehiculul a fost implicat într-un accident?",
+              answer: (
+                <div>
+                  <p>Oferim un istoric complet al vehiculului, inclusiv orice accidente, în măsura în care aceste informații sunt disponibile.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Pot obține un raport de inspecție detaliat al vehiculului?",
+              answer: (
+                <div>
+                  <p>Da, un raport de inspecție detaliat este disponibil la cerere pentru fiecare vehicul.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Garanție și finanțare",
+          faqs: [
+            {
+              question: "Care este durata garanției oferite pentru vehicule?",
+              answer: (
+                <div>
+                  <p>Durata garanției variază în funcție de vehicul și de opțiunea de garanție aleasă. Detaliile sunt specificate în fișa produsului.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Ce opțiuni de finanțare sunt disponibile?",
+              answer: (
+                <div>
+                  <p>Oferim mai multe opțiuni de finanțare, inclusiv împrumuturi auto tradiționale și soluții de leasing cu opțiune de cumpărare.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Cum pot aplica pentru finanțare?",
+              answer: (
+                <div>
+                  <p>Puteți aplica pentru finanțare direct online prin intermediul site-ului nostru web sau contactând echipa noastră de vânzări.</p>
+                </div>
+              ),
+            },
+          ]
+        },
+        {
+          title: "Livrare și service post-vânzare",
+          faqs: [
+            {
+              question: "Care sunt termenele de livrare?",
+              answer: (
+                <div>
+                  <p>Termenele de livrare variază în funcție de destinație și de disponibilitatea vehiculului. Vă vom oferi o estimare precisă atunci când plasați comanda.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Oferiți service post-vânzare?",
+              answer: (
+                <div>
+                  <p>Da, avem un serviciu post-vânzare complet pentru a asigura întreținerea și repararea vehiculului dumneavoastră.</p>
+                </div>
+              ),
+            },
+            {
+              question: "Cum pot face o programare pentru întreținere?",
+              answer: (
+                <div>
+                  <p>Puteți face o programare online prin intermediul site-ului nostru web sau contactând serviciul nostru de asistență clienți.</p>
+                </div>
+              ),
+            },
+          ]
+        }
+      ]
+    }
+  };
+};
