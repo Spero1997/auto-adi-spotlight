@@ -16,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useForm } from 'react-hook-form';
 import { sendOrderConfirmationEmail } from '@/utils/emailService';
 import PaymentOptions from '@/components/PaymentOptions';
+import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
 
 interface OrderFormData {
   name: string;
@@ -60,6 +61,10 @@ const VehicleDetails = () => {
     }
     
     try {
+      if (id.includes('kia-sorento')) {
+        updateKiaSorentoImage();
+      }
+      
       let vehicles = getImportedVehicles('featured');
       console.log("Véhicules chargés du catalogue vedette:", vehicles.length);
       

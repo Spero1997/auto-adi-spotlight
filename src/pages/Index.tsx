@@ -15,6 +15,7 @@ import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
+import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -154,6 +155,9 @@ const Index = () => {
     } else {
       console.log("Mercedes Benz Classe C 180 AMG déjà présente dans le catalogue standard");
     }
+    
+    // Mettre à jour l'image de la Kia Sorento
+    updateKiaSorentoImage();
   }, []);
 
   return (
