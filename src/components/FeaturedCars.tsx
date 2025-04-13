@@ -73,7 +73,7 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
           vehicle.image && (vehicle.image.startsWith('http') || vehicle.image.startsWith('/'))
         );
         
-        // Créer une Map pour éviter les doublons basés sur la combinaison brand+model+year
+        // Créer une Map pour éviter les doublons, en utilisant la même logique peu importe la plateforme
         const uniqueVehicles = new Map<string, ImportedVehicle>();
         
         // D'abord ajouter les véhicules standard
@@ -85,8 +85,6 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
         // Ensuite ajouter/remplacer avec les véhicules featured
         validFeaturedVehicles.forEach(vehicle => {
           const key = `${vehicle.brand}-${vehicle.model}-${vehicle.year}`;
-          // Si le véhicule est déjà dans la Map, remplacer par la version featured
-          // Sinon, ajouter le nouveau véhicule featured
           uniqueVehicles.set(key, { ...vehicle, featured: true });
         });
         
@@ -131,30 +129,8 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
   const openFacebookLink = (url: string, event: React.MouseEvent) => {
     event.preventDefault();
     
-    if (isMobile) {
-      // Sur mobile, essayons d'ouvrir directement avec l'app Facebook si possible
-      try {
-        // Utiliser un format d'URL qui fonctionne mieux avec l'app Facebook
-        // Format: fb://facewebmodal/f?href=URL_ENCODED
-        const encodedUrl = encodeURIComponent(url);
-        
-        // Essayer d'ouvrir dans l'app Facebook
-        window.location.href = `fb://facewebmodal/f?href=${encodedUrl}`;
-        
-        // Si l'app FB n'est pas installée, on ouvre dans le navigateur après un court délai
-        setTimeout(() => {
-          // Vérifier si on est toujours sur la même page (ce qui signifie que l'app FB n'a pas été ouverte)
-          window.open(url, '_blank');
-        }, 500); // Délai augmenté pour donner plus de temps à l'app FB pour s'ouvrir
-      } catch (e) {
-        console.error("Erreur lors de l'ouverture du lien Facebook:", e);
-        // Fallback en cas d'erreur - ouvrir dans le navigateur
-        window.open(url, '_blank');
-      }
-    } else {
-      // Sur desktop, ouvrir dans un nouvel onglet normalement
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
+    // Utiliser la même méthode pour ouvrir le lien Facebook, peu importe la plateforme
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
