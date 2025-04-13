@@ -51,6 +51,58 @@ const AnimatedHero = () => {
     };
   }, [scrolled]);
 
+  // Traductions pour les liens du menu
+  const translations = {
+    services: {
+      FR: "Services",
+      EN: "Services",
+      ES: "Servicios",
+      IT: "Servizi",
+      PT: "Serviços",
+      RO: "Servicii"
+    },
+    usedVehicles: {
+      FR: "Véhicules d'occasion",
+      EN: "Used Vehicles",
+      ES: "Vehículos usados",
+      IT: "Veicoli usati",
+      PT: "Veículos usados",
+      RO: "Vehicule rulate"
+    },
+    financing: {
+      FR: "Financement",
+      EN: "Financing",
+      ES: "Financiación",
+      IT: "Finanziamento",
+      PT: "Financiamento",
+      RO: "Finanțare"
+    },
+    buyback: {
+      FR: "Rachat",
+      EN: "Buyback",
+      ES: "Recompra",
+      IT: "Riacquisto",
+      PT: "Recompra",
+      RO: "Răscumpărare"
+    },
+    about: {
+      FR: "À propos",
+      EN: "About",
+      ES: "Acerca de",
+      IT: "Chi siamo",
+      PT: "Sobre",
+      RO: "Despre"
+    },
+    contact: {
+      FR: "Contact",
+      EN: "Contact",
+      ES: "Contacto",
+      IT: "Contatto",
+      PT: "Contato",
+      RO: "Contact"
+    }
+  };
+
   return (
     <>
       {/* Hero section avec fond animé pleine largeur/hauteur */}
@@ -58,7 +110,7 @@ const AnimatedHero = () => {
         {/* Animation en arrière-plan - utilisation d'un effet CSS pour l'animation */}
         <div className="absolute inset-0 z-0 w-full h-full bg-cover bg-center bg-no-repeat hero-background-animate">
           {/* Overlay semi-transparent pour améliorer le contraste et la lisibilité */}
-          <div className="absolute inset-0 bg-black/50 z-1"></div>
+          <div className="absolute inset-0 bg-black/60 z-1"></div>
         </div>
         
         {/* Navbar superposée - conserver la structure container mais pour la navbar uniquement */}
@@ -81,14 +133,7 @@ const AnimatedHero = () => {
                   to={link.href}
                   className="text-white hover:text-brand-orange transition-colors font-medium"
                 >
-                  {translate(link.labelKey, {
-                    services: 'Services',
-                    usedVehicles: 'Véhicules d\'occasion',
-                    financing: 'Financement',
-                    buyback: 'Rachat',
-                    about: 'À propos',
-                    contact: 'Contact'
-                  })}
+                  {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                 </Link>
               ))}
             </div>
@@ -109,14 +154,7 @@ const AnimatedHero = () => {
                         to={link.href}
                         className="py-3 px-4 text-white hover:bg-gray-800 rounded-md"
                       >
-                        {translate(link.labelKey, {
-                          services: 'Services',
-                          usedVehicles: 'Véhicules d\'occasion',
-                          financing: 'Financement',
-                          buyback: 'Rachat',
-                          about: 'À propos',
-                          contact: 'Contact'
-                        })}
+                        {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                       </Link>
                     ))}
                   </div>
@@ -137,7 +175,7 @@ const AnimatedHero = () => {
             <h1 className="text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
               Bienvenue chez Auto ADI
             </h1>
-            <p className="text-lg md:text-xl text-white mb-2 max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-lg md:text-xl text-white mb-6 max-w-2xl mx-auto drop-shadow-md">
               Votre partenaire de confiance pour l'importation et la vente de véhicules d'occasion de qualité
             </p>
           </div>

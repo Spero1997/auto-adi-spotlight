@@ -9,6 +9,8 @@
 @media (max-width: 640px) {
   #root {
     padding: 0;
+    width: 100vw;
+    overflow-x: hidden;
   }
   
   .container {
@@ -92,20 +94,26 @@
 
 /* Effet de verre pour le module de recherche rapide */
 .glass-search {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 /* S'assurer que le contenu est visible sur les backgrounds animés */
 .hero-content {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Adaptations pour différents écrans */
 @media (max-width: 768px) {
   .hero-background-animate {
     background-position: center;
+  }
+  
+  body, html {
+    width: 100vw;
+    overflow-x: hidden;
   }
 }
