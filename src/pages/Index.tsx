@@ -158,6 +158,12 @@ const Index = () => {
     
     // Mettre à jour l'image de la Kia Sorento
     updateKiaSorentoImage();
+    
+    // Import dynamique du script de mise à jour des images
+    import('@/scripts/updateVehicleImages').then(module => {
+      // Mettre à jour les images des véhicules spécifiés
+      module.updateVehicleImages();
+    });
   }, []);
 
   return (

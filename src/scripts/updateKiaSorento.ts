@@ -10,17 +10,18 @@ export const updateKiaSorentoImage = () => {
     // Chercher la Kia Sorento
     const kiaSorentoIndex = standardVehicles.findIndex(
       v => v.brand === "Kia" && 
-          v.model === "Sorento" ||
-          v.id.includes("kia-sorento")
+          (v.model === "Sorento" ||
+          v.model?.includes("Sorento") ||
+          v.id.includes("kia-sorento"))
     );
     
     if (kiaSorentoIndex !== -1) {
       console.log("Kia Sorento trouvée dans le catalogue standard, mise à jour de l'image...");
       
-      // Mettre à jour l'image
+      // Mettre à jour l'image avec une image par défaut qui fonctionne
       standardVehicles[kiaSorentoIndex] = {
         ...standardVehicles[kiaSorentoIndex],
-        image: '/lovable-uploads/baea681c-b5d8-4fa3-b426-c0e82cb8d4c3.png'
+        image: 'https://via.placeholder.com/800x600/007bff/ffffff?text=Kia+Sorento'
       };
       
       // Sauvegarder les modifications
