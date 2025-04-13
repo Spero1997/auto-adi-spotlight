@@ -6,12 +6,12 @@ const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
   
   const languages = [
-    { code: 'FR', label: 'FR' },
-    { code: 'EN', label: 'EN' },
-    { code: 'ES', label: 'ES' },
-    { code: 'IT', label: 'IT' },
-    { code: 'PT', label: 'PT' },
-    { code: 'RO', label: 'RO' },
+    { code: 'FR', label: languageNames.FR },
+    { code: 'EN', label: languageNames.EN },
+    { code: 'ES', label: languageNames.ES },
+    { code: 'IT', label: languageNames.IT },
+    { code: 'PT', label: languageNames.PT },
+    { code: 'RO', label: languageNames.RO },
   ];
   
   return (
