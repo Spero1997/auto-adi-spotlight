@@ -6,8 +6,6 @@ import Footer from '@/components/Footer';
 import VehicleImporter from '@/components/VehicleImporter';
 import VehicleAddForm from '@/components/VehicleAddForm';
 import { getImportedVehicles } from '@/utils/vehicleImportService';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Info } from 'lucide-react';
 import { toast } from 'sonner';
 
 const VehicleImport = () => {
@@ -57,7 +55,7 @@ const VehicleImport = () => {
         toast.success("L'Audi A3 E-Tron a été ajoutée au catalogue");
       }
       
-      // Recherche de la Kia Niro
+      // Recherche de la Kia Niro Hybride
       const kiaNiro = vehicles.find(v => 
         v.brand === "Kia" && 
         v.model.includes("Niro") && 
@@ -81,7 +79,7 @@ const VehicleImport = () => {
         toast.success("La BMW X1 xDrive 25e a été ajoutée au catalogue");
       }
       
-      // Recherche de l'Audi Q5
+      // Recherche de l'Audi Q5 Quattro
       const audiQ5 = vehicles.find(v => 
         v.brand === "Audi" && 
         v.model.includes("Q5 Quattro") && 
@@ -93,7 +91,7 @@ const VehicleImport = () => {
         toast.success("L'Audi Q5 Quattro S-Tronic a été ajoutée au catalogue");
       }
       
-      // Recherche de l'Audi Q7
+      // Recherche de l'Audi Q7 245HK
       const audiQ7 = vehicles.find(v => 
         v.brand === "Audi" && 
         v.model.includes("Q7 245HK") && 
@@ -117,7 +115,7 @@ const VehicleImport = () => {
         toast.success("L'Audi A3 Sportback 35 1,5 TFSI a été ajoutée au catalogue");
       }
       
-      // Recherche de la BMW X3
+      // Recherche de la BMW X3 xDrive 20d M-sport
       const bmwX3 = vehicles.find(v => 
         v.brand === "BMW" && 
         v.model.includes("X3 xDrive 20d M-sport") && 
@@ -163,8 +161,8 @@ const VehicleImport = () => {
   return (
     <>
       <Helmet>
-        <title>Importation de véhicules | AutoAdi</title>
-        <meta name="description" content="Outil d'importation de véhicules depuis des sites de vente automobiles pour AutoAdi" />
+        <title>Gestion des véhicules | AutoAdi</title>
+        <meta name="description" content="Outil de gestion des véhicules pour AutoAdi" />
       </Helmet>
       
       <Header />
@@ -175,94 +173,6 @@ const VehicleImport = () => {
           <p className="text-center text-gray-600 mb-8">
             Ajoutez ou importez facilement des véhicules
           </p>
-          
-          <Alert className="mb-4">
-            <Info className="h-4 w-4" />
-            <AlertTitle>Mise à jour effectuée</AlertTitle>
-            <AlertDescription>
-              La Volkswagen T-Cross 1,0 TSI 110 hk Life ACC a été ajoutée au catalogue avec sa nouvelle image.
-            </AlertDescription>
-          </Alert>
-
-          <Alert className="mb-4 bg-blue-50 border-blue-200">
-            <Info className="h-4 w-4 text-blue-500" />
-            <AlertTitle>Nouvelle BMW ajoutée</AlertTitle>
-            <AlertDescription>
-              La BMW X5 xDrive 2016 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-green-50 border-green-200">
-            <Info className="h-4 w-4 text-green-500" />
-            <AlertTitle>Nouvelle Audi ajoutée</AlertTitle>
-            <AlertDescription>
-              L'Audi A3 E-Tron 1.4 S Tronic 2017 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-yellow-50 border-yellow-200">
-            <Info className="h-4 w-4 text-yellow-500" />
-            <AlertTitle>Nouvelle Kia ajoutée</AlertTitle>
-            <AlertDescription>
-              La Kia Niro Hybride 149 CH 2017 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-amber-50 border-amber-200">
-            <Info className="h-4 w-4 text-amber-500" />
-            <AlertTitle>Nouvelle BMW X1 ajoutée</AlertTitle>
-            <AlertDescription>
-              La BMW X1 xDrive 25e 2021 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-indigo-50 border-indigo-200">
-            <Info className="h-4 w-4 text-indigo-500" />
-            <AlertTitle>Nouvelle Audi Q5 ajoutée</AlertTitle>
-            <AlertDescription>
-              L'Audi Q5 Quattro S-Tronic 2014 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-purple-50 border-purple-200">
-            <Info className="h-4 w-4 text-purple-500" />
-            <AlertTitle>Nouvelle Audi Q7 ajoutée</AlertTitle>
-            <AlertDescription>
-              L'Audi Q7 245HK-2XS-Line 2012 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-4 bg-pink-50 border-pink-200">
-            <Info className="h-4 w-4 text-pink-500" />
-            <AlertTitle>Nouvelle Audi A3 Sportback ajoutée</AlertTitle>
-            <AlertDescription>
-              L'Audi A3 Sportback 35 1,5 TFSI 2019 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-6 bg-gray-50 border-gray-200">
-            <Info className="h-4 w-4 text-gray-500" />
-            <AlertTitle>Nouvelle BMW X3 ajoutée</AlertTitle>
-            <AlertDescription>
-              La BMW X3 xDrive 20d M-sport 190 CH 2016 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-6 bg-teal-50 border-teal-200">
-            <Info className="h-4 w-4 text-teal-500" />
-            <AlertTitle>Nouvelle Range Rover ajoutée</AlertTitle>
-            <AlertDescription>
-              La Range Rover Evoque 2.0 Prestige 241 CH 2014 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
-          
-          <Alert className="mb-6 bg-slate-50 border-slate-200">
-            <Info className="h-4 w-4 text-slate-500" />
-            <AlertTitle>Nouvelle BMW X3 2014 ajoutée</AlertTitle>
-            <AlertDescription>
-              La BMW X3 xDrive 20d 2014 a été ajoutée au catalogue avec succès.
-            </AlertDescription>
-          </Alert>
           
           <Tabs defaultValue="add" className="w-full" onValueChange={(value) => setActiveTab(value)}>
             <TabsList className="grid w-full grid-cols-2 mb-8">

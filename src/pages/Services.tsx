@@ -2,7 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Wrench, Car, Calendar, Shield, Gauge, Fuel, ScrollText, FileSpreadsheet, Plane, Headset, CreditCard, ShieldCheck } from 'lucide-react';
+import { Wrench, Car, Calendar, Shield, Gauge, Fuel, ScrollText, Plane, Headset, CreditCard, ShieldCheck } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -46,43 +46,6 @@ const Services = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Importation */}
-              <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-purple-500">
-                <CardHeader className="pb-2">
-                  <div className="bg-purple-500/10 p-3 rounded-full w-14 h-14 flex items-center justify-center mb-4">
-                    <FileSpreadsheet className="h-7 w-7 text-purple-500" />
-                  </div>
-                  <CardTitle>Importation de véhicules</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 mb-4">
-                    Notre service d'importation vous permet d'accéder à une large gamme de véhicules européens non disponibles sur le marché local.
-                  </p>
-                  <Collapsible className="w-full">
-                    <CollapsibleTrigger className="w-full text-left flex items-center justify-between rounded-md border px-4 py-2 font-medium text-gray-700 hover:bg-gray-100">
-                      <span>Détails du service</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 transition-transform ui-open:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 px-4 pt-2 pb-4 text-sm border rounded-md">
-                      <ul className="space-y-2 list-disc pl-5 text-gray-600">
-                        <li>Recherche personnalisée dans toute l'Europe</li>
-                        <li>Gestion complète des formalités douanières</li>
-                        <li>Transport sécurisé jusqu'à votre domicile</li>
-                        <li>Homologation et mise en conformité incluses</li>
-                        <li>Garantie européenne sur tous les véhicules importés</li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </CardContent>
-                <CardFooter>
-                  <Link to="/vehicules/import" className="w-full">
-                    <Button variant="outline" className="w-full border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white">
-                      En savoir plus
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-
               {/* Garantie constructeur */}
               <Card className="bg-white shadow-md hover:shadow-lg transition-shadow border-t-4 border-t-green-500">
                 <CardHeader className="pb-2">
