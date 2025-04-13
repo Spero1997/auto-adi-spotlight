@@ -1,3 +1,4 @@
+import React from 'react';
 import { Language } from '@/contexts/LanguageContext';
 import { FAQSection } from './FAQAccordion';
 
@@ -766,4 +767,4 @@ export const getFAQTranslations = (): FAQTranslations => {
               question: "¿Cuál es el estado del vehículo y su kilometraje actual?",
               answer: (
                 <div>
-                  <p>Todos nuestros vehículos son inspeccionados por nuestros expertos. El kilometraje exacto se indica en cada ficha de producto
+                  <p>Todos nuestros vehículos son inspeccionados por nuestros expertos. El kilometraje exacto
