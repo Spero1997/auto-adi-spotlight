@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -107,7 +108,7 @@ const AnimatedHero = () => {
   return (
     <>
       {/* Hero section avec fond animé pleine largeur/hauteur */}
-      <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-[#1A1F2C] to-[#222222]">
+      <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-[#2A2E3A] to-[#1A1F2C]">
         {/* Animation en arrière-plan - utilisation d'un effet CSS pour l'animation */}
         <div className="absolute inset-0 z-0 w-full h-full bg-cover bg-center bg-no-repeat hero-background-animate">
           {/* Overlay semi-transparent pour améliorer le contraste et la lisibilité */}
@@ -115,7 +116,7 @@ const AnimatedHero = () => {
         </div>
         
         {/* Navbar superposée - conserver la structure container mais pour la navbar uniquement */}
-        <div className={`fixed top-0 left-0 w-full z-30 py-3 transition-colors duration-300 ${scrolled ? 'bg-[#1A1F2C]/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
+        <div className={`fixed top-0 left-0 w-full z-30 py-3 transition-colors duration-300 ${scrolled ? 'bg-[#2A2E3A]/95 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
           <div className="container mx-auto px-3 flex justify-between items-center">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
@@ -147,13 +148,13 @@ const AnimatedHero = () => {
                     Menu <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-screen p-0 border-none bg-[#1A1F2C]/95">
+                <PopoverContent className="w-screen p-0 border-none bg-[#2A2E3A]/95">
                   <div className="flex flex-col p-3">
                     {mainLinks.map((link, index) => (
                       <Link 
                         key={index}
                         to={link.href}
-                        className="py-3 px-4 text-white hover:bg-[#222]/80 rounded-md"
+                        className="py-3 px-4 text-white hover:bg-[#1A1F2C]/80 rounded-md"
                       >
                         {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                       </Link>
