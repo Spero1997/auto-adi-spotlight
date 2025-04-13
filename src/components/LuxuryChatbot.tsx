@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Maximize, Minimize, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -161,19 +160,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   translate,
   language
 }) => {
-  // État local pour affichage uniquement
-  const [localInput, setLocalInput] = useState(input);
-  
-  // Synchronisation unidirectionnelle - parent vers local
-  useEffect(() => {
-    setLocalInput(input);
-  }, [input]);
-  
-  // Gestionnaire qui met à jour les deux états sans redimensionnement
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setLocalInput(newValue); // Mise à jour locale immédiate pour UI
-    setInput(newValue); // Mise à jour directe sans animation
+    setInput(e.target.value);
   };
 
   return (
@@ -182,19 +170,19 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <Input
           ref={inputRef}
           type="text"
-          value={localInput}
+          value={input}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 h-10 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
           autoComplete="off"
           aria-label={translate('placeholder', translations.placeholder)}
-          style={{ fontSize: '14px' }} /* Taille de police fixe */
+          style={{ fontSize: '14px' }}
         />
         <Button 
           type="submit" 
           className="bg-brand-blue hover:bg-brand-darkBlue text-white p-2 h-10 w-10 rounded-md flex items-center justify-center"
-          disabled={!localInput.trim()}
+          disabled={!input.trim()}
           aria-label={translate('send', translations.send)}
         >
           <Send className="h-4 w-4" />
@@ -216,14 +204,12 @@ const LuxuryChatbot: React.FC = () => {
   
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
-  // Scroll to bottom on new messages, but without animations
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [messages]);
 
-  // Focus on input when chat is opened, without delay
   useEffect(() => {
     if (isOpen && !isMinimized && inputRef.current) {
       inputRef.current.focus();
@@ -234,7 +220,6 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      // Immediate focus
       if (inputRef.current) {
         inputRef.current.focus();
       }
@@ -250,7 +235,6 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    // Direct focus
     if (inputRef.current) {
       inputRef.current.focus();
     }
