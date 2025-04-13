@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
 
 type FinancingHeroTranslations = {
-  financingTitle: Record<Language, string>;
-  financingDescription: Record<Language, string>;
-  getQuote: Record<Language, string>;
-  seeVehicles: Record<Language, string>;
+  heroTitle: Record<Language, string>;
+  heroSubtitle: Record<Language, string>;
+  contactUsForInfo: Record<Language, string>;
+  specialOffer: Record<Language, string>;
 }
 
 type FinancingHeroProps = {
-  translations: FinancingHeroTranslations;
+  translations: any; // This allows us to accept the full translations object
 }
 
 const FinancingHero = ({ translations }: FinancingHeroProps) => {
@@ -21,17 +21,17 @@ const FinancingHero = ({ translations }: FinancingHeroProps) => {
     <section className="bg-brand-blue text-white py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">{translate('financingTitle', translations.financingTitle)}</h1>
-          <p className="text-xl mb-8">{translate('financingDescription', translations.financingDescription)}</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">{translate('heroTitle', translations.heroTitle)}</h1>
+          <p className="text-xl mb-8">{translate('heroSubtitle', translations.heroSubtitle)}</p>
           <div className="flex flex-wrap gap-4">
             <Link to="/contact">
               <Button className="bg-white text-brand-blue hover:bg-gray-100 text-lg font-semibold">
-                {translate('getQuote', translations.getQuote)}
+                {translate('contactUsForInfo', translations.contactUsForInfo)}
               </Button>
             </Link>
             <Link to="/vehicules/occasion">
               <Button variant="outline" className="border-white text-white hover:bg-white/10 text-lg font-semibold">
-                {translate('seeVehicles', translations.seeVehicles)}
+                {translate('specialOffer', translations.specialOffer)}
               </Button>
             </Link>
           </div>
