@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+				'montserrat': ['Montserrat', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -70,7 +73,9 @@ export default {
 					darkBlue: '#043C7D',
 					lightBlue: '#0A6ED5',
 					gray: '#F5F5F5',
-					darkGray: '#333333'
+					darkGray: '#333333',
+					gold: '#D4AF37',
+					anthracite: '#383838'
 				}
 			},
 			borderRadius: {

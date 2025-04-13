@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronDown, Search, Globe } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import QuickSearch from '@/components/QuickSearch';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +37,7 @@ const secondaryLinks = [
 
 const AnimatedHero = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { language, setLanguage, translate } = useLanguage();
   const isMobile = useIsMobile();
   const [scrolled, setScrolled] = useState(false);
@@ -58,6 +60,14 @@ const AnimatedHero = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+
+  // Vérifier si un chemin est actif (pour le soulignement du menu actif)
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
 
   // Traductions pour les liens du menu et le texte d'accueil
   const translations = {
@@ -160,26 +170,41 @@ const AnimatedHero = () => {
             </Link>
             
             {/* Menu de navigation - caché sur mobile */}
-            <div className="hidden md:flex space-x-6 text-white">
-              {mainLinks.map((link, index) => (
-                <Link 
-                  key={index}
-                  to={link.href}
-                  className="text-white hover:text-brand-orange transition-colors font-medium"
-                >
-                  {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
-                </Link>
-              ))}
+            <div className="hidden md:flex space-x-4 text-white">
+              {mainLinks.map((link, index) => {
+                const isActiveLink = isActive(link.href);
+                
+                return (
+                  <Link 
+                    key={index}
+                    to={link.href}
+                    className={cn(
+                      "font-montserrat font-light tracking-wide px-5 py-1.5 border transition-all duration-300",
+                      isActiveLink 
+                        ? "border-white/70 text-white" 
+                        : "border-transparent hover:border-white/40 hover:shadow-sm"
+                    )}
+                  >
+                    {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
+                  </Link>
+                );
+              })}
               
               {/* Menu déroulant pour la sélection de langue - desktop */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-white hover:text-brand-orange transition-colors font-medium">
+                  <Button 
+                    variant="ghost" 
+                    className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 transition-all duration-300"
+                  >
                     <Globe className="mr-1 h-4 w-4" />
                     {translate('language', translations.language)}
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40 bg-brand-blue/95 text-white border-brand-darkBlue">
+                <DropdownMenuContent 
+                  align="end" 
+                  className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
+                >
                   <LanguageSwitcher />
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -189,17 +214,17 @@ const AnimatedHero = () => {
             <div className="flex md:hidden">
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="ghost" className="text-white">
+                  <Button variant="ghost" className="text-white font-montserrat font-light tracking-wide border border-white/30 hover:border-white/70 px-4 py-1">
                     Menu <ChevronDown className="ml-1 h-4 w-4" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-screen p-0 border-none bg-brand-blue/95">
+                <PopoverContent className="w-screen p-0 border-none bg-brand-blue/95 backdrop-blur-md">
                   <div className="flex flex-col p-3">
                     {mainLinks.map((link, index) => (
                       <Link 
                         key={index}
                         to={link.href}
-                        className="py-3 px-4 text-white hover:bg-brand-darkBlue/80 rounded-md"
+                        className="py-3 px-4 text-white font-montserrat font-light hover:bg-brand-darkBlue/80 rounded-sm"
                       >
                         {translate(link.labelKey, translations[link.labelKey as keyof typeof translations])}
                       </Link>
@@ -207,7 +232,7 @@ const AnimatedHero = () => {
                     
                     {/* Option de langue pour mobile */}
                     <div className="py-3 px-4 text-white">
-                      <p className="mb-2 font-semibold">{translate('language', translations.language)}</p>
+                      <p className="mb-2 font-montserrat font-semibold">{translate('language', translations.language)}</p>
                       <LanguageSwitcher />
                     </div>
                   </div>
@@ -220,10 +245,10 @@ const AnimatedHero = () => {
         {/* Contenu central du hero avec titre et QuickSearch superposés */}
         <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full z-10 px-4">
           <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
+            <h1 className="font-playfair text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
               {translate('welcomeHeader', translations.welcomeHeader)}
             </h1>
-            <p className="text-lg md:text-xl text-white mb-6 max-w-2xl mx-auto drop-shadow-md">
+            <p className="font-montserrat text-lg md:text-xl text-white mb-6 max-w-2xl mx-auto drop-shadow-md">
               {translate('welcomeSubtext', translations.welcomeSubtext)}
             </p>
           </div>

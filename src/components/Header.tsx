@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search, Car, ShoppingCart, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { useLanguage, languageFlags, languageNames } from '@/contexts/LanguageCo
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { language, setLanguage, translate } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,6 +67,14 @@ const Header = () => {
       title: cartTitles[language],
       description: cartMessages[language],
     });
+  };
+
+  // Vérifier si un chemin est actif (pour le soulignement du menu actif)
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
   };
 
   // Translations for menu items
@@ -160,22 +169,31 @@ const Header = () => {
             />
           </button>
 
-          {/* Desktop menu */}
-          <div className="hidden lg:flex items-center gap-1">
+          {/* Desktop menu - Refonte avec les nouveaux styles */}
+          <div className="hidden lg:flex items-center gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+                  className={cn(
+                    "menu-item",
+                    isActive('/vehicules') && "menu-item-active"
+                  )}
                 >
                   {translate('vehicles', menuTranslations.vehicles)} <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/occasion')}>
+              <DropdownMenuContent className="menu-dropdown">
+                <DropdownMenuItem 
+                  className="sub-menu-item" 
+                  onSelect={() => handleNavigation('/vehicules/occasion')}
+                >
                   {translate('usedVehicles', menuTranslations.usedVehicles)}
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => handleNavigation('/vehicules/utilitaires')}>
+                <DropdownMenuItem 
+                  className="sub-menu-item" 
+                  onSelect={() => handleNavigation('/vehicules/utilitaires')}
+                >
                   {translate('commercialVehicles', menuTranslations.commercialVehicles)}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -183,7 +201,10 @@ const Header = () => {
 
             <Button 
               variant="ghost" 
-              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              className={cn(
+                "menu-item",
+                isActive('/services') && "menu-item-active"
+              )}
               onClick={() => handleNavigation('/services')}
             >
               {translate('services', menuTranslations.services)}
@@ -191,7 +212,10 @@ const Header = () => {
 
             <Button 
               variant="ghost" 
-              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              className={cn(
+                "menu-item",
+                isActive('/financement') && "menu-item-active"
+              )}
               onClick={() => handleNavigation('/financement')}
             >
               {translate('financing', menuTranslations.financing)}
@@ -199,7 +223,10 @@ const Header = () => {
 
             <Button 
               variant="ghost" 
-              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              className={cn(
+                "menu-item",
+                isActive('/rachat') && "menu-item-active"
+              )}
               onClick={() => handleNavigation('/rachat')}
             >
               {translate('buyback', menuTranslations.buyback)}
@@ -207,7 +234,10 @@ const Header = () => {
 
             <Button 
               variant="ghost" 
-              className="px-4 py-2 text-gray-800 hover:text-brand-blue font-medium"
+              className={cn(
+                "menu-item",
+                isActive('/a-propos') && "menu-item-active"
+              )}
               onClick={() => handleNavigation('/a-propos')}
             >
               {translate('about', menuTranslations.about)}
@@ -222,28 +252,28 @@ const Header = () => {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="flex items-center border-gray-300"
+                  className="flex items-center border-gray-300 font-montserrat"
                 >
                   <Globe className="h-4 w-4 mr-1" /> {languageFlags[language]} {language}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => setLanguage('FR')}>
+              <DropdownMenuContent align="end" className="menu-dropdown w-40">
+                <DropdownMenuItem className="language-menu-item" onSelect={() => setLanguage('FR')}>
                   🇫🇷 Français
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLanguage('EN')}>
+                <DropdownMenuItem className="language-menu-item" onSelect={() => setLanguage('EN')}>
                   🇬🇧 English
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLanguage('ES')}>
+                <DropdownMenuItem className="language-menu-item" onSelect={() => setLanguage('ES')}>
                   🇪🇸 Español
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLanguage('IT')}>
+                <DropdownMenuItem className="language-menu-item" onSelect={() => setLanguage('IT')}>
                   🇮🇹 Italiano
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLanguage('PT')}>
+                <DropdownMenuItem className="language-menu-item" onSelect={() => setLanguage('PT')}>
                   🇵🇹 Português
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLanguage('RO')}>
+                <DropdownMenuItem className="language-menu-item" onSelect={() => setLanguage('RO')}>
                   🇷🇴 Română
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -253,7 +283,7 @@ const Header = () => {
             <Button 
               variant="outline"
               size="sm"
-              className="flex items-center border-gray-300 relative"
+              className="flex items-center border-gray-300 font-montserrat relative"
               onClick={handleCartClick}
             >
               <ShoppingCart className="h-4 w-4 mr-1" /> 
@@ -330,7 +360,7 @@ const Header = () => {
             <div>
               <Button
                 variant="ghost"
-                className="w-full flex justify-between items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                className="w-full flex justify-between items-center px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                 onClick={() => toggleDropdown('vehicles-mobile')}
                 aria-expanded={activeDropdown === 'vehicles-mobile'}
                 aria-haspopup="true"
@@ -346,14 +376,14 @@ const Header = () => {
                   <Button
                     variant="ghost"
                     onClick={() => handleNavigation('/vehicules/occasion')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     {translate('usedVehicles', menuTranslations.usedVehicles)}
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => handleNavigation('/vehicules/utilitaires')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     {translate('commercialVehicles', menuTranslations.commercialVehicles)}
                   </Button>
@@ -364,7 +394,7 @@ const Header = () => {
             <Button
               variant="ghost"
               onClick={() => handleNavigation('/services')}
-              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
             >
               {translate('services', menuTranslations.services)}
             </Button>
@@ -372,7 +402,7 @@ const Header = () => {
             <Button
               variant="ghost"
               onClick={() => handleNavigation('/financement')}
-              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
             >
               {translate('financing', menuTranslations.financing)}
             </Button>
@@ -380,7 +410,7 @@ const Header = () => {
             <Button
               variant="ghost"
               onClick={() => handleNavigation('/rachat')}
-              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
             >
               {translate('buyback', menuTranslations.buyback)}
             </Button>
@@ -388,7 +418,7 @@ const Header = () => {
             <Button
               variant="ghost"
               onClick={() => handleNavigation('/a-propos')}
-              className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+              className="flex items-center w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
             >
               {translate('about', menuTranslations.about)}
             </Button>
@@ -397,7 +427,7 @@ const Header = () => {
             <div>
               <Button
                 variant="ghost"
-                className="w-full flex justify-between items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                className="w-full flex justify-between items-center px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                 onClick={() => toggleDropdown('language-mobile')}
                 aria-expanded={activeDropdown === 'language-mobile'}
                 aria-haspopup="true"
@@ -413,42 +443,42 @@ const Header = () => {
                   <Button
                     variant="ghost"
                     onClick={() => setLanguage('FR')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇫🇷 Français
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => setLanguage('EN')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇬🇧 English
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => setLanguage('ES')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇪🇸 Español
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => setLanguage('IT')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇮🇹 Italiano
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => setLanguage('PT')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇵🇹 Português
                   </Button>
                   <Button
                     variant="ghost"
                     onClick={() => setLanguage('RO')}
-                    className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md"
+                    className="block w-full text-left px-3 py-2 text-base font-montserrat font-light text-gray-700 hover:bg-gray-100 rounded-md"
                   >
                     🇷🇴 Română
                   </Button>

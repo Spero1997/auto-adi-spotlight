@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -112,6 +114,39 @@
 }
 
 @layer components {
+  /* Nouveaux styles pour le menu principal */
+  .menu-item {
+    @apply font-montserrat font-light tracking-wide px-5 py-1.5 mx-1 border border-transparent rounded-sm transition-all duration-300;
+  }
+  
+  .menu-item-active {
+    @apply border-brand-gold/70 text-brand-darkBlue;
+  }
+  
+  .menu-item:hover {
+    @apply border-brand-gold/70 shadow-sm text-brand-darkBlue;
+  }
+  
+  /* Style pour les sous-menus */
+  .sub-menu-item {
+    @apply font-montserrat text-sm font-light tracking-wide px-3 py-2 border-l-2 border-transparent transition-all duration-300;
+  }
+  
+  .sub-menu-item:hover {
+    @apply border-l-2 border-brand-gold/70 bg-gray-50 text-brand-darkBlue;
+  }
+  
+  /* Style pour les conteneurs de dropdown */
+  .menu-dropdown {
+    @apply bg-white border border-gray-100 shadow-lg rounded-sm p-1 mt-1;
+  }
+  
+  /* Style pour le menu langue */
+  .language-menu-item {
+    @apply flex items-center font-montserrat text-sm font-light px-3 py-2 hover:bg-gray-50 rounded-sm transition-all duration-200;
+  }
+
+  /* Reste des styles existants */
   .btn-primary {
     @apply bg-brand-blue hover:bg-brand-darkBlue text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200;
   }
