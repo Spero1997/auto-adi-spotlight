@@ -161,18 +161,24 @@ const ChatInput: React.FC<ChatInputProps> = ({
   translate,
   language
 }) => {
-  // Utiliser localInput pour la UI seulement, sans déclencher de re-render externe
+  // État local pour affichage uniquement
   const [localInput, setLocalInput] = useState(input);
   
-  // Synchronise l'état local avec l'état parent uniquement quand l'état parent change
+  // Synchronisation unidirectionnelle - parent vers local
   useEffect(() => {
     setLocalInput(input);
   }, [input]);
   
+  // Gestionnaire qui met à jour les deux états sans redimensionnement
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    setLocalInput(newValue); // Mise à jour locale immédiate pour une UI réactive
-    setInput(newValue); // Mise à jour de l'état parent
+    setLocalInput(newValue); // Mise à jour locale immédiate pour UI
+    
+    // Délai minimal pour réduire les mises à jour d'état parent
+    // Ce qui évite les rerendus fréquents pendant la frappe
+    requestAnimationFrame(() => {
+      setInput(newValue); // Mise à jour de l'état parent
+    });
   };
 
   return (
@@ -187,9 +193,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
           placeholder={translate('placeholder', translations.placeholder)}
           className="flex-1 p-2 h-10 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-brand-gold/50 font-montserrat text-sm"
           autoComplete="off"
-          autoFocus={true}
-          spellCheck="false"
           aria-label={translate('placeholder', translations.placeholder)}
+          style={{ fontSize: '14px' }} /* Taille de police fixe */
         />
         <Button 
           type="submit" 
@@ -216,14 +221,15 @@ const LuxuryChatbot: React.FC = () => {
   
   const { messages, sendMessage, input, setInput, isTyping } = useChatMessages();
 
+  // Scroll automatique vers le bas lorsque nouveaux messages
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  // Effet de focus fixe - utilisation d'un timeout et d'un focus direct
+  // Focus sur l'entrée lorsque le chat est ouvert
   useEffect(() => {
     if (isOpen && !isMinimized) {
-      // Focus initial avec un délai pour permettre aux animations de se terminer
+      // Délai pour permettre aux animations de se terminer
       const timeoutId = setTimeout(() => {
         if (inputRef.current) {
           inputRef.current.focus();
@@ -244,7 +250,7 @@ const LuxuryChatbot: React.FC = () => {
     if (e) e.preventDefault();
     if (input.trim()) {
       sendMessage(input);
-      // Maintenir le focus après l'envoi d'un message
+      // Maintenir le focus après l'envoi
       requestAnimationFrame(() => {
         if (inputRef.current) {
           inputRef.current.focus();
@@ -262,7 +268,7 @@ const LuxuryChatbot: React.FC = () => {
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
-    // Maintenir le focus après l'agrandissement/la réduction
+    // Maintenir le focus
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
@@ -275,7 +281,6 @@ const LuxuryChatbot: React.FC = () => {
       return (
         <Drawer open={isOpen} onOpenChange={(open) => {
           setIsOpen(open);
-          // Fixé: assurer le focus lorsque le tiroir s'ouvre
           if (open) {
             setTimeout(() => {
               if (inputRef.current) inputRef.current.focus();
@@ -325,7 +330,6 @@ const LuxuryChatbot: React.FC = () => {
         setIsOpen(open);
         if (open) {
           setIsMinimized(false);
-          // Fixé: assurer le focus lorsque la boîte de dialogue s'ouvre
           setTimeout(() => {
             if (inputRef.current) inputRef.current.focus();
           }, 300);
@@ -352,17 +356,27 @@ const LuxuryChatbot: React.FC = () => {
           )}
         </DialogTrigger>
         <DialogContent 
-          className={cn(
-            "p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl transition-all",
-            isExpanded ? "fixed inset-4 max-w-none h-auto" : "sm:max-w-[400px] h-[500px]"
-          )}
+          className="p-0 border border-brand-gold/30 rounded-xl overflow-hidden shadow-xl sm:max-w-[400px] w-[400px] h-[500px]"
           style={{ 
-            minHeight: isExpanded ? '400px' : '500px',
-            // Définir une largeur et une hauteur fixes pour éviter le zoom lors de la frappe
-            width: isExpanded ? 'auto' : '400px',
-            height: '500px'
+            minHeight: '500px', 
+            maxHeight: '500px',
+            width: '400px',
+            transform: 'translateZ(0)', // Force GPU acceleration
+            willChange: 'transform', // Optimise les changements
+            position: 'fixed',
+            bottom: isExpanded ? '20px' : 'auto',
+            right: isExpanded ? '20px' : 'auto',
+            // Définir des dimensions fixes pour éviter le zoom
+            fontSize: '16px' // Taille de police fixe
           }}
           aria-labelledby="chat-title"
+          onPointerDownCapture={(e) => {
+            // Empêcher les événements de zoom sur mobile
+            if (e.pointerType === 'touch' && e.target instanceof HTMLElement && 
+                !e.target.closest('input') && !e.target.closest('button')) {
+              e.preventDefault();
+            }
+          }}
         >
           <div className="flex flex-col h-full">
             <ChatHeader 
