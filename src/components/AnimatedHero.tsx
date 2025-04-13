@@ -53,7 +53,7 @@ const AnimatedHero = () => {
     };
   }, [scrolled]);
 
-  // Traductions pour les liens du menu
+  // Traductions pour les liens du menu et le texte d'accueil
   const translations = {
     services: {
       FR: "Services",
@@ -102,6 +102,23 @@ const AnimatedHero = () => {
       IT: "Contatto",
       PT: "Contato",
       RO: "Contact"
+    },
+    // Nouvelles traductions pour le texte de bienvenue
+    welcomeHeader: {
+      FR: "Bienvenue chez Auto ADI",
+      EN: "Welcome to Auto ADI",
+      ES: "Bienvenido a Auto ADI",
+      IT: "Benvenuti in Auto ADI",
+      PT: "Bem-vindo à Auto ADI",
+      RO: "Bine ați venit la Auto ADI"
+    },
+    welcomeSubtext: {
+      FR: "Votre partenaire de confiance pour l'importation et la vente de véhicules d'occasion de qualité",
+      EN: "Your trusted partner for importing and selling quality used vehicles",
+      ES: "Su socio de confianza para la importación y venta de vehículos usados de calidad",
+      IT: "Il vostro partner affidabile per l'importazione e la vendita di veicoli usati di qualità",
+      PT: "Seu parceiro confiável para importação e venda de veículos usados de qualidade",
+      RO: "Partenerul dvs. de încredere pentru importul și vânzarea de vehicule rulate de calitate"
     }
   };
 
@@ -175,10 +192,10 @@ const AnimatedHero = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full z-10 px-4">
           <div className="text-center mb-8 md:mb-12">
             <h1 className="text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
-              Bienvenue chez Auto ADI
+              {translate('welcomeHeader', translations.welcomeHeader)}
             </h1>
             <p className="text-lg md:text-xl text-white mb-6 max-w-2xl mx-auto drop-shadow-md">
-              Votre partenaire de confiance pour l'importation et la vente de véhicules d'occasion de qualité
+              {translate('welcomeSubtext', translations.welcomeSubtext)}
             </p>
           </div>
           
