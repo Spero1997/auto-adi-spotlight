@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
@@ -18,25 +17,21 @@ import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
 import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
+import { addKiaSorento } from '@/scripts/addKiaSorento';
 
 const Index = () => {
   useEffect(() => {
-    // Utiliser une clé de localStorage pour vérifier si c'est la première visite
     const firstLoadKey = 'indexPageFirstLoad';
     const isFirstLoad = !localStorage.getItem(firstLoadKey);
     
     if (isFirstLoad) {
-      // Marquer comme chargé pour les prochaines visites
       localStorage.setItem(firstLoadKey, 'loaded');
       
-      // Nettoyer les catalogues (supprimer les véhicules sans images)
       cleanVehicleCatalogs();
       
-      // Vérification et ajout silencieux des véhicules
       const standardVehicles = getImportedVehicles('standard');
       const featuredVehicles = getImportedVehicles('featured');
       
-      // Vérifier silencieusement l'existence de chaque véhicule et l'ajouter si nécessaire
       const mercedesInStandard = standardVehicles.find(
         v => v.brand === "Mercedes" && 
             v.model === "CLA 250 AMG" && 
@@ -56,8 +51,6 @@ const Index = () => {
         console.log("Mercedes CLA 250 AMG déjà présente dans les deux catalogues");
       }
 
-      // Vérifications silencieuses des autres véhicules
-      // BMW X5
       const bmwInFeatured = featuredVehicles.find(
         v => v.brand === "BMW" && v.model === "X5 XDrive 40e M-Sport" && v.year === 2018
       );
@@ -66,7 +59,6 @@ const Index = () => {
         addBMWX5();
       }
       
-      // Mercedes Class C Coupé
       const mercedesClassCInFeatured = featuredVehicles.find(
         v => v.brand === "Mercedes" && v.model === "Benz Class C Coupé 4Matic" && v.year === 2019
       );
@@ -75,7 +67,6 @@ const Index = () => {
         addMercedesClassC();
       }
       
-      // Porsche Cayenne
       const porscheCayenneInFeatured = featuredVehicles.find(
         v => v.brand === "Porsche" && v.model === "Cayenne Turbo PAW" && v.year === 2018
       );
@@ -84,7 +75,6 @@ const Index = () => {
         addPorscheCayenne();
       }
       
-      // Audi RS6
       const audiRS6InFeatured = featuredVehicles.find(
         v => v.brand === "Audi" && v.model === "RS 6" && v.year === 2020
       );
@@ -93,7 +83,6 @@ const Index = () => {
         addAudiRS6();
       }
       
-      // Mercedes GLC
       const mercedesGLCInStandard = standardVehicles.find(
         v => v.brand === "Mercedes" && v.model === "Benz GLC 350e 326 CV 4Matic AMG" && v.year === 2018
       );
@@ -102,7 +91,6 @@ const Index = () => {
         addMercedesGLC();
       }
       
-      // Mercedes Classe E
       const mercedesClasseEInStandard = standardVehicles.find(
         v => v.brand === "Mercedes" && v.model === "Benz Classe E" && v.year === 2018
       );
@@ -111,7 +99,6 @@ const Index = () => {
         addMercedesClasseE();
       }
       
-      // Mercedes CLA 200
       const mercedesCLA200InStandard = standardVehicles.find(
         v => v.brand === "Mercedes" && v.model === "Benz CLA 200 CDI 136 CV AMG" && v.year === 2014
       );
@@ -120,7 +107,6 @@ const Index = () => {
         addMercedesCLA200();
       }
       
-      // Mercedes Classe C 180
       const mercedesClassC180InStandard = standardVehicles.find(
         v => v.brand === "Mercedes" && v.model === "Benz Classe C 180 AMG" && v.year === 2014
       );
@@ -129,12 +115,20 @@ const Index = () => {
         addMercedesClassC180();
       }
       
-      // Mettre à jour l'image de la Kia Sorento
+      const kiaSorentoInStandard = standardVehicles.find(
+        v => v.brand === "Kia" && 
+            v.model === "Sorento 1.6 T-GDI Hybride rechargeable" && 
+            v.year === 2021
+      );
+      
+      if (!kiaSorentoInStandard) {
+        console.log("Kia Sorento non trouvée dans le catalogue standard, ajout au catalogue...");
+        addKiaSorento();
+      }
+      
       updateKiaSorentoImage();
       
-      // Import dynamique du script de mise à jour des images
       import('@/scripts/updateVehicleImages').then(module => {
-        // Mettre à jour les images des véhicules spécifiés
         module.updateVehicleImages();
       });
     }
@@ -148,23 +142,19 @@ const Index = () => {
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
-        {/* Le Header standard est maintenant masqué sur la page d'accueil puisque nous utilisons AnimatedHero à la place */}
         <div className="hidden">
           <Header />
         </div>
         
         <main className="flex-grow">
-          {/* AnimatedHero est ajouté directement dans App.tsx, pas besoin de l'ajouter ici */}
           <Benefits />
           <FeaturedCars featuredOnly={true} />
           
-          {/* Ajout de la section des conditions d'achat avec une classe spécifique pour le débogage */}
           <div id="conditions-section" className="w-full">
             <ConditionsHighlight />
           </div>
           
           <TestimonialSection />
-          {/* Removed CallToAction component */}
         </main>
         
         <Footer />

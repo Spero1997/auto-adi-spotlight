@@ -184,10 +184,11 @@ export const addImportedVehicle = (vehicle: ImportedVehicle, catalogType: 'stand
     const updatedVehicles = [...vehicles, vehicleWithId];
     saveImportedVehicles(updatedVehicles, catalogType);
     
-    // Ne pas afficher de toast pour la Porsche Cayenne ou BMW X5
+    // Ne pas afficher de toast pour la Porsche Cayenne, BMW X5 ou Kia Sorento
     const isSilentVehicle = 
       (vehicleWithId.brand === "Porsche" && vehicleWithId.model === "Cayenne Turbo PAW") ||
-      (vehicleWithId.brand === "BMW" && vehicleWithId.model === "X5 XDrive 40e M-Sport");
+      (vehicleWithId.brand === "BMW" && vehicleWithId.model === "X5 XDrive 40e M-Sport") ||
+      (vehicleWithId.brand === "Kia" && vehicleWithId.model === "Sorento 1.6 T-GDI Hybride rechargeable");
     
     if (!isSilentVehicle) {
       toast.success(`Véhicule ajouté au catalogue ${catalogType === 'featured' ? 'vedette' : 'standard'}`);
