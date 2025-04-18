@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, Info, Phone } from 'lucide-react';
@@ -18,21 +19,12 @@ const DesktopNavigation = () => {
     <div className="hidden lg:flex items-center space-x-4">
       <NavigationMenu>
         <NavigationMenuList>
-          {/* Vehicles Menu - Simplified */}
+          {/* Vehicles Menu - Simplified to only one option */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-700">
+            <Link to="/vehicules" className="flex items-center px-4 py-2 text-gray-700 hover:text-blue-600">
               <Car className="w-4 h-4 mr-2" />
-              {translate('vehicles', menuTranslations.vehicles)}
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[200px] gap-2 p-3">
-                <li>
-                  <Link to="/vehicules" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('allVehicles', menuTranslations.allVehicles)}
-                  </Link>
-                </li>
-              </ul>
-            </NavigationMenuContent>
+              {translate('allVehicles', menuTranslations.allVehicles)}
+            </Link>
           </NavigationMenuItem>
 
           {/* Services Menu */}

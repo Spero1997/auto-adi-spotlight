@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, Info, Phone } from 'lucide-react';
@@ -20,17 +21,12 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
       className="lg:hidden bg-white shadow-lg overflow-hidden"
     >
       <div className="container mx-auto px-4 py-4 space-y-4">
-        {/* Vehicles Section - Simplified */}
+        {/* Vehicles Link - Single option only */}
         <div className="space-y-2">
-          <div className="font-medium text-gray-800 flex items-center">
+          <Link to="/vehicules" className="flex items-center font-medium text-gray-800 hover:bg-gray-100 px-4 py-2 rounded">
             <Car className="w-4 h-4 mr-2" />
-            {translate('vehicles', menuTranslations.vehicles)}
-          </div>
-          <div className="grid grid-cols-1 gap-2">
-            <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              {translate('allVehicles', menuTranslations.allVehicles)}
-            </Link>
-          </div>
+            {translate('allVehicles', menuTranslations.allVehicles)}
+          </Link>
         </div>
 
         {/* Services Section */}
