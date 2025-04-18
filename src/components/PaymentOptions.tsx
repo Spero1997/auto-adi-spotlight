@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Check, CreditCard, Landmark, Gift, AlertCircle, FileUp, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -280,10 +279,7 @@ const PaymentOptions = ({
     setSelectedMethod(method);
     onPaymentMethodChange(method);
     
-    // Afficher les détails bancaires si virement bancaire sélectionné
     setShowBankDetails(method === 'bank-transfer');
-    
-    // Afficher les champs pour coupon si coupon de recharge sélectionné
     setShowCouponFields(method === 'recharge-coupon');
   };
 
@@ -291,7 +287,6 @@ const PaymentOptions = ({
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      // Vérifier la taille du fichier (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
         toast.error("Le fichier est trop volumineux. Maximum 10MB autorisé.");
         return;
@@ -379,26 +374,26 @@ const PaymentOptions = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label className="font-medium">{translate('beneficiary', translations.beneficiary)}</Label>
-                <Input value="Lucia Dzujkova" readOnly className="bg-white" />
+                <Input value="Antonino Truncali" readOnly className="bg-white" />
               </div>
               <div>
                 <Label className="font-medium">{translate('iban', translations.iban)}</Label>
-                <Input value="LT453500010018283529" readOnly className="bg-white font-mono" />
+                <Input value="IT97E3608105138904017004025" readOnly className="bg-white font-mono" />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label className="font-medium">{translate('swift', translations.swift)}</Label>
-                <Input value="EVIULT2VXXX" readOnly className="bg-white font-mono" />
+                <Input value="PPAYITR1XXX" readOnly className="bg-white font-mono" />
               </div>
               <div>
                 <Label className="font-medium">{translate('bank', translations.bank)}</Label>
-                <Input value="Paysera LT, UAB" readOnly className="bg-white" />
+                <Input value="POSTEPAY" readOnly className="bg-white" />
               </div>
             </div>
             <div>
               <Label className="font-medium">{translate('address', translations.address)}</Label>
-              <Input value="Pilaitės pr. 16, Vilnius, LT-04352, Lituanie" readOnly className="bg-white" />
+              <Input value="" readOnly className="bg-white" />
             </div>
           </CardContent>
         </Card>
