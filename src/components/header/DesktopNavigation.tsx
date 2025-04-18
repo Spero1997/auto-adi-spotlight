@@ -32,6 +32,14 @@ const DesktopNavigation = () => {
                     to="/vehicules" 
                     className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
                   >
+                    {translate('allVehicles', menuTranslations.allVehicles)}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/vehicules" 
+                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                  >
                     {translate('newVehicles', menuTranslations.newVehicles)}
                   </Link>
                 </li>
@@ -41,6 +49,14 @@ const DesktopNavigation = () => {
                     className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
                   >
                     {translate('usedVehicles', menuTranslations.usedVehicles)}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/utilitaires" 
+                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                  >
+                    {translate('utility', menuTranslations.utility)}
                   </Link>
                 </li>
               </ul>
@@ -69,6 +85,22 @@ const DesktopNavigation = () => {
                     className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
                   >
                     {translate('warranty', menuTranslations.warranty)}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/livraison" 
+                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                  >
+                    {translate('delivery', menuTranslations.delivery)}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/rachat" 
+                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                  >
+                    {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
                   </Link>
                 </li>
               </ul>

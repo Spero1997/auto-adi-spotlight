@@ -43,6 +43,12 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
                     to="/vehicules" 
                     className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
                   >
+                    {translate('allVehicles', menuTranslations.allVehicles)}
+                  </Link>
+                  <Link 
+                    to="/vehicules" 
+                    className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
+                  >
                     {translate('newVehicles', menuTranslations.newVehicles)}
                   </Link>
                   <Link 
@@ -50,6 +56,12 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
                     className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
                   >
                     {translate('usedVehicles', menuTranslations.usedVehicles)}
+                  </Link>
+                  <Link 
+                    to="/utilitaires" 
+                    className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
+                  >
+                    {translate('utility', menuTranslations.utility)}
                   </Link>
                 </div>
               </AccordionContent>
@@ -76,6 +88,18 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
                     className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
                   >
                     {translate('warranty', menuTranslations.warranty)}
+                  </Link>
+                  <Link 
+                    to="/livraison" 
+                    className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
+                  >
+                    {translate('delivery', menuTranslations.delivery)}
+                  </Link>
+                  <Link 
+                    to="/rachat" 
+                    className="block text-xl px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
+                  >
+                    {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
                   </Link>
                 </div>
               </AccordionContent>

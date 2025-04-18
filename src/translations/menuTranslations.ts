@@ -159,6 +159,14 @@ export const menuTranslations = {
     PT: "Venda seu veículo rapidamente",
     RO: "Vindeți-vă vehiculul rapid"
   },
+  allVehicles: {
+    FR: "Tous nos véhicules",
+    EN: "All our vehicles",
+    ES: "Todos nuestros vehículos",
+    IT: "Tutti i nostri veicoli",
+    PT: "Todos os nossos veículos",
+    RO: "Toate vehiculele noastre"
+  },
   language: {
     FR: "Langue",
     EN: "Language",
