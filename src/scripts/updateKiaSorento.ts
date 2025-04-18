@@ -1,5 +1,6 @@
 
 import { getImportedVehicles, saveImportedVehicles } from '@/utils/vehicleImportService';
+import { toast } from 'sonner';
 
 export const updateKiaSorentoImage = () => {
   try {
@@ -17,32 +18,24 @@ export const updateKiaSorentoImage = () => {
     if (kiaSorentoIndex !== -1) {
       console.log("Kia Sorento trouvée dans le catalogue standard, mise à jour de l'image...");
       
-      // Vérifier si l'image est déjà correcte
-      const currentImage = standardVehicles[kiaSorentoIndex].image;
-      const targetImage = '/lovable-uploads/1d43c09f-608c-456e-bb7f-ae06eb9bab3b.png';
+      // Mettre à jour l'image avec une image par défaut qui fonctionne
+      standardVehicles[kiaSorentoIndex] = {
+        ...standardVehicles[kiaSorentoIndex],
+        image: 'https://via.placeholder.com/800x600/007bff/ffffff?text=Kia+Sorento'
+      };
       
-      // Ne mettre à jour que si l'image actuelle est différente de l'image cible ou un placeholder
-      if (currentImage !== targetImage && (currentImage?.includes('placeholder') || !currentImage)) {
-        // Mettre à jour l'image avec l'image correcte
-        standardVehicles[kiaSorentoIndex] = {
-          ...standardVehicles[kiaSorentoIndex],
-          image: targetImage
-        };
-        
-        // Sauvegarder les modifications
-        saveImportedVehicles(standardVehicles, 'standard');
-        console.log("Image de la Kia Sorento mise à jour avec succès !");
-        return true;
-      } else {
-        console.log("L'image de la Kia Sorento est déjà à jour.");
-        return false;
-      }
+      // Sauvegarder les modifications
+      saveImportedVehicles(standardVehicles, 'standard');
+      console.log("Image de la Kia Sorento mise à jour avec succès !");
+      toast.success("Image de la Kia Sorento mise à jour");
+      return true;
     } else {
       console.log("Kia Sorento non trouvée dans le catalogue standard");
       return false;
     }
   } catch (error) {
     console.error("Erreur lors de la mise à jour de l'image de la Kia Sorento:", error);
+    toast.error("Erreur lors de la mise à jour de l'image");
     return false;
   }
 };

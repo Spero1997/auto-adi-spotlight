@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Languages } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import {
@@ -18,16 +18,11 @@ import Logo from './Logo';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from './LanguageSwitcher';
 import { menuTranslations } from '@/translations/menuTranslations';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -67,11 +62,9 @@ const Header = () => {
             <Logo className={cn('h-10 w-auto', 'text-blue-600')} />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-1 w-full justify-between">
             <NavigationMenu>
               <NavigationMenuList>
-                {/* Vehicles Menu Item */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-gray-700">
                     {translate('vehicles', menuTranslations.vehicles)}
@@ -130,7 +123,6 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                {/* Services Menu Item */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-gray-700">
                     {translate('services', menuTranslations.services)}
@@ -196,18 +188,16 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                {/* About Us Link */}
                 <NavigationMenuItem>
-                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
+                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
                     <Link to="/a-propos">
                       {translate('aboutUs', menuTranslations.aboutUs)}
                     </Link>
                   </div>
                 </NavigationMenuItem>
 
-                {/* Contact Link */}
                 <NavigationMenuItem>
-                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
+                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
                     <Link to="/contact">
                       {translate('contact', menuTranslations.contact)}
                     </Link>
@@ -215,100 +205,40 @@ const Header = () => {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-          </div>
-          
-          {/* Language Switcher for Desktop */}
-          <div className="hidden lg:block">
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="flex items-center gap-2 border-brand-blue/30 text-brand-blue font-semibold">
-                  <Languages className="h-5 w-5" />
-                  <span>{language}</span>
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 font-montserrat font-light tracking-wide px-5 py-1.5 hover:bg-gray-100 rounded-md transition-all duration-300"
+                >
+                  <Globe className="mr-1 h-4 w-4 text-gray-700" />
+                  {translate('language', menuTranslations.language)}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-3 w-[470px]"
+                className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
               >
-                <div className="text-sm font-medium text-gray-700 mb-2 px-2 flex items-center gap-2">
-                  <Languages className="h-4 w-4 text-brand-blue" />
-                  {translate('selectLanguage', {
-                    FR: 'Sélectionnez une langue',
-                    EN: 'Select a language',
-                    ES: 'Seleccione un idioma',
-                    IT: 'Seleziona una lingua',
-                    PT: 'Selecione um idioma',
-                    RO: 'Selectați o limbă'
-                  })}
-                </div>
                 <LanguageSwitcher />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
           
-          {/* Mobile Navigation */}
-          <div className="flex items-center lg:hidden">
-            {/* Language Switcher Button for Mobile */}
-            <Drawer>
-              <DrawerTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="mr-2 flex items-center gap-1 border-brand-blue/30 text-brand-blue"
-                >
-                  <Languages className="h-4 w-4" />
-                  <span>{language}</span>
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent className="px-4 pb-6 pt-2">
-                <div className="mx-auto w-full max-w-sm">
-                  <div className="flex items-center space-x-2 mb-4 p-2 border-b border-gray-100">
-                    <Languages className="h-6 w-6 text-brand-blue" />
-                    <div className="font-semibold text-brand-darkBlue text-lg">
-                      {translate('selectLanguage', {
-                        FR: 'Sélectionnez une langue',
-                        EN: 'Select a language',
-                        ES: 'Seleccione un idioma',
-                        IT: 'Seleziona una lingua',
-                        PT: 'Selecione um idioma',
-                        RO: 'Selectați o limbă'
-                      })}
-                    </div>
-                  </div>
-                  <LanguageSwitcher />
-                  <DrawerClose className="mt-4 w-full">
-                    <Button variant="outline" className="w-full">
-                      {translate('close', {
-                        FR: 'Fermer',
-                        EN: 'Close',
-                        ES: 'Cerrar',
-                        IT: 'Chiudi',
-                        PT: 'Fechar',
-                        RO: 'Închide'
-                      })}
-                    </Button>
-                  </DrawerClose>
-                </div>
-              </DrawerContent>
-            </Drawer>
-            
-            {/* Hamburger Menu Button */}
-            <button
-              onClick={toggleMenu}
-              className="p-2 focus:outline-none"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? (
-                <X className="text-gray-700" />
-              ) : (
-                <Menu className="text-gray-700" />
-              )}
-            </button>
-          </div>
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden p-2 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? (
+              <X className="text-gray-700" />
+            ) : (
+              <Menu className="text-gray-700" />
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -318,64 +248,51 @@ const Header = () => {
             className="lg:hidden bg-white shadow-lg overflow-hidden"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
-              {/* Language Switcher (Kept at top) */}
-              <div className="border-b border-gray-200 pb-3 mb-2">
-                <div className="flex items-center space-x-2 mb-3">
-                  <Languages className="h-5 w-5 text-brand-blue" />
-                  <div className="font-semibold text-brand-darkBlue">{translate('language', menuTranslations.language)}</div>
-                </div>
-                <LanguageSwitcher />
-              </div>
-
-              {/* Vehicles Menu */}
               <div className="space-y-2">
                 <div className="font-medium text-gray-800">{translate('vehicles', menuTranslations.vehicles)}</div>
-                <div className="grid grid-cols-2 gap-2">
-                  <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('allVehicles', menuTranslations.allVehicles)}
-                  </Link>
-                  <Link to="/vehicules/neufs" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('newVehicles', menuTranslations.newVehicles)}
-                  </Link>
-                  <Link to="/vehicules/occasion" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('usedVehicles', menuTranslations.usedVehicles)}
-                  </Link>
-                  <Link to="/vehicules/utilitaires" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('utility', menuTranslations.utility)}
-                  </Link>
-                </div>
+                <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('allVehicles', menuTranslations.allVehicles)}
+                </Link>
+                <Link to="/vehicules/neufs" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('newVehicles', menuTranslations.newVehicles)}
+                </Link>
+                <Link to="/vehicules/occasion" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('usedVehicles', menuTranslations.usedVehicles)}
+                </Link>
+                <Link to="/vehicules/utilitaires" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('utility', menuTranslations.utility)}
+                </Link>
               </div>
 
-              {/* Services Menu */}
               <div className="space-y-2">
                 <div className="font-medium text-gray-800">{translate('services', menuTranslations.services)}</div>
-                <div className="grid grid-cols-2 gap-2">
-                  <Link to="/services" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('ourServices', menuTranslations.ourServices)}
-                  </Link>
-                  <Link to="/financement" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('financing', menuTranslations.financing)}
-                  </Link>
-                  <Link to="/garantie" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('warranty', menuTranslations.warranty)}
-                  </Link>
-                  <Link to="/livraison" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('delivery', menuTranslations.delivery)}
-                  </Link>
-                  <Link to="/rachat" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
-                  </Link>
-                </div>
+                <Link to="/services" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('ourServices', menuTranslations.ourServices)}
+                </Link>
+                <Link to="/financement" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('financing', menuTranslations.financing)}
+                </Link>
+                <Link to="/garantie" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('warranty', menuTranslations.warranty)}
+                </Link>
+                <Link to="/livraison" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('delivery', menuTranslations.delivery)}
+                </Link>
+                <Link to="/rachat" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                  {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
+                </Link>
               </div>
 
-              {/* About & Contact Links */}
-              <div className="grid grid-cols-2 gap-2">
-                <Link to="/a-propos" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  {translate('aboutUs', menuTranslations.aboutUs)}
-                </Link>
-                <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                  {translate('contact', menuTranslations.contact)}
-                </Link>
+              <Link to="/a-propos" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                {translate('aboutUs', menuTranslations.aboutUs)}
+              </Link>
+              <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+                {translate('contact', menuTranslations.contact)}
+              </Link>
+              
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="font-medium text-gray-800 mb-2">{translate('language', menuTranslations.language)}</div>
+                <LanguageSwitcher />
               </div>
             </div>
           </motion.div>
