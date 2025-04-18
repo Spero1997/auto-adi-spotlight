@@ -31,12 +31,6 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
             <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
               {translate('allVehicles', menuTranslations.allVehicles)}
             </Link>
-            <Link to="/vehicules/neufs" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              {translate('newVehicles', menuTranslations.newVehicles)}
-            </Link>
-            <Link to="/vehicules/occasion" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              {translate('usedVehicles', menuTranslations.usedVehicles)}
-            </Link>
           </div>
         </div>
 

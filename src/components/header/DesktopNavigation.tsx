@@ -32,16 +32,6 @@ const DesktopNavigation = () => {
                     {translate('allVehicles', menuTranslations.allVehicles)}
                   </Link>
                 </li>
-                <li>
-                  <Link to="/vehicules/neufs" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('newVehicles', menuTranslations.newVehicles)}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/vehicules/occasion" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('usedVehicles', menuTranslations.usedVehicles)}
-                  </Link>
-                </li>
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
