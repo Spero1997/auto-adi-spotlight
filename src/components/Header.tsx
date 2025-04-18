@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -63,166 +62,167 @@ const Header = () => {
           </Link>
 
           <div className="hidden lg:flex items-center space-x-1 w-full justify-between">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-gray-700">
-                    {translate('vehicles', menuTranslations.vehicles)}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      <li className="row-span-3">
-                        <NavigationMenuLink asChild>
+            <div className="flex items-center space-x-1">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-gray-700">
+                      {translate('vehicles', menuTranslations.vehicles)}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <li className="row-span-3">
+                          <NavigationMenuLink asChild>
+                            <Link
+                              className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-500 to-blue-700 p-6 no-underline outline-none focus:shadow-md"
+                              to="/vehicules"
+                            >
+                              <div className="mt-4 mb-2 text-lg font-medium text-white">
+                                {translate('allVehicles', menuTranslations.allVehicles)}
+                              </div>
+                              <p className="text-sm leading-tight text-white/90">
+                                {translate('allVehicles', menuTranslations.allVehicles)}
+                              </p>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                        <li>
                           <Link
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-500 to-blue-700 p-6 no-underline outline-none focus:shadow-md"
-                            to="/vehicules"
+                            to="/vehicules/neufs"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
                           >
-                            <div className="mt-4 mb-2 text-lg font-medium text-white">
-                              {translate('allVehicles', menuTranslations.allVehicles)}
-                            </div>
-                            <p className="text-sm leading-tight text-white/90">
-                              {translate('allVehicles', menuTranslations.allVehicles)}
+                            <div className="text-sm font-medium leading-none">{translate('newVehicles', menuTranslations.newVehicles)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('latestModels', menuTranslations.latestModels)}
                             </p>
                           </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <Link
-                          to="/vehicules/neufs"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('newVehicles', menuTranslations.newVehicles)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('latestModels', menuTranslations.latestModels)}
-                          </p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/vehicules/occasion"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('usedVehicles', menuTranslations.usedVehicles)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('certifiedUsed', menuTranslations.certifiedUsed)}
-                          </p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/vehicules/utilitaires"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('utility', menuTranslations.utility)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('utilityVehicles', menuTranslations.utilityVehicles)}
-                          </p>
-                        </Link>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+                        </li>
+                        <li>
+                          <Link
+                            to="/vehicules/occasion"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('usedVehicles', menuTranslations.usedVehicles)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('certifiedUsed', menuTranslations.certifiedUsed)}
+                            </p>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/vehicules/utilitaires"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('utility', menuTranslations.utility)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('utilityVehicles', menuTranslations.utilityVehicles)}
+                            </p>
+                          </Link>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-gray-700">
-                    {translate('services', menuTranslations.services)}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      <li>
-                        <Link
-                          to="/services"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('ourServices', menuTranslations.ourServices)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('discoverAll', menuTranslations.discoverAll)}
-                          </p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/financement"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('financing', menuTranslations.financing)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('financingSolutions', menuTranslations.financingSolutions)}
-                          </p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/garantie"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('warranty', menuTranslations.warranty)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('warrantyOnVehicles', menuTranslations.warrantyOnVehicles)}
-                          </p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/livraison"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('delivery', menuTranslations.delivery)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('deliveryEurope', menuTranslations.deliveryEurope)}
-                          </p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/rachat"
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
-                        >
-                          <div className="text-sm font-medium leading-none">{translate('vehicleBuyback', menuTranslations.vehicleBuyback)}</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-gray-500">
-                            {translate('sellYourVehicle', menuTranslations.sellYourVehicle)}
-                          </p>
-                        </Link>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-gray-700">
+                      {translate('services', menuTranslations.services)}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <li>
+                          <Link
+                            to="/services"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('ourServices', menuTranslations.ourServices)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('discoverAll', menuTranslations.discoverAll)}
+                            </p>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/financement"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('financing', menuTranslations.financing)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('financingSolutions', menuTranslations.financingSolutions)}
+                            </p>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/garantie"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('warranty', menuTranslations.warranty)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('warrantyOnVehicles', menuTranslations.warrantyOnVehicles)}
+                            </p>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/livraison"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('delivery', menuTranslations.delivery)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('deliveryEurope', menuTranslations.deliveryEurope)}
+                            </p>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/rachat"
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600 focus:bg-blue-50 focus:text-blue-600"
+                          >
+                            <div className="text-sm font-medium leading-none">{translate('vehicleBuyback', menuTranslations.vehicleBuyback)}</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-gray-500">
+                              {translate('sellYourVehicle', menuTranslations.sellYourVehicle)}
+                            </p>
+                          </Link>
+                        </li>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
-                    <Link to="/a-propos">
-                      {translate('aboutUs', menuTranslations.aboutUs)}
-                    </Link>
-                  </div>
-                </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
+                      <Link to="/a-propos">
+                        {translate('aboutUs', menuTranslations.aboutUs)}
+                      </Link>
+                    </div>
+                  </NavigationMenuItem>
 
-                <NavigationMenuItem>
-                  <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
-                    <Link to="/contact">
-                      {translate('contact', menuTranslations.contact)}
-                    </Link>
-                  </div>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+                  <NavigationMenuItem>
+                    <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue">
+                      <Link to="/contact">
+                        {translate('contact', menuTranslations.contact)}
+                      </Link>
+                    </div>
+                  </NavigationMenuItem>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="text-gray-700 font-montserrat font-light tracking-wide px-5 py-1.5 hover:bg-gray-100 rounded-md transition-all duration-300"
-                >
-                  <Globe className="mr-1 h-4 w-4 text-gray-700" />
-                  {translate('language', menuTranslations.language)}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
-              >
-                <LanguageSwitcher />
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <NavigationMenuItem>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue cursor-pointer">
+                          <Globe className="mr-2 h-4 w-4 text-brand-blue" />
+                          {translate('language', menuTranslations.language)}
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent 
+                        align="end" 
+                        className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
+                      >
+                        <LanguageSwitcher />
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           </div>
           
           <button
@@ -248,6 +248,14 @@ const Header = () => {
             className="lg:hidden bg-white shadow-lg overflow-hidden"
           >
             <div className="container mx-auto px-4 py-4 space-y-4">
+              <div className="border-b border-gray-200 pb-3 mb-2">
+                <div className="flex items-center space-x-2 mb-3">
+                  <Globe className="h-5 w-5 text-brand-blue" />
+                  <div className="font-medium text-gray-800">{translate('language', menuTranslations.language)}</div>
+                </div>
+                <LanguageSwitcher />
+              </div>
+
               <div className="space-y-2">
                 <div className="font-medium text-gray-800">{translate('vehicles', menuTranslations.vehicles)}</div>
                 <Link to="/vehicules" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
@@ -289,11 +297,6 @@ const Header = () => {
               <Link to="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
                 {translate('contact', menuTranslations.contact)}
               </Link>
-              
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <div className="font-medium text-gray-800 mb-2">{translate('language', menuTranslations.language)}</div>
-                <LanguageSwitcher />
-              </div>
             </div>
           </motion.div>
         )}
