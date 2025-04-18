@@ -30,7 +30,20 @@ const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    // Pour empêcher le défilement du corps lorsque le menu est ouvert
+    if (!isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
   };
+
+  useEffect(() => {
+    // Restaurer le défilement lorsque le composant est démonté
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   return (
     <header className={cn(
