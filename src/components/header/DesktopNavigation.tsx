@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, CreditCard, Phone, ShoppingCart } from 'lucide-react';
@@ -11,6 +10,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
+import CartCount from '../CartCount';
 
 const DesktopNavigation = () => {
   const { translate } = useLanguage();
@@ -133,9 +133,12 @@ const DesktopNavigation = () => {
           <NavigationMenuItem>
             <Link 
               to="/panier" 
-              className="flex items-center gap-6 text-4xl text-brand-gold hover:text-brand-darkBlue font-light tracking-wide transition-colors"
+              className="flex items-center gap-6 text-4xl text-brand-gold hover:text-brand-darkBlue font-light tracking-wide transition-colors relative"
             >
-              <ShoppingCart className="w-8 h-8" />
+              <div className="relative">
+                <ShoppingCart className="w-8 h-8" />
+                <CartCount />
+              </div>
               {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
             </Link>
           </NavigationMenuItem>

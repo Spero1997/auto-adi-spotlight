@@ -29,6 +29,8 @@ import Livraison from "./pages/Livraison";
 import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
 import FAQ from "./pages/FAQ";
+import Cart from './pages/Cart';
+import { CartProvider } from './contexts/CartContext';
 
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
@@ -47,55 +49,59 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <CatalogChecker>
-              <Routes>
-                <Route path="/" element={<>
-                  <AnimatedHero />
-                  <Index />
-                </>} />
-                
-                <Route path="/services" element={<Services />} />
-                <Route path="/financement" element={<Financement />} />
-                <Route path="/rachat" element={<Rachat />} />
-                <Route path="/a-propos" element={<APropos />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/faq" element={<FAQ />} />
-                
-                <Route path="/garantie" element={<Garantie />} />
-                <Route path="/livraison" element={<Livraison />} />
-                <Route path="/service-premium" element={<ServicePremium />} />
-                
-                <Route path="/orders-backup" element={<OrdersBackup />} />
-                
-                <Route path="/mentions-legales" element={<MentionsLegales />} />
-                <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-                <Route path="/cookies" element={<Cookies />} />
-                <Route path="/cgv" element={<CGV />} />
-                <Route path="/conditions" element={<Conditions />} />
-                
-                <Route path="/admin/vehicules" element={<VehicleManagement />} />
-                <Route path="/vehicules/import" element={<VehicleImport />} />
-                
-                <Route path="/vehicules" element={<Index />} />
-                <Route path="/vehicule/:id" element={<VehicleDetails />} />
-                <Route path="/vehicules/:id" element={<VehicleDetails />} />
-                <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
-                <Route path="/vehicules/utilitaires" element={<Index />} />
-                <Route path="/vehicules/neufs" element={<Index />} />
-                <Route path="/rendez-vous" element={<Index />} />
-                <Route path="/marques" element={<Index />} />
-                <Route path="/marques/:marque" element={<Index />} />
-                
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </CatalogChecker>
-          </BrowserRouter>
-        </TooltipProvider>
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <CatalogChecker>
+                <Routes>
+                  <Route path="/" element={<>
+                    <AnimatedHero />
+                    <Index />
+                  </>} />
+                  
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/financement" element={<Financement />} />
+                  <Route path="/rachat" element={<Rachat />} />
+                  <Route path="/a-propos" element={<APropos />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  
+                  <Route path="/garantie" element={<Garantie />} />
+                  <Route path="/livraison" element={<Livraison />} />
+                  <Route path="/service-premium" element={<ServicePremium />} />
+                  
+                  <Route path="/orders-backup" element={<OrdersBackup />} />
+                  
+                  <Route path="/mentions-legales" element={<MentionsLegales />} />
+                  <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+                  <Route path="/cookies" element={<Cookies />} />
+                  <Route path="/cgv" element={<CGV />} />
+                  <Route path="/conditions" element={<Conditions />} />
+                  
+                  <Route path="/admin/vehicules" element={<VehicleManagement />} />
+                  <Route path="/vehicules/import" element={<VehicleImport />} />
+                  
+                  <Route path="/vehicules" element={<Index />} />
+                  <Route path="/vehicule/:id" element={<VehicleDetails />} />
+                  <Route path="/vehicule/:id" element={<VehicleDetails />} />
+                  <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
+                  <Route path="/vehicules/utilitaires" element={<Index />} />
+                  <Route path="/vehicules/neufs" element={<Index />} />
+                  <Route path="/rendez-vous" element={<Index />} />
+                  <Route path="/marques" element={<Index />} />
+                  <Route path="/marques/:marque" element={<Index />} />
+                  
+                  <Route path="/panier" element={<Cart />} />
+                  
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </CatalogChecker>
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );

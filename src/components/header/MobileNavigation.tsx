@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { motion } from 'framer-motion';
+import CartCount from '../CartCount';
 
 interface MobileNavigationProps {
   isMenuOpen: boolean;
@@ -122,9 +123,12 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
               </Link>
               <Link 
                 to="/panier" 
-                className="flex items-center gap-6 px-4 py-2 text-2xl text-brand-gold hover:text-brand-darkBlue rounded-sm transition-colors"
+                className="flex items-center gap-6 px-4 py-2 text-2xl text-brand-gold hover:text-brand-darkBlue rounded-sm transition-colors relative"
               >
-                <ShoppingCart className="w-7 h-7" />
+                <div className="relative">
+                  <ShoppingCart className="w-7 h-7" />
+                  <CartCount />
+                </div>
                 <span className="font-light tracking-wide">
                   {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
                 </span>
