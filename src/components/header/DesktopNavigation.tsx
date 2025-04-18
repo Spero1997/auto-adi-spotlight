@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, Info, Phone } from 'lucide-react';
@@ -36,7 +35,7 @@ const DesktopNavigation = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          {/* Services Menu - Simplified */}
+          {/* Services Menu */}
           <NavigationMenuItem>
             <NavigationMenuTrigger className="text-gray-700">
               <Wrench className="w-4 h-4 mr-2" />
@@ -63,7 +62,7 @@ const DesktopNavigation = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          {/* About/Contact Links - Condensed */}
+          {/* About/Contact Links */}
           <NavigationMenuItem>
             <Link to="/a-propos" className="flex items-center px-4 py-2 text-gray-700 hover:text-blue-600">
               <Info className="w-4 h-4 mr-2" />

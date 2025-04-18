@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, Info, Phone } from 'lucide-react';
@@ -34,7 +33,7 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
           </div>
         </div>
 
-        {/* Services Section - Simplified */}
+        {/* Services Section */}
         <div className="space-y-2">
           <div className="font-medium text-gray-800 flex items-center">
             <Wrench className="w-4 h-4 mr-2" />
