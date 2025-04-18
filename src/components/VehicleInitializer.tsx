@@ -5,13 +5,16 @@ import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
 import { addBMWX5 } from '@/scripts/addBMWX5';
 import { addMercedesClassC } from '@/scripts/addMercedesClassC';
 import { addPorscheCayenne } from '@/scripts/addPorscheCayenne';
-import { addAudiRS6 } from '@/scripts/addAudiRS6';
 import { addMercedesGLC } from '@/scripts/addMercedesGLC';
 import { addMercedesClasseE } from '@/scripts/addMercedesClasseE';
 import { addMercedesCLA200 } from '@/scripts/addMercedesCLA200';
 import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
 import { addKiaSorento } from '@/scripts/addKiaSorento';
-import { updateKiaSorentoImage, updateVehicleImages } from '@/scripts/updateVehicleImages';
+import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
+import { updateVehicleImages } from '@/scripts/updateVehicleImages';
+
+// Create a new addAudiRS6 script file
+import { addAudiRS6 } from '@/scripts/addAudiRS6';
 
 const VehicleInitializer = () => {
   useEffect(() => {
@@ -112,9 +115,8 @@ const VehicleInitializer = () => {
       
       updateKiaSorentoImage();
       
-      import('@/scripts/updateVehicleImages').then(module => {
-        module.updateVehicleImages();
-      });
+      // Use direct import instead of dynamic import for updateVehicleImages
+      updateVehicleImages();
     }
   }, []);
 
