@@ -75,7 +75,9 @@ export default {
 					gray: '#F5F5F5',
 					darkGray: '#333333',
 					gold: '#D4AF37',
-					anthracite: '#383838'
+					anthracite: '#383838',
+					'gold-light': '#E5C65B',
+					'gold-dark': '#B39030'
 				}
 			},
 			borderRadius: {
