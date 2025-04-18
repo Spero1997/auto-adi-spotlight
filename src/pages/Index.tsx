@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Benefits from '@/components/Benefits';
-import FeaturedCars from '@/components/FeaturedCars';
-import TestimonialSection from '@/components/TestimonialSection';
-import ConditionsHighlight from '@/components/ConditionsHighlight';
 import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -22,6 +16,28 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { cleanVehicleCatalogs, getImportedVehicles } from '@/utils/vehicleImportService';
+import {
+  addMercedesCLA250,
+  addBMWX5,
+  addMercedesClassC,
+  addPorscheCayenne,
+  addAudiRS6,
+  addMercedesGLC,
+  addMercedesClasseE,
+  addMercedesCLA200,
+  addMercedesClassC180,
+  addKiaSorento,
+  updateKiaSorentoImage
+} from '@/scripts/updateVehicleImages';
+
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Benefits from '@/components/Benefits';
+import FeaturedCars from '@/components/FeaturedCars';
+import TestimonialSection from '@/components/TestimonialSection';
+import ConditionsHighlight from '@/components/ConditionsHighlight';
 
 const Index = () => {
   const isMobile = useIsMobile();
@@ -149,10 +165,6 @@ const Index = () => {
       </Helmet>
       
       <div className="flex flex-col min-h-screen">
-        <div className="hidden">
-          <Header />
-        </div>
-
         <div className="fixed top-4 right-4 z-50">
           {isMobile ? (
             <Drawer>
