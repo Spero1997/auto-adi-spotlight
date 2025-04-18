@@ -1,4 +1,3 @@
-
 export const menuTranslations = {
   vehicles: {
     FR: "Véhicules",
@@ -175,5 +174,37 @@ export const menuTranslations = {
     IT: "Lingua",
     PT: "Idioma",
     RO: "Limbă"
+  },
+  directContact: {
+    FR: "Nous contacter",
+    EN: "Contact us",
+    ES: "Contáctenos",
+    IT: "Contattaci",
+    PT: "Contacte-nos",
+    RO: "Contactați-ne"
+  },
+  vehiclesMenu: {
+    FR: "Menu véhicules",
+    EN: "Vehicles menu",
+    ES: "Menú de vehículos",
+    IT: "Menu veicoli",
+    PT: "Menu de veículos",
+    RO: "Meniu vehicule"
+  },
+  servicesMenu: {
+    FR: "Menu services",
+    EN: "Services menu",
+    ES: "Menú de servicios",
+    IT: "Menu servizi",
+    PT: "Menu de serviços",
+    RO: "Meniu servicii"
+  },
+  aboutMenu: {
+    FR: "Menu à propos",
+    EN: "About menu",
+    ES: "Menú acerca de",
+    IT: "Menu chi siamo",
+    PT: "Menu sobre",
+    RO: "Meniu despre"
   }
 };

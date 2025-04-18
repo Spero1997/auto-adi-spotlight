@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Wrench, Info, Phone, MapPin } from 'lucide-react';
+import { Car, Wrench, Info, Phone } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
 import {
@@ -85,7 +85,7 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
             <div className="mt-2 border-t pt-2">
               <Link to="/contact" className="flex items-center px-4 py-2 text-blue-600 hover:bg-blue-50 rounded">
                 <Phone className="w-4 h-4 mr-2" />
-                {translate('contact', menuTranslations.contact)}
+                {translate('directContact', menuTranslations.directContact)}
               </Link>
             </div>
           </Accordion>
