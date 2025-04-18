@@ -37,7 +37,7 @@ const DesktopNavigation = () => {
                 </li>
                 <li>
                   <Link 
-                    to="/vehicules" 
+                    to="/vehicules/neuf" 
                     className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
                   >
                     {translate('newVehicles', menuTranslations.newVehicles)}
