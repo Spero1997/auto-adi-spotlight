@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage, languageFlags, languageNames } from "@/contexts/LanguageContext";
+import { Globe } from "lucide-react";
 
 const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
@@ -19,17 +20,18 @@ const LanguageSwitcher = () => {
       {languages.map((lang) => (
         <Button
           key={lang.code}
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={() => setLanguage(lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO")}
-          className={`flex items-center justify-start text-sm px-2 py-1 ${
-            language === lang.code 
-              ? "bg-blue-100 text-blue-700 font-medium" 
-              : "text-gray-700 hover:bg-gray-100"
-          }`}
+          className={`flex items-center justify-start text-sm px-3 py-2 space-x-2 
+            ${language === lang.code 
+              ? "bg-brand-blue/10 text-brand-blue font-semibold border-brand-blue" 
+              : "text-gray-700 hover:bg-gray-100 border-gray-200"
+            }`}
         >
-          <span className="mr-2">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
-          {lang.label}
+          <span className="text-2xl mr-2">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
+          <span className="flex-grow text-left">{lang.label}</span>
+          {language === lang.code && <Globe className="w-4 h-4 text-brand-blue" />}
         </Button>
       ))}
     </div>
