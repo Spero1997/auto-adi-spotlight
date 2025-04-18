@@ -1,35 +1,27 @@
 export const menuTranslations = {
   vehicles: {
-    FR: "Véhicules",
-    EN: "Vehicles",
-    ES: "Vehículos",
-    IT: "Veicoli",
-    PT: "Veículos",
-    RO: "Vehicule"
-  },
-  allVehicles: {
-    FR: "Tous nos véhicules",
-    EN: "All our vehicles",
-    ES: "Todos nuestros vehículos",
-    IT: "Tutti i nostri veicoli",
-    PT: "Todos os nossos veículos",
-    RO: "Toate vehiculele noastre"
+    FR: "Notre Collection",
+    EN: "Our Collection",
+    ES: "Nuestra Colección",
+    IT: "La Nostra Collezione",
+    PT: "Nossa Coleção",
+    RO: "Colecția Noastră"
   },
   newVehicles: {
-    FR: "Véhicules neufs",
-    EN: "New vehicles",
-    ES: "Vehículos nuevos",
-    IT: "Veicoli nuovi",
-    PT: "Veículos novos",
-    RO: "Vehicule noi"
+    FR: "Collection Neuf",
+    EN: "New Collection",
+    ES: "Colección Nueva",
+    IT: "Collezione Nuova",
+    PT: "Coleção Nova",
+    RO: "Colecție Nouă"
   },
   usedVehicles: {
-    FR: "Véhicules d'occasion",
-    EN: "Used vehicles",
-    ES: "Vehículos de ocasión",
-    IT: "Veicoli usati",
-    PT: "Veículos usados",
-    RO: "Vehicule second-hand"
+    FR: "Occasion Certifiée",
+    EN: "Certified Pre-owned",
+    ES: "Ocasión Certificada",
+    IT: "Usato Certificato",
+    PT: "Ocasião Certificada",
+    RO: "Ocazie Certificată"
   },
   utility: {
     FR: "Utilitaires",
@@ -64,12 +56,12 @@ export const menuTranslations = {
     RO: "Vehicule utilitare pentru profesioniști"
   },
   services: {
-    FR: "Services",
-    EN: "Services",
-    ES: "Servicios",
-    IT: "Servizi",
-    PT: "Serviços",
-    RO: "Servicii"
+    FR: "Services Sur-Mesure",
+    EN: "Bespoke Services",
+    ES: "Servicios Personalizados",
+    IT: "Servizi Su Misura",
+    PT: "Serviços Personalizados",
+    RO: "Servicii Personalizate"
   },
   ourServices: {
     FR: "Nos services",

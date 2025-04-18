@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Wrench, Info, Phone } from 'lucide-react';
+import { Car, Wrench, Info, Phone, CreditCard } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
 import {
@@ -18,18 +18,29 @@ const DesktopNavigation = () => {
   return (
     <div className="hidden lg:flex items-center">
       <NavigationMenu>
-        <NavigationMenuList className="gap-1">
-          {/* Vehicles Menu */}
+        <NavigationMenuList className="gap-6">
+          {/* Collection Menu */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-700 px-3 py-1.5">
+            <NavigationMenuTrigger className="text-gray-800 font-light tracking-wide">
               <Car className="w-4 h-4 mr-2" />
               {translate('vehicles', menuTranslations.vehicles)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[180px] gap-1 p-2">
+              <ul className="grid w-[220px] gap-2 p-4">
                 <li>
-                  <Link to="/vehicules" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('allVehicles', menuTranslations.allVehicles)}
+                  <Link 
+                    to="/vehicules" 
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-brand-blue/5 hover:text-brand-blue"
+                  >
+                    {translate('newVehicles', menuTranslations.newVehicles)}
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    to="/occasion" 
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-brand-blue/5 hover:text-brand-blue"
+                  >
+                    {translate('usedVehicles', menuTranslations.usedVehicles)}
                   </Link>
                 </li>
               </ul>
@@ -38,24 +49,25 @@ const DesktopNavigation = () => {
 
           {/* Services Menu */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-700 px-3 py-1.5">
+            <NavigationMenuTrigger className="text-gray-800 font-light tracking-wide">
               <Wrench className="w-4 h-4 mr-2" />
               {translate('services', menuTranslations.services)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[180px] gap-1 p-2">
+              <ul className="grid w-[220px] gap-2 p-4">
                 <li>
-                  <Link to="/services" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
+                  <Link 
+                    to="/services" 
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-brand-blue/5 hover:text-brand-blue"
+                  >
                     {translate('ourServices', menuTranslations.ourServices)}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/financement" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('financing', menuTranslations.financing)}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/garantie" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
+                  <Link 
+                    to="/garantie" 
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-brand-blue/5 hover:text-brand-blue"
+                  >
                     {translate('warranty', menuTranslations.warranty)}
                   </Link>
                 </li>
@@ -63,31 +75,22 @@ const DesktopNavigation = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          {/* About Menu */}
+          {/* Direct Access Items */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-700 px-3 py-1.5">
-              <Info className="w-4 h-4 mr-2" />
-              {translate('aboutUs', menuTranslations.aboutUs)}
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[180px] gap-1 p-2">
-                <li>
-                  <Link to="/a-propos" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('aboutUs', menuTranslations.aboutUs)}
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contact" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
-                    {translate('contact', menuTranslations.contact)}
-                  </Link>
-                </li>
-              </ul>
-            </NavigationMenuContent>
+            <Link 
+              to="/financement" 
+              className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:text-brand-blue font-light tracking-wide transition-colors"
+            >
+              <CreditCard className="w-4 h-4" />
+              {translate('financing', menuTranslations.financing)}
+            </Link>
           </NavigationMenuItem>
 
-          {/* Direct Contact Link */}
           <NavigationMenuItem>
-            <Link to="/contact" className="flex items-center gap-1 px-3 py-1.5 text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
+            <Link 
+              to="/contact" 
+              className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:text-brand-blue font-light tracking-wide transition-colors"
+            >
               <Phone className="w-4 h-4" />
               {translate('directContact', menuTranslations.directContact)}
             </Link>
