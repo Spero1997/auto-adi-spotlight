@@ -97,4 +97,3 @@ const HeaderLanguageSwitcher = () => {
 };
 
 export default HeaderLanguageSwitcher;
-
