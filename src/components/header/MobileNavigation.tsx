@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Wrench, CreditCard, Phone } from 'lucide-react';
+import { Car, Wrench, CreditCard, Phone, ShoppingCart } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
 import {
@@ -120,6 +119,15 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
               >
                 <Phone className="w-7 h-7" />
                 <span className="font-light tracking-wide">{translate('directContact', menuTranslations.directContact)}</span>
+              </Link>
+              <Link 
+                to="/panier" 
+                className="flex items-center gap-6 px-4 py-2 text-2xl text-brand-gold hover:text-brand-darkBlue rounded-sm transition-colors"
+              >
+                <ShoppingCart className="w-7 h-7" />
+                <span className="font-light tracking-wide">
+                  {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
+                </span>
               </Link>
             </div>
           </Accordion>

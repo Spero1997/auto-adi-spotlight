@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Wrench, CreditCard, Phone } from 'lucide-react';
+import { Car, Wrench, CreditCard, Phone, ShoppingCart } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
 import {
@@ -122,10 +122,21 @@ const DesktopNavigation = () => {
           <NavigationMenuItem>
             <Link 
               to="/contact" 
-              className="flex items-center gap-6 text-4xl text-brand-gold hover:text-brand-darkBlue font-light tracking-wide transition-colors"
+              className="flex items-center gap-6 text-4xl text-gray-900 hover:text-brand-gold font-light tracking-wide transition-colors"
             >
               <Phone className="w-8 h-8" />
               {translate('directContact', menuTranslations.directContact)}
+            </Link>
+          </NavigationMenuItem>
+
+          {/* Shopping Cart Link */}
+          <NavigationMenuItem>
+            <Link 
+              to="/panier" 
+              className="flex items-center gap-6 text-4xl text-brand-gold hover:text-brand-darkBlue font-light tracking-wide transition-colors"
+            >
+              <ShoppingCart className="w-8 h-8" />
+              {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
