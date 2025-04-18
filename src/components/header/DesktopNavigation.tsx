@@ -8,6 +8,8 @@ import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
 
 const DesktopNavigation = () => {
