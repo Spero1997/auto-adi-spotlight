@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Languages } from "lucide-react";
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -21,7 +20,7 @@ const HeaderLanguageSwitcher = () => {
   const { language, translate } = useLanguage();
 
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div className="fixed top-4 left-4 z-50">
       {isMobile ? (
         <Drawer>
           <DrawerTrigger asChild>
