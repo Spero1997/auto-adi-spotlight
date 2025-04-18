@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage, languageFlags, languageNames } from "@/contexts/LanguageContext";
-import { Check, Languages } from "lucide-react";
+import { Check } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const LanguageSwitcher = () => {
@@ -18,7 +18,7 @@ const LanguageSwitcher = () => {
   ];
   
   return (
-    <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-2`}>
+    <div className={`grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} gap-2`}>
       {languages.map((lang) => (
         <Button
           key={lang.code}
@@ -29,10 +29,10 @@ const LanguageSwitcher = () => {
             ${language === lang.code 
               ? "bg-brand-blue text-white font-medium" 
               : "text-gray-700 hover:bg-brand-blue/10 hover:text-brand-blue"
-            } ${isMobile ? "border-l-4 border-brand-blue/70" : ""}`}
+            }`}
         >
-          <div className="flex items-center space-x-2">
-            <span className="text-xl mr-1">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
+          <div className="flex items-center space-x-1">
+            <span className="text-lg">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
             <span>{lang.label}</span>
           </div>
           {language === lang.code && <Check className="w-4 h-4" />}
