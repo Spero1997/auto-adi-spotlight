@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, Globe, Languages } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import {
@@ -17,7 +18,6 @@ import Logo from './Logo';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from './LanguageSwitcher';
@@ -207,15 +207,25 @@ const Header = () => {
                   <NavigationMenuItem>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-light tracking-wide text-gray-700 transition-all duration-300 hover:text-brand-darkBlue cursor-pointer">
-                          <Globe className="mr-2 h-4 w-4 text-brand-blue" />
+                        <div className="group inline-flex h-10 w-max items-center justify-center rounded-md px-5 py-1.5 text-sm font-montserrat font-semibold tracking-wide text-brand-darkBlue transition-all duration-300 hover:bg-brand-blue/10 cursor-pointer">
+                          <Languages className="mr-2 h-5 w-5 text-brand-blue" />
                           {translate('language', menuTranslations.language)}
                         </div>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent 
                         align="end" 
-                        className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
+                        className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-2 mt-1 w-48"
                       >
+                        <div className="text-sm font-medium text-gray-700 mb-2 px-2">
+                          {translate('selectLanguage', {
+                            FR: 'Sélectionnez une langue',
+                            EN: 'Select a language',
+                            ES: 'Seleccione un idioma',
+                            IT: 'Seleziona una lingua',
+                            PT: 'Selecione um idioma',
+                            RO: 'Selectați o limbă'
+                          })}
+                        </div>
                         <LanguageSwitcher />
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -250,8 +260,8 @@ const Header = () => {
             <div className="container mx-auto px-4 py-4 space-y-4">
               <div className="border-b border-gray-200 pb-3 mb-2">
                 <div className="flex items-center space-x-2 mb-3">
-                  <Globe className="h-5 w-5 text-brand-blue" />
-                  <div className="font-medium text-gray-800">{translate('language', menuTranslations.language)}</div>
+                  <Languages className="h-6 w-6 text-brand-blue" />
+                  <div className="font-semibold text-brand-darkBlue text-lg">{translate('language', menuTranslations.language)}</div>
                 </div>
                 <LanguageSwitcher />
               </div>
