@@ -24,8 +24,9 @@ const Index = () => {
       
       <div className="flex flex-col min-h-screen">
         <HeaderLanguageSwitcher />
+        <Header />
         
-        <main className="flex-grow">
+        <main className="flex-grow mt-16">
           <Benefits />
           <FeaturedCars featuredOnly={true} />
           
@@ -43,3 +44,4 @@ const Index = () => {
 };
 
 export default Index;
+
