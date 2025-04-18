@@ -6,10 +6,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
   NavigationMenuList,
-  NavigationMenuTrigger,
+  NavigationMenuItem,
 } from '@/components/ui/navigation-menu';
 
 const DesktopNavigation = () => {
@@ -19,7 +17,7 @@ const DesktopNavigation = () => {
     <div className="hidden lg:flex items-center space-x-4">
       <NavigationMenu>
         <NavigationMenuList>
-          {/* Vehicles Menu - Simplified to only one option */}
+          {/* Vehicles Link - Single option only */}
           <NavigationMenuItem>
             <Link to="/vehicules" className="flex items-center px-4 py-2 text-gray-700 hover:text-blue-600">
               <Car className="w-4 h-4 mr-2" />
