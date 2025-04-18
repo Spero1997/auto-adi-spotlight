@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Globe, Languages } from 'lucide-react';
+import { Menu, X, Languages } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import {
@@ -22,6 +22,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import LanguageSwitcher from './LanguageSwitcher';
 import { menuTranslations } from '@/translations/menuTranslations';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -235,17 +241,65 @@ const Header = () => {
             </div>
           </div>
           
-          <button
-            onClick={toggleMenu}
-            className="lg:hidden p-2 focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="text-gray-700" />
-            ) : (
-              <Menu className="text-gray-700" />
-            )}
-          </button>
+          <div className="flex items-center lg:hidden">
+            {/* Language Switcher for Mobile - Visible Next to Menu */}
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="relative text-brand-blue mr-2 p-2"
+                >
+                  <Languages className="h-6 w-6" />
+                  <span className="absolute -top-1 -right-1 bg-brand-blue text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {language}
+                  </span>
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent className="px-4 pb-6 pt-2">
+                <div className="mx-auto w-full max-w-sm">
+                  <div className="flex items-center space-x-2 mb-4 p-2 border-b border-gray-100">
+                    <Languages className="h-6 w-6 text-brand-blue" />
+                    <div className="font-semibold text-brand-darkBlue text-lg">
+                      {translate('selectLanguage', {
+                        FR: 'Sélectionnez une langue',
+                        EN: 'Select a language',
+                        ES: 'Seleccione un idioma',
+                        IT: 'Seleziona una lingua',
+                        PT: 'Selecione um idioma',
+                        RO: 'Selectați o limbă'
+                      })}
+                    </div>
+                  </div>
+                  <LanguageSwitcher />
+                  <DrawerClose className="mt-4 w-full">
+                    <Button variant="outline" className="w-full">
+                      {translate('close', {
+                        FR: 'Fermer',
+                        EN: 'Close',
+                        ES: 'Cerrar',
+                        IT: 'Chiudi',
+                        PT: 'Fechar',
+                        RO: 'Închide'
+                      })}
+                    </Button>
+                  </DrawerClose>
+                </div>
+              </DrawerContent>
+            </Drawer>
+            
+            <button
+              onClick={toggleMenu}
+              className="p-2 focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <X className="text-gray-700" />
+              ) : (
+                <Menu className="text-gray-700" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 

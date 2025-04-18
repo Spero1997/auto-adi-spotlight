@@ -1,10 +1,12 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage, languageFlags, languageNames } from "@/contexts/LanguageContext";
-import { Check } from "lucide-react";
+import { Check, Languages } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
+  const isMobile = useIsMobile();
   
   const languages = [
     { code: 'FR', label: languageNames.FR },
@@ -16,18 +18,18 @@ const LanguageSwitcher = () => {
   ];
   
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2"} gap-2`}>
       {languages.map((lang) => (
         <Button
           key={lang.code}
           variant={language === lang.code ? "default" : "outline"}
           size="sm"
           onClick={() => setLanguage(lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO")}
-          className={`flex items-center justify-between text-sm px-3 py-2 
+          className={`flex items-center justify-between text-sm px-3 py-2 w-full
             ${language === lang.code 
-              ? "bg-brand-blue text-white" 
+              ? "bg-brand-blue text-white font-medium" 
               : "text-gray-700 hover:bg-brand-blue/10 hover:text-brand-blue"
-            }`}
+            } ${isMobile ? "border-l-4 border-brand-blue/70" : ""}`}
         >
           <div className="flex items-center space-x-2">
             <span className="text-xl mr-1">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
