@@ -1,4 +1,3 @@
-
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -6,7 +5,6 @@ import Benefits from '@/components/Benefits';
 import FeaturedCars from '@/components/FeaturedCars';
 import TestimonialSection from '@/components/TestimonialSection';
 import ConditionsHighlight from '@/components/ConditionsHighlight';
-import HeaderLanguageSwitcher from '@/components/HeaderLanguageSwitcher';
 import VehicleInitializer from '@/components/VehicleInitializer';
 
 const Index = () => {
@@ -23,8 +21,6 @@ const Index = () => {
       <VehicleInitializer />
       
       <div className="flex flex-col min-h-screen">
-        <HeaderLanguageSwitcher />
-        
         <main className="flex-grow">
           <Benefits />
           <FeaturedCars featuredOnly={true} />
