@@ -19,15 +19,23 @@ const DesktopNavigation = () => {
     <div className="hidden lg:flex items-center space-x-4">
       <NavigationMenu>
         <NavigationMenuList>
-          {/* Vehicles Link - Single option only */}
+          {/* Services Menu */}
           <NavigationMenuItem>
-            <Link to="/vehicules" className="flex items-center px-4 py-2 text-gray-700 hover:text-blue-600">
+            <NavigationMenuTrigger className="text-gray-700">
               <Car className="w-4 h-4 mr-2" />
-              {translate('allVehicles', menuTranslations.allVehicles)}
-            </Link>
+              {translate('vehicles', menuTranslations.vehicles)}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[200px] gap-2 p-3">
+                <li>
+                  <Link to="/vehicules" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
+                    {translate('allVehicles', menuTranslations.allVehicles)}
+                  </Link>
+                </li>
+              </ul>
+            </NavigationMenuContent>
           </NavigationMenuItem>
 
-          {/* Services Menu */}
           <NavigationMenuItem>
             <NavigationMenuTrigger className="text-gray-700">
               <Wrench className="w-4 h-4 mr-2" />
@@ -54,19 +62,25 @@ const DesktopNavigation = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          {/* About/Contact Links */}
           <NavigationMenuItem>
-            <Link to="/a-propos" className="flex items-center px-4 py-2 text-gray-700 hover:text-blue-600">
+            <NavigationMenuTrigger className="text-gray-700">
               <Info className="w-4 h-4 mr-2" />
               {translate('aboutUs', menuTranslations.aboutUs)}
-            </Link>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <Link to="/contact" className="flex items-center px-4 py-2 text-gray-700 hover:text-blue-600">
-              <Phone className="w-4 h-4 mr-2" />
-              {translate('contact', menuTranslations.contact)}
-            </Link>
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[200px] gap-2 p-3">
+                <li>
+                  <Link to="/a-propos" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
+                    {translate('aboutUs', menuTranslations.aboutUs)}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="block select-none rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600">
+                    {translate('contact', menuTranslations.contact)}
+                  </Link>
+                </li>
+              </ul>
+            </NavigationMenuContent>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
