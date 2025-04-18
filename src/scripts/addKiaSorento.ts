@@ -14,7 +14,7 @@ export const addKiaSorento = () => {
     exteriorColor: "Bleu",
     interiorColor: "Noir",
     engine: "265 CH",
-    image: "/lovable-uploads/0e8508eb-e6a2-4af5-b68b-011e8e2434ef.png",
+    image: "/lovable-uploads/1d43c09f-608c-456e-bb7f-ae06eb9bab3b.png",
     description: `
 Modalités de paiement
 • Acompte : 20 % à la commande
