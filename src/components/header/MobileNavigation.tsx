@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Wrench, CreditCard, Phone, ShoppingCart, Globe } from 'lucide-react';
+import { Car, Wrench, CreditCard, Phone, ShoppingCart, Globe, ChevronUp, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
 import {
@@ -29,7 +29,7 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
       className="lg:hidden bg-white/95 backdrop-blur-md shadow-lg overflow-hidden fixed top-[60px] left-0 right-0 z-50"
     >
       <div className="container mx-auto px-4 py-2">
-        <div className="max-h-[65vh] overflow-y-auto pb-16">
+        <div className="max-h-[75vh] overflow-y-auto pb-16">
           <Accordion type="single" collapsible className="w-full space-y-2">
             {/* Collection Section */}
             <AccordionItem value="vehicles" className="border-none">
