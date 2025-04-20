@@ -101,7 +101,8 @@ const Cart = () => {
           <span>{formatPrice(total)}</span>
         </div>
         <div className="mt-4 flex justify-end">
-          <Link to="/checkout">
+          {/* Explicitly using Link from react-router-dom with updated styling */}
+          <Link to="/checkout" className="inline-block">
             <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors flex items-center gap-2">
               <CreditCard className="h-5 w-5" />
               {translate('proceedToCheckout', {
