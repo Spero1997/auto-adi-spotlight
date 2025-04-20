@@ -1,10 +1,11 @@
 
 import { Link } from 'react-router-dom';
-import { Globe } from 'lucide-react';
+import { Globe, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { menuTranslations } from '@/translations/menuTranslations';
+import CartCount from '../CartCount';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -26,7 +27,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
   const { translate } = useLanguage();
 
   return (
-    <div className="hidden md:flex space-x-4 text-white">
+    <div className="hidden md:flex items-center space-x-4 text-white">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -89,16 +90,26 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
 
       <Link 
         to="/contact"
-        className="font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40"
+        className={`font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40 ${scrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-white'}`}
       >
         {translate('contact', menuTranslations.contact)}
+      </Link>
+      
+      {/* Cart Link */}
+      <Link 
+        to="/panier"
+        className={`font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40 flex items-center relative ${scrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-white'}`}
+      >
+        <ShoppingCart className="h-5 w-5 mr-2" />
+        <CartCount />
+        {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
       </Link>
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button 
             variant="ghost" 
-            className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300"
+            className={`font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300 ${scrolled ? 'text-gray-700 hover:bg-transparent hover:text-gray-900' : 'text-white hover:bg-transparent'}`}
           >
             <Globe className="mr-1 h-4 w-4" />
             {translate('language', menuTranslations.language)}
