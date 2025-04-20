@@ -101,20 +101,22 @@ const Cart = () => {
           <span>{formatPrice(total)}</span>
         </div>
         <div className="mt-4 flex justify-end">
-          {/* Explicitly using Link from react-router-dom with updated styling */}
-          <Link to="/checkout" className="inline-block">
-            <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors flex items-center gap-2">
-              <CreditCard className="h-5 w-5" />
-              {translate('proceedToCheckout', {
-                FR: 'Procéder au paiement',
-                EN: 'Proceed to checkout',
-                ES: 'Proceder al pago',
-                IT: 'Procedi al pagamento',
-                PT: 'Proceder ao pagamento',
-                RO: 'Continuă cu plata'
-              })}
-            </Button>
-          </Link>
+          {/* Replacing the checkout button with a link to the vehicle details */}
+          {items.length === 1 && (
+            <Link to={`/vehicules/${items[0].id}`} className="inline-block">
+              <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                {translate('buyVehicle', {
+                  FR: 'Acheter ce véhicule',
+                  EN: 'Buy this vehicle',
+                  ES: 'Comprar este vehículo',
+                  IT: 'Acquista questo veicolo',
+                  PT: 'Comprar este veículo',
+                  RO: 'Cumpără acest vehicul'
+                })}
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
