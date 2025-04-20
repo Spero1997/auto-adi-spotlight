@@ -3,7 +3,7 @@ import React from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
+import { Trash2, CreditCard } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Cart = () => {
@@ -101,15 +101,16 @@ const Cart = () => {
           <span>{formatPrice(total)}</span>
         </div>
         <div className="mt-4 flex justify-end">
-          <Link to="/contact">
-            <Button>
-              {translate('proceedToContact', {
-                FR: 'Nous contacter',
-                EN: 'Contact us',
-                ES: 'Contáctenos',
-                IT: 'Contattaci',
-                PT: 'Contacte-nos',
-                RO: 'Contactați-ne'
+          <Link to="/checkout">
+            <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors flex items-center gap-2">
+              <CreditCard className="h-5 w-5" />
+              {translate('proceedToCheckout', {
+                FR: 'Procéder au paiement',
+                EN: 'Proceed to checkout',
+                ES: 'Proceder al pago',
+                IT: 'Procedi al pagamento',
+                PT: 'Proceder ao pagamento',
+                RO: 'Continuă cu plata'
               })}
             </Button>
           </Link>

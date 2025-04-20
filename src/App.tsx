@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -30,6 +31,7 @@ import ServicePremium from "./pages/ServicePremium";
 import ScrollToTop from "./components/ScrollToTop";
 import FAQ from "./pages/FAQ";
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import { CartProvider } from './contexts/CartContext';
 
 const CatalogChecker = ({ children }: { children: React.ReactNode }) => {
@@ -86,7 +88,6 @@ const App = () => {
                   
                   <Route path="/vehicules" element={<Index />} />
                   <Route path="/vehicule/:id" element={<VehicleDetails />} />
-                  <Route path="/vehicule/:id" element={<VehicleDetails />} />
                   <Route path="/vehicules/occasion" element={<VehiculesOccasion />} />
                   <Route path="/vehicules/utilitaires" element={<Index />} />
                   <Route path="/vehicules/neufs" element={<Index />} />
@@ -95,6 +96,7 @@ const App = () => {
                   <Route path="/marques/:marque" element={<Index />} />
                   
                   <Route path="/panier" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
                   
                   <Route path="*" element={<NotFound />} />
                 </Routes>
