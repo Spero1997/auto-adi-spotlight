@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, CreditCard, Phone, ShoppingCart } from 'lucide-react';
@@ -46,22 +45,6 @@ const DesktopNavigation = () => {
                     className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('newVehicles', menuTranslations.newVehicles)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/occasion" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('usedVehicles', menuTranslations.usedVehicles)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/utilitaires" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('utility', menuTranslations.utility)}
                   </Link>
                 </li>
               </ul>

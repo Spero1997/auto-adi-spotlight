@@ -46,22 +46,10 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
                     {translate('allVehicles', menuTranslations.allVehicles)}
                   </Link>
                   <Link 
-                    to="/vehicules/neuf" 
+                    to="/vehicules/neufs" 
                     className="block text-xl px-4 py-2 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
                   >
                     {translate('newVehicles', menuTranslations.newVehicles)}
-                  </Link>
-                  <Link 
-                    to="/occasion" 
-                    className="block text-xl px-4 py-2 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
-                  >
-                    {translate('usedVehicles', menuTranslations.usedVehicles)}
-                  </Link>
-                  <Link 
-                    to="/utilitaires" 
-                    className="block text-xl px-4 py-2 text-gray-700 hover:text-brand-gold rounded-sm transition-colors"
-                  >
-                    {translate('utility', menuTranslations.utility)}
                   </Link>
                 </div>
               </AccordionContent>
