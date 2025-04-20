@@ -52,4 +52,24 @@
   a {
     @apply my-1;
   }
+  
+  /* Améliorations pour le sélecteur de langue mobile */
+  .language-switcher-mobile {
+    @apply p-4 max-h-[80vh] overflow-y-auto;
+  }
+  
+  /* Style amélioré pour les boutons de langue */
+  .language-button {
+    @apply shadow-sm border border-gray-200 bg-white rounded-md transition-all;
+  }
+  
+  .language-button-active {
+    @apply shadow-md border-brand-blue/30 bg-brand-blue/5;
+  }
+  
+  /* Améliorer la visibilité dans les menus déroulants */
+  .popover-content,
+  .dropdown-content {
+    @apply bg-white/95 backdrop-blur-md shadow-xl border border-gray-100;
+  }
 }

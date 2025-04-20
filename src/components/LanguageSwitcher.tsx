@@ -18,24 +18,24 @@ const LanguageSwitcher = () => {
   ];
   
   return (
-    <div className={`grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} gap-2`}>
+    <div className={`grid ${isMobile ? "grid-cols-1 gap-3" : "grid-cols-3 gap-2"}`}>
       {languages.map((lang) => (
         <Button
           key={lang.code}
           variant={language === lang.code ? "default" : "outline"}
-          size="sm"
+          size={isMobile ? "lg" : "sm"}
           onClick={() => setLanguage(lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO")}
-          className={`flex items-center justify-between text-sm px-3 py-2 w-full
+          className={`flex items-center justify-between text-base px-4 py-3 w-full min-h-[48px] language-button
             ${language === lang.code 
-              ? "bg-brand-blue text-white font-medium" 
+              ? "bg-brand-blue text-white font-medium language-button-active" 
               : "text-gray-700 hover:bg-brand-blue/10 hover:text-brand-blue"
             }`}
         >
-          <div className="flex items-center space-x-1">
-            <span className="text-lg">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{languageFlags[lang.code as "FR" | "EN" | "ES" | "IT" | "PT" | "RO"]}</span>
             <span>{lang.label}</span>
           </div>
-          {language === lang.code && <Check className="w-4 h-4" />}
+          {language === lang.code && <Check className="w-5 h-5" />}
         </Button>
       ))}
     </div>

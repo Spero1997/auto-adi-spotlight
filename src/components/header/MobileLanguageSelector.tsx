@@ -4,19 +4,19 @@ import { Button } from '@/components/ui/button';
 import { Languages } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import LanguageSwitcher from '../LanguageSwitcher';
 
 const MobileLanguageSelector = () => {
   const { language, translate } = useLanguage();
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
+    <Sheet>
+      <SheetTrigger asChild>
         <Button 
           variant="outline" 
           size="sm"
@@ -25,12 +25,12 @@ const MobileLanguageSelector = () => {
           <Languages className="h-4 w-4" />
           <span>{language}</span>
         </Button>
-      </DrawerTrigger>
-      <DrawerContent className="px-4 pb-6 pt-2">
-        <div className="mx-auto w-full max-w-sm">
-          <div className="flex items-center space-x-2 mb-4 p-2 border-b border-gray-100">
+      </SheetTrigger>
+      <SheetContent side="bottom" className="language-switcher-mobile">
+        <div className="mx-auto w-full max-w-md">
+          <div className="flex items-center space-x-2 mb-6 p-2 border-b border-gray-100">
             <Languages className="h-6 w-6 text-brand-blue" />
-            <div className="font-semibold text-brand-darkBlue text-lg">
+            <div className="font-semibold text-brand-darkBlue text-xl">
               {translate('selectLanguage', {
                 FR: 'Sélectionnez une langue',
                 EN: 'Select a language',
@@ -42,8 +42,8 @@ const MobileLanguageSelector = () => {
             </div>
           </div>
           <LanguageSwitcher />
-          <DrawerClose className="mt-4 w-full">
-            <Button variant="outline" className="w-full">
+          <SheetClose className="mt-6 w-full">
+            <Button variant="outline" className="w-full min-h-[48px]">
               {translate('close', {
                 FR: 'Fermer',
                 EN: 'Close',
@@ -53,10 +53,10 @@ const MobileLanguageSelector = () => {
                 RO: 'Închide'
               })}
             </Button>
-          </DrawerClose>
+          </SheetClose>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
 
