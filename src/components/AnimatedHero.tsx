@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { ChevronDown, Search, Globe, Phone, Menu, X } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -225,14 +224,12 @@ const AnimatedHero = () => {
   };
 
   useEffect(() => {
-    // Mettre à jour le défilement du corps en fonction de l'état du menu
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
     
-    // Restaurer le défilement lorsque le composant est démonté
     return () => {
       document.body.style.overflow = 'auto';
     };
@@ -255,9 +252,7 @@ const AnimatedHero = () => {
               />
             </Link>
             
-            {/* Desktop Navigation */}
             <div className="hidden md:flex space-x-4 text-white">
-              {/* Véhicules Menu */}
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -288,7 +283,6 @@ const AnimatedHero = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* Services Menu */}
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -319,7 +313,6 @@ const AnimatedHero = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* Contact Link */}
               <Link 
                 to="/contact"
                 className="font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40"
@@ -327,7 +320,6 @@ const AnimatedHero = () => {
                 {translate('contact', translations.contact)}
               </Link>
               
-              {/* Language Selector */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
@@ -347,7 +339,6 @@ const AnimatedHero = () => {
               </DropdownMenu>
             </div>
             
-            {/* Mobile Navigation Controls */}
             <div className="flex md:hidden">
               <MobileLanguageSelector />
               
@@ -366,7 +357,6 @@ const AnimatedHero = () => {
           </div>
         </div>
         
-        {/* Mobile Menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -404,6 +394,27 @@ const AnimatedHero = () => {
                       Nos services
                     </Link>
                     <Link
+                      to="/garantie"
+                      className="block py-2 text-white/90 font-montserrat text-base pl-4"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Garanties
+                    </Link>
+                    <Link
+                      to="/livraison"
+                      className="block py-2 text-white/90 font-montserrat text-base pl-4"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Livraison
+                    </Link>
+                    <Link
+                      to="/rachat"
+                      className="block py-2 text-white/90 font-montserrat text-base pl-4"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Rachat de véhicules
+                    </Link>
+                    <Link
                       to="/financement"
                       className="block py-3 text-white font-montserrat text-lg"
                       onClick={() => setIsMenuOpen(false)}
@@ -427,7 +438,6 @@ const AnimatedHero = () => {
           )}
         </AnimatePresence>
 
-        {/* Hero Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full z-10 px-4">
           <div className="text-center mb-8 md:mb-12">
             <h1 className="font-playfair text-3xl md:text-5xl lg:text-6xl text-white font-bold mb-4 drop-shadow-lg animate-fade-in">
