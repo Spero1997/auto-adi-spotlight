@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Car, Wrench, CreditCard, Phone, ShoppingCart } from 'lucide-react';
@@ -11,34 +12,38 @@ import {
   NavigationMenuContent,
 } from '@/components/ui/navigation-menu';
 import CartCount from '../CartCount';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Globe } from 'lucide-react';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 const DesktopNavigation = () => {
   const { translate } = useLanguage();
 
   return (
-    <div className="hidden lg:flex flex-col items-start gap-12 py-8">
+    <div className="hidden lg:flex items-center space-x-6">
       <NavigationMenu>
-        <NavigationMenuList className="flex flex-col gap-12">
-          {/* Collection Menu */}
+        <NavigationMenuList className="flex items-center space-x-6">
+          {/* Vehicles Menu */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-900 text-4xl font-light tracking-wide hover:text-brand-gold transition-colors">
-              <Car className="w-8 h-8 mr-6" />
+            <NavigationMenuTrigger className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
+              <Car className="w-5 h-5" />
               {translate('vehicles', menuTranslations.vehicles)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-4 p-6 bg-white/90 backdrop-blur-md">
+              <ul className="grid w-[400px] gap-3 p-4 bg-white shadow-lg border rounded-md">
                 <li>
                   <Link 
                     to="/vehicules" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('allVehicles', menuTranslations.allVehicles)}
                   </Link>
                 </li>
                 <li>
                   <Link 
-                    to="/vehicules/neuf" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    to="/vehicules/neufs" 
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('newVehicles', menuTranslations.newVehicles)}
                   </Link>
@@ -46,7 +51,7 @@ const DesktopNavigation = () => {
                 <li>
                   <Link 
                     to="/occasion" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('usedVehicles', menuTranslations.usedVehicles)}
                   </Link>
@@ -54,7 +59,7 @@ const DesktopNavigation = () => {
                 <li>
                   <Link 
                     to="/utilitaires" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('utility', menuTranslations.utility)}
                   </Link>
@@ -65,16 +70,16 @@ const DesktopNavigation = () => {
 
           {/* Services Menu */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-900 text-4xl font-light tracking-wide hover:text-brand-gold transition-colors">
-              <Wrench className="w-8 h-8 mr-6" />
+            <NavigationMenuTrigger className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
+              <Wrench className="w-5 h-5" />
               {translate('services', menuTranslations.services)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-4 p-6 bg-white/90 backdrop-blur-md">
+              <ul className="grid w-[400px] gap-3 p-4 bg-white shadow-lg border rounded-md">
                 <li>
                   <Link 
                     to="/services" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('ourServices', menuTranslations.ourServices)}
                   </Link>
@@ -82,7 +87,7 @@ const DesktopNavigation = () => {
                 <li>
                   <Link 
                     to="/garantie" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('warranty', menuTranslations.warranty)}
                   </Link>
@@ -90,7 +95,7 @@ const DesktopNavigation = () => {
                 <li>
                   <Link 
                     to="/livraison" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('delivery', menuTranslations.delivery)}
                   </Link>
@@ -98,7 +103,7 @@ const DesktopNavigation = () => {
                 <li>
                   <Link 
                     to="/rachat" 
-                    className="block select-none text-xl rounded-sm p-4 leading-none no-underline outline-none transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
                   >
                     {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
                   </Link>
@@ -111,9 +116,9 @@ const DesktopNavigation = () => {
           <NavigationMenuItem>
             <Link 
               to="/financement" 
-              className="flex items-center gap-6 text-4xl text-gray-900 hover:text-brand-gold font-light tracking-wide transition-colors"
+              className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light"
             >
-              <CreditCard className="w-8 h-8" />
+              <CreditCard className="w-5 h-5" />
               {translate('financing', menuTranslations.financing)}
             </Link>
           </NavigationMenuItem>
@@ -122,10 +127,10 @@ const DesktopNavigation = () => {
           <NavigationMenuItem>
             <Link 
               to="/contact" 
-              className="flex items-center gap-6 text-4xl text-gray-900 hover:text-brand-gold font-light tracking-wide transition-colors"
+              className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light"
             >
-              <Phone className="w-8 h-8" />
-              {translate('directContact', menuTranslations.directContact)}
+              <Phone className="w-5 h-5" />
+              {translate('contact', menuTranslations.contact)}
             </Link>
           </NavigationMenuItem>
 
@@ -133,10 +138,10 @@ const DesktopNavigation = () => {
           <NavigationMenuItem>
             <Link 
               to="/panier" 
-              className="flex items-center gap-6 text-4xl text-brand-gold hover:text-brand-darkBlue font-light tracking-wide transition-colors relative"
+              className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light relative"
             >
               <div className="relative">
-                <ShoppingCart className="w-8 h-8" />
+                <ShoppingCart className="w-5 h-5" />
                 <CartCount />
               </div>
               {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
@@ -144,6 +149,19 @@ const DesktopNavigation = () => {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+
+      {/* Language Selector */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
+            <Globe className="w-5 h-5" />
+            {translate('language', menuTranslations.language)}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-40 bg-white shadow-lg border rounded-md p-2">
+          <LanguageSwitcher />
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
