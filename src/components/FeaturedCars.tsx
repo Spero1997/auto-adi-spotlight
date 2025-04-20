@@ -6,6 +6,7 @@ import { getImportedVehicles, ImportedVehicle } from '@/utils/vehicleImportServi
 import { Search, Star, Link as LinkIcon, ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useLanguage } from '@/contexts/LanguageContext';
+import AddToCartButton from './AddToCartButton';
 
 interface SearchFilters {
   brand?: string;
@@ -285,12 +286,17 @@ const FeaturedCars = ({ searchFilters, featuredOnly = false }: {
                   )}
                   
                   <div className="mt-4 flex items-center justify-between">
-                    <span className="text-xl font-bold text-brand-blue">{vehicle.price?.toLocaleString('fr-FR')} €</span>
-                    <Link to={`/vehicule/${vehicle.id}`} data-testid={`vehicle-link-${vehicle.id}`}>
-                      <Button>
-                        {translate("viewDetails", translations.viewDetails)}
-                      </Button>
-                    </Link>
+                    <span className="text-xl font-bold text-brand-blue">
+                      {vehicle.price?.toLocaleString('fr-FR')} €
+                    </span>
+                    <div className="flex gap-2">
+                      <AddToCartButton vehicle={vehicle} />
+                      <Link to={`/vehicule/${vehicle.id}`} data-testid={`vehicle-link-${vehicle.id}`}>
+                        <Button variant="outline">
+                          {translate("viewDetails", translations.viewDetails)}
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
