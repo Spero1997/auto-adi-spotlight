@@ -1,164 +1,112 @@
 
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Car, Wrench, CreditCard, Phone, ShoppingCart } from 'lucide-react';
+import { Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { menuTranslations } from '@/translations/menuTranslations';
 import {
   NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
   NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import CartCount from '../CartCount';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { Globe } from 'lucide-react';
-import LanguageSwitcher from '../LanguageSwitcher';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const DesktopNavigation = () => {
-  const { translate } = useLanguage();
+interface DesktopNavigationProps {
+  scrolled: boolean;
+}
+
+const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
+  const { translate, translations } = useLanguage();
 
   return (
-    <div className="hidden lg:flex items-center justify-between w-full">
-      <NavigationMenu className="flex-1">
-        <NavigationMenuList className="flex items-center gap-6 justify-start">
-          {/* Vehicles Menu */}
+    <div className="hidden md:flex space-x-4 text-white">
+      <NavigationMenu>
+        <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
-              <Car className="w-5 h-5" />
-              {translate('vehicles', menuTranslations.vehicles)}
+            <NavigationMenuTrigger className={`font-montserrat font-light hover:text-white hover:bg-transparent ${scrolled ? 'text-gray-700' : 'text-white'}`}>
+              Véhicules
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 bg-white shadow-lg border rounded-md">
+              <ul className="grid gap-3 p-4 w-[400px]">
                 <li>
-                  <Link 
-                    to="/vehicules" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
+                  <Link
+                    to="/vehicules"
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    {translate('allVehicles', menuTranslations.allVehicles)}
+                    {translate('allVehicles', translations.allVehicles)}
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/vehicules/neufs" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
+                  <Link
+                    to="/vehicules/occasion"
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    {translate('newVehicles', menuTranslations.newVehicles)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/occasion" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('usedVehicles', menuTranslations.usedVehicles)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/utilitaires" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('utility', menuTranslations.utility)}
+                    {translate('usedVehicles', translations.usedVehicles)}
                   </Link>
                 </li>
               </ul>
             </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          {/* Services Menu */}
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
-              <Wrench className="w-5 h-5" />
-              {translate('services', menuTranslations.services)}
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 bg-white shadow-lg border rounded-md">
-                <li>
-                  <Link 
-                    to="/services" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('ourServices', menuTranslations.ourServices)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/garantie" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('warranty', menuTranslations.warranty)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/livraison" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('delivery', menuTranslations.delivery)}
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    to="/rachat" 
-                    className="block p-3 hover:bg-gray-50 rounded-md transition-colors"
-                  >
-                    {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
-                  </Link>
-                </li>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          {/* Financing Link */}
-          <NavigationMenuItem>
-            <Link 
-              to="/financement" 
-              className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light"
-            >
-              <CreditCard className="w-5 h-5" />
-              {translate('financing', menuTranslations.financing)}
-            </Link>
-          </NavigationMenuItem>
-
-          {/* Contact Link */}
-          <NavigationMenuItem>
-            <Link 
-              to="/contact" 
-              className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light"
-            >
-              <Phone className="w-5 h-5" />
-              {translate('contact', menuTranslations.contact)}
-            </Link>
-          </NavigationMenuItem>
-
-          {/* Shopping Cart Link */}
-          <NavigationMenuItem>
-            <Link 
-              to="/panier" 
-              className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light relative"
-            >
-              <div className="relative">
-                <ShoppingCart className="w-5 h-5" />
-                <CartCount />
-              </div>
-              {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
-            </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
 
-      {/* Language Selector */}
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className={`font-montserrat font-light hover:text-white hover:bg-transparent ${scrolled ? 'text-gray-700' : 'text-white'}`}>
+              {translate('services', translations.services)}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid gap-3 p-4 w-[400px]">
+                <li>
+                  <Link
+                    to="/services"
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
+                  >
+                    Nos services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/financement"
+                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
+                  >
+                    Financement
+                  </Link>
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+
+      <Link 
+        to="/contact"
+        className="font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40"
+      >
+        {translate('contact', translations.contact)}
+      </Link>
+      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
-            <Globe className="w-5 h-5" />
-            {translate('language', menuTranslations.language)}
+          <Button 
+            variant="ghost" 
+            className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300"
+          >
+            <Globe className="mr-1 h-4 w-4" />
+            {translate('language', translations.language)}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40 bg-white shadow-lg border rounded-md p-2">
+        <DropdownMenuContent 
+          align="end" 
+          className="bg-white/90 backdrop-blur-md border border-gray-100 shadow-lg rounded-sm p-1 mt-1 w-40"
+        >
           <LanguageSwitcher />
         </DropdownMenuContent>
       </DropdownMenu>
