@@ -36,7 +36,7 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
           <Accordion type="single" collapsible className="w-full space-y-2">
             {/* Collection Section */}
             <AccordionItem value="vehicles" className="border-none">
-              <AccordionTrigger className="flex items-center text-xl text-gray-900 py-3 hover:no-underline hover:text-brand-gold">
+              <AccordionTrigger className="flex items-center text-xl text-gray-900 py-3 hover:no-underline hover:text-brand-blue">
                 <div className="flex items-center gap-6">
                   <Car className="w-6 h-6" />
                   <span className="font-light tracking-wide">{translate('vehicles', menuTranslations.vehicles)}</span>
@@ -46,25 +46,25 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
                 <div className="space-y-2 pl-14">
                   <Link 
                     to="/vehicules" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('allVehicles', menuTranslations.allVehicles)}
                   </Link>
                   <Link 
                     to="/vehicules/neuf" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('newVehicles', menuTranslations.newVehicles)}
                   </Link>
                   <Link 
                     to="/occasion" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('usedVehicles', menuTranslations.usedVehicles)}
                   </Link>
                   <Link 
                     to="/utilitaires" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('utility', menuTranslations.utility)}
                   </Link>
@@ -74,7 +74,7 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
 
             {/* Services Section */}
             <AccordionItem value="services" className="border-none">
-              <AccordionTrigger className="flex items-center text-xl text-gray-900 py-3 hover:no-underline hover:text-brand-gold">
+              <AccordionTrigger className="flex items-center text-xl text-gray-900 py-3 hover:no-underline hover:text-brand-blue">
                 <div className="flex items-center gap-6">
                   <Wrench className="w-6 h-6" />
                   <span className="font-light tracking-wide">{translate('services', menuTranslations.services)}</span>
@@ -84,25 +84,25 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
                 <div className="space-y-2 pl-14">
                   <Link 
                     to="/services" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('ourServices', menuTranslations.ourServices)}
                   </Link>
                   <Link 
                     to="/garantie" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('warranty', menuTranslations.warranty)}
                   </Link>
                   <Link 
                     to="/livraison" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('delivery', menuTranslations.delivery)}
                   </Link>
                   <Link 
                     to="/rachat" 
-                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                    className="block text-lg px-4 py-3 text-gray-700 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
                   >
                     {translate('vehicleBuyback', menuTranslations.vehicleBuyback)}
                   </Link>
@@ -112,7 +112,7 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
             
             {/* Language Section */}
             <AccordionItem value="language" className="border-none">
-              <AccordionTrigger className="flex items-center text-xl text-gray-900 py-3 hover:no-underline hover:text-brand-gold">
+              <AccordionTrigger className="flex items-center text-xl text-gray-900 py-3 hover:no-underline hover:text-brand-blue">
                 <div className="flex items-center gap-6">
                   <Globe className="w-6 h-6" />
                   <span className="font-light tracking-wide">{translate('language', menuTranslations.language)}</span>
@@ -129,21 +129,21 @@ const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
             <div className="space-y-2 pt-1">
               <Link 
                 to="/financement" 
-                className="flex items-center gap-6 px-4 py-3 text-xl text-gray-900 hover:text-brand-gold rounded-sm transition-colors min-h-[48px]"
+                className="flex items-center gap-6 px-4 py-3 text-xl text-gray-900 hover:text-brand-blue rounded-sm transition-colors min-h-[48px]"
               >
                 <CreditCard className="w-6 h-6" />
                 <span className="font-light tracking-wide">{translate('financing', menuTranslations.financing)}</span>
               </Link>
               <Link 
                 to="/contact" 
-                className="flex items-center gap-6 px-4 py-3 text-xl text-brand-gold hover:text-brand-darkBlue rounded-sm transition-colors min-h-[48px]"
+                className="flex items-center gap-6 px-4 py-3 text-xl text-brand-blue hover:text-brand-darkBlue rounded-sm transition-colors min-h-[48px]"
               >
                 <Phone className="w-6 h-6" />
                 <span className="font-light tracking-wide">{translate('directContact', menuTranslations.directContact)}</span>
               </Link>
               <Link 
                 to="/panier" 
-                className="flex items-center gap-6 px-4 py-3 text-xl text-brand-gold hover:text-brand-darkBlue rounded-sm transition-colors relative min-h-[48px]"
+                className="flex items-center gap-6 px-4 py-3 text-xl text-brand-blue hover:text-brand-darkBlue rounded-sm transition-colors relative min-h-[48px]"
               >
                 <div className="relative">
                   <ShoppingCart className="w-6 h-6" />
