@@ -50,18 +50,13 @@ const Header = () => {
       'fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full',
       isScrolled ? 'bg-white shadow-md py-2' : 'bg-white shadow-sm py-2'
     )}>
-      <div className="container mx-auto px-4 w-full">
-        <div className="flex items-center justify-between w-full">
-          <Link to="/" className="flex items-center">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <Link to="/" className="flex-shrink-0">
             <Logo className={cn('h-10 w-auto', 'text-blue-600')} />
           </Link>
 
           <DesktopNavigation />
-
-          {/* Desktop Language Selector */}
-          <div className="hidden lg:block">
-            <LanguageSelector />
-          </div>
           
           {/* Mobile Navigation Controls */}
           <div className="flex items-center lg:hidden">

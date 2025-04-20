@@ -21,9 +21,9 @@ const DesktopNavigation = () => {
   const { translate } = useLanguage();
 
   return (
-    <div className="hidden lg:flex items-center space-x-6">
-      <NavigationMenu>
-        <NavigationMenuList className="flex items-center space-x-6">
+    <div className="hidden lg:flex items-center justify-between w-full">
+      <NavigationMenu className="flex-1">
+        <NavigationMenuList className="flex items-center gap-6 justify-start">
           {/* Vehicles Menu */}
           <NavigationMenuItem>
             <NavigationMenuTrigger className="flex items-center gap-2 text-gray-800 hover:text-brand-gold transition-colors font-light">
