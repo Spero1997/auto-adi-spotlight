@@ -1,0 +1,55 @@
+
+/* Styles spécifiques pour mobile */
+@media (max-width: 640px) {
+  /* Amélioration de la typographie pour la lisibilité */
+  body {
+    @apply text-base leading-relaxed;
+  }
+
+  h1 {
+    @apply text-3xl font-playfair mb-6 leading-tight;
+  }
+
+  h2 {
+    @apply text-2xl font-playfair mb-4 leading-tight;
+  }
+
+  /* Espacement optimisé pour le mobile */
+  .container {
+    @apply px-4;
+  }
+
+  .section-padding {
+    @apply py-8;
+  }
+
+  /* Amélioration des cartes pour un aspect plus luxueux */
+  .card-hover {
+    @apply shadow-lg border border-gray-100/20 backdrop-blur-sm;
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+  }
+
+  /* Amélioration des boutons pour plus d'accessibilité */
+  .btn-primary, 
+  .btn-secondary {
+    @apply py-3 px-6 text-lg min-h-[48px] flex items-center justify-center;
+  }
+
+  /* Style luxueux pour le menu mobile */
+  .mobile-menu {
+    @apply bg-gradient-to-br from-white/95 to-gray-50/95 backdrop-blur-lg;
+  }
+
+  /* Améliorations d'accessibilité */
+  input, 
+  select, 
+  textarea {
+    @apply min-h-[48px] text-base;
+  }
+
+  /* Espacement des éléments interactifs */
+  button, 
+  a {
+    @apply my-1;
+  }
+}
