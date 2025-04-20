@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { ChevronDown, Search, Globe, Phone, Menu, X } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -23,6 +24,13 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import MobileLanguageSelector from './header/MobileLanguageSelector';
+import { 
+  Sheet, 
+  SheetContent, 
+  SheetTrigger,
+  SheetClose
+} from "@/components/ui/sheet";
+import { motion, AnimatePresence } from 'framer-motion';
 
 const mainLinks = [
   { href: '/services', labelKey: 'services' },
@@ -214,20 +222,21 @@ const AnimatedHero = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    // Pour empêcher le défilement du corps lorsque le menu est ouvert
-    if (!isMenuOpen) {
+  };
+
+  useEffect(() => {
+    // Mettre à jour le défilement du corps en fonction de l'état du menu
+    if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-  };
-
-  useEffect(() => {
+    
     // Restaurer le défilement lorsque le composant est démonté
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, []);
+  }, [isMenuOpen]);
 
   return (
     <>
@@ -348,15 +357,76 @@ const AnimatedHero = () => {
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? (
-                  <X className="text-gray-700" />
+                  <X className="text-white" />
                 ) : (
-                  <Menu className="text-gray-700" />
+                  <Menu className="text-white" />
                 )}
               </button>
             </div>
           </div>
         </div>
         
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-20 mt-16 bg-brand-blue/95 backdrop-blur-md"
+            >
+              <div className="container mx-auto px-4 pt-6 pb-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
+                <div className="flex flex-col space-y-4">
+                  <div className="border-b border-white/20 pb-4">
+                    <Link
+                      to="/vehicules"
+                      className="block py-3 text-white font-montserrat text-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {translate('allVehicles', translations.allVehicles)}
+                    </Link>
+                    <Link
+                      to="/vehicules/occasion"
+                      className="block py-3 text-white font-montserrat text-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {translate('usedVehiclesTitle', translations.usedVehiclesTitle)}
+                    </Link>
+                  </div>
+                  
+                  <div className="border-b border-white/20 pb-4">
+                    <Link
+                      to="/services"
+                      className="block py-3 text-white font-montserrat text-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Nos services
+                    </Link>
+                    <Link
+                      to="/financement"
+                      className="block py-3 text-white font-montserrat text-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Financement
+                    </Link>
+                  </div>
+                  
+                  <div className="border-b border-white/20 pb-4">
+                    <Link
+                      to="/contact"
+                      className="block py-3 text-white font-montserrat text-lg"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {translate('contact', translations.contact)}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Hero Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center w-full h-full z-10 px-4">
           <div className="text-center mb-8 md:mb-12">
