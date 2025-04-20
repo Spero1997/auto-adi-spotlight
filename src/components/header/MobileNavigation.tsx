@@ -21,6 +21,9 @@ interface MobileNavigationProps {
 const MobileNavigation = ({ isMenuOpen }: MobileNavigationProps) => {
   const { translate } = useLanguage();
 
+  // Only render when menu is open
+  if (!isMenuOpen) return null;
+
   return (
     <motion.div
       initial={{ opacity: 0, height: 0 }}

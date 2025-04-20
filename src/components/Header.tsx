@@ -56,7 +56,7 @@ const Header = () => {
             <Logo className={cn('h-10 w-auto', 'text-blue-600')} />
           </Link>
 
-          <DesktopNavigation />
+          <DesktopNavigation scrolled={isScrolled} />
           
           {/* Mobile Navigation Controls */}
           <div className="flex items-center lg:hidden">

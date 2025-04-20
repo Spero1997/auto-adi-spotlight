@@ -4,6 +4,7 @@ import { Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { menuTranslations } from '@/translations/menuTranslations';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -22,7 +23,7 @@ interface DesktopNavigationProps {
 }
 
 const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
-  const { translate, translations } = useLanguage();
+  const { translate } = useLanguage();
 
   return (
     <div className="hidden md:flex space-x-4 text-white">
@@ -39,7 +40,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
                     to="/vehicules"
                     className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    {translate('allVehicles', translations.allVehicles)}
+                    {translate('allVehicles', menuTranslations.allVehicles)}
                   </Link>
                 </li>
                 <li>
@@ -47,7 +48,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
                     to="/vehicules/occasion"
                     className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    {translate('usedVehicles', translations.usedVehicles)}
+                    {translate('usedVehicles', menuTranslations.usedVehicles)}
                   </Link>
                 </li>
               </ul>
@@ -60,7 +61,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
         <NavigationMenuList>
           <NavigationMenuItem>
             <NavigationMenuTrigger className={`font-montserrat font-light hover:text-white hover:bg-transparent ${scrolled ? 'text-gray-700' : 'text-white'}`}>
-              {translate('services', translations.services)}
+              {translate('services', menuTranslations.services)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-4 w-[400px]">
@@ -90,7 +91,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
         to="/contact"
         className="font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40"
       >
-        {translate('contact', translations.contact)}
+        {translate('contact', menuTranslations.contact)}
       </Link>
       
       <DropdownMenu>
@@ -100,7 +101,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
             className="text-white font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300"
           >
             <Globe className="mr-1 h-4 w-4" />
-            {translate('language', translations.language)}
+            {translate('language', menuTranslations.language)}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent 

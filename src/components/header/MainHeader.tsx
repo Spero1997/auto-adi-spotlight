@@ -59,7 +59,7 @@ const MainHeader = ({ scrolled }: MainHeaderProps) => {
         </div>
       </div>
       
-      <MobileNavigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      <MobileNavigation isMenuOpen={isMenuOpen} />
     </>
   );
 };
