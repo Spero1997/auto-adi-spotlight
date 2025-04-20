@@ -5,12 +5,12 @@ import QuickSearch from '@/components/QuickSearch';
 // Define translations directly in the component
 const heroTranslations = {
   welcomeHeader: {
-    FR: "Votre Partenaire Automobile à Monaco",
-    EN: "Your Automotive Partner in Monaco",
-    ES: "Su Socio Automotriz en Mónaco",
-    IT: "Il Tuo Partner Automobilistico a Monaco",
-    PT: "Seu Parceiro Automotivo em Mônaco",
-    RO: "Partenerul Dvs. Auto în Monaco"
+    FR: "Votre Partenaire Automobile en Europe",
+    EN: "Your Automotive Partner in Europe",
+    ES: "Su Socio Automotriz en Europa",
+    IT: "Il Tuo Partner Automobilistico in Europa",
+    PT: "Seu Parceiro Automotivo na Europa",
+    RO: "Partenerul Dvs. Auto în Europa"
   },
   welcomeSubtext: {
     FR: "Explorez notre collection exclusive de véhicules premium et découvrez notre service sur mesure",
