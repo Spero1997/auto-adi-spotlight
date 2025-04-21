@@ -31,7 +31,17 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={`font-montserrat font-light hover:text-white hover:bg-transparent ${scrolled ? 'text-gray-700' : 'text-white'}`}>
+            <NavigationMenuTrigger 
+              className={`
+                font-montserrat 
+                font-light 
+                hover:text-white 
+                hover:bg-transparent 
+                ${scrolled 
+                  ? 'text-brand-darkBlue hover:text-brand-blue' 
+                  : 'text-white hover:text-white/80'}
+              `}
+            >
               Véhicules
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -61,7 +71,17 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={`font-montserrat font-light hover:text-white hover:bg-transparent ${scrolled ? 'text-gray-700' : 'text-white'}`}>
+            <NavigationMenuTrigger 
+              className={`
+                font-montserrat 
+                font-light 
+                hover:text-white 
+                hover:bg-transparent 
+                ${scrolled 
+                  ? 'text-brand-darkBlue hover:text-brand-blue' 
+                  : 'text-white hover:text-white/80'}
+              `}
+            >
               {translate('services', menuTranslations.services)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -90,7 +110,22 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
 
       <Link 
         to="/contact"
-        className={`font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40 ${scrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-white'}`}
+        className={`
+          font-montserrat 
+          font-light 
+          tracking-wide 
+          px-5 
+          py-1.5 
+          border 
+          border-transparent 
+          rounded-md 
+          transition-all 
+          duration-300 
+          hover:border-white/40 
+          ${scrolled 
+            ? 'text-brand-darkBlue hover:text-brand-blue' 
+            : 'text-white hover:text-white/80'}
+        `}
       >
         {translate('contact', menuTranslations.contact)}
       </Link>
@@ -98,18 +133,51 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
       {/* Cart Link */}
       <Link 
         to="/panier"
-        className={`font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent rounded-md transition-all duration-300 hover:border-white/40 flex items-center relative ${scrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-white'}`}
+        className={`
+          font-montserrat 
+          font-light 
+          tracking-wide 
+          px-5 
+          py-1.5 
+          border 
+          border-transparent 
+          rounded-md 
+          transition-all 
+          duration-300 
+          hover:border-white/40 
+          flex 
+          items-center 
+          relative 
+          ${scrolled 
+            ? 'text-brand-darkBlue hover:text-brand-blue' 
+            : 'text-white hover:text-white/80'}
+        `}
       >
         <ShoppingCart className="h-5 w-5 mr-2" />
         <CartCount />
-        {translate('cart', { FR: 'Panier', EN: 'Cart', ES: 'Carrito', IT: 'Carrello', PT: 'Carrinho', RO: 'Coș' })}
+        {translate('cart', menuTranslations.cart)}
       </Link>
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button 
             variant="ghost" 
-            className={`font-montserrat font-light tracking-wide px-5 py-1.5 border border-transparent hover:border-white/40 rounded-md transition-all duration-300 ${scrolled ? 'text-gray-700 hover:bg-transparent hover:text-gray-900' : 'text-white hover:bg-transparent'}`}
+            className={`
+              font-montserrat 
+              font-light 
+              tracking-wide 
+              px-5 
+              py-1.5 
+              border 
+              border-transparent 
+              hover:border-white/40 
+              rounded-md 
+              transition-all 
+              duration-300 
+              ${scrolled 
+                ? 'text-brand-darkBlue hover:bg-transparent hover:text-brand-blue' 
+                : 'text-white hover:bg-transparent hover:text-white/80'}
+            `}
           >
             <Globe className="mr-1 h-4 w-4" />
             {translate('language', menuTranslations.language)}
