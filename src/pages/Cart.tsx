@@ -101,9 +101,9 @@ const Cart = () => {
           <span>{formatPrice(total)}</span>
         </div>
         <div className="mt-4 flex justify-end">
-          {/* Replacing the checkout button with a link to the vehicle details */}
+          {/* Fixing the path to ensure it redirects to the proper vehicle details page */}
           {items.length === 1 && (
-            <Link to={`/vehicules/${items[0].id}`} className="inline-block">
+            <Link to={`/vehicule/${items[0].id}`} className="inline-block">
               <Button className="bg-brand-blue hover:bg-brand-darkBlue transition-colors flex items-center gap-2">
                 <CreditCard className="h-5 w-5" />
                 {translate('buyVehicle', {
