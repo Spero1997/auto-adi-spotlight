@@ -42,7 +42,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
                   : 'text-white hover:text-white/80'}
               `}
             >
-              Véhicules
+              {translate('vehicles', menuTranslations.vehicles)}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-3 p-4 w-[400px]">
@@ -91,7 +91,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
                     to="/services"
                     className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    Nos services
+                    {translate('ourServices', menuTranslations.ourServices)}
                   </Link>
                 </li>
                 <li>
@@ -99,7 +99,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
                     to="/financement"
                     className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    Financement
+                    {translate('financing', menuTranslations.financing)}
                   </Link>
                 </li>
               </ul>
@@ -195,3 +195,4 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
 };
 
 export default DesktopNavigation;
+
