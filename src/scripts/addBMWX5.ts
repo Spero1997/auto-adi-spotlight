@@ -21,14 +21,14 @@ export const addBMWX5 = () => {
       }
     }
     
-    // Créer le véhicule avec le nouveau lien Facebook mis à jour
+    // Créer le véhicule avec le nouveau prix et la nouvelle image
     const bmwX5: ImportedVehicle = {
       id: bmwExists ? bmwExists.id : `vehicle-featured-bmw-x5-${Date.now()}`,
       brand: "BMW",
       model: "X5 XDrive 40e M-Sport",
       year: 2018,
       mileage: 99000,
-      price: 30900,
+      price: 9000, // Prix mis à jour
       fuelType: "Hybride",
       transmission: "Automatique",
       exteriorColor: "Blanc",
@@ -36,7 +36,7 @@ export const addBMWX5 = () => {
       description: `# BMW X5 XDrive 40e M-Sport (Hybride, 313 CV)
 - Année: 2018
 - Kilométrage: 99.000 Km
-- Prix: 30.900 €
+- Prix: 9.000 €
 
 ## Modalités de paiement
 - Acompte: 20% à la commande
@@ -50,9 +50,9 @@ export const addBMWX5 = () => {
       
 Garantie: 12 à 48 mois, selon le type de véhicule, avec possibilité d'extension, valable dans toute l'Europe.`,
       images: [
-        "/lovable-uploads/874b916a-34fa-44b5-be0d-259391275fe7.png"
+        "/lovable-uploads/2bd6cf52-3fa8-4739-8770-07119259f83f.png"
       ],
-      image: "/lovable-uploads/874b916a-34fa-44b5-be0d-259391275fe7.png",
+      image: "/lovable-uploads/2bd6cf52-3fa8-4739-8770-07119259f83f.png", // Nouvelle image principale
       fbLink: "https://www.facebook.com/share/18rZNUyZ2o/?mibextid=wwXIfr",
       featured: true,
       catalogType: 'featured'
@@ -62,18 +62,15 @@ Garantie: 12 à 48 mois, selon le type de véhicule, avec possibilité d'extensi
     const success = addImportedVehicle(bmwX5, 'featured');
     
     if (success) {
-      console.log("BMW X5 XDrive 40e M-Sport ajoutée/mise à jour dans le catalogue vedette avec succès");
-      console.log("Nouveau lien Facebook:", bmwX5.fbLink);
-      // Suppression de la notification toast
+      console.log("BMW X5 XDrive 40e M-Sport mise à jour dans le catalogue vedette avec succès");
       
       // Déclencher un événement pour forcer la mise à jour de l'affichage
       window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'featured' } }));
     } else {
-      console.error("Échec de l'ajout/mise à jour de la BMW X5 XDrive 40e M-Sport au catalogue vedette");
-      // Suppression de la notification toast d'erreur
+      console.error("Échec de la mise à jour de la BMW X5 XDrive 40e M-Sport au catalogue vedette");
     }
   } catch (error) {
-    console.error("Erreur lors de l'ajout/mise à jour de la BMW X5 XDrive 40e M-Sport:", error);
-    // Suppression de la notification toast d'erreur
+    console.error("Erreur lors de la mise à jour de la BMW X5 XDrive 40e M-Sport:", error);
   }
 };
+
