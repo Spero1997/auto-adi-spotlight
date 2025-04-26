@@ -66,11 +66,29 @@ Garantie: 12 à 48 mois, selon le type de véhicule, avec possibilité d'extensi
       
       // Déclencher un événement pour forcer la mise à jour de l'affichage
       window.dispatchEvent(new CustomEvent('catalogChanged', { detail: { catalogType: 'featured' } }));
+      
+      // Force refresh pour les pages de détails
+      if (window.location.pathname.includes('vehicle-featured-bmw-x5')) {
+        console.log("Page de détails BMW X5 détectée, rafraîchissement en cours...");
+        setTimeout(() => window.location.reload(), 500);
+      }
+      
+      return bmwX5;
     } else {
       console.error("Échec de la mise à jour de la BMW X5 XDrive 40e M-Sport au catalogue vedette");
+      return null;
     }
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la BMW X5 XDrive 40e M-Sport:", error);
+    return null;
   }
 };
 
+// Fonction qui vérifie si nous sommes sur la page BMW X5 et exécute la mise à jour si nécessaire
+export const checkAndUpdateBMWX5 = () => {
+  if (window.location.pathname.includes('vehicle-featured-bmw-x5')) {
+    console.log("Page BMW X5 détectée, vérification des mises à jour...");
+    return addBMWX5();
+  }
+  return null;
+};
