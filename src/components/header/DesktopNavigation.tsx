@@ -34,7 +34,8 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
             <NavigationMenuTrigger 
               className={`
                 font-montserrat 
-                font-light 
+                font-bold 
+                tracking-wide
                 hover:text-white 
                 hover:bg-transparent 
                 ${scrolled 
@@ -51,7 +52,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
                     to="/vehicules"
                     className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-blue-50 hover:text-blue-600"
                   >
-                    {translate('allVehicles', menuTranslations.allVehicles)}
+                    {translate('allVehicles', menuTranslations.newVehicles)}
                   </Link>
                 </li>
                 <li>
@@ -74,7 +75,8 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
             <NavigationMenuTrigger 
               className={`
                 font-montserrat 
-                font-light 
+                font-bold 
+                tracking-wide
                 hover:text-white 
                 hover:bg-transparent 
                 ${scrolled 
@@ -112,7 +114,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
         to="/contact"
         className={`
           font-montserrat 
-          font-light 
+          font-bold 
           tracking-wide 
           px-5 
           py-1.5 
@@ -135,7 +137,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
         to="/panier"
         className={`
           font-montserrat 
-          font-light 
+          font-bold 
           tracking-wide 
           px-5 
           py-1.5 
@@ -164,7 +166,7 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
             variant="ghost" 
             className={`
               font-montserrat 
-              font-light 
+              font-bold 
               tracking-wide 
               px-5 
               py-1.5 
@@ -195,4 +197,3 @@ const DesktopNavigation = ({ scrolled }: DesktopNavigationProps) => {
 };
 
 export default DesktopNavigation;
-
