@@ -1,3 +1,4 @@
+
 export const menuTranslations = {
   vehicles: {
     FR: "Notre Collection",
@@ -206,5 +207,13 @@ export const menuTranslations = {
     IT: "Menu chi siamo",
     PT: "Menu sobre",
     RO: "Meniu despre"
+  },
+  cart: {
+    FR: "Panier",
+    EN: "Cart",
+    ES: "Carrito",
+    IT: "Carrello",
+    PT: "Carrinho",
+    RO: "Coș"
   }
 };

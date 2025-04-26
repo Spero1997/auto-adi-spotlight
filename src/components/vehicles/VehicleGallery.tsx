@@ -8,7 +8,7 @@ interface VehicleGalleryProps {
   image?: string;
   brand: string;
   model: string;
-  translations: Record<string, string>;
+  translations: Record<string, any>;
 }
 
 const VehicleGallery: React.FC<VehicleGalleryProps> = ({ images, image, brand, model, translations }) => {

@@ -8,7 +8,7 @@ import { ImportedVehicle } from '@/utils/vehicleImportService';
 
 interface VehicleSpecificationsProps {
   vehicle: ImportedVehicle;
-  translations: Record<string, string>;
+  translations: Record<string, any>;
 }
 
 const VehicleSpecifications: React.FC<VehicleSpecificationsProps> = ({ vehicle, translations }) => {

@@ -24,7 +24,7 @@ interface OrderFormData {
 interface VehiclePurchaseFormProps {
   vehicle: ImportedVehicle;
   onSubmit: (data: OrderFormData) => void;
-  translations: Record<string, string>;
+  translations: Record<string, any>;
   onCancel: () => void;
 }
 

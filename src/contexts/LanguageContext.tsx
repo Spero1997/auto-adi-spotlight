@@ -9,7 +9,7 @@ export type Language = 'FR' | 'EN' | 'ES' | 'IT' | 'PT' | 'RO';
 type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
-  translate: <T extends Record<string, string>>(key: string, translations: T) => string;
+  translate: <T extends Record<string, any>>(key: string, translations: T) => string;
 };
 
 // Create the context with default values
@@ -73,7 +73,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   // Translation function that accepts any record with string keys
-  const translate = <T extends Record<string, string>>(key: string, translations: T): string => {
+  const translate = <T extends Record<string, any>>(key: string, translations: T): string => {
     if (!translations) return key;
     
     // Try to get the translation for the current language

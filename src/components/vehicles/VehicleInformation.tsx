@@ -10,7 +10,7 @@ import { ImportedVehicle } from '@/utils/vehicleImportService';
 interface VehicleInformationProps {
   vehicle: ImportedVehicle;
   onBuyClick: () => void;
-  translations: Record<string, string>;
+  translations: Record<string, any>;
 }
 
 const VehicleInformation: React.FC<VehicleInformationProps> = ({ vehicle, onBuyClick, translations }) => {
