@@ -5,30 +5,30 @@ import { Language } from '@/contexts/LanguageContext';
 const testimonials = [
   {
     id: 1,
-    name: "Sophie Martin",
-    position: "Directrice marketing",
-    message: "J'ai acheté ma nouvelle Peugeot 3008 chez Auto Adi et je suis ravie du service. Le personnel était incroyablement serviable et professionnel. Je recommande vivement!",
+    name: "Maria Ionescu",
+    position: "Director de marketing",
+    message: "Am cumpărat un Peugeot 3008 de la Auto Adi și sunt absolut încântată de serviciu. Echipa a fost incredibil de prietenoasă și profesionistă. Le recomand cu cea mai mare încredere!",
     rating: 5,
     avatar: "https://randomuser.me/api/portraits/women/12.jpg",
-    language: "Français"
+    language: "RO"
   },
   {
     id: 2,
-    name: "Thomas Dubois",
-    position: "Ingénieur",
-    message: "Service clientèle exceptionnel! J'ai trouvé exactement la voiture que je cherchais à un prix très raisonnable. Le processus de financement était simple et rapide.",
+    name: "Andrei Popescu",
+    position: "Inginer software",
+    message: "Un serviciu client excepțional! Am găsit exact mașina pe care o căutam la un preț foarte rezonabil. Procesul de finanțare a fost simplu și rapid, fără bătăi de cap.",
     rating: 5,
     avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    language: "Français"
+    language: "RO"
   },
   {
     id: 3,
-    name: "Julie Petit",
-    position: "Enseignante",
-    message: "Auto Adi a rendu l'achat de ma première voiture si facile! Le personnel m'a aidée à choisir un véhicule qui correspond parfaitement à mon budget et à mes besoins.",
+    name: "Elena Radu",
+    position: "Profesoară",
+    message: "Auto Adi mi-a făcut achiziția primei mașini extrem de ușoară! Personalul m-a ajutat să aleg un vehicul care se potrivește perfect bugetului și nevoilor mele. O experiență plăcută și profesionistă.",
     rating: 4,
     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    language: "Français"
+    language: "RO"
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ const testimonials = [
     message: "Excellente sélection de véhicules haut de gamme. Je suis très satisfait de mon Audi A5 et du service personnalisé que j'ai reçu. Je reviendrai certainement pour mon prochain achat.",
     rating: 5,
     avatar: "https://randomuser.me/api/portraits/men/46.jpg",
-    language: "Français"
+    language: "FR"
   },
   {
     id: 5,
@@ -46,7 +46,7 @@ const testimonials = [
     message: "Ho comprato la mia BMW Serie 5 da Auto Adi e sono rimasto colpito dalla qualità del servizio. Il team è professionale e attento alle esigenze del cliente. Tornerò sicuramente!",
     rating: 5,
     avatar: "/lovable-uploads/f589fba6-8301-4717-8c66-976c7c7bbcd7.png",
-    language: "Italien"
+    language: "IT"
   },
   {
     id: 6,
@@ -55,7 +55,7 @@ const testimonials = [
     message: "I found my Volkswagen Touareg at Auto Adi while traveling through France. Despite the language barrier, they made the process incredibly smooth. Excellent service!",
     rating: 5,
     avatar: "/lovable-uploads/99e4c269-15bf-4ced-8ed9-f4c03f6f1378.png",
-    language: "Anglais"
+    language: "EN"
   },
   {
     id: 7,
@@ -64,7 +64,7 @@ const testimonials = [
     message: "¡Excelente experiencia! Compré un Renault Captur y estoy muy satisfecho con la calidad y el precio. El equipo de Auto Adi fue muy atento y transparente durante todo el proceso.",
     rating: 4,
     avatar: "/lovable-uploads/39a66c8b-f5a7-452c-b7a1-ea5713f7a059.png",
-    language: "Espagnol"
+    language: "ES"
   },
   {
     id: 8,
@@ -73,7 +73,7 @@ const testimonials = [
     message: "Encontrei o carro perfeito para minha família na Auto Adi. O Citroën C4 tem sido uma excelente escolha e o preço estava dentro do meu orçamento. Atendimento cinco estrelas!",
     rating: 5,
     avatar: "/lovable-uploads/0dd80e06-e79c-4aee-98e3-92fdad89a399.png",
-    language: "Portugais"
+    language: "PT"
   },
   {
     id: 9,
@@ -82,7 +82,7 @@ const testimonials = [
     message: "Ho visitato Auto Adi durante la mia vacanza in Francia e sono rimasta impressionata dalla vasta gamma di veicoli. Ho acquistato una Peugeot 208 a un prezzo incredibile!",
     rating: 5,
     avatar: "/lovable-uploads/0467d19e-0099-458b-ad02-3a728b8c0048.png",
-    language: "Italien"
+    language: "IT"
   },
   {
     id: 10,
@@ -91,7 +91,7 @@ const testimonials = [
     message: "Ich habe meinen Mercedes bei Auto Adi gekauft und bin sehr zufrieden mit dem Service. Das Team war äußerst hilfsbereit und hat mir einen fantastischen Preis angeboten.",
     rating: 5,
     avatar: "/lovable-uploads/53e6dee5-6e5b-48db-85d6-065a7bdc8435.png",
-    language: "Allemand"
+    language: "DE"
   },
   {
     id: 11,
@@ -100,7 +100,7 @@ const testimonials = [
     message: "Auto Adi ofrece una selección impresionante de vehículos de alta gama. El personal fue muy profesional y me ayudó a encontrar exactamente lo que buscaba. ¡Muy recomendable!",
     rating: 5,
     avatar: "/lovable-uploads/52ca535e-08c4-44c4-b40e-2610809981e8.png",
-    language: "Espagnol"
+    language: "ES"
   },
   {
     id: 12,
@@ -109,7 +109,7 @@ const testimonials = [
     message: "Comprei meu Renault Megane na Auto Adi e fiquei impressionado com o processo simples e transparente. A equipe foi extremamente prestativa e consegui um ótimo negócio.",
     rating: 4,
     avatar: "/lovable-uploads/c16ba104-bd7b-4103-8664-8e744b0ac0e2.png",
-    language: "Portugais"
+    language: "PT"
   },
   {
     id: 13,
@@ -118,7 +118,7 @@ const testimonials = [
     message: "I was visiting France and needed a reliable dealership. Auto Adi exceeded my expectations with their English-speaking staff and exceptional service. I highly recommend them!",
     rating: 5,
     avatar: "/lovable-uploads/3bad6300-9dea-486e-b0cd-a6c2784c35c1.png",
-    language: "Anglais"
+    language: "EN"
   },
   {
     id: 14,
@@ -127,7 +127,7 @@ const testimonials = [
     message: "Servizio eccellente e prezzi competitivi. Ho acquistato una Citroën C3 per mia figlia e siamo entrambi molto soddisfatti. Il personale di Auto Adi è stato fantastico!",
     rating: 5,
     avatar: "/lovable-uploads/6148daec-b490-4c80-a5c6-634990c2ecd1.png",
-    language: "Italien"
+    language: "IT"
   }
 ];
 
