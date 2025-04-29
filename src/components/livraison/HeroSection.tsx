@@ -45,7 +45,10 @@ const HeroSection = () => {
 
   return (
     <section className="relative bg-gradient-to-b from-brand-blue to-brand-darkBlue text-white py-20 overflow-hidden">
-      <div className="absolute inset-0 opacity-30 bg-[url('/lovable-uploads/b2097994-da2c-4127-8a9d-1a70dea60caf.png')] bg-cover bg-center"></div>
+      <div 
+        className="absolute inset-0 opacity-30 bg-cover bg-center bg-no-repeat" 
+        style={{ backgroundImage: "url('/lovable-uploads/b2097994-da2c-4127-8a9d-1a70dea60caf.png')" }}
+      ></div>
       <div className="relative container mx-auto px-4 z-10">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-6 animate-fade-in">
