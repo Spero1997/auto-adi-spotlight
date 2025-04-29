@@ -47,7 +47,7 @@ const HeroSection = () => {
     <section className="relative bg-gradient-to-b from-brand-blue to-brand-darkBlue text-white py-20 overflow-hidden">
       <div 
         className="absolute inset-0 opacity-30 bg-cover bg-center bg-no-repeat" 
-        style={{ backgroundImage: "url('/lovable-uploads/b2097994-da2c-4127-8a9d-1a70dea60caf.png')" }}
+        style={{ backgroundImage: "url('/lovable-uploads/68824319-093d-4ece-bd7a-180849290d3a.png')" }}
       ></div>
       <div className="relative container mx-auto px-4 z-10">
         <div className="max-w-3xl">
