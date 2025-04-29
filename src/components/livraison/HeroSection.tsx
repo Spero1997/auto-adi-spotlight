@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Truck, Phone } from 'lucide-react';
-import { useLanguage, Language } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Define translations
 const translations = {
@@ -45,7 +45,7 @@ const HeroSection = () => {
 
   return (
     <section className="relative bg-gradient-to-b from-brand-blue to-brand-darkBlue text-white py-20 overflow-hidden">
-      <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3')] bg-cover bg-center"></div>
+      <div className="absolute inset-0 opacity-30 bg-[url('/lovable-uploads/b2097994-da2c-4127-8a9d-1a70dea60caf.png')] bg-cover bg-center"></div>
       <div className="relative container mx-auto px-4 z-10">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-playfair font-bold mb-6 animate-fade-in">
