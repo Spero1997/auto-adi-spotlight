@@ -39,16 +39,21 @@ export const useVehicleDetails = (id: string | undefined) => {
         }
       }
       
-      let vehicles = getImportedVehicles('featured');
+      // Filter out any BMW X7 vehicles that might be in the catalogs
+      const filterBMWX7 = (vehicles: ImportedVehicle[]) => {
+        return vehicles.filter(v => !(v.brand === "BMW" && v.model && v.model.includes("X7")));
+      };
+      
+      let vehicles = filterBMWX7(getImportedVehicles('featured'));
       let foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
       
       if (!foundVehicle) {
-        vehicles = getImportedVehicles('standard');
+        vehicles = filterBMWX7(getImportedVehicles('standard'));
         foundVehicle = vehicles.find(v => v.id === id || v.id.includes(id) || id.includes(v.id));
       }
       
       if (!foundVehicle) {
-        vehicles = getImportedVehicles();
+        vehicles = filterBMWX7(getImportedVehicles());
         foundVehicle = vehicles.find(v => 
           v.id === id || 
           v.id.includes(id) || 

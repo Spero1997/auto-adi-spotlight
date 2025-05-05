@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSearchParams } from 'react-router-dom';
@@ -50,7 +49,7 @@ const VehiculesOccasion = () => {
     // Désactiver explicitement le nettoyage des catalogues
     cleanVehicleCatalogs();
     
-    // Désactiver explicitement la suppression de véhicules spécifiques
+    // Activer explicitement la suppression des BMW X7
     removeSpecificVehicles();
     
     // Mise à jour silencieuse des images et de l'Audi Q2 sans notifications toast
@@ -69,7 +68,6 @@ const VehiculesOccasion = () => {
     console.log("VehiculesOccasion: Initialisation terminée - tous les véhicules devraient être visibles");
     setInitialized(true);
     
-    // Supprimer le second rechargement qui génère une notification supplémentaire
   }, [initialized]);
 
   // Fonction pour mettre à jour les filtres de recherche

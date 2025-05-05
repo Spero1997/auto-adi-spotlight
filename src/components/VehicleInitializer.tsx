@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { cleanVehicleCatalogs, getImportedVehicles } from '@/utils/vehicleImportService';
 import { addMercedesCLA250 } from '@/scripts/addMercedesCLA250';
@@ -12,6 +11,7 @@ import { addMercedesClassC180 } from '@/scripts/addMercedesClassC180';
 import { addKiaSorento } from '@/scripts/addKiaSorento';
 import { updateKiaSorentoImage } from '@/scripts/updateKiaSorento';
 import { updateVehicleImages } from '@/scripts/updateVehicleImages';
+import { removeSpecificVehicles } from '@/scripts/removeSpecificVehicles';
 
 // Create a new addAudiRS6 script file
 import { addAudiRS6 } from '@/scripts/addAudiRS6';
@@ -25,6 +25,9 @@ const VehicleInitializer = () => {
       localStorage.setItem(firstLoadKey, 'loaded');
       
       cleanVehicleCatalogs();
+      
+      // Supprimer toutes les BMW X7
+      removeSpecificVehicles();
       
       const standardVehicles = getImportedVehicles('standard');
       const featuredVehicles = getImportedVehicles('featured');
@@ -117,6 +120,9 @@ const VehicleInitializer = () => {
       
       // Use direct import instead of dynamic import for updateVehicleImages
       updateVehicleImages();
+      
+      // Supprimer à nouveau les BMW X7 après toutes les opérations
+      removeSpecificVehicles();
     }
   }, []);
 
