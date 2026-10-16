@@ -131,7 +131,7 @@ export default {
   plugins: [
     tailwindcssAnimate,
     // Ajout d'un plugin pour gérer les zones sûres sur mobile
-    function({ addUtilities }: { addUtilities: (u: Record<string, unknown>) => void }) {
+    function({ addUtilities }) {
       addUtilities({
         '.touch-target': {
           '@apply min-h-touch-target min-w-[48px] flex items-center justify-center': {},
